@@ -12,10 +12,11 @@ module.exports = {
       colors: {
         "app-primary": "#0A0D17",
         "app-secondary": "#763AF5",
-        "app-tertiary": "#F2A104",
-        "app-accent": "#5E6F85",
-        "app-highlight": "#D1D1D1",
-        "app-neutral": "#2F3542",
+        "app-tertiary": "#A604F2",
+        "app-accent": "#F2A104",
+        "app-neutral": "#D1D1D1",
+        "app-highlight": "#5E6F85",
+        "app-border": "#2F3542",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

@@ -1,5 +1,16 @@
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/User/Home";
+import LoginRegisterPage from "./pages/Auth/LoginRegisterPage";
+
 const App = () => {
-  return <div className="text-5xl text-app-tertiary">Hello world</div>;
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/loginRegister" element={<LoginRegisterPage />} />
+      </Routes>
+    </>
+  );
 };
 
 export default App;
