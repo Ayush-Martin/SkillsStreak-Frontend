@@ -8,13 +8,15 @@ import { AppDispatch } from "@/store";
 import { login } from "../features/Auth/userSlice";
 import { useDispatch } from "react-redux";
 import { LoginSchema, LoginSchemaType } from "../validators/authValidator";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting, errors, isValid },
     trigger,
   } = useForm<LoginSchemaType>({
     defaultValues: { email: "", password: "" },
@@ -23,7 +25,10 @@ const Login = () => {
 
   const onSubmit = async (data: LoginSchemaType) => {
     const res = await loginApi(data);
+    if (!res) return;
+    console.log("login");
     dispatch(login(res));
+    navigate("/");
   };
 
   return (
@@ -52,7 +57,7 @@ const Login = () => {
         )}
       </div>
 
-      <Button variant={"v1"} size={"full"} disabled={isSubmitting}>
+      <Button variant={"v1"} size={"full"} disabled={isSubmitting || !isValid}>
         {isSubmitting ? "Logging in..." : "Login"}
       </Button>
 

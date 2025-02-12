@@ -2,9 +2,11 @@ import { useState } from "react";
 import loginImage from "../../assets/images/login.jpg";
 import { Login, Register } from "../../components";
 import AuthLayout from "@/layouts/AuthLayout";
+import { useNavigate } from "react-router-dom";
 
 const LoginRegisterPage = () => {
   const [isLoginPage, setIsLoginPage] = useState(true);
+  const navigate = useNavigate();
   return (
     <AuthLayout>
       <div className="sm:bg-app-border w-full sm:w-[500px] lg:w-[1100px] h-[600px] flex ">
@@ -27,7 +29,10 @@ const LoginRegisterPage = () => {
                     ? "Don’t have an account register"
                     : "Already have account login"}
                 </button>
-                <button className="underline text-app-neutral text-start">
+                <button
+                  className="underline text-app-neutral text-start"
+                  onClick={() => navigate("/forgetPassword")}
+                >
                   ForgetPassword
                 </button>
               </div>

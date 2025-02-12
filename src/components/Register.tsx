@@ -5,12 +5,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterSchema, RegisterSchemaType } from "@/validators/authValidator";
 import ErrorText from "./ErrorText";
 import { RegisterApi } from "@/api/authApi";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting, errors, isValid },
     trigger,
   } = useForm<RegisterSchemaType>({
     defaultValues: {
@@ -20,10 +21,17 @@ const Register = () => {
     },
     resolver: zodResolver(RegisterSchema),
   });
+  const navigate = useNavigate();
 
   const onSubmit = async (data: RegisterSchemaType) => {
     console.log(data);
     await RegisterApi(data);
+    navigate("/verifyOTP", {
+      state: {
+        email: data.email,
+        forAction: "register",
+      },
+    });
   };
 
   return (
@@ -55,7 +63,7 @@ const Register = () => {
         />
         {errors.password && <ErrorText error={errors.password.message!} />}
       </div>
-      <Button variant={"v1"} size={"full"} disabled={isSubmitting}>
+      <Button variant={"v1"} size={"full"} disabled={isSubmitting || !isValid}>
         {isSubmitting ? "Registering in..." : "Register"}
       </Button>
       <p className="text-center text-app-neutral">Or</p>
