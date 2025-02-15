@@ -7,22 +7,19 @@ interface IUser {
   profileImage: string;
   about: string;
   areaOfInterest: string[];
-  isTrainer: boolean;
   isBlocked: boolean;
-  isPremium: boolean;
+  role: "user" | "admin" | "trainer" | "premium" | "";
   accessToken: string;
 }
 
 const initialState: IUser = {
   username: "",
   email: "",
-
   profileImage: "",
   areaOfInterest: [],
   about: "",
-  isTrainer: false,
+  role: "",
   isBlocked: false,
-  isPremium: false,
   accessToken: "",
 };
 
@@ -37,9 +34,8 @@ const userSlice = createSlice({
         about,
         areaOfInterest,
         isBlocked,
-        isPremium,
-        isTrainer,
         profileImage,
+        role,
       }: IUser = jwtDecode(action.payload);
 
       state.username = username;
@@ -47,13 +43,25 @@ const userSlice = createSlice({
       state.about = about;
       state.areaOfInterest = areaOfInterest;
       state.isBlocked = isBlocked;
-      state.isPremium = isPremium;
-      state.isTrainer = isTrainer;
+      state.role = role;
       state.profileImage = profileImage;
+      state.accessToken = action.payload;
+    },
+    logout: (state) => {
+      state.username = "";
+      state.email = "";
+      state.about = "";
+      state.areaOfInterest = [];
+      state.isBlocked = false;
+      state.role = "";
+      state.profileImage = "";
+      state.accessToken = "";
+    },
+    setAccessToken: (state, action) => {
       state.accessToken = action.payload;
     },
   },
 });
 
 export default userSlice.reducer;
-export const { login } = userSlice.actions;
+export const { login, logout, setAccessToken } = userSlice.actions;

@@ -2,10 +2,24 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RegisterSchema, RegisterSchemaType } from "@/validators/authValidator";
 import ErrorText from "./ErrorText";
 import { RegisterApi } from "@/api/authApi";
 import { useNavigate } from "react-router-dom";
+import {
+  EmailValidationRule,
+  PasswordValidationRule,
+  UsernameValidationRule,
+} from "@/utils/validationRules";
+import { z } from "zod";
+import GoogleAuth from "./GoogleAuth";
+
+const RegisterSchema = z.object({
+  email: EmailValidationRule,
+  password: PasswordValidationRule,
+  username: UsernameValidationRule,
+});
+
+type RegisterSchemaType = z.infer<typeof RegisterSchema>;
 
 const Register = () => {
   const {
@@ -26,7 +40,7 @@ const Register = () => {
   const onSubmit = async (data: RegisterSchemaType) => {
     console.log(data);
     await RegisterApi(data);
-    navigate("/verifyOTP", {
+    navigate("/auth/verifyOTP", {
       state: {
         email: data.email,
         forAction: "register",
@@ -67,9 +81,8 @@ const Register = () => {
         {isSubmitting ? "Registering in..." : "Register"}
       </Button>
       <p className="text-center text-app-neutral">Or</p>
-      <Button variant={"v2"} size={"full"}>
-        Register with google
-      </Button>
+
+      <GoogleAuth />
     </form>
   );
 };

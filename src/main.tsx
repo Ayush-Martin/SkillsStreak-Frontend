@@ -9,12 +9,10 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <ToastContainer/>
-          <App />
-      </BrowserRouter>
-    </Provider>
-  </StrictMode>
+  <Provider store={store}>
+    <BrowserRouter>
+      <ToastContainer />
+      <App />
+    </BrowserRouter>
+  </Provider>
 );

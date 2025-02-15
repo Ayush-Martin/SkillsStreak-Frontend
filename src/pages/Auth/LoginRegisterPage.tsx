@@ -31,7 +31,7 @@ const LoginRegisterPage = () => {
                 </button>
                 <button
                   className="underline text-app-neutral text-start"
-                  onClick={() => navigate("/forgetPassword")}
+                  onClick={() => navigate("/auth/forgetPassword")}
                 >
                   ForgetPassword
                 </button>

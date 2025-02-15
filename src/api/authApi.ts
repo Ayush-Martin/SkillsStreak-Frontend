@@ -26,6 +26,28 @@ export const loginApi = async (
   }
 };
 
+export const loginWithGoogle = async (
+  token: string
+): Promise<string | void> => {
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/auth/google",
+      { token },
+      {
+        withCredentials: true,
+      }
+    );
+    const res = response.data as IResponse;
+    console.log(res);
+    successPopup(res.message!);
+    return res.data!;
+  } catch (err) {
+    const resErr = err as IApiResponseError;
+    console.log(err);
+    errorPopup(resErr.response.data.error!);
+  }
+};
+
 export const RegisterApi = async (
   body: RegisterSchemaType
 ): Promise<boolean | void> => {

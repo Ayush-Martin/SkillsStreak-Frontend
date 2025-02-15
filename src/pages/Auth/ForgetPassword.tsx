@@ -2,14 +2,18 @@ import { Input } from "@/components/ui/input";
 import AuthLayout from "@/layouts/AuthLayout";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  ForgetPasswordSchema,
-  ForgetPasswordSchemaType,
-} from "@/validators/authValidator";
 import { ErrorText } from "@/components";
 import { Button } from "@/components/ui/button";
 import { ForgetPasswordApi } from "@/api/authApi";
 import { useNavigate } from "react-router-dom";
+import { z } from "zod";
+import { EmailValidationRule } from "@/utils/validationRules";
+
+const ForgetPasswordSchema = z.object({
+  email: EmailValidationRule,
+});
+
+type ForgetPasswordSchemaType = z.infer<typeof ForgetPasswordSchema>;
 
 const ForgetPassword = () => {
   const {
@@ -29,7 +33,7 @@ const ForgetPassword = () => {
   const submit = async (data: ForgetPasswordSchemaType) => {
     const res = await ForgetPasswordApi(data);
     if (!res) return;
-    navigate("/verifyOTP", {
+    navigate("/auth/verifyOTP", {
       state: {
         forAction: "resetPassword",
         email: data.email,

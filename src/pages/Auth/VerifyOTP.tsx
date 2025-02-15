@@ -29,12 +29,11 @@ const VerifyOTP = () => {
     if (forAction == "register") {
       const success = await CompleteRegisterApi({ email, OTP: value });
       if (!success) return;
-      navigate("/loginRegister");
-    }
-    else if (forAction == "resetPassword") {
+      navigate("/auth");
+    } else if (forAction == "resetPassword") {
       const success = await VerifyOTPApi({ email, OTP: value });
       if (!success) return;
-      navigate("/resetPassword", {
+      navigate("/auth/resetPassword", {
         state: {
           email,
         },

@@ -4,15 +4,30 @@ import { Input } from "./ui/input";
 import ErrorText from "./ErrorText";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginApi } from "@/api/authApi";
+import GoogleAuth from "./GoogleAuth";
 import { AppDispatch } from "@/store";
 import { login } from "../features/Auth/userSlice";
 import { useDispatch } from "react-redux";
-import { LoginSchema, LoginSchemaType } from "../validators/authValidator";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  EmailValidationRule,
+  PasswordValidationRule,
+} from "@/utils/validationRules";
+import { z } from "zod";
+
+const LoginSchema = z.object({
+  email: EmailValidationRule,
+  password: PasswordValidationRule,
+});
+
+type LoginSchemaType = z.infer<typeof LoginSchema>;
 
 const Login = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
   const {
     register,
     handleSubmit,
@@ -26,9 +41,8 @@ const Login = () => {
   const onSubmit = async (data: LoginSchemaType) => {
     const res = await loginApi(data);
     if (!res) return;
-    console.log("login");
     dispatch(login(res));
-    navigate("/");
+    navigate(from, { replace: true });
   };
 
   return (
@@ -63,9 +77,7 @@ const Login = () => {
 
       <p className="text-center text-app-neutral">Or</p>
 
-      <Button variant={"v2"} size={"full"}>
-        Login with Google
-      </Button>
+      <GoogleAuth from={from} />
     </form>
   );
 };

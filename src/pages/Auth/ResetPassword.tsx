@@ -2,16 +2,26 @@ import AuthLayout from "@/layouts/AuthLayout";
 import resetPasswordImage from "../../assets/images/resetPassword.jpg";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  ResetPasswordSchema,
-  ResetPasswordSchemaType,
-} from "@/validators/authValidator";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ResetPasswordApi } from "@/api/authApi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { ErrorText } from "@/components";
+import { z } from "zod";
+import { PasswordValidationRule } from "@/utils/validationRules";
+
+const ResetPasswordSchema = z
+  .object({
+    password: PasswordValidationRule,
+    confirmPassword: z.string(),
+  })
+  .refine(({ password, confirmPassword }) => password == confirmPassword, {
+    message: "Password does not match",
+    path: ["confirmPassword"],
+  });
+
+type ResetPasswordSchemaType = z.infer<typeof ResetPasswordSchema>;
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -21,7 +31,7 @@ const ResetPassword = () => {
 
   useEffect(() => {
     if (!email) {
-      navigate("/loginRegister");
+      navigate("/auth");
     }
   });
 
@@ -41,7 +51,7 @@ const ResetPassword = () => {
   const submit = async (data: ResetPasswordSchemaType) => {
     const res = await ResetPasswordApi({ password: data.password, email });
     if (!res) return;
-    navigate("/loginRegister");
+    navigate("/auth");
   };
   return (
     <AuthLayout>
