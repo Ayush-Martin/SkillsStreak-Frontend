@@ -1,7 +1,12 @@
 import UserLayout from "@/layouts/UserLayout";
 import { Link } from "react-router-dom";
+import appApi from "@/config/axios";
 
 const home = () => {
+  const sampleResponse = async () => {
+    const res=await appApi.get("/auth/sample");
+    console.log(res);
+  };
   return (
     <div className="bg-app-primary">
       {/* <UserLayout>Home</UserLayout> */}
@@ -12,6 +17,8 @@ const home = () => {
         <Link to={"/premium"}>Premium</Link>
         <Link to={"/"}>Home</Link>
         <Link to={"/user"}>User</Link>
+
+        <button onClick={sampleResponse}>sample</button>
       </div>
     </div>
   );

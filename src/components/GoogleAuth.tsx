@@ -1,4 +1,5 @@
-import { loginWithGoogle } from "@/api/authApi";
+import { axiosPostRequest } from "@/config/axios";
+import { LOGIN_WITH_GOOGLE_API } from "@/constants/API";
 import { login } from "@/features/Auth/userSlice";
 import { AppDispatch } from "@/store";
 import {
@@ -9,8 +10,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const GOOGLE_CLIENT_ID =
-  "348313129052-ccnbpol84h4mtbefcid75rv0qacfbfh8.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 const GoogleAuth = ({ from }: { from?: string }) => {
   const dispatch: AppDispatch = useDispatch();
@@ -18,10 +18,9 @@ const GoogleAuth = ({ from }: { from?: string }) => {
 
   const googleSuccess = async (googleResponse: CredentialResponse) => {
     const token = googleResponse.credential;
-
-    const res = await loginWithGoogle(token!);
+    const res = await axiosPostRequest(LOGIN_WITH_GOOGLE_API, { token });
     if (!res) return;
-    dispatch(login(res));
+    dispatch(login(res.data));
     navigate(from || "/", { replace: true });
   };
 

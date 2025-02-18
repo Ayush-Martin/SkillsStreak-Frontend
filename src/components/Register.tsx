@@ -3,7 +3,6 @@ import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorText from "./ErrorText";
-import { RegisterApi } from "@/api/authApi";
 import { useNavigate } from "react-router-dom";
 import {
   EmailValidationRule,
@@ -12,6 +11,9 @@ import {
 } from "@/utils/validationRules";
 import { z } from "zod";
 import GoogleAuth from "./GoogleAuth";
+import { axiosPostRequest } from "@/config/axios";
+import { REGISTER_API } from "@/constants/API";
+import { successPopup } from "@/utils/popup";
 
 const RegisterSchema = z.object({
   email: EmailValidationRule,
@@ -38,8 +40,9 @@ const Register = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data: RegisterSchemaType) => {
-    console.log(data);
-    await RegisterApi(data);
+    const res = await axiosPostRequest(REGISTER_API, data);
+    if (!res) return;
+    successPopup(res.data || "OTP sent");
     navigate("/auth/verifyOTP", {
       state: {
         email: data.email,

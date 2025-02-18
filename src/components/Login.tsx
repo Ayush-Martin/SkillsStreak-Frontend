@@ -3,7 +3,6 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import ErrorText from "./ErrorText";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginApi } from "@/api/authApi";
 import GoogleAuth from "./GoogleAuth";
 import { AppDispatch } from "@/store";
 import { login } from "../features/Auth/userSlice";
@@ -14,6 +13,9 @@ import {
   PasswordValidationRule,
 } from "@/utils/validationRules";
 import { z } from "zod";
+import { successPopup } from "@/utils/popup";
+import { axiosPostRequest } from "@/config/axios";
+import { LOGIN_API } from "@/constants/API";
 
 const LoginSchema = z.object({
   email: EmailValidationRule,
@@ -39,9 +41,10 @@ const Login = () => {
   });
 
   const onSubmit = async (data: LoginSchemaType) => {
-    const res = await loginApi(data);
+    const res = await axiosPostRequest(LOGIN_API, data);
     if (!res) return;
-    dispatch(login(res));
+    successPopup(res.message || "user logged in");
+    dispatch(login(res.data));
     navigate(from, { replace: true });
   };
 

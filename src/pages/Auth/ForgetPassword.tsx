@@ -4,10 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ErrorText } from "@/components";
 import { Button } from "@/components/ui/button";
-import { ForgetPasswordApi } from "@/api/authApi";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { EmailValidationRule } from "@/utils/validationRules";
+import { axiosPostRequest } from "@/config/axios";
+import { FORGET_PASSWORD_API } from "@/constants/API";
+import { successPopup } from "@/utils/popup";
 
 const ForgetPasswordSchema = z.object({
   email: EmailValidationRule,
@@ -31,8 +33,9 @@ const ForgetPassword = () => {
   const navigate = useNavigate();
 
   const submit = async (data: ForgetPasswordSchemaType) => {
-    const res = await ForgetPasswordApi(data);
+    const res = await axiosPostRequest(FORGET_PASSWORD_API, data);
     if (!res) return;
+    successPopup(res.message || "OTP sent to your email")
     navigate("/auth/verifyOTP", {
       state: {
         forAction: "resetPassword",

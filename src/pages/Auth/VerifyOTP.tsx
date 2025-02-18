@@ -9,7 +9,9 @@ import {
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { CompleteRegisterApi, VerifyOTPApi } from "@/api/authApi";
+import { axiosPostRequest } from "@/config/axios";
+import { COMPLETE_REGISTER_API, VERIFY_OTP_API } from "@/constants/API";
+import { successPopup } from "@/utils/popup";
 
 const VerifyOTP = () => {
   const location = useLocation();
@@ -27,12 +29,20 @@ const VerifyOTP = () => {
 
   const submit = async () => {
     if (forAction == "register") {
-      const success = await CompleteRegisterApi({ email, OTP: value });
-      if (!success) return;
+      const res = await axiosPostRequest(COMPLETE_REGISTER_API, {
+        email,
+        OTP: value,
+      });
+      if (!res) return;
+      successPopup(res.message || "OTP is verified");
       navigate("/auth");
     } else if (forAction == "resetPassword") {
-      const success = await VerifyOTPApi({ email, OTP: value });
-      if (!success) return;
+      const res = await axiosPostRequest(VERIFY_OTP_API, {
+        email,
+        OTP: value,
+      });
+      if (!res) return;
+      successPopup(res.message || "OTP is verified");
       navigate("/auth/resetPassword", {
         state: {
           email,
