@@ -41,19 +41,19 @@ const App = () => {
       <Routes>
         <Route path="/*" element={<RoutesHandler requiredRole="public" />}>
           {PublicRoutes.map(({ path, Component }) => (
-            <Route path={path} element={<Component />} />
+            <Route key={path} path={path} element={<Component />} />
           ))}
         </Route>
 
         <Route path="/auth/*" element={<RoutesHandler requiredRole="auth" />}>
           {AuthRoutes.map(({ path, Component }) => (
-            <Route path={path} element={<Component />} />
+            <Route key={path} path={path} element={<Component />} />
           ))}
         </Route>
 
         <Route path="/admin/*" element={<RoutesHandler requiredRole="admin" />}>
           {AdminRoutes.map(({ path, Component }) => (
-            <Route path={path} element={<Component />} />
+            <Route key={path} path={path} element={<Component />} />
           ))}
         </Route>
 
@@ -62,13 +62,13 @@ const App = () => {
           element={<RoutesHandler requiredRole="trainer" />}
         >
           {TrainerRoutes.map(({ path, Component }) => (
-            <Route path={path} element={<Component />} />
+            <Route key={path} path={path} element={<Component />} />
           ))}
         </Route>
 
         <Route path="/user/*" element={<RoutesHandler requiredRole="user" />}>
           {UserRoutes.map(({ path, Component }) => (
-            <Route path={path} element={<Component />} />
+            <Route key={path} path={path} element={<Component />} />
           ))}
         </Route>
 
@@ -77,7 +77,7 @@ const App = () => {
           element={<RoutesHandler requiredRole="premium" />}
         >
           {PremiumUserRoutes.map(({ path, Component }) => (
-            <Route path={path} element={<Component />} />
+            <Route key={path} path={path} element={<Component />} />
           ))}
         </Route>
       </Routes>

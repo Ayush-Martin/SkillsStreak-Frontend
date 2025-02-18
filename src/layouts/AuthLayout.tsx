@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import logo from "../assets/svg/logo.svg";
+import logo from "../assets/images/logo.png";
 
 interface AuthLayout {
   children: ReactNode;

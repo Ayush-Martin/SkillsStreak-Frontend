@@ -2,6 +2,7 @@ import { lazy } from "react";
 
 //public Routes
 const Home = lazy(() => import("./pages/User/Home"));
+const Courses = lazy(() => import("./pages/User/Courses"));
 
 //Auth Routes
 const LoginRegisterPage = lazy(() => import("./pages/Auth/LoginRegisterPage"));
@@ -10,7 +11,9 @@ const ForgetPassword = lazy(() => import("./pages/Auth/ForgetPassword"));
 const ResetPassword = lazy(() => import("./pages/Auth/ResetPassword"));
 
 //User Routes
-const UserDashboard = lazy(() => import("./pages/User/Dashboard"));
+const Profile = lazy(() => import("./pages/User/Profile"));
+const EnrolledCourses = lazy(() => import("./pages/User/EnrolledCourse"));
+const Payments = lazy(() => import("./pages/User/Payments"));
 
 //Premium User Routes
 //Todo
@@ -32,6 +35,10 @@ export const PublicRoutes: Routes = [
   {
     path: "",
     Component: Home,
+  },
+  {
+    path: "courses",
+    Component: Courses,
   },
 ];
 
@@ -57,7 +64,15 @@ export const AuthRoutes: Routes = [
 export const UserRoutes: Routes = [
   {
     path: "",
-    Component: UserDashboard,
+    Component: Profile,
+  },
+  {
+    path: "enrolledCourses",
+    Component: EnrolledCourses,
+  },
+  {
+    path: "payments",
+    Component: Payments,
   },
 ];
 
@@ -76,4 +91,3 @@ export const AdminRoutes: Routes = [
     Component: AdminDashboard,
   },
 ];
-  

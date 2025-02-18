@@ -1,18 +1,108 @@
-import { ReactNode } from "react";
-import logo from "../assets/svg/logo.svg";
+import { ReactNode, useState } from "react";
+import logo from "../assets/images/logo.png";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import Hamburger from "hamburger-react";
+import useLogout from "@/hooks/useLogout";
+import { RootReducer } from "@/store";
+import { useSelector } from "react-redux";
 
 interface UserLayout {
   children: ReactNode;
 }
 
 const UserLayout = ({ children }: UserLayout) => {
+  const navigate = useNavigate();
+  const [hamburgerOpen, setHamburgerOpen] = useState(false);
+  const { logoutHandler } = useLogout();
+  const { accessToken } = useSelector((state: RootReducer) => state.user);
+
   return (
-    <div className="relative flex items-center justify-center rounded-sm min:h-screen bg-app-primary">
-      <div className="absolute top-0 flex justify-center w-full h-16 py-3 text-white ">
-        <img src={logo} alt="" className="object-contain" />
-      </div>
-      {children}
-    </div>
+    <main className="bg-app-primary ">
+      <header className="fixed top-0 left-0 z-20 flex items-center justify-between w-full h-16 px-6 py-4 text-white bg-opacity-30 bg-app-primary backdrop-blur-sm">
+        <img src={logo} alt="" className="object-contain" width={"130px"} />
+        <ul className="hidden gap-4 text-lg text-white sm:flex">
+          <li className="hover:text-app-accent">
+            <NavLink
+              to={"/"}
+              className={({ isActive }) => (isActive ? "text-app-accent" : "")}
+            >
+              Home
+            </NavLink>
+          </li>
+          <li className="hover:text-app-accent">
+            <NavLink
+              to={"/courses"}
+              className={({ isActive }) => (isActive ? "text-app-accent" : "")}
+            >
+              Courses
+            </NavLink>
+          </li>
+          <li className="hover:text-app-accent">
+            <NavLink
+              to={"/user"}
+              className={({ isActive }) => (isActive ? "text-app-accent" : "")}
+            >
+              Dashboard
+            </NavLink>
+          </li>
+        </ul>
+
+        <Button
+          variant={"v2"}
+          className="hidden sm:block"
+          onClick={accessToken ? logoutHandler : () => navigate("/auth")}
+        >
+          {accessToken ? "Logout" : "Login"}
+        </Button>
+
+        <div className=" sm:hidden">
+          <Hamburger
+            toggled={hamburgerOpen}
+            toggle={setHamburgerOpen}
+            size={25}
+          />
+          <ul
+            className={`fixed right-0 left-0 flex flex-col gap-4 text-sm text-white px-1 py-2 text-center rounded-sm  bg-opacity-90 bg-app-border mx-auto w-60 ${
+              !hamburgerOpen && "hidden"
+            }`}
+          >
+            <li className="hover:text-app-accent active:text-app-accent">
+              <Link to={"/"}>Home</Link>
+            </li>
+            <li className="hover:text-app-accent">
+              <Link to={"/courses"}>Courses</Link>
+            </li>
+            <li className="hover:text-app-accent">
+              <Link to={"/user"}>Dashboard</Link>
+            </li>
+            <li>
+              <Button
+                variant={"v1"}
+                size={"full"}
+                onClick={accessToken ? logoutHandler : () => navigate("/auth")}
+              >
+                {accessToken ? "Logout" : "Login"}
+              </Button>
+            </li>
+          </ul>
+        </div>
+      </header>
+
+      <section className="min-h-[700px] pt-20">{children}</section>
+
+      <footer className="flex flex-col items-center justify-between h-[200px] w-full  py-10 mt-2 text-white bg-app-border px-8 sm:px-28  lg:px-56 z-20">
+        <ul className="grid justify-center w-full grid-cols-2 my-4 text-center md:grid-cols-6">
+          <li>Home</li>
+          <li>Dashboard</li>
+          <li>Dashboard</li>
+          <li>Dashboard</li>
+          <li>Dashboard</li>
+          <li>Dashboard</li>
+        </ul>
+        <div>h1</div>
+      </footer>
+    </main>
   );
 };
 
