@@ -1,7 +1,4 @@
 import { UserProfile, UserSidebar } from "@/components";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import UserLayout from "@/layouts/UserLayout";
 import { RootReducer } from "@/store";
 import { useSelector } from "react-redux";

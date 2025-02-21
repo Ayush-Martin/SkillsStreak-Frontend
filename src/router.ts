@@ -23,6 +23,13 @@ const TrainerDashboard = lazy(() => import("./pages/Trainer/Dashboard"));
 
 //Admin Routes
 const AdminDashboard = lazy(() => import("./pages/Admin/Dashboard"));
+const AdminUsers = lazy(() => import("./pages/Admin/Users"));
+const AdminTrainers = lazy(() => import("./pages/Admin/Trainers"));
+const AdminCourses = lazy(() => import("./pages/Admin/Courses"));
+const AdminBundles = lazy(() => import("./pages/Admin/Bundles"));
+const AdminCategories = lazy(() => import("./pages/Admin/Categories"));
+const AdminPayments = lazy(() => import("./pages/Admin/Payments"));
+const AdminDoubts = lazy(() => import("./pages/Admin/Doubts"));
 
 type Route = {
   path: string;
@@ -89,5 +96,33 @@ export const AdminRoutes: Routes = [
   {
     path: "",
     Component: AdminDashboard,
+  },
+  {
+    path: "users",
+    Component: AdminUsers,
+  },
+  {
+    path: "trainers",
+    Component: AdminTrainers,
+  },
+  {
+    path: "courses",
+    Component: AdminCourses,
+  },
+  {
+    path: "bundles",
+    Component: AdminBundles,
+  },
+  {
+    path: "categories",
+    Component: AdminCategories,
+  },
+  {
+    path: "payments",
+    Component: AdminPayments,
+  },
+  {
+    path: "doubts",
+    Component: AdminDoubts,
   },
 ];
