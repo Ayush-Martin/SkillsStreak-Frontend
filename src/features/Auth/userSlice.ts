@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { jwtDecode } from "jwt-decode";
+import { errorPopup, successPopup } from "@/utils/popup";
+import { updateProfileApi, updateProfileImageApi } from "./userApi";
 
 interface IUser {
   username: string;
@@ -60,6 +62,30 @@ const userSlice = createSlice({
     setAccessToken: (state, action) => {
       state.accessToken = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(updateProfileImageApi.fulfilled, (state, action) => {
+      const { profileImage } = action.payload.data;
+      state.profileImage = profileImage;
+      successPopup(action.payload.message || "profile updated");
+    });
+
+    builder.addCase(updateProfileImageApi.rejected, (_state, action) => {
+      const err = action.payload as string;
+      errorPopup(err);
+    });
+
+    builder.addCase(updateProfileApi.fulfilled, (state, action) => {
+      const { username, about } = action.payload.data;
+      state.username = username;
+      state.about = about;
+      successPopup(action.payload.message || "profile is updated");
+    });
+
+    builder.addCase(updateProfileApi.rejected, (_state, action) => {
+      const err = action.payload as string;
+      errorPopup(err);
+    });
   },
 });
 

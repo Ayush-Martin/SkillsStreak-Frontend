@@ -6,9 +6,9 @@ import { login, logout } from "@/features/Auth/userSlice";
 import { BACKEND_BASE_URL, REFRESH_TOKEN_API } from "@/constants/API";
 import { errorPopup } from "@/utils/popup";
 
-const appApi = axios.create({
+export const appApi = axios.create({
   baseURL: BACKEND_BASE_URL,
-  withCredentials:true
+  withCredentials: true,
 });
 
 appApi.interceptors.request.use(
@@ -34,7 +34,7 @@ appApi.interceptors.response.use(
     if (error.response.status == 401 && !originalRequest._retry) {
       try {
         const res: IResponse = await axios.get(
-          `${BACKEND_BASE_URL}${REFRESH_TOKEN_API}`,
+          `${BACKEND_BASE_URL}${REFRESH_TOKEN_API}`
         );
         console.log("r1", res);
         const newAccessToken = res.data.data as string;
@@ -68,7 +68,7 @@ export const axiosGetRequest = async (
 
 export const axiosPostRequest = async (
   url: string,
-  data: any,
+  data: any
 ): Promise<IResponse | void> => {
   try {
     const res = await appApi.post(url, data);
@@ -81,20 +81,21 @@ export const axiosPostRequest = async (
 
 export const axiosPutRequest = async (
   url: string,
-  data: any,
-): Promise<IResponse | void> => {
+  data: any
+): Promise<IResponse | null> => {
   try {
     const res = await appApi.put(url, data);
     return res.data;
   } catch (err) {
     const apiError = err as IApiResponseError;
     errorPopup(apiError.response.data.error || "Some error Occurred");
+    return null;
   }
 };
 
 export const axiosPatchRequest = async (
   url: string,
-  data: any,
+  data: any
 ): Promise<IResponse | void> => {
   try {
     const res = await appApi.patch(url, data);
@@ -106,7 +107,7 @@ export const axiosPatchRequest = async (
 };
 
 export const axiosDeleteRequest = async (
-  url: string,
+  url: string
 ): Promise<IResponse | void> => {
   try {
     const res = await appApi.delete(url);

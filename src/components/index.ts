@@ -3,3 +3,4 @@ export { default as Register } from "./Register";
 export { default as ErrorText } from "./ErrorText";
 export { default as RoutesHandler } from "./RoutesHandler";
 export { default as UserSidebar } from "./UserSidebar";
+export { default as UserProfile } from "./UserProfile";

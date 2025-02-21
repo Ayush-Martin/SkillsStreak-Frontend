@@ -17,12 +17,16 @@ export const PasswordValidationRule = z
     message: "Password must contain at least one special character",
   });
 
-export const  UsernameValidationRule =  z
-.string()
-.min(3, { message: "Username must be at least 3 characters long" })
-.max(20, { message: "Username must be 20 characters or less" })
-.regex(/^[a-zA-Z0-9_]+$/, {
-  message: "Username can only contain letters, numbers, and underscores",
-})
+export const UsernameValidationRule = z
+  .string()
+  .min(3, { message: "Username must be at least 3 characters long" })
+  .max(20, { message: "Username must be 20 characters or less" })
+  .regex(/^[a-zA-Z0-9_]+$/, {
+    message: "Username can only contain letters, numbers, and underscores",
+  });
 
+export const AboutValidationRule = z
+  .string()
+  .max(20, { message: "About must be 20 characters or less" });
 
+export const AreaOfInterestValidationRule = z.array(z.string());
