@@ -11,4 +11,5 @@ export const RESET_PASSWORD_API = "/auth/resetPassword";
 export const VERIFY_OTP_API = "/auth/verifyOTP";
 export const REFRESH_TOKEN_API = "/auth/refresh";
 
-
+//Admin
+export const ADMIN_USERS_API="/admin/users"

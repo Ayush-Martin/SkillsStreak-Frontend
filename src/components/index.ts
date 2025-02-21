@@ -6,3 +6,5 @@ export { default as UserSidebar } from "./User/UserSidebar";
 export { default as AdminSidebar } from "./Admin/AdminSidebar";
 export { default as UserProfile } from "./UserProfile";
 export { default as SideBar } from "./SideBar";
+export { default as SearchBox } from "./SearchBox";
+export { default as Pagination } from "./Pagination";

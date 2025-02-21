@@ -1,4 +1,4 @@
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
@@ -90,6 +90,7 @@ const UserProfile = ({
                 type="file"
                 className="sr-only"
                 onChange={profileImageChangeHandler}
+                accept="image/*"
               />
             </label>
           </div>

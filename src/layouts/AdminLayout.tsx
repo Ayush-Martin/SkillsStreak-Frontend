@@ -21,10 +21,10 @@ const AdminLayout = ({ children }: IAdminLayout) => {
         </Button>
       </header>
 
-      <section className="min-h-[1000px] pt-20">
+      <section className="min-h-screen pt-20">
         <div className="relative flex">
           <AdminSidebar />
-          <div className="w-full px-0 mt-10 ml-0 text-sm text-white md:px-20 md:mt-0 md:ml-64 md:text-base">
+          <div className="w-full pt-12 ml-0 text-sm text-white px-7 lg:px-14 md:mt-0 md:ml-64 md:text-base">
             {children}
           </div>
         </div>
