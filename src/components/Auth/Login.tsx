@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import ErrorText from "./ErrorText";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import ErrorText from "../ErrorText";
 import { zodResolver } from "@hookform/resolvers/zod";
-import GoogleAuth from "./Auth/GoogleAuth";
+import GoogleAuth from "../Auth/GoogleAuth";
 import { AppDispatch } from "@/store";
-import { login } from "../features/Auth/userSlice";
+import { login } from "../../features/Auth/userSlice";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
