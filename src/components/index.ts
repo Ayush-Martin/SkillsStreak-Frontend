@@ -1,5 +1,5 @@
-export { default as Login } from "./Login";
-export { default as Register } from "./Register";
+export { default as Login } from "./Auth/Login";
+export { default as Register } from "./Auth/Register";
 export { default as ErrorText } from "./ErrorText";
 export { default as RoutesHandler } from "./RoutesHandler";
 export { default as UserSidebar } from "./User/UserSidebar";

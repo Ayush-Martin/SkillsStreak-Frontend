@@ -1,8 +1,8 @@
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import ErrorText from "./ErrorText";
+import ErrorText from "../ErrorText";
 import { useNavigate } from "react-router-dom";
 import {
   EmailValidationRule,

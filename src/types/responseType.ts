@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxiosError, AxiosResponse } from "axios";
 
 export interface IResponse {

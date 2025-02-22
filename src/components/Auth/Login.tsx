@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import ErrorText from "./ErrorText";
 import { zodResolver } from "@hookform/resolvers/zod";
-import GoogleAuth from "./GoogleAuth";
+import GoogleAuth from "./Auth/GoogleAuth";
 import { AppDispatch } from "@/store";
 import { login } from "../features/Auth/userSlice";
 import { useDispatch } from "react-redux";

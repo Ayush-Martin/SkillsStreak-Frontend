@@ -18,14 +18,15 @@ import {
 } from "@/features/admin/api/adminUserApi";
 import { changePage } from "@/features/admin/slice/adminUserSlice";
 
+const pageSize = 1;
+
 const Users = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const [search, setSearch] = useState("");
   const { users, currentPage, totalPages } = useSelector(
     (state: RootReducer) => state.adminUser
   );
-  const dispatch: AppDispatch = useDispatch();
-  const [search, setSearch] = useState("");
 
-  const pageSize = 1;
   const startIndex = (currentPage - 1) * pageSize;
 
   useEffect(() => {
@@ -36,7 +37,7 @@ const Users = () => {
 
   const paginatedUsers = useMemo(() => {
     return users.slice(startIndex, startIndex + pageSize);
-  }, [users, startIndex, pageSize]);
+  }, [users, startIndex]);
 
   const previousPage = () => {
     if (currentPage > 1) dispatch(changePage(currentPage - 1));

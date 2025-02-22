@@ -58,7 +58,6 @@ const UserProfile = ({
   };
 
   const profileUpdateHandler = (data: UserProfileSchemaType) => {
-    console.log("fdf");
     dispatch(updateProfileApi(data));
   };
 
