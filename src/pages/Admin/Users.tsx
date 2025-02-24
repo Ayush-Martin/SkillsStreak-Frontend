@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { CgUnblock, CgBlock } from "react-icons/cg";
+import { MdOutlineRefresh } from "react-icons/md";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootReducer } from "@/store";
 import { useEffect, useState, useMemo } from "react";
@@ -56,6 +57,10 @@ const Users = () => {
     dispatch(getAdminUsersApi({ page: 1, search: searchInput }));
   };
 
+  const refreshHandler = () => {
+    dispatch(getAdminUsersApi({ page: 1, search }));
+  };
+
   return (
     <AdminLayout>
       <SearchBox
@@ -64,7 +69,10 @@ const Users = () => {
         searchHandler={searchHandler}
       />
 
-      <Table className="mt-10">
+      <button className="mt-10 text-3xl text-blue-600" onClick={refreshHandler}>
+        <MdOutlineRefresh />
+      </button>
+      <Table>
         <TableHeader>
           <TableRow>
             <TableHead>User Email</TableHead>
