@@ -3,7 +3,7 @@ import {
   adminBlockUnblockUserApi,
   getAdminUsersApi,
 } from "../api/adminUserApi";
-import { successPopup } from "@/utils/popup";
+import { errorPopup, successPopup } from "@/utils/popup";
 
 type UsersType = Array<{
   username: "";
@@ -45,6 +45,11 @@ const adminUserSlice = createSlice({
       state.totalPages = data.totalPages;
     });
 
+    builder.addCase(getAdminUsersApi.rejected, (_, action) => {
+      const err = action.payload as string;
+      errorPopup(err);
+    });
+
     builder.addCase(adminBlockUnblockUserApi.fulfilled, (state, action) => {
       const { userId, blockStatus } = action.payload.data;
       state.users = state.users.map((user) =>
@@ -52,6 +57,11 @@ const adminUserSlice = createSlice({
       );
 
       successPopup(action.payload.message || "user block status changed");
+    });
+
+    builder.addCase(adminBlockUnblockUserApi.rejected, (_, action) => {
+      const err = action.payload as string;
+      errorPopup(err);
     });
   },
 });

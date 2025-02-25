@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import loginImage from "../../assets/images/login.jpg";
 import { Login, Register } from "../../components";
 import AuthLayout from "@/layouts/AuthLayout";
 import { useNavigate } from "react-router-dom";
 
-const LoginRegisterPage = () => {
+const LoginRegisterPage: FC = () => {
   const [isLoginPage, setIsLoginPage] = useState(true);
   const navigate = useNavigate();
   return (

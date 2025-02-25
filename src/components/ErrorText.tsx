@@ -1,6 +1,10 @@
-import React from "react";
+import { FC } from "react";
 
-const ErrorText = ({ error }: { error: string }) => {
+interface IErrorTextProps {
+  error: string;
+}
+
+const ErrorText: FC<IErrorTextProps> = ({ error }) => {
   return <p className="text-sm text-red-500">{error}</p>;
 };
 

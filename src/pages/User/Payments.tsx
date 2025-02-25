@@ -1,8 +1,8 @@
 import { UserSidebar } from "@/components";
 import UserLayout from "@/layouts/UserLayout";
-import React from "react";
+import { FC } from "react";
 
-const Payments = () => {
+const Payments: FC = () => {
   return (
     <UserLayout>
       <div className="relative flex">

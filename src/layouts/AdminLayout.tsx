@@ -1,14 +1,14 @@
-import { ReactNode } from "react";
+import { FC, ReactNode } from "react";
 import logo from "../assets/images/logo.png";
 import { Button } from "@/components/ui/button";
 import useLogout from "@/hooks/useLogout";
 import { AdminSidebar } from "@/components";
 
-interface IAdminLayout {
+interface IAdminLayoutProps {
   children: ReactNode;
 }
 
-const AdminLayout = ({ children }: IAdminLayout) => {
+const AdminLayout: FC<IAdminLayoutProps> = ({ children }) => {
   const { logoutHandler } = useLogout();
   return (
     <main className="bg-app-primary ">

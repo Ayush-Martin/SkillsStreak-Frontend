@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { jwtDecode } from "jwt-decode";
 import { errorPopup, successPopup } from "@/utils/popup";
-import { updateProfileApi, updateProfileImageApi } from "./userApi";
+import { updateProfileApi, updateProfileImageApi } from "../api/userApi";
 
 interface IUser {
   username: string;

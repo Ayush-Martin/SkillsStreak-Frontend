@@ -5,7 +5,7 @@ import ErrorText from "../ErrorText";
 import { zodResolver } from "@hookform/resolvers/zod";
 import GoogleAuth from "../Auth/GoogleAuth";
 import { AppDispatch } from "@/store";
-import { login } from "../../features/Auth/userSlice";
+import { login } from "../../features/Auth/slice/userSlice";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -16,6 +16,7 @@ import { z } from "zod";
 import { successPopup } from "@/utils/popup";
 import { axiosPostRequest } from "@/config/axios";
 import { LOGIN_API } from "@/constants/API";
+import { FC } from "react";
 
 const LoginSchema = z.object({
   email: EmailValidationRule,
@@ -24,7 +25,7 @@ const LoginSchema = z.object({
 
 type LoginSchemaType = z.infer<typeof LoginSchema>;
 
-const Login = () => {
+const Login: FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();

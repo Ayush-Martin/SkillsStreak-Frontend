@@ -5,7 +5,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getAdminTrainerRequestsApi = createAsyncThunk<
   IResponse,
-  { page: number; search: string }
+  { page: number }
 >("adminUser/getTrainerRequests", async ({ page }, { rejectWithValue }) => {
   try {
     const response = await appApi.get(

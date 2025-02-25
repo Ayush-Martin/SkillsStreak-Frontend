@@ -1,6 +1,7 @@
 import AdminLayout from "@/layouts/AdminLayout";
+import { FC } from "react";
 
-const Courses = () => {
+const Courses: FC = () => {
   return (
     <AdminLayout>
       <h1 className="text-5xl text-white">Courses</h1>

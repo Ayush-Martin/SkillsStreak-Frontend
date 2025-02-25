@@ -8,8 +8,9 @@ import { MdVideoLibrary } from "react-icons/md";
 import { FaBoxesStacked } from "react-icons/fa6";
 import { TbCategoryFilled } from "react-icons/tb";
 import { IoChatbox } from "react-icons/io5";
+import { FC } from "react";
 
-const AdminSidebar = () => {
+const AdminSidebar: FC = () => {
   return (
     <SideBar>
       <NavLink

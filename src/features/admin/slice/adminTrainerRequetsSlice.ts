@@ -3,7 +3,7 @@ import {
   AdminChangeTrainerRequestStatus,
   getAdminTrainerRequestsApi,
 } from "../api/adminTrainerRequestApi";
-import { successPopup } from "@/utils/popup";
+import { errorPopup, successPopup } from "@/utils/popup";
 
 type TrainerRequestType = Array<{
   status: string;
@@ -48,6 +48,11 @@ const AdminTrainerRequestSlice = createSlice({
       state.totalPages = data.totalPages;
     });
 
+    builder.addCase(getAdminTrainerRequestsApi.rejected, (_, action) => {
+      const err = action.payload as string;
+      errorPopup(err);
+    });
+
     builder.addCase(
       AdminChangeTrainerRequestStatus.fulfilled,
       (state, action) => {
@@ -62,6 +67,11 @@ const AdminTrainerRequestSlice = createSlice({
         );
       }
     );
+
+    builder.addCase(AdminChangeTrainerRequestStatus.rejected, (_, action) => {
+      const err = action.payload as string;
+      errorPopup(err);
+    });
   },
 });
 

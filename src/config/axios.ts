@@ -2,7 +2,7 @@
 import axios from "axios";
 import store from "../store";
 import { IApiResponseError, IResponse } from "@/types/responseType";
-import { login, logout } from "@/features/Auth/userSlice";
+import { login, logout } from "@/features/Auth/slice/userSlice";
 import { BACKEND_BASE_URL, REFRESH_TOKEN_API } from "@/constants/API";
 import { errorPopup } from "@/utils/popup";
 
@@ -82,14 +82,13 @@ export const axiosPostRequest = async (
 export const axiosPutRequest = async (
   url: string,
   data: any
-): Promise<IResponse | null> => {
+): Promise<IResponse | void> => {
   try {
     const res = await appApi.put(url, data);
     return res.data;
   } catch (err) {
     const apiError = err as IApiResponseError;
     errorPopup(apiError.response.data.error || "Some error Occurred");
-    return null;
   }
 };
 

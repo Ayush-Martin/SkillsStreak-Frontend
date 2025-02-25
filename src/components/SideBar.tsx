@@ -1,11 +1,11 @@
-import { ReactNode, useState } from "react";
+import { FC, ReactNode, useState } from "react";
 import { CgMenuGridO } from "react-icons/cg";
 
-interface ISideBar {
+interface ISideBarProps {
   children: ReactNode;
 }
 
-const SideBar = ({ children }: ISideBar) => {
+const SideBar: FC<ISideBarProps> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>

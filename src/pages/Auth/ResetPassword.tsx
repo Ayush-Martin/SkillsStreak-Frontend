@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { ErrorText } from "@/components";
 import { z } from "zod";
 import { PasswordValidationRule } from "@/utils/validationRules";
@@ -25,7 +25,7 @@ const ResetPasswordSchema = z
 
 type ResetPasswordSchemaType = z.infer<typeof ResetPasswordSchema>;
 
-const ResetPassword = () => {
+const ResetPassword: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -59,7 +59,7 @@ const ResetPassword = () => {
     successPopup(res.message || "Password is changed");
     navigate("/auth");
   };
-  
+
   return (
     <AuthLayout>
       <div className="sm:bg-app-border w-full sm:w-[500px] lg:w-[1100px] h-[600px] flex ">

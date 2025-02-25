@@ -1,8 +1,9 @@
 import { NavLink } from "react-router-dom";
 import SideBar from "../SideBar";
 import { MdDashboard, MdPayments, MdVideoLibrary } from "react-icons/md";
+import { FC } from "react";
 
-const TrainerSidebar = () => {
+const TrainerSidebar: FC = () => {
   return (
     <SideBar>
       <NavLink

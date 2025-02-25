@@ -1,14 +1,14 @@
-import { ReactNode } from "react";
+import { FC, ReactNode } from "react";
 import logo from "../assets/images/logo.png";
 import { Button } from "@/components/ui/button";
 import useLogout from "@/hooks/useLogout";
 import { TrainerSidebar } from "@/components";
 
-interface ITrainerLayout {
+interface ITrainerLayoutProps {
   children: ReactNode;
 }
 
-const TrainerLayout = ({ children }: ITrainerLayout) => {
+const TrainerLayout: FC<ITrainerLayoutProps> = ({ children }) => {
   const { logoutHandler } = useLogout();
   return (
     <main className="bg-app-primary ">

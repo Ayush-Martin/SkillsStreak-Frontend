@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
-interface SearchBox {
+interface ISearchBoxProps {
   search: string;
   searchHandler: (search: string) => void;
   placeholder: string;
 }
 
-const SearchBox = ({ search, placeholder, searchHandler }: SearchBox) => {
+const SearchBox: FC<ISearchBoxProps> = ({
+  search,
+  placeholder,
+  searchHandler,
+}) => {
   const [input, setInput] = useState(search);
   return (
     <div className="flex justify-center">

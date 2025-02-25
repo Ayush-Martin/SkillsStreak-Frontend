@@ -12,7 +12,7 @@ import { CgUnblock, CgBlock } from "react-icons/cg";
 import { MdOutlineRefresh } from "react-icons/md";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootReducer } from "@/store";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, FC } from "react";
 import {
   adminBlockUnblockUserApi,
   getAdminUsersApi,
@@ -21,7 +21,7 @@ import { changePage } from "@/features/admin/slice/adminUserSlice";
 
 const pageSize = 1;
 
-const Users = () => {
+const Users: FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const [search, setSearch] = useState("");
   const { users, currentPage, totalPages } = useSelector(

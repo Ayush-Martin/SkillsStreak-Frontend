@@ -1,6 +1,7 @@
 import AdminLayout from "@/layouts/AdminLayout";
+import { FC } from "react";
 
-const Dashboard = () => {
+const Dashboard: FC = () => {
   return (
     <AdminLayout>
       <h1 className="text-5xl text-white">Hello</h1>

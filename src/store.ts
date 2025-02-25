@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import user from "./features/Auth/userSlice";
+import user from "./features/Auth/slice/userSlice";
 import adminUser from "./features/admin/slice/adminUserSlice";
 import adminTrainerRequest from "./features/admin/slice/adminTrainerRequetsSlice";
 

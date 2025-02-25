@@ -1,4 +1,4 @@
-import { Pagination, SearchBox } from "@/components";
+import { Pagination } from "@/components";
 import AdminLayout from "@/layouts/AdminLayout";
 import {
   Table,
@@ -12,7 +12,7 @@ import { MdOutlineRefresh } from "react-icons/md";
 import { AiOutlineCheckCircle, AiFillCloseCircle } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootReducer } from "@/store";
-import { useEffect, useState, useMemo } from "react";
+import { FC, useEffect, useMemo } from "react";
 import { changePage } from "@/features/admin/slice/adminTrainerRequetsSlice";
 import {
   AdminChangeTrainerRequestStatus,
@@ -21,7 +21,7 @@ import {
 
 const pageSize = 1;
 
-const TrainerRequest = () => {
+const TrainerRequest: FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const { users, currentPage, totalPages } = useSelector(
     (state: RootReducer) => state.adminTrainerRequest
@@ -31,7 +31,7 @@ const TrainerRequest = () => {
 
   useEffect(() => {
     if (!users.length) {
-      dispatch(getAdminTrainerRequestsApi({ page: 1}));
+      dispatch(getAdminTrainerRequestsApi({ page: 1 }));
     }
   }, [dispatch, users.length]);
 
@@ -47,7 +47,7 @@ const TrainerRequest = () => {
     if (users.length > startIndex + pageSize) {
       dispatch(changePage(currentPage + 1));
     } else {
-      dispatch(getAdminTrainerRequestsApi({ page: currentPage + 1}));
+      dispatch(getAdminTrainerRequestsApi({ page: currentPage + 1 }));
     }
   };
 
@@ -57,7 +57,6 @@ const TrainerRequest = () => {
 
   return (
     <AdminLayout>
-
       <button className="mt-10 text-3xl text-blue-600" onClick={refreshHandler}>
         <MdOutlineRefresh />
       </button>

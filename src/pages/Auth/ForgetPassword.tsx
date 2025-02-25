@@ -10,6 +10,7 @@ import { EmailValidationRule } from "@/utils/validationRules";
 import { axiosPostRequest } from "@/config/axios";
 import { FORGET_PASSWORD_API } from "@/constants/API";
 import { successPopup } from "@/utils/popup";
+import { FC } from "react";
 
 const ForgetPasswordSchema = z.object({
   email: EmailValidationRule,
@@ -17,7 +18,7 @@ const ForgetPasswordSchema = z.object({
 
 type ForgetPasswordSchemaType = z.infer<typeof ForgetPasswordSchema>;
 
-const ForgetPassword = () => {
+const ForgetPassword: FC = () => {
   const {
     register,
     formState: { isSubmitting, errors, isValid },
@@ -35,7 +36,7 @@ const ForgetPassword = () => {
   const submit = async (data: ForgetPasswordSchemaType) => {
     const res = await axiosPostRequest(FORGET_PASSWORD_API, data);
     if (!res) return;
-    successPopup(res.message || "OTP sent to your email")
+    successPopup(res.message || "OTP sent to your email");
     navigate("/auth/verifyOTP", {
       state: {
         forAction: "resetPassword",

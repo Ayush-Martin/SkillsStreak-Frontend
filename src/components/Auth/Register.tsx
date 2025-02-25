@@ -14,6 +14,7 @@ import GoogleAuth from "./GoogleAuth";
 import { axiosPostRequest } from "@/config/axios";
 import { REGISTER_API } from "@/constants/API";
 import { successPopup } from "@/utils/popup";
+import { FC } from "react";
 
 const RegisterSchema = z.object({
   email: EmailValidationRule,
@@ -23,7 +24,7 @@ const RegisterSchema = z.object({
 
 type RegisterSchemaType = z.infer<typeof RegisterSchema>;
 
-const Register = () => {
+const Register: FC = () => {
   const {
     register,
     handleSubmit,

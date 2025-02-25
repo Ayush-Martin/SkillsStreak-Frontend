@@ -1,18 +1,19 @@
+import { FC } from "react";
 import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
 
-interface IPagination {
+interface IPaginationProps {
   currentPage: number;
   totalPages: number;
   previousPage: () => void;
   nextPage: () => void;
 }
 
-const Pagination = ({
+const Pagination: FC<IPaginationProps> = ({
   currentPage,
   totalPages,
   previousPage,
   nextPage,
-}: IPagination) => {
+}) => {
   return (
     <div className="flex justify-center my-10">
       <div className="flex items-center gap-5 ">

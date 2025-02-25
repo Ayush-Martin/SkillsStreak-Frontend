@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { FC, ReactNode, useState } from "react";
 import logo from "../assets/images/logo.png";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -7,11 +7,11 @@ import useLogout from "@/hooks/useLogout";
 import { RootReducer } from "@/store";
 import { useSelector } from "react-redux";
 
-interface UserLayout {
+interface IUserLayoutProps {
   children: ReactNode;
 }
 
-const UserLayout = ({ children }: UserLayout) => {
+const UserLayout: FC<IUserLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const { logoutHandler } = useLogout();

@@ -1,6 +1,7 @@
 import UserLayout from "@/layouts/UserLayout";
+import { FC } from "react";
 
-const Courses = () => {
+const Courses: FC = () => {
   return (
     <UserLayout>
       <h1 className="text-white">Courses</h1>

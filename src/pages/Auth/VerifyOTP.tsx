@@ -8,12 +8,12 @@ import {
 } from "@/components/ui/input-otp";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import { axiosPostRequest } from "@/config/axios";
 import { COMPLETE_REGISTER_API, VERIFY_OTP_API } from "@/constants/API";
 import { successPopup } from "@/utils/popup";
 
-const VerifyOTP = () => {
+const VerifyOTP: FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [value, setValue] = useState("");

@@ -1,7 +1,7 @@
 import TrainerLayout from "@/layouts/TrainerLayout";
-import React from "react";
+import  { FC } from "react";
 
-const MyCourses = () => {
+const MyCourses: FC = () => {
   return (
     <TrainerLayout>
       <h1 className="text-3xl text-white">My Courses</h1>

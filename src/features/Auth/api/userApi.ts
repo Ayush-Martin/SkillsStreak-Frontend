@@ -1,4 +1,4 @@
-import { UserProfileSchemaType } from "@/components/UserProfile";
+import { UserProfileSchemaType } from "@/components/User/UserProfile";
 import appApi from "@/config/axios";
 import { IApiResponseError, IResponse } from "@/types/responseType";
 import { createAsyncThunk } from "@reduxjs/toolkit";

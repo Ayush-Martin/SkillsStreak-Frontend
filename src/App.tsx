@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import { AppDispatch } from "./store";
 import { useDispatch } from "react-redux";
 import { IResponse } from "./types/responseType";
-import { login } from "./features/Auth/userSlice";
+import { login } from "./features/Auth/slice/userSlice";
 import axios from "axios";
 import { BACKEND_BASE_URL, REFRESH_TOKEN_API } from "./constants/API";
 

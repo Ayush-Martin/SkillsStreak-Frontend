@@ -6,8 +6,9 @@ import SideBar from "../SideBar";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { RootReducer } from "@/store";
+import { FC } from "react";
 
-const UserSidebar = () => {
+const UserSidebar: FC = () => {
   const { role } = useSelector((state: RootReducer) => state.user);
   return (
     <SideBar>

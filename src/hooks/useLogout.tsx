@@ -1,7 +1,7 @@
 import { axiosGetRequest } from "@/config/axios";
 import { AppDispatch } from "@/store";
 import { useDispatch } from "react-redux";
-import { logout } from "@/features/Auth/userSlice";
+import { logout } from "@/features/Auth/slice/userSlice";
 import { successPopup } from "@/utils/popup";
 
 const useLogout = () => {

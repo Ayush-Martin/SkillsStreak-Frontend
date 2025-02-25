@@ -1,12 +1,12 @@
 import TrainerLayout from "@/layouts/TrainerLayout";
-import React from "react";
+import { FC } from "react";
 
-const Revenue = () => {
+const Payments: FC = () => {
   return (
     <TrainerLayout>
-      <h1 className="text-3xl text-white">Trainer Revenue</h1>
+      <h1 className="text-3xl text-white">Trainer Payments</h1>
     </TrainerLayout>
   );
 };
 
-export default Revenue;
+export default Payments;

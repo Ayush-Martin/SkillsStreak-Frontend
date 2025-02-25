@@ -1,11 +1,11 @@
 import { lazy } from "react";
 
 //public Routes
-const Home = lazy(() => import("./pages/User/Home"));
+import Home from "./pages/User/Home";
 const Courses = lazy(() => import("./pages/User/Courses"));
 
 //Auth Routes
-const LoginRegisterPage = lazy(() => import("./pages/Auth/LoginRegisterPage"));
+import LoginRegisterPage from "./pages/Auth/LoginRegisterPage";
 const VerifyOTP = lazy(() => import("./pages/Auth/VerifyOTP"));
 const ForgetPassword = lazy(() => import("./pages/Auth/ForgetPassword"));
 const ResetPassword = lazy(() => import("./pages/Auth/ResetPassword"));

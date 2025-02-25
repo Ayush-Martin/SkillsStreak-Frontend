@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 import { FaUserTie } from "react-icons/fa6";
 import { z } from "zod";
 import {
@@ -9,15 +9,15 @@ import {
   AreaOfInterestValidationRule,
   UsernameValidationRule,
 } from "@/utils/validationRules";
-import ErrorText from "./ErrorText";
+import ErrorText from "../ErrorText";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store";
 import {
   updateProfileApi,
   updateProfileImageApi,
-} from "@/features/Auth/userApi";
-import { ChangeEvent } from "react";
+} from "@/features/Auth/api/userApi";
+import { ChangeEvent, FC } from "react";
 
 const UserProfileSchema = z.object({
   username: UsernameValidationRule,
@@ -27,13 +27,18 @@ const UserProfileSchema = z.object({
 
 export type UserProfileSchemaType = z.infer<typeof UserProfileSchema>;
 
-const UserProfile = ({
+interface IUserProfileProps extends UserProfileSchemaType {
+  profileImage: string;
+  email: string;
+}
+
+const UserProfile: FC<IUserProfileProps> = ({
   username,
   email,
   profileImage,
   areaOfInterest,
   about,
-}: UserProfileSchemaType & { profileImage: string; email: string }) => {
+}) => {
   const {
     register,
     formState: { errors },
