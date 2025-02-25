@@ -35,6 +35,13 @@ const AdminSidebar = () => {
         Trainers
       </NavLink>
       <NavLink
+        to={"/admin/trainerRequests"}
+        className={"w-full  px-2 py-2 flex items-center gap-2"}
+      >
+        <FaChalkboardTeacher />
+        Trainer Requests
+      </NavLink>
+      <NavLink
         to={"/admin/courses"}
         className={"w-full  px-2 py-2 flex items-center gap-2"}
       >

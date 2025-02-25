@@ -37,7 +37,6 @@ const adminUserSlice = createSlice({
       const data: initialStateType = action.payload.data;
       console.log(data);
       if (data.currentPage == 1) {
-        console.log("fdf");
         state.users = data.users;
       } else {
         state.users = [...state.users, ...data.users];

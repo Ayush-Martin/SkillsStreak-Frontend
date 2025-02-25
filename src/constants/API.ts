@@ -12,4 +12,5 @@ export const VERIFY_OTP_API = "/auth/verifyOTP";
 export const REFRESH_TOKEN_API = "/auth/refresh";
 
 //Admin
-export const ADMIN_USERS_API="/admin/users"
+export const ADMIN_USERS_API = "/admin/users";
+export const ADMIN_TRAINER_REQUEST_API = "/admin/trainerRequests";

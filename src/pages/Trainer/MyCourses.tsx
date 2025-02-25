@@ -1,12 +1,12 @@
 import TrainerLayout from "@/layouts/TrainerLayout";
 import React from "react";
 
-const Dashboard = () => {
+const MyCourses = () => {
   return (
     <TrainerLayout>
-      <h1 className="text-3xl text-white">Trainer Dashboard</h1>
+      <h1 className="text-3xl text-white">My Courses</h1>
     </TrainerLayout>
   );
 };
 
-export default Dashboard;
+export default MyCourses;

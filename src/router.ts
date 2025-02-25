@@ -14,17 +14,23 @@ const ResetPassword = lazy(() => import("./pages/Auth/ResetPassword"));
 const Profile = lazy(() => import("./pages/User/Profile"));
 const EnrolledCourses = lazy(() => import("./pages/User/EnrolledCourse"));
 const Payments = lazy(() => import("./pages/User/Payments"));
+const SendTrainerRequest = lazy(() => import("./pages/User/TrainerRequest"));
 
 //Premium User Routes
 //Todo
 
 //Trainer Routes
 const TrainerDashboard = lazy(() => import("./pages/Trainer/Dashboard"));
+const TrainerCourses = lazy(() => import("./pages/Trainer/MyCourses"));
+const TrainerPayments = lazy(() => import("./pages/Trainer/Payments"));
 
 //Admin Routes
 const AdminDashboard = lazy(() => import("./pages/Admin/Dashboard"));
 const AdminUsers = lazy(() => import("./pages/Admin/Users"));
 const AdminTrainers = lazy(() => import("./pages/Admin/Trainers"));
+const AdminTrainerRequests = lazy(
+  () => import("./pages/Admin/TrainerRequests")
+);
 const AdminCourses = lazy(() => import("./pages/Admin/Courses"));
 const AdminBundles = lazy(() => import("./pages/Admin/Bundles"));
 const AdminCategories = lazy(() => import("./pages/Admin/Categories"));
@@ -81,6 +87,10 @@ export const UserRoutes: Routes = [
     path: "payments",
     Component: Payments,
   },
+  {
+    path: "trainerRequest",
+    Component: SendTrainerRequest,
+  },
 ];
 
 export const PremiumUserRoutes: Routes = [];
@@ -89,6 +99,14 @@ export const TrainerRoutes: Routes = [
   {
     path: "",
     Component: TrainerDashboard,
+  },
+  {
+    path: "courses",
+    Component: TrainerCourses,
+  },
+  {
+    path: "payments",
+    Component: TrainerPayments,
   },
 ];
 
@@ -104,6 +122,10 @@ export const AdminRoutes: Routes = [
   {
     path: "trainers",
     Component: AdminTrainers,
+  },
+  {
+    path: "trainerRequests",
+    Component: AdminTrainerRequests,
   },
   {
     path: "courses",

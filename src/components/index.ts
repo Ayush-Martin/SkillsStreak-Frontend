@@ -8,3 +8,4 @@ export { default as UserProfile } from "./UserProfile";
 export { default as SideBar } from "./SideBar";
 export { default as SearchBox } from "./SearchBox";
 export { default as Pagination } from "./Pagination";
+export { default as TrainerSidebar } from "./Trainer/TrainerSidebar";

@@ -4,8 +4,11 @@ import { RiGraduationCapFill } from "react-icons/ri";
 import { MdPayments } from "react-icons/md";
 import SideBar from "../SideBar";
 import { FaChalkboardTeacher } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { RootReducer } from "@/store";
 
 const UserSidebar = () => {
+  const { role } = useSelector((state: RootReducer) => state.user);
   return (
     <SideBar>
       <NavLink
@@ -31,7 +34,7 @@ const UserSidebar = () => {
         Payments
       </NavLink>
       <NavLink
-        to={"/user/trainerRequest"}
+        to={role == "trainer" ? "/trainer" : "/user/trainerRequest"}
         className={"w-full  px-2 py-2 flex items-center gap-2"}
       >
         <FaChalkboardTeacher />
