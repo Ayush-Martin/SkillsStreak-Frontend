@@ -10,6 +10,7 @@ type UsersType = Array<{
   email: "";
   _id: "";
   isBlocked: boolean;
+  role: "user" | "trainer";
 }>;
 
 type initialStateType = {

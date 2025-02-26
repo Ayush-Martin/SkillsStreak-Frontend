@@ -18,8 +18,7 @@ import {
   getAdminUsersApi,
 } from "@/features/admin/api/adminUserApi";
 import { changePage } from "@/features/admin/slice/adminUserSlice";
-
-const pageSize = 1;
+import { RECORDS_PER_PAGE } from "@/constants/general";
 
 const Users: FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -28,7 +27,7 @@ const Users: FC = () => {
     (state: RootReducer) => state.adminUser
   );
 
-  const startIndex = (currentPage - 1) * pageSize;
+  const startIndex = (currentPage - 1) * RECORDS_PER_PAGE;
 
   useEffect(() => {
     if (!users.length) {
@@ -37,7 +36,7 @@ const Users: FC = () => {
   }, [dispatch, search, users.length]);
 
   const paginatedUsers = useMemo(() => {
-    return users.slice(startIndex, startIndex + pageSize);
+    return users.slice(startIndex, startIndex + RECORDS_PER_PAGE);
   }, [users, startIndex]);
 
   const previousPage = () => {
@@ -45,7 +44,7 @@ const Users: FC = () => {
   };
 
   const nextPage = () => {
-    if (users.length > startIndex + pageSize) {
+    if (users.length > startIndex + RECORDS_PER_PAGE) {
       dispatch(changePage(currentPage + 1));
     } else {
       dispatch(getAdminUsersApi({ page: currentPage + 1, search }));
@@ -77,7 +76,7 @@ const Users: FC = () => {
           <TableRow>
             <TableHead>User Email</TableHead>
             <TableHead>Username</TableHead>
-            <TableHead>Enrolled Courses</TableHead>
+            <TableHead>Role</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -90,7 +89,7 @@ const Users: FC = () => {
               <TableRow key={user._id}>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.username}</TableCell>
-                <TableCell></TableCell>
+                <TableCell>{user.role}</TableCell>
                 <TableCell>
                   <button
                     className={`text-3xl ${

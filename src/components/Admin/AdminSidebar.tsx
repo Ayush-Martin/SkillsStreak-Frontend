@@ -28,13 +28,13 @@ const AdminSidebar: FC = () => {
         <FaUsers />
         Users
       </NavLink>
-      <NavLink
+      {/* <NavLink
         to={"/admin/trainers"}
         className={"w-full  px-2 py-2 flex items-center gap-2"}
       >
         <FaChalkboardTeacher />
         Trainers
-      </NavLink>
+      </NavLink> */}
       <NavLink
         to={"/admin/trainerRequests"}
         className={"w-full  px-2 py-2 flex items-center gap-2"}

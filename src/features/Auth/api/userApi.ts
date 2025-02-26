@@ -1,5 +1,6 @@
 import { UserProfileSchemaType } from "@/components/User/UserProfile";
 import appApi from "@/config/axios";
+import { PROFILE_API } from "@/constants/API";
 import { IApiResponseError, IResponse } from "@/types/responseType";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -9,7 +10,7 @@ export const updateProfileImageApi = createAsyncThunk<IResponse, File>(
     try {
       const formData = new FormData();
       formData.append("image", profileImage);
-      const response = await appApi.put("/user/changeProfileImage", formData, {
+      const response = await appApi.patch(PROFILE_API, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -31,7 +32,7 @@ export const updateProfileApi = createAsyncThunk<
   async (profileData: UserProfileSchemaType, { rejectWithValue }) => {
     try {
       const { username, about, areaOfInterest } = profileData;
-      const response = await appApi.put("/user/updateProfile", {
+      const response = await appApi.put(PROFILE_API, {
         username,
         about,
       });

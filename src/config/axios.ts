@@ -31,7 +31,11 @@ appApi.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response.status == 401 && !originalRequest._retry) {
+    if (
+      error.response.status == 401 &&
+      error.response.data.error == "Invalid token" &&
+      !originalRequest._retry
+    ) {
       try {
         const res: IResponse = await axios.get(
           `${BACKEND_BASE_URL}${REFRESH_TOKEN_API}`

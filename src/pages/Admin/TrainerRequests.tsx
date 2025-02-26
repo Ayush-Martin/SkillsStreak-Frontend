@@ -18,8 +18,7 @@ import {
   AdminChangeTrainerRequestStatus,
   getAdminTrainerRequestsApi,
 } from "@/features/admin/api/adminTrainerRequestApi";
-
-const pageSize = 1;
+import { RECORDS_PER_PAGE } from "@/constants/general";
 
 const TrainerRequest: FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -27,7 +26,7 @@ const TrainerRequest: FC = () => {
     (state: RootReducer) => state.adminTrainerRequest
   );
 
-  const startIndex = (currentPage - 1) * pageSize;
+  const startIndex = (currentPage - 1) * RECORDS_PER_PAGE;
 
   useEffect(() => {
     if (!users.length) {
@@ -36,7 +35,7 @@ const TrainerRequest: FC = () => {
   }, [dispatch, users.length]);
 
   const paginatedUsers = useMemo(() => {
-    return users.slice(startIndex, startIndex + pageSize);
+    return users.slice(startIndex, startIndex + RECORDS_PER_PAGE);
   }, [users, startIndex]);
 
   const previousPage = () => {
@@ -44,7 +43,7 @@ const TrainerRequest: FC = () => {
   };
 
   const nextPage = () => {
-    if (users.length > startIndex + pageSize) {
+    if (users.length > startIndex + RECORDS_PER_PAGE) {
       dispatch(changePage(currentPage + 1));
     } else {
       dispatch(getAdminTrainerRequestsApi({ page: currentPage + 1 }));
