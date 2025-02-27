@@ -23,6 +23,7 @@ const SendTrainerRequest = lazy(() => import("./pages/User/TrainerRequest"));
 const TrainerDashboard = lazy(() => import("./pages/Trainer/Dashboard"));
 const TrainerCourses = lazy(() => import("./pages/Trainer/MyCourses"));
 const TrainerPayments = lazy(() => import("./pages/Trainer/Payments"));
+const TrainerAddCourse = lazy(() => import("./pages/Trainer/AddCourse"));
 
 //Admin Routes
 const AdminDashboard = lazy(() => import("./pages/Admin/Dashboard"));
@@ -107,6 +108,10 @@ export const TrainerRoutes: Routes = [
   {
     path: "payments",
     Component: TrainerPayments,
+  },
+  {
+    path: "courses/add",
+    Component: TrainerAddCourse,
   },
 ];
 

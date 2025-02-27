@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import store from "../store";
 import { IApiResponseError, IResponse } from "@/types/responseType";
 import { login, logout } from "@/features/Auth/slice/userSlice";
@@ -40,7 +40,6 @@ appApi.interceptors.response.use(
         const res: IResponse = await axios.get(
           `${BACKEND_BASE_URL}${REFRESH_TOKEN_API}`
         );
-        console.log("r1", res);
         const newAccessToken = res.data.data as string;
 
         store.dispatch(login(newAccessToken));
@@ -72,10 +71,11 @@ export const axiosGetRequest = async (
 
 export const axiosPostRequest = async (
   url: string,
-  data: any
+  data: any,
+  config?: AxiosRequestConfig<any>
 ): Promise<IResponse | void> => {
   try {
-    const res = await appApi.post(url, data);
+    const res = await appApi.post(url, data, config);
     return res.data;
   } catch (err) {
     const apiError = err as IApiResponseError;

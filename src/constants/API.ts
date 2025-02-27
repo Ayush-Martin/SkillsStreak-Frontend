@@ -15,6 +15,7 @@ export const REFRESH_TOKEN_API = "/auth/refresh";
 export const PROFILE_API = "/user/profile";
 
 //Trainer
+export const ADMIN_TRAINER_COURSES = "/trainer/courses";
 
 //Admin
 export const ADMIN_USERS_API = "/admin/users";

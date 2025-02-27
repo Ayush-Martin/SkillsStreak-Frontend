@@ -155,7 +155,6 @@ const UserProfile: FC<IUserProfileProps> = ({
             size={"lg"}
             type="submit"
             onClick={() => {
-              console.log("hello");
               return;
             }}
           >

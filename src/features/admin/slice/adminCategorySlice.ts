@@ -38,7 +38,6 @@ const AdminCategorySlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getAdminCategoriesApi.fulfilled, (state, action) => {
       const data: initialStateType = action.payload.data;
-      console.log(data);
       if (data.currentPage == 1) {
         state.categories = data.categories;
       } else {
@@ -69,7 +68,6 @@ const AdminCategorySlice = createSlice({
 
     builder.addCase(adminCategoryEditApi.fulfilled, (state, action) => {
       const category: CategoryType = action.payload.data;
-      console.log(category);
       state.categories = state.categories.map((oldCategory) =>
         oldCategory._id == category._id ? category : oldCategory
       );
@@ -88,7 +86,6 @@ const AdminCategorySlice = createSlice({
         isListed,
       }: { categoryId: string; isListed: boolean } = action.payload.data;
 
-      console.log(isListed);
       state.categories = state.categories.map((oldCategory) =>
         oldCategory._id == categoryId
           ? { ...oldCategory, isListed }

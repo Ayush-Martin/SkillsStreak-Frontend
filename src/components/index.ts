@@ -9,3 +9,6 @@ export { default as SideBar } from "./SideBar";
 export { default as SearchBox } from "./SearchBox";
 export { default as Pagination } from "./Pagination";
 export { default as TrainerSidebar } from "./Trainer/TrainerSidebar";
+export { default as CourseBasicDetails } from "./Trainer/CourseBasicDetails";
+export { default as CourseRequirements } from "./Trainer/CourseRequirements";
+export { default as CourseSkillsCovered } from "./Trainer/CourseSkillsCovered";

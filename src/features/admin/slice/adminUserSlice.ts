@@ -36,7 +36,6 @@ const adminUserSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getAdminUsersApi.fulfilled, (state, action) => {
       const data: initialStateType = action.payload.data;
-      console.log(data);
       if (data.currentPage == 1) {
         state.users = data.users;
       } else {
