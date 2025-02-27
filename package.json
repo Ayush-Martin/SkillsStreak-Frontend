@@ -30,6 +30,7 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.1.5",
     "react-toastify": "^11.0.3",
+    "redux-persist": "^6.0.0",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.1"
@@ -42,6 +43,7 @@
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@types/react-toastify": "^4.0.2",
+    "@types/redux-persist": "^4.0.0",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.19.0",

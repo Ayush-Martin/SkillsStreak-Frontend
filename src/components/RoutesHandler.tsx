@@ -14,6 +14,8 @@ const RoutesHandler: FC<IRoutesHandlerProps> = ({ requiredRole }) => {
   );
   const location = useLocation();
 
+  console.log("tolkk", accessToken);
+
   if (requiredRole == "auth") {
     if (accessToken && !isBlocked) {
       return <Navigate to={"/"} replace />;

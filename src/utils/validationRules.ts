@@ -30,3 +30,8 @@ export const AboutValidationRule = z
   .max(20, { message: "About must be 20 characters or less" });
 
 export const AreaOfInterestValidationRule = z.array(z.string());
+
+export const CategoryNameValidationRule = z
+  .string()
+  .min(3, "category name must have at least 3 characters")
+  .max(20, "category name must be within 20 characters");
