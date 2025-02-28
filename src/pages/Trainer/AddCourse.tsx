@@ -2,6 +2,7 @@ import {
   AddCourseBasicDetails,
   AddCourseRequirements,
   AddCourseSkillsCovered,
+  BackButton,
 } from "@/components";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -22,6 +23,7 @@ const AddCourse = () => {
 
   return (
     <TrainerLayout>
+      <BackButton />
       <Tabs defaultValue="basic_details" className="w-full my-5">
         <TabsList className="w-full min-w-48">
           <TabsTrigger value="basic_details" className="w-1/2">

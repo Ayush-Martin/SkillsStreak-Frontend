@@ -16,6 +16,7 @@ export const PROFILE_API = "/user/profile";
 
 //Trainer
 export const TRAINER_COURSES_API = "/trainer/courses";
+export const TRAINER_MODULE_API=    "/trainer/module"
 
 //Admin
 export const ADMIN_USERS_API = "/admin/users";

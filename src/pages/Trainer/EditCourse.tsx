@@ -1,4 +1,6 @@
 import {
+  BackButton,
+  CourseModules,
   EditCourseBasicDetails,
   EditCourseRequirements,
   EditCourseSkillsCovered,
@@ -12,6 +14,7 @@ const EditCourse = () => {
 
   return (
     <TrainerLayout>
+      <BackButton />
       <Tabs defaultValue="basic_details" className="w-full my-5">
         <TabsList className="w-full overflow-x-auto min-w-48">
           <TabsTrigger value="basic_details" className="w-full">
@@ -43,7 +46,9 @@ const EditCourse = () => {
             <EditCourseSkillsCovered course={course} setCourse={setCourse} />
           )}
         </TabsContent>
-        <TabsContent value="modules">Hello</TabsContent>
+        <TabsContent value="modules">
+          {course && <CourseModules course={course} />}
+        </TabsContent>
       </Tabs>
     </TrainerLayout>
   );
