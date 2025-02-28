@@ -15,9 +15,12 @@ export const REFRESH_TOKEN_API = "/auth/refresh";
 export const PROFILE_API = "/user/profile";
 
 //Trainer
-export const ADMIN_TRAINER_COURSES = "/trainer/courses";
+export const TRAINER_COURSES_API = "/trainer/courses";
 
 //Admin
 export const ADMIN_USERS_API = "/admin/users";
 export const ADMIN_TRAINER_REQUEST_API = "/admin/trainerRequests";
 export const ADMIN_CATEGORY_API = "/admin/categories";
+
+//Public
+export const COURSES_API = "/courses";

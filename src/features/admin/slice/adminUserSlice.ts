@@ -6,9 +6,9 @@ import {
 import { errorPopup, successPopup } from "@/utils/popup";
 
 type UsersType = Array<{
-  username: "";
-  email: "";
-  _id: "";
+  username: string;
+  email: string;
+  _id: string;
   isBlocked: boolean;
   role: "user" | "trainer";
 }>;

@@ -98,10 +98,11 @@ export const axiosPutRequest = async (
 
 export const axiosPatchRequest = async (
   url: string,
-  data: any
+  data: any,
+  config?: AxiosRequestConfig<any>
 ): Promise<IResponse | void> => {
   try {
-    const res = await appApi.patch(url, data);
+    const res = await appApi.patch(url, data, config);
     return res.data;
   } catch (err) {
     const apiError = err as IApiResponseError;

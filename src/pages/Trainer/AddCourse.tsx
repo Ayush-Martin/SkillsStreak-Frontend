@@ -1,7 +1,7 @@
 import {
-  CourseBasicDetails,
-  CourseRequirements,
-  CourseSkillsCovered,
+  AddCourseBasicDetails,
+  AddCourseRequirements,
+  AddCourseSkillsCovered,
 } from "@/components";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -35,7 +35,7 @@ const AddCourse = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="basic_details">
-          <CourseBasicDetails
+          <AddCourseBasicDetails
             errors={errors}
             register={register}
             setValue={setValue}
@@ -46,7 +46,7 @@ const AddCourse = () => {
           />
         </TabsContent>
         <TabsContent value="requirements">
-          <CourseRequirements
+          <AddCourseRequirements
             watch={watch}
             setValue={setValue}
             errors={errors}
@@ -54,7 +54,7 @@ const AddCourse = () => {
           />
         </TabsContent>
         <TabsContent value="skills_covered">
-          <CourseSkillsCovered
+          <AddCourseSkillsCovered
             watch={watch}
             setValue={setValue}
             errors={errors}

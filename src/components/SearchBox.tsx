@@ -16,7 +16,7 @@ const SearchBox: FC<ISearchBoxProps> = ({
   const [input, setInput] = useState(search);
   return (
     <div className="flex justify-center">
-      <div className="flex gap-2 w-full px-10 md:px-0 md:w-[350px] lg:w-[600px] xl:w-[700px]">
+      <div className="flex gap-2 w-full px-0 sm:px-10 md:px-0 md:w-[350px] lg:w-[600px] xl:w-[700px]">
         <Input
           placeholder={placeholder}
           className="bg-app-border"

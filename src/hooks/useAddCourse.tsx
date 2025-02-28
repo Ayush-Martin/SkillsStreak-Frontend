@@ -14,7 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { errorPopup, successPopup } from "@/utils/popup";
 import { axiosPostRequest } from "@/config/axios";
-import { ADMIN_TRAINER_COURSES } from "@/constants/API";
+import { TRAINER_COURSES_API } from "@/constants/API";
 import { useNavigate } from "react-router-dom";
 
 const addCourseSchema = z.object({
@@ -79,7 +79,7 @@ const useAddCourse = () => {
     formData.append("skillsCovered", JSON.stringify(skillsCovered));
     formData.append("title", title);
 
-    const res = await axiosPostRequest(ADMIN_TRAINER_COURSES, formData, {
+    const res = await axiosPostRequest(TRAINER_COURSES_API, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
 

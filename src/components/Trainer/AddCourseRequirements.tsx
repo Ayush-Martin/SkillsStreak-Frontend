@@ -24,14 +24,14 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MdDelete, MdEdit } from "react-icons/md";
 
-interface ICourseRequirementsProps {
+interface IAddCourseRequirementsProps {
   watch: UseFormWatch<addCourseSchemaType>;
   setValue: UseFormSetValue<addCourseSchemaType>;
   errors: FieldErrors<addCourseSchemaType>;
   trigger: UseFormTrigger<addCourseSchemaType>;
 }
 
-interface ICourseRequirementsEditProps {
+interface IAddCourseRequirementsEditProps {
   requirement: string;
   requirements: string[];
   submit: (requirement: string) => void;
@@ -41,9 +41,9 @@ const CourseRequirementSchema = z.object({
   requirement: z.string().min(1, "Requirement is required"),
 });
 
-type CourseRequirementsEditSchemaType = z.infer<typeof CourseRequirementSchema>;
+type AddCourseRequirementsEditSchemaType = z.infer<typeof CourseRequirementSchema>;
 
-const CourseRequirementsEdit: FC<ICourseRequirementsEditProps> = ({
+const AddCourseRequirementsEdit: FC<IAddCourseRequirementsEditProps> = ({
   requirement,
   requirements,
   submit,
@@ -54,7 +54,7 @@ const CourseRequirementsEdit: FC<ICourseRequirementsEditProps> = ({
     register,
     trigger,
     watch,
-  } = useForm<CourseRequirementsEditSchemaType>({
+  } = useForm<AddCourseRequirementsEditSchemaType>({
     resolver: zodResolver(CourseRequirementSchema),
     defaultValues: { requirement },
   });
@@ -90,7 +90,7 @@ const CourseRequirementsEdit: FC<ICourseRequirementsEditProps> = ({
   );
 };
 
-const CourseRequirements: FC<ICourseRequirementsProps> = ({
+const AddCourseRequirements: FC<IAddCourseRequirementsProps> = ({
   watch,
   setValue,
   errors,
@@ -161,7 +161,7 @@ const CourseRequirements: FC<ICourseRequirementsProps> = ({
               <TableRow key={requirement}>
                 <TableCell>
                   {selected == requirement ? (
-                    <CourseRequirementsEdit
+                    <AddCourseRequirementsEdit
                       requirement={requirement}
                       requirements={requirements}
                       submit={(editedRequirement) => {
@@ -193,4 +193,4 @@ const CourseRequirements: FC<ICourseRequirementsProps> = ({
   );
 };
 
-export default CourseRequirements;
+export default AddCourseRequirements;

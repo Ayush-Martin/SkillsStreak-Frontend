@@ -22,7 +22,7 @@ import { axiosGetRequest } from "@/config/axios";
 import ErrorText from "../ErrorText";
 import { MdHideImage } from "react-icons/md";
 
-interface ICourseBasicDetailsProps {
+interface IAddCourseBasicDetailsProps {
   errors: FieldErrors<addCourseSchemaType>;
   register: UseFormRegister<addCourseSchemaType>;
   setValue: UseFormSetValue<addCourseSchemaType>;
@@ -32,7 +32,7 @@ interface ICourseBasicDetailsProps {
   watch: UseFormWatch<addCourseSchemaType>;
 }
 
-const CourseBasicDetails: FC<ICourseBasicDetailsProps> = ({
+const AddCourseBasicDetails: FC<IAddCourseBasicDetailsProps> = ({
   errors,
   register,
   setValue,
@@ -180,4 +180,4 @@ const CourseBasicDetails: FC<ICourseBasicDetailsProps> = ({
   );
 };
 
-export default CourseBasicDetails;
+export default AddCourseBasicDetails;
