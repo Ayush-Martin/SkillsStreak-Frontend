@@ -4,7 +4,7 @@ import { FC } from "react";
 const Payments: FC = () => {
   return (
     <TrainerLayout>
-      <h1 className="text-3xl text-white">Trainer Payments</h1>
+      <h1>Payments</h1>
     </TrainerLayout>
   );
 };

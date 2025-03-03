@@ -1,8 +1,8 @@
 import { lazy } from "react";
 
 //public Routes
-import Home from "./pages/User/Home";
-const Courses = lazy(() => import("./pages/User/Courses"));
+import Home from "./pages/public/Home";
+const Courses = lazy(() => import("./pages/public/Courses"));
 
 //Auth Routes
 import LoginRegisterPage from "./pages/Auth/LoginRegisterPage";

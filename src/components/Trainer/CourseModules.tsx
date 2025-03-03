@@ -1,58 +1,27 @@
 import { FC, useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { IoCloseCircle } from "react-icons/io5";
 import { MdEdit, MdDelete, MdDragHandle } from "react-icons/md";
-import { ICourse } from "@/hooks/useEditCourse";
+import { ICourse } from "../../types/courseType";
 import {
   axiosDeleteRequest,
   axiosGetRequest,
   axiosPostRequest,
 } from "@/config/axios";
-import { TRAINER_COURSES_API, TRAINER_MODULE_API } from "@/constants/API";
+import { TRAINER_COURSES_API } from "@/constants/API";
 import { successPopup } from "@/utils/popup";
 import { useNavigate } from "react-router-dom";
-
-interface IAddModuleParams {
-  close: () => void;
-  addModule: (module: string) => void;
-}
+import { FaFileVideo, FaFilePdf } from "react-icons/fa";
+import AddModule from "./AddModule";
+import { ModuleType } from "@/types/courseType";
 
 interface ICourseModulesParams {
   course: ICourse;
 }
 
-const AddModule: FC<IAddModuleParams> = ({ close, addModule }) => {
-  const [input, setInput] = useState("");
-
-  return (
-    <div className="flex justify-center">
-      <div className="absolute top-0   bg-opacity-30 bg-white rounded-md backdrop-blur-sm  m-auto  w-[3 00px] h-[90px]">
-        <div className="flex justify-end pt-3 pr-5">
-          <button onClick={close} className="text-2xl text-app-accent">
-            <IoCloseCircle />
-          </button>
-        </div>
-        <div className="flex gap-2 mx-10 my-3">
-          <Input
-            placeholder="input"
-            value={input}
-            className="outline-none text-app-primary bg-app-neutral placeholder:text-app-highlight"
-            onChange={(e) => setInput(e.target.value)}
-          />
-          <Button onClick={() => addModule(input)}>Add</Button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const CourseModules: FC<ICourseModulesParams> = ({ course }) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [modules, setModules] = useState<
-    Array<{ _id: string; title: string; order: number }>
-  >([]);
+  const [modules, setModules] = useState<Array<ModuleType>>([]);
 
   useEffect(() => {
     const fetchModules = async () => {
@@ -77,7 +46,9 @@ const CourseModules: FC<ICourseModulesParams> = ({ course }) => {
   };
 
   const deleteModule = async (moduleId: string) => {
-    const res = await axiosDeleteRequest(`${TRAINER_MODULE_API}/${moduleId}`);
+    const res = await axiosDeleteRequest(
+      `${TRAINER_COURSES_API}/${course._id}/${moduleId}`
+    );
 
     if (!res) return;
     successPopup(res.message || "deleted");
@@ -119,6 +90,20 @@ const CourseModules: FC<ICourseModulesParams> = ({ course }) => {
                 </button>
               </div>
             </div>
+            {module.lessons && (
+              <div className="flex flex-col gap-2 mt-3">
+                {module.lessons.map((lesson) => (
+                  <div className="flex items-center gap-2 " key={lesson._id}>
+                    {lesson.type == "video" ? (
+                      <FaFileVideo className="text-xl" />
+                    ) : (
+                      <FaFilePdf className="text-xl" />
+                    )}
+                    <h1>{lesson.title}</h1>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>

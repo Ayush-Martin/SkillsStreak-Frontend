@@ -8,16 +8,18 @@ import {
   TrainerRoutes,
   UserRoutes,
 } from "./router";
-import { useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { AppDispatch } from "./store";
 import { useDispatch } from "react-redux";
 import { IResponse } from "./types/responseType";
 import { login } from "./features/Auth/slice/userSlice";
 import axios from "axios";
 import { BACKEND_BASE_URL, REFRESH_TOKEN_API } from "./constants/API";
+import Loading from "./pages/public/Loading";
 
 const App = () => {
   const dispatch: AppDispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchApi = async () => {
       try {
@@ -30,57 +32,68 @@ const App = () => {
         dispatch(login(res.data.data));
       } catch (err) {
         console.log(err);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchApi();
   }, []);
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <main>
-      <Routes>
-        <Route path="/*" element={<RoutesHandler requiredRole="public" />}>
-          {PublicRoutes.map(({ path, Component }) => (
-            <Route key={path} path={path} element={<Component />} />
-          ))}
-        </Route>
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route path="/*" element={<RoutesHandler requiredRole="public" />}>
+            {PublicRoutes.map(({ path, Component }) => (
+              <Route key={path} path={path} element={<Component />} />
+            ))}
+          </Route>
 
-        <Route path="/auth/*" element={<RoutesHandler requiredRole="auth" />}>
-          {AuthRoutes.map(({ path, Component }) => (
-            <Route key={path} path={path} element={<Component />} />
-          ))}
-        </Route>
+          <Route path="/auth/*" element={<RoutesHandler requiredRole="auth" />}>
+            {AuthRoutes.map(({ path, Component }) => (
+              <Route key={path} path={path} element={<Component />} />
+            ))}
+          </Route>
 
-        <Route path="/admin/*" element={<RoutesHandler requiredRole="admin" />}>
-          {AdminRoutes.map(({ path, Component }) => (
-            <Route key={path} path={path} element={<Component />} />
-          ))}
-        </Route>
+          <Route
+            path="/admin/*"
+            element={<RoutesHandler requiredRole="admin" />}
+          >
+            {AdminRoutes.map(({ path, Component }) => (
+              <Route key={path} path={path} element={<Component />} />
+            ))}
+          </Route>
 
-        <Route
-          path="/trainer/*"
-          element={<RoutesHandler requiredRole="trainer" />}
-        >
-          {TrainerRoutes.map(({ path, Component }) => (
-            <Route key={path} path={path} element={<Component />} />
-          ))}
-        </Route>
+          <Route
+            path="/trainer/*"
+            element={<RoutesHandler requiredRole="trainer" />}
+          >
+            {TrainerRoutes.map(({ path, Component }) => (
+              <Route key={path} path={path} element={<Component />} />
+            ))}
+          </Route>
 
-        <Route path="/user/*" element={<RoutesHandler requiredRole="user" />}>
-          {UserRoutes.map(({ path, Component }) => (
-            <Route key={path} path={path} element={<Component />} />
-          ))}
-        </Route>
+          <Route path="/user/*" element={<RoutesHandler requiredRole="user" />}>
+            {UserRoutes.map(({ path, Component }) => (
+              <Route key={path} path={path} element={<Component />} />
+            ))}
+          </Route>
 
-        <Route
-          path="/premium/*"
-          element={<RoutesHandler requiredRole="premium" />}
-        >
-          {PremiumUserRoutes.map(({ path, Component }) => (
-            <Route key={path} path={path} element={<Component />} />
-          ))}
-        </Route>
-      </Routes>
+          <Route
+            path="/premium/*"
+            element={<RoutesHandler requiredRole="premium" />}
+          >
+            {PremiumUserRoutes.map(({ path, Component }) => (
+              <Route key={path} path={path} element={<Component />} />
+            ))}
+          </Route>
+        </Routes>
+      </Suspense>
     </main>
   );
 };

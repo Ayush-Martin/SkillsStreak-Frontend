@@ -16,7 +16,7 @@ import ErrorText from "../ErrorText";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MdDelete, MdEdit } from "react-icons/md";
-import { ICourse } from "@/hooks/useEditCourse";
+import { ICourse } from "../../types/courseType";
 import { TRAINER_COURSES_API } from "@/constants/API";
 import { axiosPatchRequest } from "@/config/axios";
 import { successPopup } from "@/utils/popup";

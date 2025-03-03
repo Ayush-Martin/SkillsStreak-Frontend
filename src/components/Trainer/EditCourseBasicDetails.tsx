@@ -17,7 +17,7 @@ import {
   axiosPutRequest,
 } from "@/config/axios";
 import ErrorText from "../ErrorText";
-import { ICourse } from "@/hooks/useEditCourse";
+import { ICourse } from "../../types/courseType";
 import { TRAINER_COURSES_API } from "@/constants/API";
 import { successPopup } from "@/utils/popup";
 import { Button } from "../ui/button";
@@ -53,7 +53,6 @@ const CourseBasicDetails: FC<ICourseBasicDetailsProps> = ({
   const [categories, setCategories] = useState<
     Array<{ categoryName: string; _id: string }>
   >([]);
-  console.log(course);
   const [thumbnail, setThumbnail] = useState(course.thumbnail);
 
   useEffect(() => {
@@ -157,7 +156,6 @@ const CourseBasicDetails: FC<ICourseBasicDetailsProps> = ({
             <Select
               defaultValue={watch("difficulty")}
               onValueChange={(val: "beginner" | "intermediate" | "advance") => {
-                console.log(val);
                 setValue("difficulty", val);
               }}
             >

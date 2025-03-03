@@ -65,3 +65,11 @@ export const CourseDescriptionValidationRule = z
   .max(100, "description must be within 100 characters");
 
 export const CourseCategoryIdValidationRule = z.string();
+
+export const ModuleTitleValidationRule = z.string();
+
+export const LessonTitleValidationRule = z.string();
+
+export const LessonDescriptionValidationRule = z.string();
+
+export const LessonTypeValidationRule = z.enum(["video", "pdf"]);

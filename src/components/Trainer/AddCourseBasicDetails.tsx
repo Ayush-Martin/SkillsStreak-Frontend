@@ -106,7 +106,6 @@ const AddCourseBasicDetails: FC<IAddCourseBasicDetailsProps> = ({
             <Select
               defaultValue={watch("difficulty")}
               onValueChange={(val: "beginner" | "intermediate" | "advance") => {
-                console.log(val);
                 setValue("difficulty", val);
               }}
             >

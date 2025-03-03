@@ -6,7 +6,7 @@ const BackButton = () => {
   return (
     <button
       onClick={() => navigate(-1)}
-      className="flex items-center gap-2 my-3 text-2xl"
+      className="flex items-center gap-2 my-3 text-lg sm:text-2xl"
     >
       <IoMdArrowBack />
       <p>back</p>
