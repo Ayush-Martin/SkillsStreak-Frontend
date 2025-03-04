@@ -34,7 +34,6 @@ const EditCourse = () => {
           {course && (
             <EditCourseBasicDetails course={course} setCourse={setCourse} />
           )}
-          {/* <EditCourseBasicDetails course={course!} /> */}
         </TabsContent>
         <TabsContent value="requirements">
           {course && (

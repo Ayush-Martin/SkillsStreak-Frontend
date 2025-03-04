@@ -4,6 +4,7 @@ import adminUser from "./features/admin/slice/adminUserSlice";
 import adminTrainerRequest from "./features/admin/slice/adminTrainerRequetsSlice";
 import adminCategory from "./features/admin/slice/adminCategorySlice";
 import trainerCourses from "./features/trainer/slice/TrainerCoursesSlice";
+import courses from "./features/user/slice/coursesSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     adminTrainerRequest,
     adminCategory,
     trainerCourses,
+    courses,
   },
 });
 

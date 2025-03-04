@@ -12,13 +12,13 @@ import { MdOutlineRefresh } from "react-icons/md";
 import { AiOutlineCheckCircle, AiFillCloseCircle } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootReducer } from "@/store";
-import { FC, useEffect, useMemo } from "react";
+import { FC } from "react";
 import { changePage } from "@/features/admin/slice/adminTrainerRequetsSlice";
 import {
   AdminChangeTrainerRequestStatus,
   getAdminTrainerRequestsApi,
 } from "@/features/admin/api/adminTrainerRequestApi";
-import { RECORDS_PER_PAGE } from "@/constants/general";
+import usePaginatedData from "@/hooks/usePaginatedData";
 
 const TrainerRequest: FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -26,29 +26,12 @@ const TrainerRequest: FC = () => {
     (state: RootReducer) => state.adminTrainerRequest
   );
 
-  const startIndex = (currentPage - 1) * RECORDS_PER_PAGE;
-
-  useEffect(() => {
-    if (!users.length) {
-      dispatch(getAdminTrainerRequestsApi({ page: 1 }));
-    }
-  }, [dispatch, users.length]);
-
-  const paginatedUsers = useMemo(() => {
-    return users.slice(startIndex, startIndex + RECORDS_PER_PAGE);
-  }, [users, startIndex]);
-
-  const previousPage = () => {
-    if (currentPage > 1) dispatch(changePage(currentPage - 1));
-  };
-
-  const nextPage = () => {
-    if (users.length > startIndex + RECORDS_PER_PAGE) {
-      dispatch(changePage(currentPage + 1));
-    } else {
-      dispatch(getAdminTrainerRequestsApi({ page: currentPage + 1 }));
-    }
-  };
+  const { nextPage, paginatedData, previousPage } = usePaginatedData({
+    data: users,
+    currentPage,
+    getDataApi: getAdminTrainerRequestsApi,
+    changePageApi: changePage,
+  });
 
   const refreshHandler = () => {
     dispatch(getAdminTrainerRequestsApi({ page: 1 }));
@@ -69,11 +52,11 @@ const TrainerRequest: FC = () => {
           </TableRow>
         </TableHeader>
 
-        {paginatedUsers.length === 0 ? (
+        {paginatedData.length === 0 ? (
           <div className="mt-10 mb-10 text-3xl">No users found</div>
         ) : (
           <TableBody>
-            {paginatedUsers.map((user) => (
+            {paginatedData.map((user) => (
               <TableRow key={user._id}>
                 <TableCell>{user.userId.email}</TableCell>
                 <TableCell>{user.userId.username}</TableCell>

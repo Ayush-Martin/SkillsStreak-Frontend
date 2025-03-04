@@ -190,7 +190,7 @@ const CourseBasicDetails: FC<ICourseBasicDetailsProps> = ({
                 <SelectGroup>
                   <SelectLabel>Categories</SelectLabel>
                   {categories.map((category) => (
-                    <SelectItem value={category._id}>
+                    <SelectItem value={category._id} key={category._id}>
                       {category.categoryName}
                     </SelectItem>
                   ))}

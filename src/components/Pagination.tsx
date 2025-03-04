@@ -24,7 +24,7 @@ const Pagination: FC<IPaginationProps> = ({
         >
           <GrFormPreviousLink />
         </button>
-        <div className="text-xl">
+        <div className="text-xl text-white">
           {currentPage} of {totalPages}
         </div>
         <button

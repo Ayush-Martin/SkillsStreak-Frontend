@@ -11,15 +11,14 @@ import TrainerLayout from "@/layouts/TrainerLayout";
 import { successPopup } from "@/utils/popup";
 import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { BackButton } from "@/components";
+import { BackButton, VideoPlayer } from "@/components";
 import { z } from "zod";
 import {
   LessonDescriptionValidationRule,
   LessonTitleValidationRule,
 } from "@/utils/validationRules";
-import { MdDelete, MdDragHandle } from "react-icons/md";
-import ReactPlayer from "react-player";
-import AddLesson from "@/components/Trainer/AddLesson";
+import { MdDelete } from "react-icons/md";
+import { AddLesson } from "@/components/index";
 import { ModuleType } from "@/types/courseType";
 
 export const LessonSchema = z.object({
@@ -36,7 +35,6 @@ const EditModule: FC = () => {
   const [module, setModule] = useState<ModuleType>({
     _id: "",
     title: "",
-    order: 0,
     lessons: [],
   });
 
@@ -127,43 +125,33 @@ const EditModule: FC = () => {
         {module.lessons.map((lesson) => (
           <div className="w-full px-5 py-2 bg-app-border" key={lesson._id}>
             <div className="flex justify-between">
-              <h1 className="text-xl text-app-secondary">{lesson.title}</h1>
-              <div className="flex gap-2 text-xl ">
+              <h1 className="text-2xl text-app-secondary">
+                <span className="text-app-accent">Title :</span> {lesson.title}
+              </h1>
+              <div className="flex gap-2 text-2xl ">
                 <button
                   className="text-red-500"
                   onClick={() => deleteLesson(lesson._id)}
                 >
                   <MdDelete />
                 </button>
-                <button className="text-2xl text-app-tertiary">
+                {/* <button className="text-2xl text-app-tertiary">
                   <MdDragHandle />
-                </button>
+                </button> */}
               </div>
             </div>
-            <div className="flex flex-col gap-10 mt-2 md:flex-row">
+            <div className="flex flex-col gap-10 mt-2 lg:flex-row">
               <div className="flex justify-center md:block">
                 {lesson.type == "video" ? (
-                  <div className="w-[500px]">
-                    <ReactPlayer
-                      url={lesson.path}
-                      controls
-                      width="100%"
-                      height="100%"
-                      config={{
-                        file: {
-                          attributes: {
-                            crossOrigin: "anonymous", // Handle CORS issues
-                          },
-                        },
-                      }}
-                    />
+                  <div className="w-[400px]">
+                    <VideoPlayer url={lesson.path} />
                   </div>
                 ) : (
                   <div className="h-40 bg-white w-72"></div>
                 )}
               </div>
               <div>
-                <p className="text-app-accent">Description</p>
+                <p className="text-xl text-app-accent">Description</p>
                 <p>{lesson.description}</p>
               </div>
             </div>

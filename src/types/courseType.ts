@@ -13,7 +13,6 @@ export interface ICourse {
 export interface ModuleType {
   _id: string;
   title: string;
-  order: number;
   lessons: Array<{
     _id: string;
     path: string;

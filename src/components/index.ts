@@ -1,7 +1,7 @@
 export { default as Login } from "./Auth/Login";
 export { default as Register } from "./Auth/Register";
 export { default as ErrorText } from "./ErrorText";
-export {default as BackButton} from "./BackButton"
+export { default as BackButton } from "./BackButton";
 export { default as RoutesHandler } from "./RoutesHandler";
 export { default as UserSidebar } from "./User/UserSidebar";
 export { default as AdminSidebar } from "./Admin/AdminSidebar";
@@ -16,4 +16,8 @@ export { default as AddCourseSkillsCovered } from "./Trainer/AddCourseSkillsCove
 export { default as EditCourseBasicDetails } from "./Trainer/EditCourseBasicDetails";
 export { default as EditCourseRequirements } from "./Trainer/EditCourseRequirements";
 export { default as EditCourseSkillsCovered } from "./Trainer/EditCourseSkillsCovered";
+export { default as AddLesson } from "./Trainer/AddLesson";
+export { default as AddModule } from "./Trainer/AddModule";
 export { default as CourseModules } from "./Trainer/CourseModules";
+export { default as VideoPlayer } from "./VideoPlayer";
+export { default as CourseCard } from "./User/CourseCard";

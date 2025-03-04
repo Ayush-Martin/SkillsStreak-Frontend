@@ -95,7 +95,7 @@ const AddCourseBasicDetails: FC<IAddCourseBasicDetailsProps> = ({
             <Input
               placeholder="title"
               {...register("title")}
-              className="bg-app-border"
+              className="bg-app-border placeholder:text-muted-foreground"
               onBlur={() => trigger("title")}
             />
             {errors.title && <ErrorText error={errors.title.message!} />}
@@ -140,7 +140,7 @@ const AddCourseBasicDetails: FC<IAddCourseBasicDetailsProps> = ({
                 <SelectGroup>
                   <SelectLabel>Categories</SelectLabel>
                   {categories.map((category) => (
-                    <SelectItem value={category._id}>
+                    <SelectItem value={category._id} key={category._id}>
                       {category.categoryName}
                     </SelectItem>
                   ))}
@@ -157,6 +157,7 @@ const AddCourseBasicDetails: FC<IAddCourseBasicDetailsProps> = ({
               {...register("price")}
               className="bg-app-border"
               type="number"
+              defaultValue={0}
               onBlur={() => trigger("price")}
             />
             {errors.price && <ErrorText error={errors.price.message!} />}

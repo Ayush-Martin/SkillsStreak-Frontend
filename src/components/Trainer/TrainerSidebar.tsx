@@ -1,6 +1,11 @@
 import { NavLink } from "react-router-dom";
 import SideBar from "../SideBar";
-import { MdDashboard, MdPayments, MdVideoLibrary } from "react-icons/md";
+import {
+  MdDashboard,
+  MdHome,
+  MdPayments,
+  MdVideoLibrary,
+} from "react-icons/md";
 import { FC } from "react";
 
 const TrainerSidebar: FC = () => {
@@ -27,6 +32,10 @@ const TrainerSidebar: FC = () => {
       >
         <MdPayments />
         Payments
+      </NavLink>
+      <NavLink to={"/"} className={"w-full  px-2 py-2 flex items-center gap-2"}>
+        <MdHome />
+        Home
       </NavLink>
     </SideBar>
   );

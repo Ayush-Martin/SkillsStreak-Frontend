@@ -8,12 +8,12 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { RECORDS_PER_PAGE } from "@/constants/general";
 import { getTrainerCoursesApi } from "@/features/trainer/api/TrainerCoursesApi";
 import { changePage } from "@/features/trainer/slice/TrainerCoursesSlice";
+import usePaginatedData from "@/hooks/usePaginatedData";
 import TrainerLayout from "@/layouts/TrainerLayout";
 import { AppDispatch, RootReducer } from "@/store";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC } from "react";
 import { MdOutlineRefresh } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -21,39 +21,17 @@ import { useNavigate } from "react-router-dom";
 const MyCourses: FC = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
-  const [search, setSearch] = useState("");
   const { courses, currentPage, totalPages } = useSelector(
     (state: RootReducer) => state.trainerCourses
   );
 
-  const startIndex = (currentPage - 1) * RECORDS_PER_PAGE;
-
-  useEffect(() => {
-    if (!courses.length) {
-      dispatch(getTrainerCoursesApi({ page: 1, search }));
-    }
-  }, [dispatch, search, courses.length]);
-
-  const paginatedCourses = useMemo(() => {
-    return courses.slice(startIndex, startIndex + RECORDS_PER_PAGE);
-  }, [courses, startIndex]);
-
-  const previousPage = () => {
-    if (currentPage > 1) dispatch(changePage(currentPage - 1));
-  };
-
-  const nextPage = () => {
-    if (courses.length > startIndex + RECORDS_PER_PAGE) {
-      dispatch(changePage(currentPage + 1));
-    } else {
-      dispatch(getTrainerCoursesApi({ page: currentPage + 1, search }));
-    }
-  };
-
-  const searchHandler = (searchInput: string) => {
-    setSearch(searchInput);
-    dispatch(getTrainerCoursesApi({ page: 1, search: searchInput }));
-  };
+  const { nextPage, paginatedData, previousPage, search, searchHandler } =
+    usePaginatedData({
+      data: courses,
+      currentPage,
+      getDataApi: getTrainerCoursesApi,
+      changePageApi: changePage,
+    });
 
   const refreshHandler = () => {
     dispatch(getTrainerCoursesApi({ page: 1, search }));
@@ -88,29 +66,36 @@ const MyCourses: FC = () => {
         </TableHeader>
 
         <TableBody>
-          {paginatedCourses.map((course) => (
-            <TableRow
-              key={course._id}
-              onClick={() => navigate(`/trainer/courses/${course._id}`)}
-              className="cursor-pointer"
-            >
-              <TableCell>
-                <img src={course.thumbnail} width={"200px"} />
-              </TableCell>
-              <TableCell>{course.title}</TableCell>
-              <TableCell>{course.price}</TableCell>
-              <TableCell>{course.difficulty}</TableCell>
-              <TableCell>{course.categoryId.categoryName}</TableCell>
-            </TableRow>
-          ))}
+          {!paginatedData.length ? (
+            <h1 className="mt-3 text-2xl">No Courses</h1>
+          ) : (
+            paginatedData.map((course) => (
+              <TableRow
+                key={course._id}
+                onClick={() => navigate(`/trainer/courses/${course._id}`)}
+                className="cursor-pointer"
+              >
+                <TableCell>
+                  <img src={course.thumbnail} width={"200px"} />
+                </TableCell>
+                <TableCell>{course.title}</TableCell>
+                <TableCell>{course.price}</TableCell>
+                <TableCell>{course.difficulty}</TableCell>
+                <TableCell>{course.categoryId.categoryName}</TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        previousPage={previousPage}
-        nextPage={nextPage}
-      />
+
+      {paginatedData.length != 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          previousPage={previousPage}
+          nextPage={nextPage}
+        />
+      )}
     </TrainerLayout>
   );
 };
