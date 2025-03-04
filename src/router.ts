@@ -3,6 +3,7 @@ import { lazy } from "react";
 //public Routes
 import Home from "./pages/public/Home";
 const Courses = lazy(() => import("./pages/public/Courses"));
+const CourseDetail = lazy(() => import("./pages/public/CourseDetail"));
 
 //Auth Routes
 import LoginRegisterPage from "./pages/Auth/LoginRegisterPage";
@@ -55,6 +56,10 @@ export const PublicRoutes: Routes = [
   {
     path: "courses",
     Component: Courses,
+  },
+  {
+    path: "courses/:courseId",
+    Component: CourseDetail,
   },
 ];
 

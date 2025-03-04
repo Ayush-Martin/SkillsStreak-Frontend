@@ -41,7 +41,7 @@ const EditModule: FC = () => {
   useEffect(() => {
     const fetchModule = async () => {
       const res = await axiosGetRequest(
-        `${TRAINER_COURSES_API}/${courseId}/${moduleId}`
+        `${TRAINER_COURSES_API}/${courseId}/modules/${moduleId}`
       );
       if (!res) return;
       setModule(res.data);
@@ -53,7 +53,7 @@ const EditModule: FC = () => {
 
   const updateTitle = async () => {
     const res = await axiosPatchRequest(
-      `${TRAINER_COURSES_API}/${courseId}/${moduleId}`,
+      `${TRAINER_COURSES_API}/${courseId}/modules/${moduleId}`,
       {
         title,
       }
@@ -74,7 +74,7 @@ const EditModule: FC = () => {
     formData.append("file", file);
     formData.append("type", type);
     const res = await axiosPostRequest(
-      `trainer/courses/${courseId}/${moduleId}`,
+      `${TRAINER_COURSES_API}/${courseId}/modules/${moduleId}`,
       formData,
       {
         headers: {
@@ -91,7 +91,7 @@ const EditModule: FC = () => {
 
   const deleteLesson = async (lessonId: string) => {
     const res = await axiosDeleteRequest(
-      `${TRAINER_COURSES_API}/${courseId}/${moduleId}/${lessonId}`
+      `${TRAINER_COURSES_API}/${courseId}/modules/${moduleId}/${lessonId}`
     );
 
     if (!res) return;

@@ -21,3 +21,33 @@ export interface ModuleType {
     title: string;
   }>;
 }
+
+export interface ICourseDetails {
+  _id: string;
+  title: string;
+  price: number;
+  skillsCovered: string[];
+  requirements: string[];
+  difficulty: string;
+  thumbnail: string;
+  description: string;
+  trainer: {
+    _id: string;
+    username: string;
+    profileImage: string;
+    about: string;
+  };
+  modules: Array<{
+    _id: string;
+    title: string;
+    lessons: Array<{
+      _id: string;
+      title: string;
+      type: "video" | "pdf";
+    }>;
+  }>;
+  category: {
+    _id: string;
+    categoryName: string;
+  };
+}

@@ -25,7 +25,9 @@ const CourseModules: FC<ICourseModulesParams> = ({ course }) => {
 
   useEffect(() => {
     const fetchModules = async () => {
-      const res = await axiosGetRequest(`${TRAINER_COURSES_API}/${course._id}`);
+      const res = await axiosGetRequest(
+        `${TRAINER_COURSES_API}/${course._id}/modules`
+      );
       if (!res) return;
       setModules(res.data);
     };
@@ -36,9 +38,12 @@ const CourseModules: FC<ICourseModulesParams> = ({ course }) => {
   const addModule = async (title: string) => {
     setOpen(false);
 
-    const res = await axiosPostRequest(`${TRAINER_COURSES_API}/${course._id}`, {
-      title,
-    });
+    const res = await axiosPostRequest(
+      `${TRAINER_COURSES_API}/${course._id}/modules`,
+      {
+        title,
+      }
+    );
 
     if (!res) return;
     setModules([...modules, res.data]);
@@ -47,7 +52,7 @@ const CourseModules: FC<ICourseModulesParams> = ({ course }) => {
 
   const deleteModule = async (moduleId: string) => {
     const res = await axiosDeleteRequest(
-      `${TRAINER_COURSES_API}/${course._id}/${moduleId}`
+      `${TRAINER_COURSES_API}/${course._id}/modules/${moduleId}`
     );
 
     if (!res) return;

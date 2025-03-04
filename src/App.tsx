@@ -9,20 +9,23 @@ import {
   UserRoutes,
 } from "./router";
 import { Suspense, useEffect, useState } from "react";
-import { AppDispatch } from "./store";
+import { AppDispatch, RootReducer } from "./store";
 import { useDispatch } from "react-redux";
 import { IResponse } from "./types/responseType";
 import { login } from "./features/Auth/slice/userSlice";
 import axios from "axios";
 import { BACKEND_BASE_URL, REFRESH_TOKEN_API } from "./constants/API";
 import Loading from "./pages/public/Loading";
+import { useSelector } from "react-redux";
 
 const App = () => {
   const dispatch: AppDispatch = useDispatch();
+  const { accessToken } = useSelector((state: RootReducer) => state.user);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchApi = async () => {
       try {
+        if (accessToken) return;
         const res: IResponse = await axios.get(
           `${BACKEND_BASE_URL}${REFRESH_TOKEN_API}`,
           {
@@ -38,7 +41,7 @@ const App = () => {
     };
 
     fetchApi();
-  }, []);
+  }, [accessToken]);
 
   if (loading) {
     return <Loading />;

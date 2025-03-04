@@ -1,6 +1,8 @@
 import { FC } from "react";
+import { Link } from "react-router-dom";
 
 interface ICourseCardParams {
+  _id: string;
   thumbnail: string;
   title: string;
   price: number;
@@ -10,6 +12,7 @@ interface ICourseCardParams {
 }
 
 const CourseCard: FC<ICourseCardParams> = ({
+  _id,
   thumbnail,
   title,
   price,
@@ -18,7 +21,10 @@ const CourseCard: FC<ICourseCardParams> = ({
   noOfEnrolled,
 }) => {
   return (
-    <div className="bg-[#1E1E1E] h-[250px] w-[300px] rounded-md">
+    <Link
+      to={`/courses/${_id}`}
+      className="bg-[#1E1E1E] h-[250px] w-[300px] rounded-md"
+    >
       <div className="w-full rounded-md ">
         <img
           src={thumbnail}
@@ -48,7 +54,7 @@ const CourseCard: FC<ICourseCardParams> = ({
           <p className="text text-app-accent">{noOfModules} modules</p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
