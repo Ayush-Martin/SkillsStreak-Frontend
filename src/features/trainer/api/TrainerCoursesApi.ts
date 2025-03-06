@@ -21,3 +21,17 @@ export const getTrainerCoursesApi = createAsyncThunk<
     }
   }
 );
+
+export const trainerCourseListUnListApi = createAsyncThunk<IResponse, string>(
+  "trainerCourses/listUnListCourse",
+  async (courseId, { rejectWithValue }) => {
+    try {
+      const response = await appApi.patch(`${TRAINER_COURSES_API}/${courseId}`);
+      return response.data;
+    } catch (err) {
+      const resErr = err as IApiResponseError;
+      console.log(err);
+      return rejectWithValue(resErr.response.data.error);
+    }
+  }
+);

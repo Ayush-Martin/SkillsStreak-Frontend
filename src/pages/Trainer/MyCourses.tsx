@@ -8,12 +8,16 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { getTrainerCoursesApi } from "@/features/trainer/api/TrainerCoursesApi";
+import {
+  getTrainerCoursesApi,
+  trainerCourseListUnListApi,
+} from "@/features/trainer/api/TrainerCoursesApi";
 import { changePage } from "@/features/trainer/slice/TrainerCoursesSlice";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import TrainerLayout from "@/layouts/TrainerLayout";
 import { AppDispatch, RootReducer } from "@/store";
 import { FC } from "react";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 import { MdOutlineRefresh } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -62,6 +66,7 @@ const MyCourses: FC = () => {
             <TableHead>Price</TableHead>
             <TableHead>Difficulty</TableHead>
             <TableHead>Category</TableHead>
+            <TableHead>List / UnList</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -82,6 +87,19 @@ const MyCourses: FC = () => {
                 <TableCell>{course.price}</TableCell>
                 <TableCell>{course.difficulty}</TableCell>
                 <TableCell>{course.categoryId.categoryName}</TableCell>
+                <TableCell>
+                  <button
+                    className={`text-3xl ${
+                      course.isListed ? "text-red-500" : "text-app-secondary"
+                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      dispatch(trainerCourseListUnListApi(course._id));
+                    }}
+                  >
+                    {course.isListed ? <IoEyeOff /> : <IoEye />}
+                  </button>
+                </TableCell>
               </TableRow>
             ))
           )}

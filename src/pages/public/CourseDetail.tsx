@@ -4,7 +4,7 @@ import { COURSES_API } from "@/constants/API";
 import UserLayout from "@/layouts/UserLayout";
 import { ICourseDetails } from "@/types/courseType";
 import { FC, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { PiStudentBold } from "react-icons/pi";
 import { MdViewModule } from "react-icons/md";
 import {
@@ -22,8 +22,10 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import Loading from "./Loading";
 
 const CourseDetail: FC = () => {
+  const navigate = useNavigate();
   const { courseId } = useParams();
   const [course, setCourse] = useState<ICourseDetails | null>(null);
 
@@ -37,7 +39,7 @@ const CourseDetail: FC = () => {
     fetchCourse();
   }, []);
 
-  if (!course) return <h1>Loading ..</h1>;
+  if (!course) return <Loading />;
 
   return (
     <UserLayout>
@@ -94,7 +96,12 @@ const CourseDetail: FC = () => {
               modules
             </p>
           </div>
-          <Button variant={"v1"}>Enroll the course Now</Button>
+          <Button
+            variant={"v1"}
+            onClick={() => navigate(`/user/enrolledCourses/${courseId}/view`)}
+          >
+            View Course
+          </Button>
         </div>
       </section>
 

@@ -28,11 +28,11 @@ const UserSidebar: FC = () => {
         Enrolled Courses
       </NavLink>
       <NavLink
-        to={"/user/payments"}
+        to={"/user/transactions"}
         className={"w-full  px-2 py-2 flex items-center gap-2"}
       >
         <MdPayments />
-        Payments
+        Transactions
       </NavLink>
       <NavLink
         to={role == "trainer" ? "/trainer" : "/user/trainerRequest"}

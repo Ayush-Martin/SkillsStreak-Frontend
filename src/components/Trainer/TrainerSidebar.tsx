@@ -3,9 +3,9 @@ import SideBar from "../SideBar";
 import {
   MdDashboard,
   MdHome,
-  MdPayments,
   MdVideoLibrary,
 } from "react-icons/md";
+import { FaWallet } from "react-icons/fa";
 import { FC } from "react";
 
 const TrainerSidebar: FC = () => {
@@ -27,11 +27,11 @@ const TrainerSidebar: FC = () => {
         My Courses
       </NavLink>
       <NavLink
-        to={"/trainer/payments"}
+        to={"/trainer/wallet"}
         className={"w-full  px-2 py-2 flex items-center gap-2"}
       >
-        <MdPayments />
-        Payments
+        <FaWallet />
+        Wallet
       </NavLink>
       <NavLink to={"/"} className={"w-full  px-2 py-2 flex items-center gap-2"}>
         <MdHome />

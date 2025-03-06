@@ -98,7 +98,7 @@ export const axiosPutRequest = async (
 
 export const axiosPatchRequest = async (
   url: string,
-  data: any,
+  data?: any,
   config?: AxiosRequestConfig<any>
 ): Promise<IResponse | void> => {
   try {

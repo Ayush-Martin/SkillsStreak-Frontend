@@ -11,7 +11,7 @@ import TrainerLayout from "@/layouts/TrainerLayout";
 import { successPopup } from "@/utils/popup";
 import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { BackButton, VideoPlayer } from "@/components";
+import { BackButton, PdfViewer, VideoPlayer } from "@/components";
 import { z } from "zod";
 import {
   LessonDescriptionValidationRule,
@@ -147,7 +147,9 @@ const EditModule: FC = () => {
                     <VideoPlayer url={lesson.path} />
                   </div>
                 ) : (
-                  <div className="h-40 bg-white w-72"></div>
+                  <div className="h-[200px] w-[400px]">
+                    <PdfViewer path={lesson.path} />
+                  </div>
                 )}
               </div>
               <div>

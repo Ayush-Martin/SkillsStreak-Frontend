@@ -57,11 +57,11 @@ const AdminSidebar: FC = () => {
         Categories
       </NavLink>
       <NavLink
-        to={"/admin/payments"}
+        to={"/admin/transactions"}
         className={"w-full  px-2 py-2 flex items-center gap-2"}
       >
         <MdPayments />
-        Payments
+        Transactions
       </NavLink>
       <NavLink
         to={"/admin/doubts"}

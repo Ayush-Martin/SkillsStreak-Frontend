@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { RoutesHandler } from "./components";
 import {
   PublicRoutes,
@@ -19,6 +19,7 @@ import Loading from "./pages/public/Loading";
 import { useSelector } from "react-redux";
 
 const App = () => {
+  const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const { accessToken } = useSelector((state: RootReducer) => state.user);
   const [loading, setLoading] = useState(true);
@@ -35,6 +36,7 @@ const App = () => {
         dispatch(login(res.data.data));
       } catch (err) {
         console.log(err);
+        navigate("/");
       } finally {
         setLoading(false);
       }

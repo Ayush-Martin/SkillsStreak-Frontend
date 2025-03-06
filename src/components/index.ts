@@ -21,3 +21,5 @@ export { default as AddModule } from "./Trainer/AddModule";
 export { default as CourseModules } from "./Trainer/CourseModules";
 export { default as VideoPlayer } from "./VideoPlayer";
 export { default as CourseCard } from "./User/CourseCard";
+export { default as AboutTheTrainer } from "./AboutTheTrainer";
+export { default as PdfViewer } from "./PdfViewer";

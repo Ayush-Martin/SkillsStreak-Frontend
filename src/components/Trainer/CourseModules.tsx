@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { MdEdit, MdDelete, MdDragHandle } from "react-icons/md";
+import { MdEdit, MdDelete } from "react-icons/md";
 import { ICourse } from "../../types/courseType";
 import {
   axiosDeleteRequest,
@@ -89,9 +89,6 @@ const CourseModules: FC<ICourseModulesParams> = ({ course }) => {
                   onClick={() => deleteModule(module._id)}
                 >
                   <MdDelete />
-                </button>
-                <button className="text-2xl text-app-tertiary">
-                  <MdDragHandle />
                 </button>
               </div>
             </div>

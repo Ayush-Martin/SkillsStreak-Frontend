@@ -10,6 +10,7 @@ import useEditCourse from "@/hooks/useEditCourse";
 import TrainerLayout from "@/layouts/TrainerLayout";
 
 const EditCourse = () => {
+  console.log("dfd");
   const { course, setCourse } = useEditCourse();
 
   return (
