@@ -10,7 +10,7 @@ import {
 import { axiosPostRequest } from "@/config/axios";
 import { LOGIN_WITH_GOOGLE_API } from "@/constants/API";
 import { login } from "@/features/Auth/slice/userSlice";
-import { AppDispatch } from "../../store";
+import { AppDispatch } from "@/store";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 

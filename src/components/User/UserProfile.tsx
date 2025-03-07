@@ -12,7 +12,7 @@ import {
 } from "@/utils/validationRules";
 import { ErrorText } from "@/components";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AppDispatch } from "./../../store";
+import { AppDispatch } from "@/store";
 import {
   updateProfileApi,
   updateProfileImageApi,

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { RECORDS_PER_PAGE } from "@/constants/general";
-import { AppDispatch } from "../store";
+import { AppDispatch } from "@/store";
 import { IResponse } from "@/types/responseType";
 import { AsyncThunk, UnknownAction } from "@reduxjs/toolkit";
 

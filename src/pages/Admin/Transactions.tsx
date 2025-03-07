@@ -14,7 +14,7 @@ import { getAdminTransactionsApi } from "@/features/admin/api/adminTransactionAp
 import { changePage } from "@/features/admin/slice/adminTransactionSlice";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import AdminLayout from "@/layouts/AdminLayout";
-import { AppDispatch, RootReducer } from "../../store";
+import { AppDispatch, RootReducer } from "@/store";
 import { MdOutlineRefresh } from "@/assets/icons";
 
 const Transactions: FC = () => {

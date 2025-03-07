@@ -17,7 +17,7 @@ import { getCoursesApi } from "@/features/user/api/coursesApi";
 import { changePage } from "@/features/user/slice/coursesSlice";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import UserLayout from "@/layouts/UserLayout";
-import { AppDispatch, RootReducer } from "../../store";
+import { AppDispatch, RootReducer } from "@/store";
 
 
 const Courses: FC = () => {

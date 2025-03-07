@@ -12,7 +12,7 @@ import {
   TableRow,
 } from "@/components/ui";
 import { CgUnblock, CgBlock, MdOutlineRefresh } from "@/assets/icons";
-import { AppDispatch, RootReducer } from "../../store";
+import { AppDispatch, RootReducer } from "@/store";
 import {
   adminBlockUnblockUserApi,
   getAdminUsersApi,

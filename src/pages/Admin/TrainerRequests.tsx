@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui";
-import { AppDispatch, RootReducer } from "../../store";
+import { AppDispatch, RootReducer } from "@/store";
 import { changePage } from "@/features/admin/slice/adminTrainerRequestSlice";
 import {
   AdminChangeTrainerRequestStatus,

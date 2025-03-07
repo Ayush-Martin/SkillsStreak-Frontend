@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosRequestConfig } from "axios";
-import store from "../store";
+import store from "@/store";
 import { IApiResponseError, IResponse } from "@/types/responseType";
 import { login, logout } from "@/features/Auth/slice/userSlice";
 import { BACKEND_BASE_URL, REFRESH_TOKEN_API } from "@/constants/API";

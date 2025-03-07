@@ -6,7 +6,7 @@ import logo from "@/assets/images/logo.png";
 import { Button } from "@/components/ui";
 import Hamburger from "hamburger-react";
 import useLogout from "@/hooks/useLogout";
-import { RootReducer } from "../store";
+import { RootReducer } from "@/store";
 
 interface IUserLayoutProps {
   children: ReactNode;

@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FC } from "react";
 
 import AdminLayout from "@/layouts/AdminLayout";
-import { AppDispatch, RootReducer } from "../../store";
+import { AppDispatch, RootReducer } from "@/store";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import { IoEye, IoEyeOff, MdOutlineRefresh } from "@/assets/icons";
 import {

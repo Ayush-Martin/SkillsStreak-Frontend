@@ -14,7 +14,7 @@ import { getUserTransactionsApi } from "@/features/user/api/transactionApi";
 import { changePage } from "@/features/user/slice/transactionSlice";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import UserLayout from "@/layouts/UserLayout";
-import { AppDispatch, RootReducer } from "../../store";
+import { AppDispatch, RootReducer } from "@/store";
 import { MdOutlineRefresh } from "@/assets/icons";
 
 const Transactions: FC = () => {

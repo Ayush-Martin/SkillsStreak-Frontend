@@ -8,7 +8,7 @@ import {
   FaChalkboardTeacher,
 } from "@/assets/icons";
 import { SideBar } from "@/components";
-import { RootReducer } from "../../store";
+import { RootReducer } from "@/store";
 
 const UserSidebar: FC = () => {
   const { role } = useSelector((state: RootReducer) => state.user);

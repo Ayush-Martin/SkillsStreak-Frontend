@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
-import { RootReducer } from "../store";
+import { RootReducer } from "@/store";
 import { errorPopup } from "@/utils/popup";
 interface IRoutesHandlerProps {
   requiredRole: "admin" | "user" | "premium" | "public" | "trainer" | "auth";

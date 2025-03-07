@@ -28,7 +28,7 @@ import {
 } from "@/features/admin/api/adminCategoryApi";
 import { changePage } from "@/features/admin/slice/adminCategorySlice";
 import AdminLayout from "@/layouts/AdminLayout";
-import { AppDispatch, RootReducer } from "../../store";
+import { AppDispatch, RootReducer } from "@/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CategoryNameValidationRule } from "@/utils/validationRules";
 import usePaginatedData from "@/hooks/usePaginatedData";

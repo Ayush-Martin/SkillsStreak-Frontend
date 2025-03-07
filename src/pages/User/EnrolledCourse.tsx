@@ -6,7 +6,7 @@ import { getEnrolledCoursesApi } from "@/features/user/api/enrolledCourseApi";
 import { changePage } from "@/features/user/slice/enrolledCourseSlice";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import UserLayout from "@/layouts/UserLayout";
-import { RootReducer } from "../../store";
+import { RootReducer } from "@/store";
 
 const EnrolledCourse: FC = () => {
   const { enrolledCourses, currentPage, totalPages } = useSelector(

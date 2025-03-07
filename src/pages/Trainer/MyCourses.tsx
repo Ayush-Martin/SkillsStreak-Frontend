@@ -19,7 +19,7 @@ import {
 import { changePage } from "@/features/trainer/slice/TrainerCoursesSlice";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import TrainerLayout from "@/layouts/TrainerLayout";
-import { AppDispatch, RootReducer } from "../../store";
+import { AppDispatch, RootReducer } from "@/store";
 import { IoEye, IoEyeOff, MdOutlineRefresh } from "@/assets/icons";
 
 const MyCourses: FC = () => {
