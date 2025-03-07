@@ -25,3 +25,6 @@ export { default as CourseCard } from "./User/CourseCard";
 export { default as AboutTheTrainer } from "./AboutTheTrainer";
 export { default as PdfViewer } from "./PdfViewer";
 export { default as Loading } from "./Loading";
+export { default as Chat } from "./User/Chat";
+export { default as PremiumChat } from "./User/PremiumChat";
+export { default as AiChat } from "./User/AiChat";

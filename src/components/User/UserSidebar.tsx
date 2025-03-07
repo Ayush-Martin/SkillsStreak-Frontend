@@ -17,7 +17,7 @@ const UserSidebar: FC = () => {
     {
       name: "Profile",
       icon: <ImProfile />,
-      link: "/user",
+      link: "/user/profile",
     },
     {
       name: "Enrolled Courses",
@@ -32,7 +32,7 @@ const UserSidebar: FC = () => {
     {
       name: "Trainer Dashboard",
       icon: <FaChalkboardTeacher />,
-      link: role == "trainer" ? "/trainer" : "/user/trainerRequests",
+      link: role == "trainer" ? "/trainer" : "/user/trainerRequest",
     },
   ];
 

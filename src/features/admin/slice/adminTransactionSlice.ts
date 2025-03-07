@@ -9,7 +9,7 @@ interface ITransaction {
     email: string;
     role: string;
   };
-  receiverId: {
+  receiverId?: {
     _id: string;
     email: string;
     role: string;
@@ -19,7 +19,7 @@ interface ITransaction {
     title: string;
   };
   amount: number;
-  type: "payment" | "commission";
+  type: "payment" | "commission" | "subscription" | "redeem";
 }
 
 interface IInitialState {

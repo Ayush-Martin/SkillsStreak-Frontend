@@ -17,6 +17,13 @@ import {
   updateProfileApi,
   updateProfileImageApi,
 } from "@/features/Auth/api/userApi";
+import { axiosPatchRequest, axiosPutRequest } from "@/config/axios";
+import { PROFILE_API } from "@/constants/API";
+import { successPopup } from "@/utils/popup";
+import {
+  updateProfileData,
+  updateProfileImage,
+} from "@/features/Auth/slice/userSlice";
 
 const UserProfileSchema = z.object({
   username: UsernameValidationRule,
@@ -54,15 +61,27 @@ const UserProfile: FC<IUserProfileProps> = ({
 
   const dispatch: AppDispatch = useDispatch();
 
-  const profileImageChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const profileImageChangeHandler = async (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
-      dispatch(updateProfileImageApi(file));
+      const formData = new FormData();
+      formData.append("image", file);
+      const res = await axiosPatchRequest(PROFILE_API, formData);
+      if (!res) return;
+      successPopup(res.message || "updated");
+      console.log(res.data);
+      dispatch(updateProfileImage(res.data.profileImage));
     }
   };
 
-  const profileUpdateHandler = (data: UserProfileSchemaType) => {
-    dispatch(updateProfileApi(data));
+  const profileUpdateHandler = async (data: UserProfileSchemaType) => {
+    const res = await axiosPutRequest(PROFILE_API, data);
+    if (!res) return;
+    successPopup(res.message || "updated");
+    console.log(res.data);
+    dispatch(updateProfileData(res.data));
   };
 
   return (
@@ -138,7 +157,7 @@ const UserProfile: FC<IUserProfileProps> = ({
           </p>
           {errors.about?.message && <ErrorText error={errors.about?.message} />}
         </div>
-        <div className="">
+        {/* <div className="">
           <p className="font-bold">Area of Interest : </p>
           <div className="flex flex-wrap gap-3 mt-2">
             {areaOfInterest.map((x) => (
@@ -147,7 +166,7 @@ const UserProfile: FC<IUserProfileProps> = ({
               </p>
             ))}
           </div>
-        </div>
+        </div> */}
         <div className="flex justify-center">
           <Button
             variant={"v2"}

@@ -60,9 +60,11 @@ const Transactions: FC = () => {
                 <TableCell>{transaction.transactionId}</TableCell>
                 <TableCell>{transaction.payerId.email}</TableCell>
                 <TableCell>
-                  {transaction.receiverId.role == "admin"
-                    ? "Admin"
-                    : transaction.receiverId.email}
+                  {transaction.receiverId
+                    ? transaction.receiverId.role == "admin"
+                      ? "Admin"
+                      : transaction.receiverId.email
+                    : "Admin"}
                 </TableCell>
                 <TableCell>{transaction.type}</TableCell>
                 <TableCell>{transaction.amount}</TableCell>

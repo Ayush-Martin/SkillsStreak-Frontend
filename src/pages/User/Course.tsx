@@ -228,7 +228,7 @@ const Course: FC = () => {
             </div>
           </div>
           {courseAccess == false && (
-            <div className="absolute top-0 bottom-0 left-0 right-0 z-10 flex flex-col items-center justify-center h-full gap-2 bg-black bg-opacity-75">
+            <div className="absolute top-0 bottom-0 left-0 right-0 z-10 flex flex-col items-center justify-center h-full gap-2 bg-black bg-opacity-55 backdrop-blur-sm">
               <h1 className="flex flex-col items-center justify-center gap-2 text-2xl text-app-accent">
                 <FaLock className="text-3xl" /> you don,t have access
               </h1>

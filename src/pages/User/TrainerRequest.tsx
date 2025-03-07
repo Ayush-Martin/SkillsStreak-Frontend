@@ -5,11 +5,12 @@ import { Button } from "@/components/ui";
 import { axiosGetRequest } from "@/config/axios";
 import AuthLayout from "@/layouts/AuthLayout";
 import { successPopup } from "@/utils/popup";
+import { TRAINER_REQUEST_API } from "@/constants/API";
 
 const TrainerRequest: FC = () => {
   const navigate = useNavigate();
   const sendTrainerRequest = async () => {
-    const res = await axiosGetRequest("/user/trainerRequest");
+    const res = await axiosGetRequest(TRAINER_REQUEST_API);
     if (!res) return;
     successPopup(res.message || "request has been send");
     navigate("/");
