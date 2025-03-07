@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
+
+import { GrFormNextLink, GrFormPreviousLink } from "@/assets/icons";
 
 interface IPaginationProps {
   currentPage: number;
@@ -24,7 +25,7 @@ const Pagination: FC<IPaginationProps> = ({
         >
           <GrFormPreviousLink />
         </button>
-        <div className="text-xl">
+        <div className="text-xl text-white">
           {currentPage} of {totalPages}
         </div>
         <button

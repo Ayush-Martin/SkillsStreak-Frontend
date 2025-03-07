@@ -1,20 +1,19 @@
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import ErrorText from "../ErrorText";
 import { useNavigate } from "react-router-dom";
+import { z } from "zod";
+
+import { Input, Button } from "@/components/ui";
+import { ErrorText,GoogleAuth } from "@/components";
 import {
   EmailValidationRule,
   PasswordValidationRule,
   UsernameValidationRule,
 } from "@/utils/validationRules";
-import { z } from "zod";
-import GoogleAuth from "./GoogleAuth";
 import { axiosPostRequest } from "@/config/axios";
 import { REGISTER_API } from "@/constants/API";
 import { successPopup } from "@/utils/popup";
-import { FC } from "react";
 
 const RegisterSchema = z.object({
   email: EmailValidationRule,

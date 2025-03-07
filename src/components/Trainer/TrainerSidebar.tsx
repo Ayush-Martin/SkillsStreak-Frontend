@@ -1,35 +1,17 @@
-import { NavLink } from "react-router-dom";
-import SideBar from "../SideBar";
-import { MdDashboard, MdPayments, MdVideoLibrary } from "react-icons/md";
 import { FC } from "react";
 
+import { SideBar } from "@/components";
+import { MdDashboard, MdHome, MdVideoLibrary, FaWallet } from "@/assets/icons";
+
+const sidebarItems = [
+  { name: "Dashboard", icon: <MdDashboard />, link: "/trainer" },
+  { name: "My Courses", icon: <MdVideoLibrary />, link: "/trainer/courses" },
+  { name: "Wallet", icon: <FaWallet />, link: "/trainer/wallet" },
+  { name: "Home", icon: <MdHome />, link: "/" },
+];
+
 const TrainerSidebar: FC = () => {
-  return (
-    <SideBar>
-      <NavLink
-        to={"/trainer"}
-        end
-        className={"w-full  px-2 py-2 flex items-center gap-2"}
-      >
-        <MdDashboard />
-        Dashboard
-      </NavLink>
-      <NavLink
-        to={"/trainer/courses"}
-        className={"w-full  px-2 py-2 flex items-center gap-2"}
-      >
-        <MdVideoLibrary />
-        My Courses
-      </NavLink>
-      <NavLink
-        to={"/trainer/payments"}
-        className={"w-full  px-2 py-2 flex items-center gap-2"}
-      >
-        <MdPayments />
-        Payments
-      </NavLink>
-    </SideBar>
-  );
+  return <SideBar sidebarItems={sidebarItems} />;
 };
 
 export default TrainerSidebar;

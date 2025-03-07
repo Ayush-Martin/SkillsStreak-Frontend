@@ -1,13 +1,13 @@
-import AuthLayout from "@/layouts/AuthLayout";
-import resetPasswordImage from "../../assets/images/resetPassword.jpg";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FC, useEffect } from "react";
-import { ErrorText } from "@/components";
 import { z } from "zod";
+
+import AuthLayout from "@/layouts/AuthLayout";
+import resetPasswordImage from "@/assets/images/resetPassword.jpg";
+import { Input,Button } from "@/components/ui";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ErrorText } from "@/components";
 import { PasswordValidationRule } from "@/utils/validationRules";
 import { axiosPostRequest } from "@/config/axios";
 import { RESET_PASSWORD_API } from "@/constants/API";

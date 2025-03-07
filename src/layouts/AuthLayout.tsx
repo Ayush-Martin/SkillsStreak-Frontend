@@ -1,5 +1,6 @@
 import { FC, ReactNode } from "react";
-import logo from "../assets/images/logo.png";
+
+import logo from "@/assets/images/logo.png";
 
 interface IAuthLayoutProps {
   children: ReactNode;

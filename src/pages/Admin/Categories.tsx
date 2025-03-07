@@ -1,4 +1,17 @@
+import { FC, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { z } from "zod";
+
 import { ErrorText, Pagination, SearchBox } from "@/components";
+import {
+  IoIosSave,
+  RiFolderCloseFill,
+  IoEye,
+  IoEyeOff,
+  MdEdit,
+  MdOutlineRefresh,
+} from "@/assets/icons";
 import {
   Table,
   TableBody,
@@ -6,8 +19,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { RECORDS_PER_PAGE } from "@/constants/general";
+  Input
+} from "@/components/ui";
 import {
   adminCategoryEditApi,
   adminCategoryListUnListApi,
@@ -16,18 +29,9 @@ import {
 import { changePage } from "@/features/admin/slice/adminCategorySlice";
 import AdminLayout from "@/layouts/AdminLayout";
 import { AppDispatch, RootReducer } from "@/store";
-import { FC, useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
-import { IoIosSave } from "react-icons/io";
-import { RiFolderCloseFill } from "react-icons/ri";
-import { IoEye, IoEyeOff } from "react-icons/io5";
-import { MdEdit } from "react-icons/md";
-import { MdOutlineRefresh } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
 import { CategoryNameValidationRule } from "@/utils/validationRules";
+import usePaginatedData from "@/hooks/usePaginatedData";
 
 const CategoryEditSchema = z.object({
   categoryName: CategoryNameValidationRule,
@@ -90,40 +94,18 @@ const CategoryEdit: FC<ICategoryEdit> = ({
 
 const Categories: FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<string | null>();
   const { categories, currentPage, totalPages } = useSelector(
     (state: RootReducer) => state.adminCategory
   );
 
-  const startIndex = (currentPage - 1) * RECORDS_PER_PAGE;
-
-  useEffect(() => {
-    if (!categories.length) {
-      dispatch(getAdminCategoriesApi({ page: 1, search }));
-    }
-  }, [dispatch, search, categories.length]);
-
-  const paginatedCategories = useMemo(() => {
-    return categories.slice(startIndex, startIndex + RECORDS_PER_PAGE);
-  }, [categories, startIndex]);
-
-  const previousPage = () => {
-    if (currentPage > 1) dispatch(changePage(currentPage - 1));
-  };
-
-  const nextPage = () => {
-    if (categories.length > startIndex + RECORDS_PER_PAGE) {
-      dispatch(changePage(currentPage + 1));
-    } else {
-      dispatch(getAdminCategoriesApi({ page: currentPage + 1, search }));
-    }
-  };
-
-  const searchHandler = (searchInput: string) => {
-    setSearch(searchInput);
-    dispatch(getAdminCategoriesApi({ page: 1, search: searchInput }));
-  };
+  const { nextPage, paginatedData, previousPage, search, searchHandler } =
+    usePaginatedData({
+      data: categories,
+      currentPage,
+      changePageApi: changePage,
+      getDataApi: getAdminCategoriesApi,
+    });
 
   const refreshHandler = () => {
     dispatch(getAdminCategoriesApi({ page: 1, search }));
@@ -150,11 +132,11 @@ const Categories: FC = () => {
           </TableRow>
         </TableHeader>
 
-        {paginatedCategories.length === 0 ? (
+        {paginatedData.length === 0 ? (
           <div className="mt-10 mb-10 text-3xl">No categories found</div>
         ) : (
           <TableBody>
-            {paginatedCategories.map((category) => (
+            {paginatedData.map((category) => (
               <TableRow key={category._id}>
                 <TableCell>
                   {selected == category._id ? (

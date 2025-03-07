@@ -6,9 +6,9 @@ import {
 import { errorPopup, successPopup } from "@/utils/popup";
 
 type UsersType = Array<{
-  username: "";
-  email: "";
-  _id: "";
+  username: string;
+  email: string;
+  _id: string;
   isBlocked: boolean;
   role: "user" | "trainer";
 }>;
@@ -36,7 +36,6 @@ const adminUserSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getAdminUsersApi.fulfilled, (state, action) => {
       const data: initialStateType = action.payload.data;
-      console.log(data);
       if (data.currentPage == 1) {
         state.users = data.users;
       } else {

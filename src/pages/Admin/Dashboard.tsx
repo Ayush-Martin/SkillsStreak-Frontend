@@ -1,5 +1,6 @@
-import AdminLayout from "@/layouts/AdminLayout";
 import { FC } from "react";
+
+import AdminLayout from "@/layouts/AdminLayout";
 
 const Dashboard: FC = () => {
   return (

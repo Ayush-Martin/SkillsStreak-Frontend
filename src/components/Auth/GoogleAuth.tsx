@@ -1,15 +1,16 @@
-import { axiosPostRequest } from "@/config/axios";
-import { LOGIN_WITH_GOOGLE_API } from "@/constants/API";
-import { login } from "@/features/Auth/slice/userSlice";
-import { AppDispatch } from "@/store";
+import { FC } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   CredentialResponse,
   GoogleLogin,
   GoogleOAuthProvider,
 } from "@react-oauth/google";
-import { FC } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+
+import { axiosPostRequest } from "@/config/axios";
+import { LOGIN_WITH_GOOGLE_API } from "@/constants/API";
+import { login } from "@/features/Auth/slice/userSlice";
+import { AppDispatch } from "@/store";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 

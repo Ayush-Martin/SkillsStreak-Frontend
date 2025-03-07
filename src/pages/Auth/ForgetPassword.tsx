@@ -1,16 +1,16 @@
-import { Input } from "@/components/ui/input";
-import AuthLayout from "@/layouts/AuthLayout";
+import { FC } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { ErrorText } from "@/components";
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
 import { z } from "zod";
+import { useNavigate } from "react-router-dom";
+
+import AuthLayout from "@/layouts/AuthLayout";
+import { ErrorText } from "@/components";
+import { Button ,Input} from "@/components/ui";
 import { EmailValidationRule } from "@/utils/validationRules";
 import { axiosPostRequest } from "@/config/axios";
 import { FORGET_PASSWORD_API } from "@/constants/API";
 import { successPopup } from "@/utils/popup";
-import { FC } from "react";
 
 const ForgetPasswordSchema = z.object({
   email: EmailValidationRule,

@@ -1,6 +1,7 @@
 import { FC, ReactNode } from "react";
-import logo from "../assets/images/logo.png";
-import { Button } from "@/components/ui/button";
+
+import logo from "@/assets/images/logo.png";
+import { Button } from "@/components/ui";
 import useLogout from "@/hooks/useLogout";
 import { TrainerSidebar } from "@/components";
 

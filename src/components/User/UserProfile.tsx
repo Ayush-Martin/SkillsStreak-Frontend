@@ -1,23 +1,29 @@
 import { useForm } from "react-hook-form";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
-import { FaUserTie } from "react-icons/fa6";
 import { z } from "zod";
+import { useDispatch } from "react-redux";
+import { ChangeEvent, FC } from "react";
+
+import { Button, Input, Textarea } from "@/components/ui";
+import { FaUserTie } from "@/assets/icons";
 import {
   AboutValidationRule,
   AreaOfInterestValidationRule,
   UsernameValidationRule,
 } from "@/utils/validationRules";
-import ErrorText from "../ErrorText";
+import { ErrorText } from "@/components";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store";
 import {
   updateProfileApi,
   updateProfileImageApi,
 } from "@/features/Auth/api/userApi";
-import { ChangeEvent, FC } from "react";
+import { axiosPatchRequest, axiosPutRequest } from "@/config/axios";
+import { PROFILE_API } from "@/constants/API";
+import { successPopup } from "@/utils/popup";
+import {
+  updateProfileData,
+  updateProfileImage,
+} from "@/features/Auth/slice/userSlice";
 
 const UserProfileSchema = z.object({
   username: UsernameValidationRule,
@@ -55,15 +61,27 @@ const UserProfile: FC<IUserProfileProps> = ({
 
   const dispatch: AppDispatch = useDispatch();
 
-  const profileImageChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const profileImageChangeHandler = async (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
-      dispatch(updateProfileImageApi(file));
+      const formData = new FormData();
+      formData.append("image", file);
+      const res = await axiosPatchRequest(PROFILE_API, formData);
+      if (!res) return;
+      successPopup(res.message || "updated");
+      console.log(res.data);
+      dispatch(updateProfileImage(res.data.profileImage));
     }
   };
 
-  const profileUpdateHandler = (data: UserProfileSchemaType) => {
-    dispatch(updateProfileApi(data));
+  const profileUpdateHandler = async (data: UserProfileSchemaType) => {
+    const res = await axiosPutRequest(PROFILE_API, data);
+    if (!res) return;
+    successPopup(res.message || "updated");
+    console.log(res.data);
+    dispatch(updateProfileData(res.data));
   };
 
   return (
@@ -139,7 +157,7 @@ const UserProfile: FC<IUserProfileProps> = ({
           </p>
           {errors.about?.message && <ErrorText error={errors.about?.message} />}
         </div>
-        <div className="">
+        {/* <div className="">
           <p className="font-bold">Area of Interest : </p>
           <div className="flex flex-wrap gap-3 mt-2">
             {areaOfInterest.map((x) => (
@@ -148,14 +166,13 @@ const UserProfile: FC<IUserProfileProps> = ({
               </p>
             ))}
           </div>
-        </div>
+        </div> */}
         <div className="flex justify-center">
           <Button
             variant={"v2"}
             size={"lg"}
             type="submit"
             onClick={() => {
-              console.log("hello");
               return;
             }}
           >
