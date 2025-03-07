@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 interface IPdfViewerProps {
-  path: string; // URL of the PDF from the CDN
+  path: string; 
 }
 
 const PdfViewer: FC<IPdfViewerProps> = ({ path }) => {

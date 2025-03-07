@@ -1,5 +1,13 @@
+import { FC } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import { Pagination } from "@/components";
 import AdminLayout from "@/layouts/AdminLayout";
+import {
+  AiOutlineCheckCircle,
+  AiFillCloseCircle,
+  MdOutlineRefresh,
+} from "@/assets/icons";
 import {
   Table,
   TableBody,
@@ -7,13 +15,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { MdOutlineRefresh } from "react-icons/md";
-import { AiOutlineCheckCircle, AiFillCloseCircle } from "react-icons/ai";
-import { useSelector, useDispatch } from "react-redux";
-import { AppDispatch, RootReducer } from "@/store";
-import { FC } from "react";
-import { changePage } from "@/features/admin/slice/adminTrainerRequetsSlice";
+} from "@/components/ui";
+import { AppDispatch, RootReducer } from "../../store";
+import { changePage } from "@/features/admin/slice/adminTrainerRequestSlice";
 import {
   AdminChangeTrainerRequestStatus,
   getAdminTrainerRequestsApi,

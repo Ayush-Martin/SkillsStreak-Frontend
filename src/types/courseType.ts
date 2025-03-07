@@ -1,10 +1,12 @@
+export type ICourseDifficulty = "beginner" | "intermediate" | "advance";
+
 export interface ICourse {
   _id: string;
   title: string;
   price: number;
   skillsCovered: Array<string>;
   requirements: Array<string>;
-  difficulty: "beginner" | "intermediate" | "advance";
+  difficulty: ICourseDifficulty;
   thumbnail: string;
   description: string;
   categoryId: string;

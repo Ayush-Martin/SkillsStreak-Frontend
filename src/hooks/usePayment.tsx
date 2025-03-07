@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { RootReducer } from "@/store";
 import { useSelector } from "react-redux";
+
+import { RootReducer } from "../store";
 
 declare global {
   interface Window {

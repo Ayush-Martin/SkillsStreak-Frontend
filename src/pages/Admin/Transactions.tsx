@@ -1,3 +1,6 @@
+import { FC } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import { Pagination } from "@/components";
 import {
   Table,
@@ -6,15 +9,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui";
 import { getAdminTransactionsApi } from "@/features/admin/api/adminTransactionApi";
 import { changePage } from "@/features/admin/slice/adminTransactionSlice";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import AdminLayout from "@/layouts/AdminLayout";
-import { AppDispatch, RootReducer } from "@/store";
-import { FC } from "react";
-import { MdOutlineRefresh } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootReducer } from "../../store";
+import { MdOutlineRefresh } from "@/assets/icons";
 
 const Transactions: FC = () => {
   const dispatch: AppDispatch = useDispatch();

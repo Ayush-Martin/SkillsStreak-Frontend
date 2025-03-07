@@ -1,13 +1,14 @@
-import { useForm } from "react-hook-form";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import ErrorText from "../ErrorText";
+import { FC } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import GoogleAuth from "../Auth/GoogleAuth";
-import { AppDispatch } from "@/store";
-import { login } from "../../features/Auth/slice/userSlice";
+import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+
+import { Button, Input } from "@/components/ui";
+import { ErrorText ,GoogleAuth} from "@/components";
+import { AppDispatch } from "../../store";
+import { login } from "@/features/Auth/slice/userSlice";
+
 import {
   EmailValidationRule,
   PasswordValidationRule,
@@ -16,7 +17,6 @@ import { z } from "zod";
 import { successPopup } from "@/utils/popup";
 import { axiosPostRequest } from "@/config/axios";
 import { LOGIN_API } from "@/constants/API";
-import { FC } from "react";
 
 const LoginSchema = z.object({
   email: EmailValidationRule,

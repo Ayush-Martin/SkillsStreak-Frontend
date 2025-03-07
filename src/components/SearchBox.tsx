@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+
+import { Button, Input } from "@/components/ui";
 
 interface ISearchBoxProps {
   search: string;

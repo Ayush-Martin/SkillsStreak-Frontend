@@ -1,16 +1,16 @@
-import AdminLayout from "@/layouts/AdminLayout";
-import { AppDispatch, RootReducer } from "@/store";
 import { useDispatch, useSelector } from "react-redux";
 import { FC } from "react";
+
+import AdminLayout from "@/layouts/AdminLayout";
+import { AppDispatch, RootReducer } from "../../store";
 import usePaginatedData from "@/hooks/usePaginatedData";
+import { IoEye, IoEyeOff, MdOutlineRefresh } from "@/assets/icons";
 import {
   adminCourseListUnListApi,
   getAdminCoursesApi,
 } from "@/features/admin/api/adminCourseApi";
 import { changePage } from "@/features/admin/slice/adminCourseSlice";
-
 import { Pagination, SearchBox } from "@/components";
-
 import {
   Table,
   TableBody,
@@ -18,9 +18,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { IoEye, IoEyeOff } from "react-icons/io5";
-import { MdOutlineRefresh } from "react-icons/md";
+} from "@/components/ui";
 
 const Courses: FC = () => {
   const dispatch: AppDispatch = useDispatch();

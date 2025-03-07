@@ -1,3 +1,6 @@
+import { useSelector, useDispatch } from "react-redux";
+import { FC } from "react";
+
 import { Pagination, UserSidebar } from "@/components";
 import {
   Table,
@@ -6,16 +9,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui";
 import { getUserTransactionsApi } from "@/features/user/api/transactionApi";
 import { changePage } from "@/features/user/slice/transactionSlice";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import UserLayout from "@/layouts/UserLayout";
-import { AppDispatch, RootReducer } from "@/store";
-import { FC } from "react";
-import { MdOutlineRefresh } from "react-icons/md";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { AppDispatch, RootReducer } from "../../store";
+import { MdOutlineRefresh } from "@/assets/icons";
 
 const Transactions: FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -33,7 +33,6 @@ const Transactions: FC = () => {
   const refreshHandler = () => {
     dispatch(getUserTransactionsApi({ page: 1 }));
   };
-
 
   return (
     <UserLayout>

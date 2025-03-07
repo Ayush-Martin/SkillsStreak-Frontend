@@ -89,5 +89,8 @@ const userSlice = createSlice({
   },
 });
 
-export default userSlice.reducer;
 export const { login, logout, setAccessToken } = userSlice.actions;
+export default (() => {
+  console.log("jello");
+  return userSlice.reducer;
+})();

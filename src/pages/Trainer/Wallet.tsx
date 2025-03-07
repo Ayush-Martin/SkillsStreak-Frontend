@@ -1,7 +1,8 @@
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+
+import { Button } from "@/components/ui";
 import { axiosGetRequest } from "@/config/axios";
 import TrainerLayout from "@/layouts/TrainerLayout";
-import { useEffect, useState } from "react";
 
 const Wallet = () => {
   const [wallet, setWallet] = useState({

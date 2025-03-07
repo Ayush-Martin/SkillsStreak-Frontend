@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { RECORDS_PER_PAGE } from "@/constants/general";
-import { AppDispatch } from "@/store";
-import { IResponse } from "@/types/responseType";
-import { AsyncThunk, UnknownAction } from "@reduxjs/toolkit";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
+
+import { RECORDS_PER_PAGE } from "@/constants/general";
+import { AppDispatch } from "../store";
+import { IResponse } from "@/types/responseType";
+import { AsyncThunk, UnknownAction } from "@reduxjs/toolkit";
 
 interface IUsePaginatedData<T> {
   data: Array<T>;
@@ -25,7 +26,7 @@ const usePaginatedData = <T,>({
   const dispatch: AppDispatch = useDispatch();
   const startIndex = (currentPage - 1) * RECORDS_PER_PAGE;
   const [search, setSearch] = useState("");
-  console.log(extraData);
+
 
   useEffect(() => {
     if (!data.length) {

@@ -1,8 +1,9 @@
-import { UserProfile, UserSidebar } from "@/components";
-import UserLayout from "@/layouts/UserLayout";
-import { RootReducer } from "@/store";
 import { FC } from "react";
 import { useSelector } from "react-redux";
+
+import { UserProfile, UserSidebar } from "@/components";
+import UserLayout from "@/layouts/UserLayout";
+import { RootReducer } from "../../store";
 
 const Profile: FC = () => {
   const { username, email, about, profileImage, areaOfInterest } = useSelector(

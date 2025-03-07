@@ -1,7 +1,9 @@
 import { FC, useState } from "react";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Button, Input } from "@/components/ui";
 import {
   Table,
   TableBody,
@@ -9,14 +11,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table";
-import { IoIosSave } from "react-icons/io";
-import { RiFolderCloseFill } from "react-icons/ri";
-import ErrorText from "../ErrorText";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { MdDelete, MdEdit } from "react-icons/md";
-import { ICourse } from "../../types/courseType";
+} from "@/components/ui";
+import { IoIosSave, RiFolderCloseFill, MdDelete, MdEdit } from "@/assets/icons";
+import { ErrorText } from "@/components";
+import { ICourse } from "@/types/courseType";
 import { TRAINER_COURSES_API } from "@/constants/API";
 import { axiosPatchRequest } from "@/config/axios";
 import { successPopup } from "@/utils/popup";

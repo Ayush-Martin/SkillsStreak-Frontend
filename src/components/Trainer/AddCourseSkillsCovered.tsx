@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   FieldErrors,
   useForm,
@@ -8,21 +8,20 @@ import {
   UseFormTrigger,
   UseFormWatch,
 } from "react-hook-form";
+
 import { addCourseSchemaType } from "@/hooks/useAddCourse";
 import {
+  Button,
+  Input,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table";
-import { IoIosSave } from "react-icons/io";
-import { RiFolderCloseFill } from "react-icons/ri";
-import ErrorText from "../ErrorText";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { MdDelete, MdEdit } from "react-icons/md";
+} from "@/components/ui";
+import { ErrorText } from "@/components";
+import { MdDelete, MdEdit, IoIosSave, RiFolderCloseFill } from "@/assets/icons";
 
 interface ICourseSkillsCoveredProps {
   watch: UseFormWatch<addCourseSchemaType>;

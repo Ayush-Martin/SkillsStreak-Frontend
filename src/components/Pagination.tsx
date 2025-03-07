@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
+
+import { GrFormNextLink, GrFormPreviousLink } from "@/assets/icons";
 
 interface IPaginationProps {
   currentPage: number;

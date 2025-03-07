@@ -1,5 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { FC, useEffect, useState } from "react";
+import { z } from "zod";
+import { useParams } from "react-router-dom";
+
+import { Button, Input } from "@/components/ui";
 import {
   axiosDeleteRequest,
   axiosGetRequest,
@@ -9,16 +12,12 @@ import {
 import { TRAINER_COURSES_API } from "@/constants/API";
 import TrainerLayout from "@/layouts/TrainerLayout";
 import { successPopup } from "@/utils/popup";
-import { FC, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { BackButton, PdfViewer, VideoPlayer } from "@/components";
-import { z } from "zod";
+import { BackButton, PdfViewer, VideoPlayer, AddLesson } from "@/components";
 import {
   LessonDescriptionValidationRule,
   LessonTitleValidationRule,
 } from "@/utils/validationRules";
-import { MdDelete } from "react-icons/md";
-import { AddLesson } from "@/components/index";
+import { MdDelete } from "@/assets/icons";
 import { ModuleType } from "@/types/courseType";
 
 export const LessonSchema = z.object({
@@ -82,7 +81,7 @@ const EditModule: FC = () => {
         },
       }
     );
-    console.log(res);
+
     if (!res) return;
     successPopup(res.message || "added");
     setOpen(false);

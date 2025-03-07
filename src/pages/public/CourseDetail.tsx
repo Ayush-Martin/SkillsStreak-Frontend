@@ -1,28 +1,29 @@
+import { FC, useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+
 import { Button } from "@/components/ui/button";
 import { axiosGetRequest } from "@/config/axios";
 import { COURSES_API } from "@/constants/API";
 import UserLayout from "@/layouts/UserLayout";
 import { ICourseDetails } from "@/types/courseType";
-import { FC, useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { PiStudentBold } from "react-icons/pi";
-import { MdViewModule } from "react-icons/md";
+import {
+  PiStudentBold,
+  MdViewModule,
+  IoVideocam,
+  FaFilePdf,
+  TbDiamondFilled,
+} from "@/assets/icons";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { IoVideocam } from "react-icons/io5";
-import { FaFilePdf } from "react-icons/fa6";
-import { TbDiamondFilled } from "react-icons/tb";
-import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import Loading from "./Loading";
+} from "@/components/ui";              
+import { AboutTheTrainer, Loading } from "@/components";
 
 const CourseDetail: FC = () => {
   const navigate = useNavigate();
@@ -163,6 +164,8 @@ const CourseDetail: FC = () => {
             {course.description}
           </p>
         </div>
+
+        <AboutTheTrainer {...course.trainer} />
       </section>
     </UserLayout>
   );

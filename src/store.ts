@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import user from "./features/Auth/slice/userSlice";
 import adminUser from "./features/admin/slice/adminUserSlice";
-import adminTrainerRequest from "./features/admin/slice/adminTrainerRequetsSlice";
+import adminTrainerRequest from "./features/admin/slice/adminTrainerRequestSlice";
 import adminCategory from "./features/admin/slice/adminCategorySlice";
 import trainerCourses from "./features/trainer/slice/TrainerCoursesSlice";
 import courses from "./features/user/slice/coursesSlice";

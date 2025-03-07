@@ -1,5 +1,6 @@
-import UserLayout from "@/layouts/UserLayout";
 import { FC } from "react";
+
+import UserLayout from "@/layouts/UserLayout";
 
 const Home:FC = () => {
   return (

@@ -1,3 +1,6 @@
+import { FC, useEffect, useState } from "react";
+import { useDispatch ,useSelector} from "react-redux";
+
 import { CourseCard, Pagination, SearchBox } from "@/components";
 import {
   Select,
@@ -7,17 +10,15 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/components/ui";
 import { axiosGetRequest } from "@/config/axios";
 import { CATEGORY_API } from "@/constants/API";
 import { getCoursesApi } from "@/features/user/api/coursesApi";
 import { changePage } from "@/features/user/slice/coursesSlice";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import UserLayout from "@/layouts/UserLayout";
-import { AppDispatch, RootReducer } from "@/store";
-import { FC, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { AppDispatch, RootReducer } from "../../store";
+
 
 const Courses: FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -25,7 +26,6 @@ const Courses: FC = () => {
     (state: RootReducer) => state.courses
   );
 
-  console.log(courses);
 
   const [category, setCategory] = useState("all");
   const [difficulty, setDifficulty] = useState<

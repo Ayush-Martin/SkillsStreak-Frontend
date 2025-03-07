@@ -1,4 +1,3 @@
-import { addCourseSchemaType } from "@/hooks/useAddCourse";
 import { FC, useEffect, useState } from "react";
 import {
   FieldErrors,
@@ -7,9 +6,10 @@ import {
   UseFormTrigger,
   UseFormWatch,
 } from "react-hook-form";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
+
 import {
+  Input,
+  Textarea,
   Select,
   SelectContent,
   SelectGroup,
@@ -17,10 +17,13 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui";
 import { axiosGetRequest } from "@/config/axios";
-import ErrorText from "../ErrorText";
-import { MdHideImage } from "react-icons/md";
+import { ErrorText } from "@/components";
+import { MdHideImage } from "@/assets/icons";
+import { COURSE_DIFFICULTY } from "@/constants/course";
+import { ICourseDifficulty } from "@/types/courseType";
+import { addCourseSchemaType } from "@/hooks/useAddCourse";
 
 interface IAddCourseBasicDetailsProps {
   errors: FieldErrors<addCourseSchemaType>;
@@ -105,7 +108,7 @@ const AddCourseBasicDetails: FC<IAddCourseBasicDetailsProps> = ({
             <p className="text-app-accent">Difficulty</p>
             <Select
               defaultValue={watch("difficulty")}
-              onValueChange={(val: "beginner" | "intermediate" | "advance") => {
+              onValueChange={(val: ICourseDifficulty) => {
                 setValue("difficulty", val);
               }}
             >
@@ -115,9 +118,11 @@ const AddCourseBasicDetails: FC<IAddCourseBasicDetailsProps> = ({
               <SelectContent className="bg-app-neutral">
                 <SelectGroup>
                   <SelectLabel>Difficulty</SelectLabel>
-                  <SelectItem value="beginner">Beginner</SelectItem>
-                  <SelectItem value="intermediate">Intermediate</SelectItem>
-                  <SelectItem value="advance">Advance</SelectItem>
+                  {COURSE_DIFFICULTY.map((difficulty) => (
+                    <SelectItem value={difficulty} key={difficulty}>
+                      {difficulty}
+                    </SelectItem>
+                  ))}
                 </SelectGroup>
               </SelectContent>
             </Select>

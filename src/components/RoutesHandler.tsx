@@ -1,9 +1,9 @@
-import { RootReducer } from "@/store";
-import { errorPopup } from "@/utils/popup";
 import { FC } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
+import { RootReducer } from "../store";
+import { errorPopup } from "@/utils/popup";
 interface IRoutesHandlerProps {
   requiredRole: "admin" | "user" | "premium" | "public" | "trainer" | "auth";
 }
@@ -13,7 +13,6 @@ const RoutesHandler: FC<IRoutesHandlerProps> = ({ requiredRole }) => {
     (state: RootReducer) => state.user
   );
   const location = useLocation();
-
 
   if (requiredRole == "auth") {
     if (accessToken && !isBlocked) {

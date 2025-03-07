@@ -1,9 +1,10 @@
-import { Button } from "@/components/ui/button";
+import { FC } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { Button } from "@/components/ui";
 import { axiosGetRequest } from "@/config/axios";
 import AuthLayout from "@/layouts/AuthLayout";
 import { successPopup } from "@/utils/popup";
-import { FC } from "react";
-import { useNavigate } from "react-router-dom";
 
 const TrainerRequest: FC = () => {
   const navigate = useNavigate();

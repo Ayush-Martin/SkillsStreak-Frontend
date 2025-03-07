@@ -1,4 +1,5 @@
 export { default as Login } from "./Auth/Login";
+export { default as GoogleAuth } from "./Auth/GoogleAuth";
 export { default as Register } from "./Auth/Register";
 export { default as ErrorText } from "./ErrorText";
 export { default as BackButton } from "./BackButton";
@@ -23,3 +24,4 @@ export { default as VideoPlayer } from "./VideoPlayer";
 export { default as CourseCard } from "./User/CourseCard";
 export { default as AboutTheTrainer } from "./AboutTheTrainer";
 export { default as PdfViewer } from "./PdfViewer";
+export { default as Loading } from "./Loading";

@@ -1,15 +1,22 @@
+import { FC } from "react";
+
 import {
   AddCourseBasicDetails,
   AddCourseRequirements,
   AddCourseSkillsCovered,
   BackButton,
 } from "@/components";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Button,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui";
 import useAddCourse from "@/hooks/useAddCourse";
 import TrainerLayout from "@/layouts/TrainerLayout";
 
-const AddCourse = () => {
+const AddCourse: FC = () => {
   const {
     errors,
     register,

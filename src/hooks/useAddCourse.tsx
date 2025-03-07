@@ -1,3 +1,12 @@
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+
+import { errorPopup, successPopup } from "@/utils/popup";
+import { axiosPostRequest } from "@/config/axios";
+import { TRAINER_COURSES_API } from "@/constants/API";
+import { useNavigate } from "react-router-dom";
 import {
   CourseCategoryIdValidationRule,
   CourseDescriptionValidationRule,
@@ -7,15 +16,6 @@ import {
   CourseSkillsCoveredValidationRule,
   CourseTitleValidationRule,
 } from "@/utils/validationRules";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { errorPopup, successPopup } from "@/utils/popup";
-import { axiosPostRequest } from "@/config/axios";
-import { TRAINER_COURSES_API } from "@/constants/API";
-import { useNavigate } from "react-router-dom";
 
 const addCourseSchema = z.object({
   title: CourseTitleValidationRule,

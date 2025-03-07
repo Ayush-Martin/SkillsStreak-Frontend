@@ -1,5 +1,9 @@
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { Suspense, useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { RoutesHandler } from "./components";
+
+import { RoutesHandler, Loading } from "@/components";
 import {
   PublicRoutes,
   AuthRoutes,
@@ -7,16 +11,11 @@ import {
   PremiumUserRoutes,
   TrainerRoutes,
   UserRoutes,
-} from "./router";
-import { Suspense, useEffect, useState } from "react";
+} from "@/router";
 import { AppDispatch, RootReducer } from "./store";
-import { useDispatch } from "react-redux";
-import { IResponse } from "./types/responseType";
-import { login } from "./features/Auth/slice/userSlice";
-import axios from "axios";
-import { BACKEND_BASE_URL, REFRESH_TOKEN_API } from "./constants/API";
-import Loading from "./pages/public/Loading";
-import { useSelector } from "react-redux";
+import { IResponse } from "@/types/responseType";
+import { login } from "@/features/Auth/slice/userSlice";
+import { BACKEND_BASE_URL, REFRESH_TOKEN_API } from "@/constants/API";
 
 const App = () => {
   const navigate = useNavigate();

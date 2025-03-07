@@ -1,5 +1,6 @@
-import TrainerLayout from "@/layouts/TrainerLayout";
 import { FC } from "react";
+
+import TrainerLayout from "@/layouts/TrainerLayout";
 
 const Dashboard: FC = () => {
   return (

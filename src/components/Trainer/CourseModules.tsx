@@ -1,7 +1,9 @@
 import { FC, useEffect, useState } from "react";
-import { Button } from "../ui/button";
-import { MdEdit, MdDelete } from "react-icons/md";
-import { ICourse } from "../../types/courseType";
+import { useNavigate } from "react-router-dom";
+
+import { Button } from "@/components/ui";
+import { MdEdit, MdDelete, FaFileVideo, FaFilePdf } from "@/assets/icons";
+import { ICourse } from "@/types/courseType";
 import {
   axiosDeleteRequest,
   axiosGetRequest,
@@ -9,9 +11,7 @@ import {
 } from "@/config/axios";
 import { TRAINER_COURSES_API } from "@/constants/API";
 import { successPopup } from "@/utils/popup";
-import { useNavigate } from "react-router-dom";
-import { FaFileVideo, FaFilePdf } from "react-icons/fa";
-import AddModule from "./AddModule";
+import { AddModule } from "@/components";
 import { ModuleType } from "@/types/courseType";
 
 interface ICourseModulesParams {

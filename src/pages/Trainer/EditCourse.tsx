@@ -1,3 +1,5 @@
+import { FC } from "react";
+
 import {
   BackButton,
   CourseModules,
@@ -5,12 +7,11 @@ import {
   EditCourseRequirements,
   EditCourseSkillsCovered,
 } from "@/components";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
 import useEditCourse from "@/hooks/useEditCourse";
 import TrainerLayout from "@/layouts/TrainerLayout";
 
-const EditCourse = () => {
-  console.log("dfd");
+const EditCourse: FC = () => {
   const { course, setCourse } = useEditCourse();
 
   return (

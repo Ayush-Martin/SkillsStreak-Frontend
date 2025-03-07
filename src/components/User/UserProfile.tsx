@@ -1,23 +1,22 @@
 import { useForm } from "react-hook-form";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
-import { FaUserTie } from "react-icons/fa6";
 import { z } from "zod";
+import { useDispatch } from "react-redux";
+import { ChangeEvent, FC } from "react";
+
+import { Button, Input, Textarea } from "@/components/ui";
+import { FaUserTie } from "@/assets/icons";
 import {
   AboutValidationRule,
   AreaOfInterestValidationRule,
   UsernameValidationRule,
 } from "@/utils/validationRules";
-import ErrorText from "../ErrorText";
+import { ErrorText } from "@/components";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store";
+import { AppDispatch } from "./../../store";
 import {
   updateProfileApi,
   updateProfileImageApi,
 } from "@/features/Auth/api/userApi";
-import { ChangeEvent, FC } from "react";
 
 const UserProfileSchema = z.object({
   username: UsernameValidationRule,

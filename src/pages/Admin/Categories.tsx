@@ -1,4 +1,17 @@
+import { FC, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { z } from "zod";
+
 import { ErrorText, Pagination, SearchBox } from "@/components";
+import {
+  IoIosSave,
+  RiFolderCloseFill,
+  IoEye,
+  IoEyeOff,
+  MdEdit,
+  MdOutlineRefresh,
+} from "@/assets/icons";
 import {
   Table,
   TableBody,
@@ -6,7 +19,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+  Input
+} from "@/components/ui";
 import {
   adminCategoryEditApi,
   adminCategoryListUnListApi,
@@ -14,18 +28,8 @@ import {
 } from "@/features/admin/api/adminCategoryApi";
 import { changePage } from "@/features/admin/slice/adminCategorySlice";
 import AdminLayout from "@/layouts/AdminLayout";
-import { AppDispatch, RootReducer } from "@/store";
-import { FC, useState } from "react";
-import { useForm } from "react-hook-form";
-import { IoIosSave } from "react-icons/io";
-import { RiFolderCloseFill } from "react-icons/ri";
-import { IoEye, IoEyeOff } from "react-icons/io5";
-import { MdEdit } from "react-icons/md";
-import { MdOutlineRefresh } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
-import { z } from "zod";
+import { AppDispatch, RootReducer } from "../../store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
 import { CategoryNameValidationRule } from "@/utils/validationRules";
 import usePaginatedData from "@/hooks/usePaginatedData";
 

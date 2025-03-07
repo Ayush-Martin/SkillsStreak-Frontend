@@ -1,3 +1,6 @@
+import { FC } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import { Pagination, SearchBox } from "@/components";
 import AdminLayout from "@/layouts/AdminLayout";
 import {
@@ -7,12 +10,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { CgUnblock, CgBlock } from "react-icons/cg";
-import { MdOutlineRefresh } from "react-icons/md";
-import { useSelector, useDispatch } from "react-redux";
-import { AppDispatch, RootReducer } from "@/store";
-import { FC } from "react";
+} from "@/components/ui";
+import { CgUnblock, CgBlock, MdOutlineRefresh } from "@/assets/icons";
+import { AppDispatch, RootReducer } from "../../store";
 import {
   adminBlockUnblockUserApi,
   getAdminUsersApi,

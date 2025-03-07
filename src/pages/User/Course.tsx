@@ -1,9 +1,18 @@
+import { FC, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+  Progress,
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  Button,
+} from "@/components/ui";
 import {
   axiosGetRequest,
   axiosPatchRequest,
@@ -12,30 +21,16 @@ import {
 import { COURSES_API, ENROLLED_COURSES } from "@/constants/API";
 import UserLayout from "@/layouts/UserLayout";
 import { ICourseDetails } from "@/types/courseType";
-import { FC, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import Loading from "../public/Loading";
-import { AboutTheTrainer, PdfViewer, VideoPlayer } from "@/components";
-import { Progress } from "@/components/ui/progress";
-import { FaLock } from "react-icons/fa";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { IoVideocam } from "react-icons/io5";
-import { FaFilePdf } from "react-icons/fa6";
-import { Button } from "@/components/ui/button";
+import { AboutTheTrainer, PdfViewer, VideoPlayer, Loading } from "@/components";
+import { FaLock, IoVideocam, FaFilePdf } from "@/assets/icons";
 import { successPopup } from "@/utils/popup";
 import usePayment from "@/hooks/usePayment";
-import { Input } from "@/components/ui/input";
 
 const Course: FC = () => {
   const { courseId } = useParams();
   const handlePayment = usePayment();
   const [course, setCourse] = useState<ICourseDetails | null>(null);
-  const [useAccess, setUserAccess] = useState<boolean | null>(null);
+  const [courseAccess, setCourseAccess] = useState<boolean | null>(null);
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
   const [selectedLesson, setSelectedLesson] = useState<{
     _id: string;
@@ -45,10 +40,10 @@ const Course: FC = () => {
     type: string;
   } | null>(null);
 
-  console.log(completedLessons);
-
   const fetchLesson = async (lessonId: string) => {
-    const res = await axiosGetRequest(`lessons/${lessonId}`);
+    const res = await axiosGetRequest(
+      `${ENROLLED_COURSES}/${courseId}/lessons/${lessonId}`
+    );
     if (!res) return;
     setSelectedLesson(res.data);
   };
@@ -61,18 +56,21 @@ const Course: FC = () => {
 
   const completeUnCompleteCourse = async (lessonId: string) => {
     const res = await axiosPatchRequest(
-      `${ENROLLED_COURSES}/${courseId}/${lessonId}`
+      `${ENROLLED_COURSES}/${courseId}/lessons/${lessonId}`
     );
     if (!res) return;
-    setCompletedLessons(res.data.completedLessons);
+    const updatedCompletedLessons = completedLessons.includes(lessonId)
+      ? completedLessons.filter((id) => id !== lessonId)
+      : [...completedLessons, lessonId];
+    setCompletedLessons(updatedCompletedLessons);
   };
 
   useEffect(() => {
     const fetchAccess = async () => {
       const res = await axiosGetRequest(`${COURSES_API}/${courseId}/access`);
-      setUserAccess(false);
+      setCourseAccess(false);
       if (!res) return;
-      setUserAccess(true);
+      setCourseAccess(true);
     };
 
     fetchAccess();
@@ -83,20 +81,20 @@ const Course: FC = () => {
       const res = await axiosGetRequest(`${COURSES_API}/${courseId}`);
       if (!res) return;
       setCourse(res.data);
-      if (useAccess) {
+      if (courseAccess) {
         fetchLesson(res.data?.modules[0].lessons[0]._id);
         fetchEnrolledCourse();
       }
     };
     fetchCourse();
-  }, [useAccess]);
+  }, [courseAccess]);
 
   const handleEnroll = async () => {
     const res = await axiosPostRequest(`${COURSES_API}/${courseId}`, {});
     if (!res) return;
     if (!res.data) {
       successPopup(res.message || "enrolled");
-      setUserAccess(true);
+      setCourseAccess(true);
     }
     handlePayment(res.data.amount, res.data.id, async (orderId: string) => {
       const res = await axiosPostRequest(`${COURSES_API}/${courseId}/payment`, {
@@ -105,12 +103,12 @@ const Course: FC = () => {
 
       if (!res) return;
 
-      setUserAccess(true);
+      setCourseAccess(true);
       successPopup(res.message || "enrolled");
     });
   };
 
-  if (useAccess === null) return <Loading />;
+  if (courseAccess === null) return <Loading />;
   if (!course) return <Loading />;
 
   const completedPercentage = Math.floor(
@@ -213,6 +211,7 @@ const Course: FC = () => {
                           </div>
 
                           <input
+                            key={lesson._id}
                             type="checkbox"
                             className="w-5 h-5 bg-transparent"
                             checked={completedLessons.includes(lesson._id)}
@@ -228,7 +227,7 @@ const Course: FC = () => {
               </Accordion>
             </div>
           </div>
-          {useAccess == false && (
+          {courseAccess == false && (
             <div className="absolute top-0 bottom-0 left-0 right-0 z-10 flex flex-col items-center justify-center h-full gap-2 bg-black bg-opacity-75">
               <h1 className="flex flex-col items-center justify-center gap-2 text-2xl text-app-accent">
                 <FaLock className="text-3xl" /> you don,t have access
@@ -240,22 +239,14 @@ const Course: FC = () => {
           )}
         </div>
         <div className="px-2 mt-10 md:px-10">
-          <div>
+          <div className="mb-5">
             <h1 className="text-lg text-white lg:text-2xl">Description</h1>
             <p className="mt-2 text-sm text-white">
-              {selectedLesson?.description}{" "}
+              {selectedLesson?.description}
             </p>
           </div>
-          <div className="my-10">
-            <h1 className="text-lg text-white lg:text-2xl">Description</h1>
-            <p className="mt-2 text-sm text-white">{course.description} </p>
-          </div>
 
-          <AboutTheTrainer
-            about={course.trainer.about}
-            profileImage={course.trainer.profileImage}
-            username={course.trainer.username}
-          />
+          <AboutTheTrainer {...course.trainer} />
         </div>
       </div>
     </UserLayout>

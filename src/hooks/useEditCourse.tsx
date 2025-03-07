@@ -1,8 +1,9 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 import { axiosGetRequest } from "@/config/axios";
 import { TRAINER_COURSES_API } from "@/constants/API";
 import { ICourse } from "@/types/courseType";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 
 const useEditCourse = () => {
   const { courseId } = useParams();

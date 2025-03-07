@@ -1,13 +1,17 @@
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { FC } from "react";
+
 import { Pagination, SearchBox } from "@/components";
-import { Button } from "@/components/ui/button";
 import {
+  Button,
   TableHead,
   TableHeader,
   TableRow,
   Table,
   TableBody,
   TableCell,
-} from "@/components/ui/table";
+} from "@/components/ui";
 import {
   getTrainerCoursesApi,
   trainerCourseListUnListApi,
@@ -15,12 +19,8 @@ import {
 import { changePage } from "@/features/trainer/slice/TrainerCoursesSlice";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import TrainerLayout from "@/layouts/TrainerLayout";
-import { AppDispatch, RootReducer } from "@/store";
-import { FC } from "react";
-import { IoEye, IoEyeOff } from "react-icons/io5";
-import { MdOutlineRefresh } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { AppDispatch, RootReducer } from "../../store";
+import { IoEye, IoEyeOff, MdOutlineRefresh } from "@/assets/icons";
 
 const MyCourses: FC = () => {
   const navigate = useNavigate();

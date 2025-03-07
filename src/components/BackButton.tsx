@@ -1,5 +1,6 @@
-import { IoMdArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+
+import { IoMdArrowBack } from "@/assets/icons";
 
 const BackButton = () => {
   const navigate = useNavigate();

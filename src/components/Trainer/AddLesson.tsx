@@ -1,11 +1,10 @@
-import { IoCloseCircle } from "react-icons/io5";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
-import { LessonSchema, LessonSchemaType } from "@/pages/Trainer/EditModule";
-import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
+import { FC, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import { IoCloseCircle } from "@/assets/icons";
+import { Button, Input, Textarea } from "@/components/ui";
+import { LessonSchema, LessonSchemaType } from "@/pages/Trainer/EditModule";
 
 interface IAddLessonParams {
   close: () => void;

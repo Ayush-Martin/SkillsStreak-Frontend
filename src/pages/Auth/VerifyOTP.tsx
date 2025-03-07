@@ -1,14 +1,15 @@
-import AuthLayout from "@/layouts/AuthLayout";
 import { useLocation, useNavigate } from "react-router-dom";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
+import { useState, useEffect, FC } from "react";
+
+import AuthLayout from "@/layouts/AuthLayout";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from "@/components/ui/input-otp";
-import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { Button } from "@/components/ui/button";
-import { useState, useEffect, FC } from "react";
+  Button,
+} from "@/components/ui";
 import { axiosPostRequest } from "@/config/axios";
 import { COMPLETE_REGISTER_API, VERIFY_OTP_API } from "@/constants/API";
 import { successPopup } from "@/utils/popup";

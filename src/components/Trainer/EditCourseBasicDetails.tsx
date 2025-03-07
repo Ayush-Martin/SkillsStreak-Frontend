@@ -1,8 +1,10 @@
 import { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
+import { z } from "zod";
+
 import {
+  Input,
+  Textarea,
   Select,
   SelectContent,
   SelectGroup,
@@ -10,18 +12,17 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+  Button,
+} from "@/components/ui";
 import {
   axiosGetRequest,
   axiosPatchRequest,
   axiosPutRequest,
 } from "@/config/axios";
-import ErrorText from "../ErrorText";
-import { ICourse } from "../../types/courseType";
+import { ErrorText } from "@/components";
+import { ICourse, ICourseDifficulty } from "@/types/courseType";
 import { TRAINER_COURSES_API } from "@/constants/API";
 import { successPopup } from "@/utils/popup";
-import { Button } from "../ui/button";
-import { z } from "zod";
 import {
   CourseCategoryIdValidationRule,
   CourseDescriptionValidationRule,
@@ -30,6 +31,7 @@ import {
   CourseTitleValidationRule,
 } from "@/utils/validationRules";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { COURSE_DIFFICULTY } from "@/constants/course";
 
 interface ICourseBasicDetailsProps {
   course: ICourse;
@@ -155,7 +157,7 @@ const CourseBasicDetails: FC<ICourseBasicDetailsProps> = ({
             <p className="text-app-accent">Difficulty</p>
             <Select
               defaultValue={watch("difficulty")}
-              onValueChange={(val: "beginner" | "intermediate" | "advance") => {
+              onValueChange={(val: ICourseDifficulty) => {
                 setValue("difficulty", val);
               }}
             >
@@ -165,9 +167,11 @@ const CourseBasicDetails: FC<ICourseBasicDetailsProps> = ({
               <SelectContent className="bg-app-neutral">
                 <SelectGroup>
                   <SelectLabel>Difficulty</SelectLabel>
-                  <SelectItem value="beginner">Beginner</SelectItem>
-                  <SelectItem value="intermediate">Intermediate</SelectItem>
-                  <SelectItem value="advance">Advance</SelectItem>
+                  {COURSE_DIFFICULTY.map((difficulty) => (
+                    <SelectItem value={difficulty} key={difficulty}>
+                      {difficulty}
+                    </SelectItem>
+                  ))}
                 </SelectGroup>
               </SelectContent>
             </Select>
