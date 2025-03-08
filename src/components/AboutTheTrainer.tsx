@@ -1,4 +1,4 @@
-import  { FC } from "react";
+import { FC } from "react";
 
 import { FaUserTie } from "@/assets/icons";
 
@@ -23,7 +23,7 @@ const AboutTheTrainer: FC<IAboutTheTrainerProps> = ({
               <img
                 src={profileImage}
                 alt=""
-                className="object-cover rounded-full w-52 h-52"
+                className="object-cover rounded-full w-36 h-36"
               />
             ) : (
               <div className="flex items-center justify-center text-6xl rounded-full w-36 h-36 text-app-primary ">

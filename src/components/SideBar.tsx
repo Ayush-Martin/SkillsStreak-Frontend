@@ -4,7 +4,12 @@ import { NavLink } from "react-router-dom";
 import { CgMenuGridO } from "@/assets/icons";
 
 interface ISideBarProps {
-  sidebarItems: Array<{ name: string; icon: ReactNode; link: string }>;
+  sidebarItems: Array<{
+    name: string;
+    icon: ReactNode;
+    link: string;
+    end?: boolean;
+  }>;
 }
 
 const SideBar: FC<ISideBarProps> = ({ sidebarItems }) => {
@@ -36,6 +41,7 @@ const SideBar: FC<ISideBarProps> = ({ sidebarItems }) => {
             to={item.link}
             key={item.name}
             className={"w-full  px-2 py-2 flex items-center gap-2"}
+            end={item?.end || false}
           >
             {item.icon}
             {item.name}

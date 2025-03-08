@@ -85,7 +85,7 @@ export const AuthRoutes: Routes = [
 
 export const UserRoutes: Routes = [
   {
-    path: "profile",
+    path: "",
     Component: Profile,
   },
   {

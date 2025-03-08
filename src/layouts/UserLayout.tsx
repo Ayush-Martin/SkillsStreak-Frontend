@@ -43,7 +43,7 @@ const UserLayout: FC<IUserLayoutProps> = ({ children }) => {
           </li>
           <li className="hover:text-app-accent">
             <NavLink
-              to={"/user/profile"}
+              to={"/user"}
               className={({ isActive }) => (isActive ? "text-app-accent" : "")}
             >
               Dashboard

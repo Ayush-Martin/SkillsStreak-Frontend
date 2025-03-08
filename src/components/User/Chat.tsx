@@ -10,7 +10,6 @@ import {
   TabsTrigger,
 } from "@/components/ui";
 
-
 import AiChat from "./AiChat";
 import PremiumChat from "./PremiumChat";
 
@@ -31,12 +30,12 @@ const Chat = () => {
           <Tabs defaultValue="aiChat" className="w-80">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="aiChat">Ai Chat</TabsTrigger>
-              <TabsTrigger value="specialChat">Special Chat</TabsTrigger>
+              <TabsTrigger value="premiumChat">Premium Chat</TabsTrigger>
             </TabsList>
             <TabsContent value="aiChat">
               <AiChat />
             </TabsContent>
-            <TabsContent value="specialChat">
+            <TabsContent value="premiumChat">
               <PremiumChat />
             </TabsContent>
           </Tabs>

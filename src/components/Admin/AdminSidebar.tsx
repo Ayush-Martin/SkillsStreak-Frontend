@@ -13,7 +13,7 @@ import {
 } from "@/assets/icons";
 
 const sidebarItems = [
-  { name: "Dashboard", icon: <MdDashboard />, link: "/admin" },
+  { name: "Dashboard", icon: <MdDashboard />, link: "/admin", end: true },
   { name: "Users", icon: <FaUsers />, link: "/admin/users" },
   {
     name: "Trainer Requests",
