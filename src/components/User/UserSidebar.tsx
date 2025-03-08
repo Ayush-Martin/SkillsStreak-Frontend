@@ -17,7 +17,8 @@ const UserSidebar: FC = () => {
     {
       name: "Profile",
       icon: <ImProfile />,
-      link: "/user/profile",
+      link: "/user",
+      end: true,
     },
     {
       name: "Enrolled Courses",

@@ -1,15 +1,7 @@
 import { useState } from "react";
 
 import { BsFillChatLeftTextFill } from "@/assets/icons";
-import {
-  Input,
-  ScrollArea,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui";
-
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
 
 import AiChat from "./AiChat";
 import PremiumChat from "./PremiumChat";
