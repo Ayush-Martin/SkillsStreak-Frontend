@@ -8,16 +8,16 @@ import {
   axiosGetRequest,
   axiosPatchRequest,
   axiosPostRequest,
+  axiosPutRequest,
 } from "@/config/axios";
 import { TRAINER_COURSES_API } from "@/constants/API";
 import TrainerLayout from "@/layouts/TrainerLayout";
 import { successPopup } from "@/utils/popup";
-import { BackButton, PdfViewer, VideoPlayer, AddLesson } from "@/components";
+import { BackButton, LessonCard, AddLesson } from "@/components";
 import {
   LessonDescriptionValidationRule,
   LessonTitleValidationRule,
 } from "@/utils/validationRules";
-import { MdDelete } from "@/assets/icons";
 import { ModuleType } from "@/types/courseType";
 
 export const LessonSchema = z.object({
@@ -101,6 +101,48 @@ const EditModule: FC = () => {
     });
   };
 
+  const updateLessonDetails = async (
+    lessonId: string,
+    data: LessonSchemaType
+  ) => {
+    const res = await axiosPutRequest(
+      `${TRAINER_COURSES_API}/${courseId}/modules/${moduleId}/${lessonId}`,
+      data
+    );
+
+    if (!res) return;
+    successPopup(res.message || "edited");
+    setModule({
+      ...module,
+      lessons: module.lessons.map((lesson) =>
+        lesson._id == lessonId ? res.data : lesson
+      ),
+    });
+  };
+
+  const updateLessonFile = async (lessonId: string, file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await axiosPatchRequest(
+      `${TRAINER_COURSES_API}/${courseId}/modules/${moduleId}/${lessonId}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    if (!res) return;
+    successPopup(res.message || "edited");
+    setModule({
+      ...module,
+      lessons: module.lessons.map((lesson) =>
+        lesson._id == lessonId ? res.data : lesson
+      ),
+    });
+  };
+
   return (
     <TrainerLayout>
       <BackButton />
@@ -122,41 +164,17 @@ const EditModule: FC = () => {
 
       <div className="flex flex-col mt-10 gap-7">
         {module.lessons.map((lesson) => (
-          <div className="w-full px-5 py-2 bg-app-border" key={lesson._id}>
-            <div className="flex justify-between">
-              <h1 className="text-2xl text-app-secondary">
-                <span className="text-app-accent">Title :</span> {lesson.title}
-              </h1>
-              <div className="flex gap-2 text-2xl ">
-                <button
-                  className="text-red-500"
-                  onClick={() => deleteLesson(lesson._id)}
-                >
-                  <MdDelete />
-                </button>
-                {/* <button className="text-2xl text-app-tertiary">
-                  <MdDragHandle />
-                </button> */}
-              </div>
-            </div>
-            <div className="flex flex-col gap-10 mt-2 lg:flex-row">
-              <div className="flex justify-center md:block">
-                {lesson.type == "video" ? (
-                  <div className="w-[400px]">
-                    <VideoPlayer url={lesson.path} />
-                  </div>
-                ) : (
-                  <div className="h-[200px] w-[400px]">
-                    <PdfViewer path={lesson.path} />
-                  </div>
-                )}
-              </div>
-              <div>
-                <p className="text-xl text-app-accent">Description</p>
-                <p>{lesson.description}</p>
-              </div>
-            </div>
-          </div>
+          <LessonCard
+            key={lesson._id}
+            id={lesson._id}
+            deleteLesson={deleteLesson}
+            path={lesson.path}
+            title={lesson.title}
+            description={lesson.description}
+            type={lesson.type}
+            updateLessonDetails={updateLessonDetails}
+            updateLessonFile={updateLessonFile}
+          />
         ))}
       </div>
     </TrainerLayout>

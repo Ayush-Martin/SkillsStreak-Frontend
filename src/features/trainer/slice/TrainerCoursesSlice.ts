@@ -15,6 +15,7 @@ type MyCoursesType = Array<{
   isListed: boolean;
   price: number;
   difficulty: "beginner" | "intermediate" | "advance";
+  status: "pending" | "approved" | "rejected";
 }>;
 
 type initialStateType = {

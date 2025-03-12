@@ -4,8 +4,15 @@ import { FC } from "react";
 import AdminLayout from "@/layouts/AdminLayout";
 import { AppDispatch, RootReducer } from "@/store";
 import usePaginatedData from "@/hooks/usePaginatedData";
-import { IoEye, IoEyeOff, MdOutlineRefresh } from "@/assets/icons";
 import {
+  IoEye,
+  IoEyeOff,
+  MdOutlineRefresh,
+  AiOutlineCheckCircle,
+  AiFillCloseCircle,
+} from "@/assets/icons";
+import {
+  adminCourseApproveRejectApi,
   adminCourseListUnListApi,
   getAdminCoursesApi,
 } from "@/features/admin/api/adminCourseApi";
@@ -38,6 +45,13 @@ const Courses: FC = () => {
     dispatch(getAdminCoursesApi({ page: 1, search }));
   };
 
+  const approvedRejectCourse = (
+    courseId: string,
+    status: "approved" | "rejected"
+  ) => {
+    dispatch(adminCourseApproveRejectApi({ courseId, status }));
+  };
+
   return (
     <AdminLayout>
       <SearchBox
@@ -56,8 +70,11 @@ const Courses: FC = () => {
             <TableHead>Title</TableHead>
             <TableHead>Trainer</TableHead>
             <TableHead>Category</TableHead>
-            <TableHead>Difficulty</TableHead>
             <TableHead>Price</TableHead>
+            <TableHead>
+              <span className="block text-center">status</span>
+              <span className="block text-center">(approve/reject)</span>{" "}
+            </TableHead>
             <TableHead>List/UnList</TableHead>
           </TableRow>
         </TableHeader>
@@ -74,12 +91,42 @@ const Courses: FC = () => {
                 <TableCell>{course.title}</TableCell>
                 <TableCell>{course.trainerId.email}</TableCell>
                 <TableCell>{course.categoryId.categoryName}</TableCell>
-                <TableCell>{course.difficulty}</TableCell>
                 <TableCell>{course.price}</TableCell>
+                <TableCell className="text-center">
+                  {course.status == "pending" ? (
+                    <div className="flex items-center justify-center gap-2">
+                      <button
+                        className="text-3xl text-green-500"
+                        onClick={() =>
+                          approvedRejectCourse(course._id, "approved")
+                        }
+                      >
+                        <AiOutlineCheckCircle />
+                      </button>
+                      <button
+                        className="text-3xl text-red-500"
+                        onClick={() =>
+                          approvedRejectCourse(course._id, "rejected")
+                        }
+                      >
+                        <AiFillCloseCircle />
+                      </button>
+                    </div>
+                  ) : course.status == "approved" ? (
+                    <p className="text-green-500">Approved</p>
+                  ) : (
+                    <p className="text-red-50">Rejected</p>
+                  )}
+                </TableCell>
                 <TableCell>
                   <button
+                    disabled={course.status !== "approved"}
                     className={`text-3xl ${
-                      course.isListed ? "text-red-500" : "text-app-secondary"
+                      course.status !== "approved"
+                        ? "text-gray-400"
+                        : course.isListed
+                        ? "text-red-500"
+                        : "text-app-secondary"
                     }`}
                     onClick={() =>
                       dispatch(adminCourseListUnListApi(course._id))

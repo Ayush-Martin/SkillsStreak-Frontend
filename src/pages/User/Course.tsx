@@ -12,6 +12,10 @@ import {
   AccordionItem,
   AccordionTrigger,
   Button,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
 } from "@/components/ui";
 import {
   axiosGetRequest,
@@ -21,7 +25,13 @@ import {
 import { COURSES_API, ENROLLED_COURSES } from "@/constants/API";
 import UserLayout from "@/layouts/UserLayout";
 import { ICourseDetails } from "@/types/courseType";
-import { AboutTheTrainer, PdfViewer, VideoPlayer, Loading } from "@/components";
+import {
+  AboutTheTrainer,
+  PdfViewer,
+  VideoPlayer,
+  Loading,
+  Certificate,
+} from "@/components";
 import { FaLock, IoVideocam, FaFilePdf } from "@/assets/icons";
 import { successPopup } from "@/utils/popup";
 import usePayment from "@/hooks/usePayment";
@@ -239,11 +249,51 @@ const Course: FC = () => {
           )}
         </div>
         <div className="px-2 mt-10 md:px-10">
-          <div className="mb-5">
-            <h1 className="text-lg text-white lg:text-2xl">Description</h1>
-            <p className="mt-2 text-sm text-white">
-              {selectedLesson?.description}
-            </p>
+          <div className="mb-16 md:w-3/4">
+            <Tabs defaultValue="description" className="w-full my-5 ">
+              <TabsList className="w-full overflow-x-auto min-w-48">
+                <TabsTrigger value="description" className="w-full">
+                  Description
+                </TabsTrigger>
+                <TabsTrigger value="doubts" className="w-full">
+                  Doubts
+                </TabsTrigger>
+                <TabsTrigger value="certificate" className="w-full">
+                  Certificate
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="description" className="py-5">
+                <h1 className="text-xl text-white lg:text-3xl">Description</h1>
+                <p className="mt-2 text-sm text-white">
+                  {selectedLesson?.description}
+                </p>
+              </TabsContent>
+              <TabsContent value="doubts">
+                <h1 className="text-lg text-white lg:text-2xl">Description</h1>
+                <p className="mt-2 text-sm text-white">
+                  {selectedLesson?.description}
+                </p>
+              </TabsContent>
+              <TabsContent value="certificate" className="py-5">
+                <h1 className="text-xl text-white lg:text-3xl">Certificate</h1>
+                {completedPercentage == 100 ? (
+                  <div className="flex items-center gap-2">
+                    <p className="mt-2 text-lg font-thin text-white">
+                      Download Certificate here
+                    </p>
+                    <Certificate
+                      courseName={course.title}
+                      trainerName={course.trainer.username}
+                    />
+                  </div>
+                ) : (
+                  <p className="mt-2 text-lg font-thin text-white">
+                    you have now only completed {completedPercentage}% complete
+                    all lessons to download certificate
+                  </p>
+                )}
+              </TabsContent>
+            </Tabs>
           </div>
 
           <AboutTheTrainer {...course.trainer} />

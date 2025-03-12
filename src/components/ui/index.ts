@@ -11,3 +11,7 @@ export * from "./table";
 export * from "./tabs";
 export * from "./textarea";
 export * from "./scroll-area";
+export * from "./chart";
+export * from "./collapsible";
+export * from "./dialog";
+export * from "./label";

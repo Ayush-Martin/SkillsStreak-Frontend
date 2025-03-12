@@ -1,27 +1,12 @@
 import { Input, ScrollArea } from "@/components/ui";
 import { RiSendPlane2Fill, FaLock } from "@/assets/icons";
-import usePayment from "@/hooks/usePayment";
-import { axiosGetRequest, axiosPostRequest } from "@/config/axios";
+import { axiosGetRequest } from "@/config/axios";
 import { successPopup } from "@/utils/popup";
 import { useEffect, useState } from "react";
+import useSubscription from "@/hooks/useSubscription";
 const PremiumChat = () => {
   const [chatAccess, setChatAccess] = useState(true);
-  const handlePayment = usePayment();
-
-  const getSubscription = async () => {
-    const res = await axiosGetRequest(`/subscription`);
-    if (!res) return;
-
-    handlePayment(res.data.amount, res.data.id, async (orderId: string) => {
-      const res = await axiosPostRequest(`/subscription`, {
-        orderId,
-      });
-      if (!res) return;
-
-      setChatAccess(true);
-      successPopup(res.message || "enrolled");
-    });
-  };
+  const getSubscription = useSubscription();
 
   useEffect(() => {
     const fetchChat = async () => {
@@ -35,6 +20,13 @@ const PremiumChat = () => {
 
     fetchChat();
   }, []);
+
+  const handleSubscription = () => {
+    getSubscription((message: string | undefined) => {
+      setChatAccess(true);
+      successPopup(message || "enrolled");
+    });
+  };
 
   return (
     <>
@@ -61,7 +53,7 @@ const PremiumChat = () => {
         {!chatAccess && (
           <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center w-full h-full gap-2 px-5 py-2 text-lg bg-black bg-opacity-60 backdrop-blur-sm text-app-accent">
             <FaLock />
-            <button className="underline" onClick={getSubscription}>
+            <button className="underline" onClick={handleSubscription}>
               Subscribe to premium
             </button>
           </div>

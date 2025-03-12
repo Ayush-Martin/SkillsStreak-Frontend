@@ -27,7 +27,6 @@ const usePaginatedData = <T,>({
   const startIndex = (currentPage - 1) * RECORDS_PER_PAGE;
   const [search, setSearch] = useState("");
 
-
   useEffect(() => {
     if (!data.length) {
       dispatch(getDataApi({ page: 1, search, ...extraData }));
@@ -64,12 +63,17 @@ const usePaginatedData = <T,>({
     setSearch(searchInput);
   };
 
+  const refreshHandler = () => {
+    dispatch(getDataApi({ page: 1, search }));
+  };
+
   return {
     paginatedData,
     previousPage,
     nextPage,
     searchHandler,
     search,
+    refreshHandler,
   };
 };
 

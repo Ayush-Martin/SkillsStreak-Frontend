@@ -12,11 +12,13 @@ const ForgetPassword = lazy(() => import("./pages/Auth/ForgetPassword"));
 const ResetPassword = lazy(() => import("./pages/Auth/ResetPassword"));
 
 //User Routes
+const Dashboard = lazy(() => import("./pages/User/DashBoard"));
 const Profile = lazy(() => import("./pages/User/Profile"));
 const EnrolledCourses = lazy(() => import("./pages/User/EnrolledCourse"));
 const Transactions = lazy(() => import("./pages/User/Transactions"));
 const SendTrainerRequest = lazy(() => import("./pages/User/TrainerRequest"));
 const Course = lazy(() => import("./pages/User/Course"));
+const Certificates = lazy(() => import("./pages/User/Certificates"));
 
 //Premium User Routes
 //Todo
@@ -28,6 +30,7 @@ const TrainerAddCourse = lazy(() => import("./pages/Trainer/AddCourse"));
 const TrainerEditCourse = lazy(() => import("./pages/Trainer/EditCourse"));
 const TrainerEditModule = lazy(() => import("./pages/Trainer/EditModule"));
 const TrainerWallet = lazy(() => import("./pages/Trainer/Wallet"));
+const TrainerStudents = lazy(() => import("./pages/Trainer/Students"));
 
 //Admin Routes
 const AdminDashboard = lazy(() => import("./pages/Admin/Dashboard"));
@@ -85,6 +88,10 @@ export const AuthRoutes: Routes = [
 
 export const UserRoutes: Routes = [
   {
+    path: "",
+    Component: Dashboard,
+  },
+  {
     path: "profile",
     Component: Profile,
   },
@@ -103,6 +110,10 @@ export const UserRoutes: Routes = [
   {
     path: "enrolledCourses/:courseId/view",
     Component: Course,
+  },
+  {
+    path: "certificates",
+    Component: Certificates,
   },
 ];
 
@@ -128,6 +139,10 @@ export const TrainerRoutes: Routes = [
   {
     path: "courses/:courseId/:moduleId",
     Component: TrainerEditModule,
+  },
+  {
+    path: "students",
+    Component: TrainerStudents,
   },
   {
     path: "wallet",

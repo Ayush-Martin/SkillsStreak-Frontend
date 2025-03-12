@@ -9,6 +9,8 @@ import userTransactions from "./features/user/slice/transactionSlice";
 import enrolledCourses from "./features/user/slice/enrolledCourseSlice";
 import adminTransactions from "./features/admin/slice/adminTransactionSlice";
 import adminCourses from "./features/admin/slice/adminCourseSlice";
+import completedEnrolledCourses from "./features/user/slice/completedEnrolledCourses";
+import trainerStudents from "./features/trainer/slice/StudentsSlice";
 
 const store = configureStore({
   reducer: {
@@ -22,6 +24,8 @@ const store = configureStore({
     adminTransactions,
     enrolledCourses,
     adminCourses,
+    completedEnrolledCourses,
+    trainerStudents,
   },
 });
 

@@ -74,7 +74,7 @@ const CourseModules: FC<ICourseModulesParams> = ({ course }) => {
         {modules.map((module) => (
           <div className="w-full px-5 py-2 bg-app-border" key={module._id}>
             <div className="flex justify-between">
-              <h1 className="text-xl text-app-secondary">{module.title}</h1>
+              <h1 className="text-xl text-app-neutral">{module.title}</h1>
               <div className="flex gap-2 text-xl ">
                 <button
                   className="text-app-accent"

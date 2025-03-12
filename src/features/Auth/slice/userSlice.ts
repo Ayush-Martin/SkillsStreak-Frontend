@@ -10,6 +10,7 @@ interface IUser {
   isBlocked: boolean;
   role: "user" | "admin" | "trainer" | "premium" | "";
   accessToken: string;
+  _id: string;
 }
 
 const initialState: IUser = {
@@ -21,6 +22,7 @@ const initialState: IUser = {
   role: "",
   isBlocked: false,
   accessToken: "",
+  _id: "",
 };
 
 const userSlice = createSlice({
@@ -36,6 +38,7 @@ const userSlice = createSlice({
         isBlocked,
         profileImage,
         role,
+        _id,
       }: IUser = jwtDecode(action.payload);
 
       state.username = username;
@@ -45,6 +48,7 @@ const userSlice = createSlice({
       state.isBlocked = isBlocked;
       state.role = role;
       state.profileImage = profileImage;
+      state._id = _id;
       state.accessToken = action.payload;
     },
     logout: (state) => {
@@ -55,6 +59,7 @@ const userSlice = createSlice({
       state.isBlocked = false;
       state.role = "";
       state.profileImage = "";
+      state._id = "";
       state.accessToken = "";
     },
     setAccessToken: (state, action) => {

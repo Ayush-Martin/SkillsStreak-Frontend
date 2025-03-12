@@ -24,9 +24,9 @@ const EnrolledCourse: FC = () => {
     <UserLayout>
       <div className="relative flex">
         <UserSidebar />
-        <div className="w-full mt-10 ml-0 text-white md:ml-64 h-80 md:mt-0">
-          <div className="flex justify-center mt-10 lg:block sm:px-14 lg:px-24">
-            <div className="grid grid-cols-1 gap-x-2 gap-y-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="w-full mt-10 ml-0 text-white md:ml-64 md:mt-0">
+          <div className="flex justify-center mt-10 sm:px-14 lg:px-24">
+            <div className="grid grid-cols-1 gap-x-2 gap-y-4 sm:grid-cols-2 xl:grid-cols-3">
               {paginatedData.map((enrolledCourse) => (
                 <CourseCard
                   _id={enrolledCourse.courseId}

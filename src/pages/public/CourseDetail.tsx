@@ -22,8 +22,8 @@ import {
   BreadcrumbItem,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from "@/components/ui";              
-import { AboutTheTrainer, Loading } from "@/components";
+} from "@/components/ui";
+import { AboutTheTrainer, Loading, Review } from "@/components";
 
 const CourseDetail: FC = () => {
   const navigate = useNavigate();
@@ -106,7 +106,7 @@ const CourseDetail: FC = () => {
         </div>
       </section>
 
-      <section className="flex flex-col w-full gap-16 px-10 py-5 mt-10 md:px-32 lg:px-56">
+      <section className="flex flex-col w-full gap-16 px-10 py-5 mt-10 mb-40 md:px-32 lg:px-56">
         <div>
           <h1 className="mb-2 text-xl text-app-neutral">Course Contents</h1>
           <Accordion type="single" collapsible className="w-full">
@@ -166,6 +166,10 @@ const CourseDetail: FC = () => {
         </div>
 
         <AboutTheTrainer {...course.trainer} />
+        <div>
+          <h1 className="mb-2 text-xl text-app-neutral">Reviews</h1>
+          <Review courseId={course._id} trainerId={course.trainer._id} />
+        </div>
       </section>
     </UserLayout>
   );

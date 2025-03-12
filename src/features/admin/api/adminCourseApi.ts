@@ -24,9 +24,28 @@ export const getAdminCoursesApi = createAsyncThunk<
 
 export const adminCourseListUnListApi = createAsyncThunk<IResponse, string>(
   "adminCourses/listUnListCategory",
-  async (categoryId, { rejectWithValue }) => {
+  async (courseId, { rejectWithValue }) => {
     try {
-      const response = await appApi.patch(`${ADMIN_COURSES_API}/${categoryId}`);
+      const response = await appApi.patch(`${ADMIN_COURSES_API}/${courseId}`);
+      return response.data;
+    } catch (err) {
+      const resErr = err as IApiResponseError;
+      console.log(err);
+      return rejectWithValue(resErr.response.data.error);
+    }
+  }
+);
+
+export const adminCourseApproveRejectApi = createAsyncThunk<
+  IResponse,
+  { courseId: string; status: "approved" | "rejected" }
+>(
+  "adminCourses/approveRejectCategory",
+  async ({ courseId, status }, { rejectWithValue }) => {
+    try {
+      const response = await appApi.patch(
+        `${ADMIN_COURSES_API}/${courseId}/status?status=${status}`
+      );
       return response.data;
     } catch (err) {
       const resErr = err as IApiResponseError;

@@ -66,6 +66,7 @@ const MyCourses: FC = () => {
             <TableHead>Price</TableHead>
             <TableHead>Difficulty</TableHead>
             <TableHead>Category</TableHead>
+            <TableHead>Status</TableHead>
             <TableHead>List / UnList</TableHead>
           </TableRow>
         </TableHeader>
@@ -87,10 +88,16 @@ const MyCourses: FC = () => {
                 <TableCell>{course.price}</TableCell>
                 <TableCell>{course.difficulty}</TableCell>
                 <TableCell>{course.categoryId.categoryName}</TableCell>
+                <TableCell>{course.status}</TableCell>
                 <TableCell>
                   <button
+                    disabled={course.status !== "approved"}
                     className={`text-3xl ${
-                      course.isListed ? "text-red-500" : "text-app-secondary"
+                      course.status !== "approved"
+                        ? "text-gray-500"
+                        : course.isListed
+                        ? "text-red-500"
+                        : "text-app-secondary"
                     }`}
                     onClick={(e) => {
                       e.stopPropagation();

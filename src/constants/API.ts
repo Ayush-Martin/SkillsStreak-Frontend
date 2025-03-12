@@ -19,6 +19,7 @@ export const TRAINER_REQUEST_API = "/trainerRequest";
 
 //Trainer
 export const TRAINER_COURSES_API = "/trainer/courses";
+export const TRAINER_STUDENTS_API = "/trainer/students";
 
 //Admin
 export const ADMIN_USERS_API = "/admin/users";

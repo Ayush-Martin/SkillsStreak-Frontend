@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  adminCourseApproveRejectApi,
   adminCourseListUnListApi,
   getAdminCoursesApi,
 } from "../api/adminCourseApi";
@@ -20,6 +21,7 @@ interface ICourse {
   isListed: boolean;
   price: number;
   difficulty: "beginner" | "intermediate" | "advance";
+  status: "pending" | "approved" | "rejected";
 }
 
 interface IInitialState {
@@ -45,6 +47,7 @@ const adminCourseSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getAdminCoursesApi.fulfilled, (state, action) => {
       const data: IInitialState = action.payload.data;
+      console.log(data);
       if (data.currentPage == 1) {
         state.courses = data.courses;
       } else {
@@ -65,6 +68,24 @@ const adminCourseSlice = createSlice({
     });
 
     builder.addCase(adminCourseListUnListApi.rejected, (_, action) => {
+      const err = action.payload as string;
+      errorPopup(err);
+    });
+
+    builder.addCase(adminCourseApproveRejectApi.fulfilled, (state, action) => {
+      const {
+        courseId,
+        status,
+      }: { courseId: string; status: "approved" | "rejected" } =
+        action.payload.data;
+
+      state.courses = state.courses.map((oldCourse) =>
+        oldCourse._id == courseId ? { ...oldCourse, status } : oldCourse
+      );
+      successPopup(action.payload.message || "course status changed");
+    });
+
+    builder.addCase(adminCourseApproveRejectApi.rejected, (_, action) => {
       const err = action.payload as string;
       errorPopup(err);
     });
