@@ -3,7 +3,7 @@ import { FC, ReactNode } from "react";
 import logo from "@/assets/images/logo.png";
 import { Button } from "@/components/ui";
 import useLogout from "@/hooks/useLogout";
-import { AdminSidebar } from "@/components";
+import { AdminSidebar, Notification } from "@/components";
 
 interface IAdminLayoutProps {
   children: ReactNode;
@@ -17,9 +17,12 @@ const AdminLayout: FC<IAdminLayoutProps> = ({ children }) => {
         <div className="hidden w-24 sm:block"></div>
         <img src={logo} alt="" className="object-contain" width={"130px"} />
 
-        <Button variant={"v2"} className="" onClick={logoutHandler}>
-          Logout
-        </Button>
+        <div className="flex items-center gap-4">
+          <Notification />
+          <Button variant={"v2"} className="" onClick={logoutHandler}>
+            Logout
+          </Button>
+        </div>
       </header>
 
       <section className="min-h-screen pt-20">

@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { Button, Input } from "@/components/ui";
-import { ErrorText ,GoogleAuth} from "@/components";
+import { ErrorText, GoogleAuth } from "@/components";
 import { AppDispatch } from "@/store";
 import { login } from "@/features/Auth/slice/userSlice";
 
@@ -17,6 +17,7 @@ import { z } from "zod";
 import { successPopup } from "@/utils/popup";
 import { axiosPostRequest } from "@/config/axios";
 import { LOGIN_API } from "@/constants/API";
+import { connectSocket } from "@/config/socket";
 
 const LoginSchema = z.object({
   email: EmailValidationRule,
@@ -46,6 +47,7 @@ const Login: FC = () => {
     if (!res) return;
     successPopup(res.message || "user logged in");
     dispatch(login(res.data));
+    connectSocket();
     navigate(from, { replace: true });
   };
 

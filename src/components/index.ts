@@ -34,3 +34,4 @@ export { default as Certificate } from "./User/Certificate";
 export { default as RefreshData } from "./RefreshData";
 export { default as Review } from "./User/Review";
 export { default as ProfileImage } from "./ProfileImage";
+export { default as Notification } from "./Notification";

@@ -8,6 +8,7 @@ export {
   MdHome,
   MdOutlineRefresh,
   MdViewModule,
+  MdClear,
 } from "react-icons/md";
 export {
   FaUsers,
@@ -26,7 +27,12 @@ export {
   IoEyeOff,
   IoVideocam,
 } from "react-icons/io5";
-export { IoIosSave, IoMdArrowBack } from "react-icons/io";
+export {
+  IoIosSave,
+  IoMdArrowBack,
+  IoIosNotifications,
+  IoIosNotificationsOutline,
+} from "react-icons/io";
 export {
   RiFolderCloseFill,
   RiGraduationCapFill,

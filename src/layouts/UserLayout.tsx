@@ -7,7 +7,7 @@ import { Button } from "@/components/ui";
 import Hamburger from "hamburger-react";
 import useLogout from "@/hooks/useLogout";
 import { RootReducer } from "@/store";
-import { Chat } from "@/components";
+import { Chat, Notification } from "@/components";
 
 interface IUserLayoutProps {
   children: ReactNode;
@@ -51,44 +51,54 @@ const UserLayout: FC<IUserLayoutProps> = ({ children }) => {
           </li>
         </ul>
 
-        <Button
-          variant={"v2"}
-          className="hidden sm:block"
-          onClick={accessToken ? logoutHandler : () => navigate("/auth")}
-        >
-          {accessToken ? "Logout" : "Login"}
-        </Button>
-
-        <div className=" sm:hidden">
-          <Hamburger
-            toggled={hamburgerOpen}
-            toggle={setHamburgerOpen}
-            size={25}
-          />
-          <ul
-            className={`fixed right-0 left-0 flex flex-col gap-4 text-sm text-white px-1 py-2 text-center rounded-sm  bg-opacity-90 bg-app-border mx-auto w-60 ${
-              !hamburgerOpen && "hidden"
-            }`}
+        <div className="items-center hidden gap-4 sm:flex">
+          <Notification />
+          <Button
+            variant={"v2"}
+            className=""
+            onClick={accessToken ? logoutHandler : () => navigate("/auth")}
           >
-            <li className="hover:text-app-accent active:text-app-accent">
-              <Link to={"/"}>Home</Link>
-            </li>
-            <li className="hover:text-app-accent">
-              <Link to={"/courses"}>Courses</Link>
-            </li>
-            <li className="hover:text-app-accent">
-              <Link to={"/user"}>Dashboard</Link>
-            </li>
-            <li>
-              <Button
-                variant={"v1"}
-                size={"full"}
-                onClick={accessToken ? logoutHandler : () => navigate("/auth")}
-              >
-                {accessToken ? "Logout" : "Login"}
-              </Button>
-            </li>
-          </ul>
+            {accessToken ? "Logout" : "Login"}
+          </Button>
+        </div>
+
+        <div className="flex items-center gap-1 sm:hidden">
+          <div>
+            <Notification />
+          </div>
+          <div>
+            <Hamburger
+              toggled={hamburgerOpen}
+              toggle={setHamburgerOpen}
+              size={25}
+            />
+            <ul
+              className={`fixed right-0 left-0 flex flex-col gap-4 text-sm text-white px-1 py-2 text-center rounded-sm  bg-opacity-90 bg-app-border mx-auto w-60 ${
+                !hamburgerOpen && "hidden"
+              }`}
+            >
+              <li className="hover:text-app-accent active:text-app-accent">
+                <Link to={"/"}>Home</Link>
+              </li>
+              <li className="hover:text-app-accent">
+                <Link to={"/courses"}>Courses</Link>
+              </li>
+              <li className="hover:text-app-accent">
+                <Link to={"/user"}>Dashboard</Link>
+              </li>
+              <li>
+                <Button
+                  variant={"v1"}
+                  size={"full"}
+                  onClick={
+                    accessToken ? logoutHandler : () => navigate("/auth")
+                  }
+                >
+                  {accessToken ? "Logout" : "Login"}
+                </Button>
+              </li>
+            </ul>
+          </div>
         </div>
       </header>
 

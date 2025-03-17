@@ -50,6 +50,8 @@ const userSlice = createSlice({
       state.profileImage = profileImage;
       state._id = _id;
       state.accessToken = action.payload;
+      
+      
     },
     logout: (state) => {
       state.username = "";

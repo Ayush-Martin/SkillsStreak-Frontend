@@ -14,7 +14,7 @@ import {
 } from "@/assets/icons";
 
 const sidebarItems = [
-  { name: "Dashboard", icon: <MdDashboard />, link: "/admin" },
+  { name: "Dashboard", icon: <MdDashboard />, link: "/admin", end: true },
   { name: "Users", icon: <FaUsers />, link: "/admin/users" },
   {
     name: "Trainer Requests",
@@ -35,6 +35,7 @@ const AdminSidebar: FC = () => {
         <NavLink
           to={item.link}
           key={item.name}
+          end={item.end}
           className={"w-full  px-2 py-2 flex items-center gap-2"}
         >
           {item.icon}

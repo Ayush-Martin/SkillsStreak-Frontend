@@ -46,6 +46,7 @@
     "react-toastify": "^11.0.3",
     "recharts": "^2.15.1",
     "redux-persist": "^6.0.0",
+    "socket.io-client": "^4.8.1",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.1"
@@ -59,6 +60,7 @@
     "@types/react-dom": "^19.0.3",
     "@types/react-toastify": "^4.0.2",
     "@types/redux-persist": "^4.0.0",
+    "@types/socket.io-client": "^1.4.36",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.19.0",
