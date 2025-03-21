@@ -22,9 +22,7 @@ const sidebarItems = [
     link: "/admin/trainerRequests",
   },
   { name: "Courses", icon: <MdVideoLibrary />, link: "/admin/courses" },
-  { name: "Bundles", icon: <FaBoxesStacked />, link: "/admin/bundles" },
   { name: "Categories", icon: <TbCategoryFilled />, link: "/admin/categories" },
-  { name: "Messages", icon: <IoChatbox />, link: "/admin/messages" },
   { name: "Transactions", icon: <MdPayments />, link: "/admin/transactions" },
 ];
 

@@ -13,11 +13,14 @@ const RoutesHandler: FC<IRoutesHandlerProps> = ({ requiredRole }) => {
     (state: RootReducer) => state.user
   );
   const location = useLocation();
-
+  console.log(requiredRole, role);
   if (requiredRole == "auth") {
+    console.log("helll ldff lkdf");
     if (accessToken && !isBlocked) {
+      console.log("I 19212  LDf (0fdf");
       return <Navigate to={"/"} replace />;
     }
+    console.log(Outlet);
     return <Outlet />;
   }
 

@@ -22,11 +22,10 @@ const Notification = () => {
   const { accessToken } = useSelector((state: RootReducer) => state.user);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("notification socket ", accessToken);
-    if (accessToken) {
-      const socket = getSocket();
+  const socket = getSocket();
 
+  useEffect(() => {
+    if (socket) {
       socket.emit(SocketEvents.NOTIFICATION_GET);
 
       socket.on(SocketEvents.NOTIFICATION_GET, (data: Array<INotification>) => {
@@ -42,7 +41,7 @@ const Notification = () => {
         socket.off(SocketEvents.NOTIFICATION_GET);
       };
     }
-  }, [accessToken]);
+  }, [socket]);
 
   if (!accessToken)
     return (

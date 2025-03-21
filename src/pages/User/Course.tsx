@@ -16,6 +16,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
+  ScrollArea,
 } from "@/components/ui";
 import {
   axiosGetRequest,
@@ -181,14 +182,14 @@ const Course: FC = () => {
           </div>
           <div className="h-full px-5 py-2 md:w-1/4 ">
             <h1 className="text-xl text-center lg:text-2xl text-app-secondary">
-              Web Development
+              {course.title}
             </h1>
             <Progress value={completedPercentage} className="w-[100%] mt-4" />
             <p className="mt-1 text-app-highlight">
               {completedPercentage}% lessons completed
             </p>
-            <div
-              className="overflow-y-auto md:h-[260px] lg:h-[490px] mt-10 "
+            <ScrollArea
+              className=" md:h-[260px] lg:h-[490px] mt-10 pr-3"
               style={{ scrollbarWidth: "none" }}
             >
               <Accordion type="single" collapsible className="w-full ">
@@ -235,7 +236,7 @@ const Course: FC = () => {
                   </AccordionItem>
                 ))}
               </Accordion>
-            </div>
+            </ScrollArea>
           </div>
           {courseAccess == false && (
             <div className="absolute top-0 bottom-0 left-0 right-0 z-10 flex flex-col items-center justify-center h-full gap-2 bg-black bg-opacity-55 backdrop-blur-sm">

@@ -17,13 +17,19 @@ import {
   updateProfileApi,
   updateProfileImageApi,
 } from "@/features/Auth/api/userApi";
-import { axiosPatchRequest, axiosPutRequest } from "@/config/axios";
-import { PROFILE_API } from "@/constants/API";
+import {
+  axiosPatchRequest,
+  axiosPostRequest,
+  axiosPutRequest,
+} from "@/config/axios";
+import { FORGET_PASSWORD_API, PROFILE_API } from "@/constants/API";
 import { successPopup } from "@/utils/popup";
 import {
+  logout,
   updateProfileData,
   updateProfileImage,
 } from "@/features/Auth/slice/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const UserProfileSchema = z.object({
   username: UsernameValidationRule,
@@ -45,6 +51,7 @@ const UserProfile: FC<IUserProfileProps> = ({
   areaOfInterest,
   about,
 }) => {
+  const navigate = useNavigate();
   const {
     register,
     formState: { errors },
@@ -76,11 +83,25 @@ const UserProfile: FC<IUserProfileProps> = ({
     }
   };
 
+  const changePassword = async () => {
+    const res = await axiosPostRequest(FORGET_PASSWORD_API, { email });
+    if (!res) return;
+    successPopup(res.message || "OTP sent to your email");
+    navigate("/auth/verifyOTP", {
+      state: {
+        email,
+        forAction: "resetPassword",
+      },
+    });
+    // dispatch(logout());
+  };
+
   const profileUpdateHandler = async (data: UserProfileSchemaType) => {
     const res = await axiosPutRequest(PROFILE_API, data);
     if (!res) return;
     successPopup(res.message || "updated");
     console.log(res.data);
+
     dispatch(updateProfileData(res.data));
   };
 
@@ -180,6 +201,7 @@ const UserProfile: FC<IUserProfileProps> = ({
           </Button>
         </div>
       </form>
+      <button onClick={changePassword}>change password</button>
     </div>
   );
 };

@@ -19,6 +19,7 @@ const Transactions = lazy(() => import("./pages/User/Transactions"));
 const SendTrainerRequest = lazy(() => import("./pages/User/TrainerRequest"));
 const Course = lazy(() => import("./pages/User/Course"));
 const Certificates = lazy(() => import("./pages/User/Certificates"));
+const Chat = lazy(() => import("./pages/User/Chat"));
 
 //Premium User Routes
 //Todo
@@ -31,6 +32,7 @@ const TrainerEditCourse = lazy(() => import("./pages/Trainer/EditCourse"));
 const TrainerEditModule = lazy(() => import("./pages/Trainer/EditModule"));
 const TrainerWallet = lazy(() => import("./pages/Trainer/Wallet"));
 const TrainerStudents = lazy(() => import("./pages/Trainer/Students"));
+const TrainerChat = lazy(() => import("./pages/Trainer/TrainerChat"));
 
 //Admin Routes
 const AdminDashboard = lazy(() => import("./pages/Admin/Dashboard"));
@@ -40,7 +42,6 @@ const AdminTrainerRequests = lazy(
   () => import("./pages/Admin/TrainerRequests")
 );
 const AdminCourses = lazy(() => import("./pages/Admin/Courses"));
-const AdminBundles = lazy(() => import("./pages/Admin/Bundles"));
 const AdminCategories = lazy(() => import("./pages/Admin/Categories"));
 const AdminTransactions = lazy(() => import("./pages/Admin/Transactions"));
 const AdminDoubts = lazy(() => import("./pages/Admin/Doubts"));
@@ -65,16 +66,16 @@ export const PublicRoutes: Routes = [
     path: "courses/:courseId",
     Component: CourseDetail,
   },
+  {
+    path: "auth/verifyOTP",
+    Component: VerifyOTP,
+  },
 ];
 
 export const AuthRoutes: Routes = [
   {
     path: "",
     Component: LoginRegisterPage,
-  },
-  {
-    path: "verifyOTP",
-    Component: VerifyOTP,
   },
   {
     path: "forgetPassword",
@@ -117,6 +118,13 @@ export const UserRoutes: Routes = [
   },
 ];
 
+export const ChatRouter: Routes = [
+  {
+    path: "",
+    Component: Chat,
+  },
+];
+
 export const PremiumUserRoutes: Routes = [];
 
 export const TrainerRoutes: Routes = [
@@ -148,6 +156,10 @@ export const TrainerRoutes: Routes = [
     path: "wallet",
     Component: TrainerWallet,
   },
+  {
+    path: "chat",
+    Component: TrainerChat,
+  },
 ];
 
 export const AdminRoutes: Routes = [
@@ -170,10 +182,6 @@ export const AdminRoutes: Routes = [
   {
     path: "courses",
     Component: AdminCourses,
-  },
-  {
-    path: "bundles",
-    Component: AdminBundles,
   },
   {
     path: "categories",

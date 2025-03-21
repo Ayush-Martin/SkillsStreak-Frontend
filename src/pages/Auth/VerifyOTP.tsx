@@ -10,17 +10,26 @@ import {
   InputOTPSlot,
   Button,
 } from "@/components/ui";
-import { axiosPostRequest } from "@/config/axios";
-import { COMPLETE_REGISTER_API, VERIFY_OTP_API } from "@/constants/API";
+import { axiosGetRequest, axiosPostRequest } from "@/config/axios";
+import { REGISTER_API, VERIFY_OTP_API } from "@/constants/API";
 import { successPopup } from "@/utils/popup";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store";
+import { logout } from "@/features/Auth/slice/userSlice";
 
 const VerifyOTP: FC = () => {
   const location = useLocation();
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [value, setValue] = useState("");
+  const [timer, setTimer] = useState(60);
 
   const { forAction, email }: { forAction: string; email: string } =
     location.state || {};
+
+  useEffect(() => {
+    dispatch(logout());
+  }, []);
 
   useEffect(() => {
     if (!forAction || !email) {
@@ -28,28 +37,62 @@ const VerifyOTP: FC = () => {
     }
   }, [email, forAction, navigate]);
 
+  const timerInterval = setTimeout(() => {
+    setTimer((prev) => prev - 1);
+  }, 1000);
+
+  if (timer == 0) {
+    clearTimeout(timerInterval);
+  }
+
   const submit = async () => {
+    const res = await axiosPostRequest(VERIFY_OTP_API, {
+      email,
+      OTP: value,
+    });
+
+    if (!res) return;
+
     if (forAction == "register") {
-      const res = await axiosPostRequest(COMPLETE_REGISTER_API, {
-        email,
-        OTP: value,
-      });
+      const res = await axiosGetRequest(`${REGISTER_API}?email=${email}`);
       if (!res) return;
-      successPopup(res.message || "OTP is verified");
+      successPopup(res.message || "user registered");
       navigate("/auth");
-    } else if (forAction == "resetPassword") {
-      const res = await axiosPostRequest(VERIFY_OTP_API, {
-        email,
-        OTP: value,
-      });
-      if (!res) return;
-      successPopup(res.message || "OTP is verified");
+    } else {
       navigate("/auth/resetPassword", {
         state: {
           email,
         },
       });
     }
+
+    // if (forAction == "register") {
+    //   const res = await axiosPostRequest(COMPLETE_REGISTER_API, {
+    //     email,
+    //     OTP: value,
+    //   });
+    //   if (!res) return;
+    //   successPopup(res.message || "OTP is verified");
+    //   navigate("/auth");
+    // } else if (forAction == "resetPassword") {
+    //   const res = await axiosPostRequest(VERIFY_OTP_API, {
+    //     email,
+    //     OTP: value,
+    //   });
+    //   if (!res) return;
+    //   successPopup(res.message || "OTP is verified");
+    //   navigate("/auth/resetPassword", {
+    //     state: {
+    //       email,
+    //     },
+    //   });
+    // }
+  };
+
+  const resendOTP = async () => {
+    const res = await axiosGetRequest(`${"/auth/resendOTP"}/${email}`);
+    if (!res) return;
+    successPopup(res.message || "OTP sent to your email");
   };
 
   return (
@@ -81,7 +124,7 @@ const VerifyOTP: FC = () => {
             </InputOTPGroup>
           </InputOTP>
         </div>
-        <div className="px-28">
+        <div className="flex flex-col items-center gap-2 px-28">
           <Button
             variant={"v1"}
             size={"full"}
@@ -90,6 +133,13 @@ const VerifyOTP: FC = () => {
           >
             Verify OTP
           </Button>
+          {timer ? (
+            <p className="text-white">Resend OTP in {timer} seconds</p>
+          ) : (
+            <button onClick={resendOTP} className="underline text-app-neutral">
+              Resend OTP
+            </button>
+          )}
         </div>
       </div>
     </AuthLayout>

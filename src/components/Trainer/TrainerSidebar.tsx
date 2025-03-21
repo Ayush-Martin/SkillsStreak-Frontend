@@ -7,6 +7,7 @@ import {
   MdHome,
   MdVideoLibrary,
   FaWallet,
+  IoChatbox,
   PiStudentBold,
 } from "@/assets/icons";
 
@@ -15,6 +16,7 @@ const sidebarItems = [
   { name: "My Courses", icon: <MdVideoLibrary />, link: "/trainer/courses" },
   { name: "Students", icon: <PiStudentBold />, link: "/trainer/students" },
   { name: "Wallet", icon: <FaWallet />, link: "/trainer/wallet" },
+  { name: "Chat", icon: <IoChatbox />, link: "/trainer/chat" },
   { name: "Home", icon: <MdHome />, link: "/" },
 ];
 

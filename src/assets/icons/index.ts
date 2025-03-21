@@ -44,3 +44,4 @@ export { CgMenuGridO, CgUnblock, CgBlock } from "react-icons/cg";
 export { AiOutlineCheckCircle, AiFillCloseCircle } from "react-icons/ai";
 export { PiStudentBold, PiCertificateFill } from "react-icons/pi";
 export { BsFillChatLeftTextFill } from "react-icons/bs";
+export { BiSolidMessageSquareAdd } from "react-icons/bi";

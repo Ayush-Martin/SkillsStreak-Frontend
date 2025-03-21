@@ -15,3 +15,5 @@ export * from "./chart";
 export * from "./collapsible";
 export * from "./dialog";
 export * from "./label";
+export * from "./dropdown-menu";
+export * from "./";

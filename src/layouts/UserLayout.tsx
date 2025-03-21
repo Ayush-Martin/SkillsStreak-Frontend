@@ -3,11 +3,11 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import logo from "@/assets/images/logo.png";
-import { Button } from "@/components/ui";
 import Hamburger from "hamburger-react";
 import useLogout from "@/hooks/useLogout";
 import { RootReducer } from "@/store";
-import { Chat, Notification } from "@/components";
+import { Notification } from "@/components";
+import { Button } from "@/components/ui";
 
 interface IUserLayoutProps {
   children: ReactNode;
@@ -21,7 +21,6 @@ const UserLayout: FC<IUserLayoutProps> = ({ children }) => {
 
   return (
     <main className="relative bg-app-primary">
-      <Chat />
       <header className="fixed top-0 left-0 z-20 flex items-center justify-between w-full h-16 px-6 py-4 text-white bg-opacity-30 bg-app-primary backdrop-blur-sm">
         <img src={logo} alt="" className="object-contain" width={"130px"} />
         <ul className="hidden gap-4 text-lg text-white sm:flex">
@@ -43,6 +42,15 @@ const UserLayout: FC<IUserLayoutProps> = ({ children }) => {
           </li>
           <li className="hover:text-app-accent">
             <NavLink
+              to={"/chat"}
+              end={true}
+              className={({ isActive }) => (isActive ? "text-app-accent" : "")}
+            >
+              Chats
+            </NavLink>
+          </li>
+          <li className="hover:text-app-accent">
+            <NavLink
               to={"/user"}
               className={({ isActive }) => (isActive ? "text-app-accent" : "")}
             >
@@ -55,7 +63,6 @@ const UserLayout: FC<IUserLayoutProps> = ({ children }) => {
           <Notification />
           <Button
             variant={"v2"}
-            className=""
             onClick={accessToken ? logoutHandler : () => navigate("/auth")}
           >
             {accessToken ? "Logout" : "Login"}

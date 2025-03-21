@@ -53,3 +53,4 @@ export interface ICourseDetails {
     categoryName: string;
   };
 }
+

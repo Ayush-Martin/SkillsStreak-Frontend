@@ -38,7 +38,10 @@ appApi.interceptors.response.use(
     ) {
       try {
         const res: IResponse = await axios.get(
-          `${BACKEND_BASE_URL}${REFRESH_TOKEN_API}`
+          `${BACKEND_BASE_URL}${REFRESH_TOKEN_API}`,
+          {
+            withCredentials: true,
+          }
         );
         const newAccessToken = res.data.data as string;
 

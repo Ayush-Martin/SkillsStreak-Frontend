@@ -47,7 +47,6 @@ const Login: FC = () => {
     if (!res) return;
     successPopup(res.message || "user logged in");
     dispatch(login(res.data));
-    connectSocket();
     navigate(from, { replace: true });
   };
 
