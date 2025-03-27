@@ -17,7 +17,6 @@ import { z } from "zod";
 import { successPopup } from "@/utils/popup";
 import { axiosPostRequest } from "@/config/axios";
 import { LOGIN_API } from "@/constants/API";
-import { connectSocket } from "@/config/socket";
 
 const LoginSchema = z.object({
   email: EmailValidationRule,

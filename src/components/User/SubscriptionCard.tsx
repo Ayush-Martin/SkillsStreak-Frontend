@@ -60,7 +60,7 @@ const SubscriptionGraph: FC<ISubscriptionGraphParams> = ({
       <div className="flex items-center justify-between px-5 pt-3 pb-0 mb-0">
         <div className="flex flex-col">
           <p className="text-sm text-gray-400">Started</p>
-          <p className="text-lg font-semibold text-white">
+          <p className="font-semibold text-white ">
             {start.toLocaleDateString("en-US", {
               month: "short",
               day: "2-digit",
@@ -70,7 +70,7 @@ const SubscriptionGraph: FC<ISubscriptionGraphParams> = ({
         </div>
         <div className="flex flex-col">
           <p className="text-sm text-right text-gray-400">Expires</p>
-          <p className="text-lg font-semibold text-right text-white">
+          <p className="font-semibold text-right text-white ">
             {end.toLocaleDateString("en-US", {
               month: "short",
               day: "2-digit",
@@ -95,15 +95,17 @@ const SubscriptionGraph: FC<ISubscriptionGraphParams> = ({
             <PolarGrid
               gridType="circle"
               radialLines={false}
-              stroke="none"
-              className="first:fill-gray-700 last:fill-gray-800"
+              stroke="#22c55e"
+              strokeWidth={2}
+              fill="transparent"
+              className="first:fill-transparent last:fill-transparent"
               polarRadius={[86, 74]}
             />
             <RadialBar
               dataKey="value"
-              background={{ fill: "#374151" }}
+              background={{ fill: "transparent" }}
               cornerRadius={10}
-              fill="#4f46e5"
+              fill="#7c3aed"
             />
             <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
               <Label
@@ -170,15 +172,17 @@ const SubscriptionCard: FC = () => {
   };
 
   return (
-    <div className="overflow-hidden transition-shadow duration-300 transform bg-gray-800 border border-gray-700 shadow-lg rounded-xl hover:shadow-xl w-[350px]">
-      <div className="flex items-center justify-between p-4 bg-indigo-600">
-        <h2 className="text-xl font-bold text-white">Premium Subscription</h2>
-        <span className="text-sm text-indigo-200">
+    <div className=" overflow-hidden transition-shadow duration-300 transform  border border-gray-700 shadow-lg rounded-xl hover:shadow-xl w-[300px] md:w-[500px]">
+      <div className="flex items-center justify-between p-4 border-b-4 border-indigo-600">
+        <h2 className="text-lg font-bold text-white font-tektur">
+          Premium Subscription
+        </h2>
+        <span className="px-2 py-1 text-[12px] text-indigo-200 border border-app-accent rounded-full">
           {subscription
             ? new Date() > subscription.endDate
               ? "expired"
               : "active"
-            : "no subscription"}
+            : "inactive"}
           {}
         </span>
       </div>
@@ -189,7 +193,7 @@ const SubscriptionCard: FC = () => {
         />
       ) : (
         <div className=" h-[250px] px-4 flex flex-col py-10 gap-4 justify-center items-center">
-          <h1 className="text-2xl font-semibold text-center ">
+          <h1 className="text-xl font-semibold text-center ">
             You are not subscribed
           </h1>
           <p className="text-center">

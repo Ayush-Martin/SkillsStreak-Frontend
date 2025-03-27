@@ -16,11 +16,12 @@ import usePaginatedData from "@/hooks/usePaginatedData";
 import UserLayout from "@/layouts/UserLayout";
 import { AppDispatch, RootReducer } from "@/store";
 import { MdOutlineRefresh } from "@/assets/icons";
+import { TableSkeleton } from "@/components/skeletons";
 
 const Transactions: FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const { email } = useSelector((state: RootReducer) => state.user);
-  const { transactions, currentPage, totalPages } = useSelector(
+  const { transactions, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.userTransactions
   );
   const { nextPage, previousPage, paginatedData } = usePaginatedData({
@@ -38,7 +39,7 @@ const Transactions: FC = () => {
     <UserLayout>
       <div className="relative flex">
         <UserSidebar />
-        <div className="w-full mt-10 ml-0 text-white md:ml-64 h-80 md:mt-0">
+        <div className="w-full px-5 mt-10 ml-0 text-white sm:px-10 lg:px-20 md:ml-64 h-80 md:mt-0">
           <button
             className="mt-10 text-3xl text-blue-600"
             onClick={refreshHandler}
@@ -58,11 +59,13 @@ const Transactions: FC = () => {
               </TableRow>
             </TableHeader>
 
-            <TableBody>
-              {!paginatedData.length ? (
-                <h1 className="mt-3 text-2xl">No Courses</h1>
-              ) : (
-                paginatedData.map((transaction) => (
+            {loading ? (
+              <TableSkeleton widths={[100, 100, 100, 100, 100, 100]} />
+            ) : paginatedData.length === 0 ? (
+              <h1 className="mt-3 text-2xl">No Courses</h1>
+            ) : (
+              <TableBody>
+                {paginatedData.map((transaction) => (
                   <TableRow key={transaction._id}>
                     <TableCell>{transaction.transactionId}</TableCell>
                     <TableCell>
@@ -83,9 +86,9 @@ const Transactions: FC = () => {
                     <TableCell>{transaction.amount}</TableCell>
                     <TableCell>{transaction.courseId?.title}</TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
+                ))}
+              </TableBody>
+            )}
           </Table>
           <Pagination
             currentPage={currentPage}

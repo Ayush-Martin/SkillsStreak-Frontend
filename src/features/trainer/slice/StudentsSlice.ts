@@ -16,12 +16,14 @@ type initialStateType = {
   students: StudentsType;
   currentPage: number;
   totalPages: number;
+  loading: boolean;
 };
 
 const initialState: initialStateType = {
   students: [],
   currentPage: 1,
   totalPages: 1,
+  loading: false,
 };
 
 const StudentsSlice = createSlice({
@@ -33,6 +35,10 @@ const StudentsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(getTrainerStudentsApi.pending, (state) => {
+      state.loading = true;
+    });
+
     builder.addCase(getTrainerStudentsApi.fulfilled, (state, action) => {
       const data: initialStateType = action.payload.data;
       if (data.currentPage == 1) {
@@ -42,6 +48,7 @@ const StudentsSlice = createSlice({
       }
       state.currentPage = data.currentPage;
       state.totalPages = data.totalPages;
+      state.loading = false;
     });
   },
 });

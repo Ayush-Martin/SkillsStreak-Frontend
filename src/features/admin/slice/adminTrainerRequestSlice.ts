@@ -19,12 +19,14 @@ type initialStateType = {
   users: TrainerRequestType;
   currentPage: number;
   totalPages: number;
+  loading: boolean;
 };
 
 const initialState: initialStateType = {
   users: [],
   currentPage: 1,
   totalPages: 1,
+  loading: false,
 };
 
 const AdminTrainerRequestSlice = createSlice({
@@ -36,6 +38,10 @@ const AdminTrainerRequestSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(getAdminTrainerRequestsApi.pending, (state) => {
+      state.loading = true;
+    });
+
     builder.addCase(getAdminTrainerRequestsApi.fulfilled, (state, action) => {
       const data: initialStateType = action.payload.data;
       if (data.currentPage == 1) {
@@ -45,6 +51,7 @@ const AdminTrainerRequestSlice = createSlice({
       }
       state.currentPage = data.currentPage;
       state.totalPages = data.totalPages;
+      state.loading = false;
     });
 
     builder.addCase(getAdminTrainerRequestsApi.rejected, (_, action) => {

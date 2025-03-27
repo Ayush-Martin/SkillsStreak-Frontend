@@ -17,12 +17,14 @@ type initialStateType = {
   users: UsersType;
   currentPage: number;
   totalPages: number;
+  loading: boolean;
 };
 
 const initialState: initialStateType = {
   users: [],
   currentPage: 1,
   totalPages: 1,
+  loading: false,
 };
 
 const adminUserSlice = createSlice({
@@ -34,6 +36,9 @@ const adminUserSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(getAdminUsersApi.pending, (state) => {
+      state.loading = true;
+    });
     builder.addCase(getAdminUsersApi.fulfilled, (state, action) => {
       const data: initialStateType = action.payload.data;
       if (data.currentPage == 1) {
@@ -43,6 +48,7 @@ const adminUserSlice = createSlice({
       }
       state.currentPage = data.currentPage;
       state.totalPages = data.totalPages;
+      state.loading = false;
     });
 
     builder.addCase(getAdminUsersApi.rejected, (_, action) => {

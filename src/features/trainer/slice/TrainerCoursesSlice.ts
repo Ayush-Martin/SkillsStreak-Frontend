@@ -22,12 +22,14 @@ type initialStateType = {
   courses: MyCoursesType;
   currentPage: number;
   totalPages: number;
+  loading: boolean;
 };
 
 const initialState: initialStateType = {
   courses: [],
   currentPage: 1,
   totalPages: 1,
+  loading: false,
 };
 
 const MyCourses = createSlice({
@@ -39,6 +41,10 @@ const MyCourses = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(getTrainerCoursesApi.pending, (state) => {
+      state.loading = true;
+    });
+
     builder.addCase(getTrainerCoursesApi.fulfilled, (state, action) => {
       const data: initialStateType = action.payload.data;
       if (data.currentPage == 1) {
@@ -48,6 +54,7 @@ const MyCourses = createSlice({
       }
       state.currentPage = data.currentPage;
       state.totalPages = data.totalPages;
+      state.loading = false;
     });
 
     builder.addCase(trainerCourseListUnListApi.fulfilled, (state, action) => {

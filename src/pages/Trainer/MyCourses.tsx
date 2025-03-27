@@ -21,11 +21,12 @@ import usePaginatedData from "@/hooks/usePaginatedData";
 import TrainerLayout from "@/layouts/TrainerLayout";
 import { AppDispatch, RootReducer } from "@/store";
 import { IoEye, IoEyeOff, MdOutlineRefresh } from "@/assets/icons";
+import { CourseTableSkeleton } from "@/components/skeletons";
 
 const MyCourses: FC = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
-  const { courses, currentPage, totalPages } = useSelector(
+  const { courses, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.trainerCourses
   );
 
@@ -71,46 +72,50 @@ const MyCourses: FC = () => {
           </TableRow>
         </TableHeader>
 
-        <TableBody>
-          {!paginatedData.length ? (
-            <h1 className="mt-3 text-2xl">No Courses</h1>
-          ) : (
-            paginatedData.map((course) => (
-              <TableRow
-                key={course._id}
-                onClick={() => navigate(`/trainer/courses/${course._id}`)}
-                className="cursor-pointer"
-              >
-                <TableCell>
-                  <img src={course.thumbnail} width={"200px"} />
-                </TableCell>
-                <TableCell>{course.title}</TableCell>
-                <TableCell>{course.price}</TableCell>
-                <TableCell>{course.difficulty}</TableCell>
-                <TableCell>{course.categoryId.categoryName}</TableCell>
-                <TableCell>{course.status}</TableCell>
-                <TableCell>
-                  <button
-                    disabled={course.status !== "approved"}
-                    className={`text-3xl ${
-                      course.status !== "approved"
-                        ? "text-gray-500"
-                        : course.isListed
-                        ? "text-red-500"
-                        : "text-app-secondary"
-                    }`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      dispatch(trainerCourseListUnListApi(course._id));
-                    }}
-                  >
-                    {course.isListed ? <IoEyeOff /> : <IoEye />}
-                  </button>
-                </TableCell>
-              </TableRow>
-            ))
-          )}
-        </TableBody>
+        {loading ? (
+          <CourseTableSkeleton />
+        ) : (
+          <TableBody>
+            {!paginatedData.length ? (
+              <h1 className="mt-3 text-2xl">No Courses</h1>
+            ) : (
+              paginatedData.map((course) => (
+                <TableRow
+                  key={course._id}
+                  onClick={() => navigate(`/trainer/courses/${course._id}`)}
+                  className="cursor-pointer"
+                >
+                  <TableCell>
+                    <img src={course.thumbnail} width={"200px"} />
+                  </TableCell>
+                  <TableCell>{course.title}</TableCell>
+                  <TableCell>{course.price}</TableCell>
+                  <TableCell>{course.difficulty}</TableCell>
+                  <TableCell>{course.categoryId.categoryName}</TableCell>
+                  <TableCell>{course.status}</TableCell>
+                  <TableCell>
+                    <button
+                      disabled={course.status !== "approved"}
+                      className={`text-3xl ${
+                        course.status !== "approved"
+                          ? "text-gray-500"
+                          : course.isListed
+                          ? "text-red-500"
+                          : "text-app-secondary"
+                      }`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        dispatch(trainerCourseListUnListApi(course._id));
+                      }}
+                    >
+                      {course.isListed ? <IoEyeOff /> : <IoEye />}
+                    </button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        )}
       </Table>
 
       {paginatedData.length != 0 && (

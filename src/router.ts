@@ -4,6 +4,7 @@ import { lazy } from "react";
 import Home from "./pages/public/Home";
 const Courses = lazy(() => import("./pages/public/Courses"));
 const CourseDetail = lazy(() => import("./pages/public/CourseDetail"));
+const Trainer = lazy(() => import("./pages/public/Trainer"));
 
 //Auth Routes
 import LoginRegisterPage from "./pages/Auth/LoginRegisterPage";
@@ -13,16 +14,12 @@ const ResetPassword = lazy(() => import("./pages/Auth/ResetPassword"));
 
 //User Routes
 const Dashboard = lazy(() => import("./pages/User/DashBoard"));
-const Profile = lazy(() => import("./pages/User/Profile"));
 const EnrolledCourses = lazy(() => import("./pages/User/EnrolledCourse"));
 const Transactions = lazy(() => import("./pages/User/Transactions"));
 const SendTrainerRequest = lazy(() => import("./pages/User/TrainerRequest"));
 const Course = lazy(() => import("./pages/User/Course"));
 const Certificates = lazy(() => import("./pages/User/Certificates"));
 const Chat = lazy(() => import("./pages/User/Chat"));
-
-//Premium User Routes
-//Todo
 
 //Trainer Routes
 const TrainerDashboard = lazy(() => import("./pages/Trainer/Dashboard"));
@@ -70,6 +67,10 @@ export const PublicRoutes: Routes = [
     path: "auth/verifyOTP",
     Component: VerifyOTP,
   },
+  {
+    path: "trainer/:trainerId",
+    Component: Trainer,
+  },
 ];
 
 export const AuthRoutes: Routes = [
@@ -91,10 +92,6 @@ export const UserRoutes: Routes = [
   {
     path: "",
     Component: Dashboard,
-  },
-  {
-    path: "profile",
-    Component: Profile,
   },
   {
     path: "enrolledCourses",
@@ -124,8 +121,6 @@ export const ChatRouter: Routes = [
     Component: Chat,
   },
 ];
-
-export const PremiumUserRoutes: Routes = [];
 
 export const TrainerRoutes: Routes = [
   {

@@ -23,19 +23,19 @@ import {
   axiosPatchRequest,
   axiosPostRequest,
 } from "@/config/axios";
-import { COURSES_API, ENROLLED_COURSES } from "@/constants/API";
-import UserLayout from "@/layouts/UserLayout";
+import { COURSES_API, ENROLLED_COURSES } from "@/constants";
+import { UserLayout } from "@/layouts";
 import { ICourseDetails } from "@/types/courseType";
 import {
-  AboutTheTrainer,
   PdfViewer,
   VideoPlayer,
   Loading,
   Certificate,
+  Footer,
 } from "@/components";
 import { FaLock, IoVideocam, FaFilePdf } from "@/assets/icons";
 import { successPopup } from "@/utils/popup";
-import usePayment from "@/hooks/usePayment";
+import { usePayment } from "@/hooks";
 
 const Course: FC = () => {
   const { courseId } = useParams();
@@ -130,7 +130,7 @@ const Course: FC = () => {
 
   return (
     <UserLayout>
-      <div className="w-full px-2 md:px-10">
+      <div className="w-full px-2 mt-5 md:px-10">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -181,21 +181,23 @@ const Course: FC = () => {
             )}
           </div>
           <div className="h-full px-5 py-2 md:w-1/4 ">
-            <h1 className="text-xl text-center lg:text-2xl text-app-secondary">
-              {course.title}
+            <h1 className="text-xl text-center text-white lg:text-2xl font-boldonse ">
+              <span className="pb-1 pb-2 border-b-4 border-green-400">
+                {course.title}
+              </span>
             </h1>
-            <Progress value={completedPercentage} className="w-[100%] mt-4" />
-            <p className="mt-1 text-app-highlight">
+            <Progress value={completedPercentage} className="w-[100%] mt-10" />
+            <p className="mt-1 text-app-neutral font-josefinsans">
               {completedPercentage}% lessons completed
             </p>
             <ScrollArea
-              className=" md:h-[260px] lg:h-[490px] mt-10 pr-3"
+              className=" md:h-[260px] lg:h-[470px] mt-5 pr-3 border-y py-2 border-app-highlight"
               style={{ scrollbarWidth: "none" }}
             >
-              <Accordion type="single" collapsible className="w-full ">
+              <Accordion type="single" collapsible className="w-full border-t ">
                 {course.modules.map((module) => (
                   <AccordionItem value={module._id} key={module._id}>
-                    <AccordionTrigger className="">
+                    <AccordionTrigger className=" font-josefinsans">
                       {module.title}
                     </AccordionTrigger>
                     {module.lessons.map((lesson) => (
@@ -209,7 +211,7 @@ const Course: FC = () => {
                       >
                         <div className="flex items-center justify-between ">
                           <div
-                            className="flex gap-2 cursor-pointer"
+                            className="flex gap-2 px-2 border-s border-app-accent"
                             onClick={() => fetchLesson(lesson._id)}
                           >
                             {lesson.type == "video" ? (
@@ -218,7 +220,7 @@ const Course: FC = () => {
                               <FaFilePdf className="text-xl" />
                             )}
 
-                            <p className="">{lesson.title}</p>
+                            <p>{lesson.title}</p>
                           </div>
 
                           <input
@@ -263,9 +265,11 @@ const Course: FC = () => {
                   Certificate
                 </TabsTrigger>
               </TabsList>
-              <TabsContent value="description" className="py-5">
-                <h1 className="text-xl text-white lg:text-3xl">Description</h1>
-                <p className="mt-2 text-sm text-white">
+              <TabsContent
+                value="description"
+                className="px-3 py-2 border-s border-app-accent"
+              >
+                <p className="text-white md:text-lg font-playwritehu">
                   {selectedLesson?.description}
                 </p>
               </TabsContent>
@@ -275,11 +279,13 @@ const Course: FC = () => {
                   {selectedLesson?.description}
                 </p>
               </TabsContent>
-              <TabsContent value="certificate" className="py-5">
-                <h1 className="text-xl text-white lg:text-3xl">Certificate</h1>
+              <TabsContent
+                value="certificate"
+                className="px-3 py-2 border-s border-app-accent font-playwritehu"
+              >
                 {completedPercentage == 100 ? (
                   <div className="flex items-center gap-2">
-                    <p className="mt-2 text-lg font-thin text-white">
+                    <p className="mt-2 font-thin text-white md:text-lg">
                       Download Certificate here
                     </p>
                     <Certificate
@@ -288,7 +294,7 @@ const Course: FC = () => {
                     />
                   </div>
                 ) : (
-                  <p className="mt-2 text-lg font-thin text-white">
+                  <p className="mt-2 font-thin text-white md:text-lg">
                     you have now only completed {completedPercentage}% complete
                     all lessons to download certificate
                   </p>
@@ -296,10 +302,9 @@ const Course: FC = () => {
               </TabsContent>
             </Tabs>
           </div>
-
-          <AboutTheTrainer {...course.trainer} />
         </div>
       </div>
+      <Footer />
     </UserLayout>
   );
 };

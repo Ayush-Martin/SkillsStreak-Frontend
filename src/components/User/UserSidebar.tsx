@@ -3,7 +3,6 @@ import { FC } from "react";
 import { NavLink } from "react-router-dom";
 
 import {
-  ImProfile,
   MdPayments,
   RiGraduationCapFill,
   FaChalkboardTeacher,
@@ -22,11 +21,6 @@ const UserSidebar: FC = () => {
       icon: <MdDashboard />,
       link: "/user",
       end: true,
-    },
-    {
-      name: "Profile",
-      icon: <ImProfile />,
-      link: "/user/profile",
     },
     {
       name: "Enrolled Courses",

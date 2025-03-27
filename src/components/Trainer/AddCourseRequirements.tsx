@@ -11,7 +11,6 @@ import {
 
 import { addCourseSchemaType } from "@/hooks/useAddCourse";
 import {
-  Button,
   Input,
   Table,
   TableBody,
@@ -21,7 +20,13 @@ import {
   TableRow,
 } from "@/components/ui";
 import { ErrorText } from "@/components";
-import { IoIosSave, RiFolderCloseFill, MdDelete, MdEdit } from "@/assets/icons";
+import {
+  IoIosSave,
+  RiFolderCloseFill,
+  MdDelete,
+  MdEdit,
+  IoMdAddCircleOutline,
+} from "@/assets/icons";
 
 interface IAddCourseRequirementsProps {
   watch: UseFormWatch<addCourseSchemaType>;
@@ -69,7 +74,7 @@ const AddCourseRequirementsEdit: FC<IAddCourseRequirementsEditProps> = ({
         <Input
           placeholder="Enter category name"
           {...register("requirement")}
-          className="w-30 bg-app-border"
+          className="bg-transparent border w-30 border-app-border"
           onBlur={() => trigger("requirement")}
         />
         <button
@@ -113,6 +118,7 @@ const AddCourseRequirements: FC<IAddCourseRequirementsProps> = ({
     setRequirements(updatedRequirements);
     setValue("requirements", updatedRequirements);
     trigger("requirements");
+    setInput("");
   };
 
   const editRequirement = (oldRequirement: string, requirement: string) => {
@@ -129,37 +135,46 @@ const AddCourseRequirements: FC<IAddCourseRequirementsProps> = ({
     <div className="my-10">
       <div className="flex gap-4">
         <Input
-          className="w-60 bg-app-border"
+          className="bg-transparent border w-60 border-app-border placeholder:text-muted-foreground"
           placeholder="enter text here"
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
-        <Button
-          variant={"v1"}
+        <button
           onClick={addRequirement}
           disabled={!input || requirements.includes(input)}
+          className="text-3xl text-white disabled:text-app-border"
         >
-          Add
-        </Button>
+          <IoMdAddCircleOutline />
+        </button>
       </div>
       {errors.requirements && (
         <ErrorText error={errors.requirements.message!} />
       )}
 
-      <Table className="mt-10">
-        <TableHeader>
-          <TableRow>
-            <TableHead>Requirement</TableHead>
-            <TableHead>Edit</TableHead>
-            <TableHead>Delete</TableHead>
+      <Table className="mt-10 max-w-[800px] border border-app-border">
+        <TableHeader className="rounded-md ">
+          <TableRow className="border-b-4 border-green-300 ">
+            <TableHead className="text-white font-josefinsans ">
+              Requirement
+            </TableHead>
+            <TableHead className="text-white font-josefinsans ">Edit</TableHead>
+            <TableHead className="text-white font-josefinsans ">
+              Delete
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {!requirements.length ? (
-            <p className="text-xl">No requirement</p>
+            <p className="px-4 my-3 text-lg font-tektur">
+              No requirement added
+            </p>
           ) : (
             requirements.map((requirement) => (
-              <TableRow key={requirement}>
+              <TableRow
+                key={requirement}
+                className="border-app-border text-app-neutral font-winkysans"
+              >
                 <TableCell>
                   {selected == requirement ? (
                     <AddCourseRequirementsEdit

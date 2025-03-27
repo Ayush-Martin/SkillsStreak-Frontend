@@ -14,6 +14,7 @@ interface IUsePaginatedData<T> {
   getDataApi: AsyncThunk<IResponse, any, any>;
   changePageApi: (data: unknown) => UnknownAction;
   extraData?: Record<string, unknown>;
+  limit?: number;
 }
 
 const usePaginatedData = <T,>({
@@ -22,23 +23,24 @@ const usePaginatedData = <T,>({
   extraData = {},
   getDataApi,
   changePageApi,
+  limit = RECORDS_PER_PAGE,
 }: IUsePaginatedData<T>) => {
   const dispatch: AppDispatch = useDispatch();
-  const startIndex = (currentPage - 1) * RECORDS_PER_PAGE;
+  const startIndex = (currentPage - 1) * limit;
   const [search, setSearch] = useState("");
 
   useEffect(() => {
     if (!data.length) {
-      dispatch(getDataApi({ page: 1, search, ...extraData }));
+      dispatch(getDataApi({ page: 1, search, limit, ...extraData }));
     }
   }, [search, data.length]);
 
   useEffect(() => {
-    dispatch(getDataApi({ page: 1, search, ...extraData }));
+    dispatch(getDataApi({ page: 1, search, limit, ...extraData }));
   }, [search]);
 
   const paginatedData = useMemo(() => {
-    return data.slice(startIndex, startIndex + RECORDS_PER_PAGE);
+    return data.slice(startIndex, startIndex + limit);
   }, [data, startIndex]);
 
   const previousPage = () => {
@@ -46,13 +48,14 @@ const usePaginatedData = <T,>({
   };
 
   const nextPage = () => {
-    if (data.length > startIndex + RECORDS_PER_PAGE) {
+    if (data.length > startIndex + limit) {
       dispatch(changePageApi(currentPage + 1));
     } else {
       dispatch(
         getDataApi({
           page: currentPage + 1,
           search,
+          limit,
           ...extraData,
         })
       );
@@ -64,7 +67,7 @@ const usePaginatedData = <T,>({
   };
 
   const refreshHandler = () => {
-    dispatch(getDataApi({ page: 1, search }));
+    dispatch(getDataApi({ page: 1, search, limit }));
   };
 
   return {

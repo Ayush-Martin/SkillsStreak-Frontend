@@ -32,6 +32,7 @@ import {
 } from "@/utils/validationRules";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { COURSE_DIFFICULTY } from "@/constants/course";
+import { MdEdit } from "@/assets/icons";
 
 interface ICourseBasicDetailsProps {
   course: ICourse;
@@ -118,7 +119,7 @@ const CourseBasicDetails: FC<ICourseBasicDetailsProps> = ({
     <form className="my-10 " onSubmit={handleSubmit(submit)}>
       <div className="items-center gap-2 mb-2 lg:flex">
         <div className=" lg:w-1/2 h-[240px] mb-10 lg:mb-0 flex flex-col items-center justify-center">
-          <div className="w-[350px] ">
+          <div className="w-[350px]">
             <img
               src={thumbnail}
               className="object-contain w-[350px] h-[200px]"
@@ -128,9 +129,9 @@ const CourseBasicDetails: FC<ICourseBasicDetailsProps> = ({
           <div className="flex flex-col items-center justify-center gap-2 mt-4">
             <label
               htmlFor="file-upload"
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md cursor-pointer hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="inline-flex items-center px-4 py-2 text-3xl font-medium text-white border-b-2 border-green-400 cursor-pointer "
             >
-              Change
+              <MdEdit />
               <input
                 id="file-upload"
                 type="file"
@@ -143,25 +144,25 @@ const CourseBasicDetails: FC<ICourseBasicDetailsProps> = ({
         </div>
         <div className="flex flex-col gap-2 lg:px-4 lg:w-1/2">
           <div className="">
-            <p className="text-app-accent">Title</p>
+            <p className="text-white font-playwritehu">Title :</p>
             <Input
               placeholder="title"
               {...register("title")}
-              className="bg-app-border"
+              className="bg-transparent border border-app-border placeholder:text-muted-foreground"
               onBlur={() => trigger("title")}
             />
             {errors.title && <ErrorText error={errors.title.message!} />}
           </div>
 
           <div>
-            <p className="text-app-accent">Difficulty</p>
+            <p className="text-white font-playwritehu ">Difficulty :</p>
             <Select
               defaultValue={watch("difficulty")}
               onValueChange={(val: ICourseDifficulty) => {
                 setValue("difficulty", val);
               }}
             >
-              <SelectTrigger className="border-0 bg-app-border">
+              <SelectTrigger className="border border-app-border">
                 <SelectValue placeholder="Select a Difficulty type" />
               </SelectTrigger>
               <SelectContent className="bg-app-neutral">
@@ -180,14 +181,14 @@ const CourseBasicDetails: FC<ICourseBasicDetailsProps> = ({
             )}
           </div>
           <div>
-            <p className="text-app-accent">Category</p>
+            <p className="text-white font-playwritehu">Category :</p>
             <Select
               defaultValue={watch("categoryId")}
               onValueChange={(val) => {
                 setValue("categoryId", val);
               }}
             >
-              <SelectTrigger className="border-0 bg-app-border">
+              <SelectTrigger className="border border-app-border">
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
               <SelectContent className="bg-app-neutral">
@@ -206,11 +207,12 @@ const CourseBasicDetails: FC<ICourseBasicDetailsProps> = ({
             )}
           </div>
           <div>
-            <p className="text-app-accent">Price</p>
+            <p className="text-white font-playwritehu">Price :</p>
             <Input
               {...register("price")}
-              className="bg-app-border"
+              className="bg-transparent border border-app-border"
               type="number"
+              defaultValue={0}
               onBlur={() => trigger("price")}
             />
             {errors.price && <ErrorText error={errors.price.message!} />}
@@ -219,15 +221,12 @@ const CourseBasicDetails: FC<ICourseBasicDetailsProps> = ({
         <div></div>
       </div>
       <div>
-        <p className="text-app-accent">Description</p>
+        <p className="text-white font-playwritehu">Description :</p>
         <Textarea
           {...register("description")}
-          className="border-0 bg-app-border"
+          className="border border-app-border"
           onBlur={() => trigger("description")}
         ></Textarea>
-        {errors.description && (
-          <ErrorText error={errors.description.message!} />
-        )}
       </div>
       <Button variant={"v3"} className="mt-2">
         Save

@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { VideoPlayer, PdfViewer } from "@/components";
-import { MdDelete } from "@/assets/icons";
-import { Button, Input, Textarea } from "@/components/ui";
+import { BiSave, MdDelete, MdEdit } from "@/assets/icons";
+import { Input, Textarea } from "@/components/ui";
 import { LessonSchema, LessonSchemaType } from "@/pages/Trainer/EditModule";
 
 interface ILessonCardParams {
@@ -45,7 +45,7 @@ const LessonCard: FC<ILessonCardParams> = ({
   };
 
   return (
-    <div className="w-full px-5 py-2 bg-app-border">
+    <div className="w-full px-5 py-2 border rounded-md border-app-border">
       <div className="flex justify-end">
         <button
           className="text-2xl text-red-500"
@@ -56,7 +56,7 @@ const LessonCard: FC<ILessonCardParams> = ({
       </div>
       <div className="flex flex-col gap-10 mt-2 lg:flex-row">
         <div>
-          <div className="flex justify-center md:block">
+          <div className="relative flex justify-center md:block">
             {type == "video" ? (
               <div className="w-[400px]">
                 <VideoPlayer url={path} />
@@ -66,46 +66,48 @@ const LessonCard: FC<ILessonCardParams> = ({
                 <PdfViewer path={path} />
               </div>
             )}
-          </div>
-          <div className="flex mt-3">
-            <label
-              htmlFor="file-upload"
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md cursor-pointer hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            >
-              Change
-              <input
-                id="file-upload"
-                type="file"
-                className="sr-only"
-                onChange={handleFileChange}
-                accept="image/*"
-              />
-            </label>
+
+            <div className="absolute flex top-2 left-2 ">
+              <label
+                htmlFor="file-upload"
+                className="inline-flex items-center p-2 text-lg font-medium border rounded-md cursor-pointer text-app-accent backdrop:blur-sm border-app-border bg-app-primary opacity-70 focus:ring-2 focus:ring-offset-2"
+              >
+                <MdEdit />
+                <input
+                  id="file-upload"
+                  type="file"
+                  className="sr-only"
+                  onChange={handleFileChange}
+                  accept="image/*"
+                />
+              </label>
+            </div>
           </div>
         </div>
         <form
           onSubmit={handleSubmit(changeLessonDetails)}
           className="flex flex-col w-full h-full gap-4"
         >
-          <div>
-            <h1>Title</h1>
+          <div className="px-2 border-s border-app-accent">
+            <h1 className="mb-1 text-lg font-tektur">Title :</h1>
             <Input
               placeholder="input"
               {...register("title")}
-              className="shadow outline-none text-app-primary bg-primary text-primary-foreground hover:bg-primary/90 placeholder:text-app-highlight"
+              className="bg-transparent border shadow outline-none border-app-border text-primary-foreground hover:bg-primary/90 placeholder:text-app-highlight"
             />
           </div>
-          <div>
-            <h1>Description</h1>
+          <div className="px-2 border-s border-app-accent">
+            <h1 className="mb-1 text-lg font-tektur ">Description :</h1>
             <Textarea
               {...register("description")}
               placeholder="description"
-              className="h-full border-0 shadow outline-none text-app-primary bg-primary text-primary-foreground hover:bg-primary/90 placeholder:text-app-highlight"
+              className="h-full bg-transparent shadow outline-none hover:bg-primary/90 border-app-border placeholder:text-app-highlight"
             />
           </div>
-          <Button className="w-20" variant={"v1"}>
-            Save
-          </Button>
+          <button className="flex items-center w-20 gap-2 px-3 py-1 border rounded-full border-app-tertiary">
+            <BiSave className="text-3xl" />
+            save
+          </button>
         </form>
       </div>
     </div>

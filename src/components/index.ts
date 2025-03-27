@@ -1,15 +1,41 @@
+//common
+export { default as PdfViewer } from "./common/PdfViewer";
+export { default as ErrorText } from "./common/ErrorText";
+export { default as Loading } from "./common/Loading";
+export { default as BackButton } from "./common/BackButton";
+export { default as SideBar } from "./common/SideBar";
+export { default as SearchBox } from "./common/SearchBox";
+export { default as Pagination } from "./common/Pagination";
+export { default as VideoPlayer } from "./common/VideoPlayer";
+export { default as RefreshData } from "./common/RefreshData";
+export { default as Notification } from "./common/Notification";
+export { default as Footer } from "./common/Footer";
+export { default as Header } from "./common/Header";
+export { default as Logo } from "./common/Logo";
+export { default as BreadcrumbNav } from "./common/BreadcrumbNav";
+
+export { default as ProfileImage } from "./ProfileImage";
+export { default as Profile } from "./common/Profile";
+
+//auth
+export { default as RoutesHandler } from "./Auth/RoutesHandler";
 export { default as Login } from "./Auth/Login";
 export { default as GoogleAuth } from "./Auth/GoogleAuth";
 export { default as Register } from "./Auth/Register";
-export { default as ErrorText } from "./ErrorText";
-export { default as BackButton } from "./BackButton";
-export { default as RoutesHandler } from "./RoutesHandler";
+
+//user
 export { default as UserSidebar } from "./User/UserSidebar";
-export { default as AdminSidebar } from "./Admin/AdminSidebar";
+export { default as CourseCard } from "./User/CourseCard";
+export { default as Chat } from "./User/Chat";
 export { default as UserProfile } from "./User/UserProfile";
-export { default as SideBar } from "./SideBar";
-export { default as SearchBox } from "./SearchBox";
-export { default as Pagination } from "./Pagination";
+export { default as SubscriptionCard } from "./User/SubscriptionCard";
+export { default as Review } from "./User/Review";
+export { default as UserHeader } from "./User/UserHeader";
+export { default as Certificate } from "./User/Certificate";
+export { default as AiChat } from "./User/AiChat";
+export { default as CourseFilter } from "./User/CourseFilter";
+
+//trainer
 export { default as TrainerSidebar } from "./Trainer/TrainerSidebar";
 export { default as AddCourseBasicDetails } from "./Trainer/AddCourseBasicDetails";
 export { default as AddCourseRequirements } from "./Trainer/AddCourseRequirements";
@@ -20,18 +46,9 @@ export { default as EditCourseSkillsCovered } from "./Trainer/EditCourseSkillsCo
 export { default as AddLesson } from "./Trainer/AddLesson";
 export { default as AddModule } from "./Trainer/AddModule";
 export { default as CourseModules } from "./Trainer/CourseModules";
-export { default as VideoPlayer } from "./VideoPlayer";
-export { default as CourseCard } from "./User/CourseCard";
-export { default as AboutTheTrainer } from "./AboutTheTrainer";
-export { default as PdfViewer } from "./PdfViewer";
-export { default as Loading } from "./Loading";
-export { default as Chat } from "./User/Chat";
-export { default as PremiumChat } from "./User/PremiumChat";
-export { default as AiChat } from "./User/AiChat";
 export { default as LessonCard } from "./Trainer/LessonCard";
-export { default as SubscriptionCard } from "./User/SubscriptionCard";
-export { default as Certificate } from "./User/Certificate";
-export { default as RefreshData } from "./RefreshData";
-export { default as Review } from "./User/Review";
-export { default as ProfileImage } from "./ProfileImage";
-export { default as Notification } from "./Notification";
+export { default as TrainerHeader } from "./Trainer/TrainerHeader";
+
+//admin
+export { default as AdminSidebar } from "./Admin/AdminSidebar";
+export { default as AdminHeader } from "./Admin/AdminHeader";

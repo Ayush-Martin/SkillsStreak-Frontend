@@ -14,18 +14,21 @@ interface ICourse {
   price: number;
   difficulty: "beginner" | "intermediate" | "advance";
   moduleCount: number;
+  noOfEnrolled: number;
 }
 
 interface IInitialState {
   courses: Array<ICourse>;
   currentPage: number;
   totalPages: number;
+  loading: boolean;
 }
 
 const initialState: IInitialState = {
   courses: [],
   currentPage: 0,
   totalPages: 0,
+  loading: false,
 };
 
 const coursesSlice = createSlice({
@@ -37,7 +40,11 @@ const coursesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(getCoursesApi.pending, (state) => {
+      state.loading = true;
+    });
     builder.addCase(getCoursesApi.fulfilled, (state, action) => {
+      state.loading = false;
       const data: IInitialState = action.payload.data;
       if (data.currentPage == 1) {
         state.courses = data.courses;

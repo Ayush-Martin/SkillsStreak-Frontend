@@ -65,28 +65,6 @@ const VerifyOTP: FC = () => {
         },
       });
     }
-
-    // if (forAction == "register") {
-    //   const res = await axiosPostRequest(COMPLETE_REGISTER_API, {
-    //     email,
-    //     OTP: value,
-    //   });
-    //   if (!res) return;
-    //   successPopup(res.message || "OTP is verified");
-    //   navigate("/auth");
-    // } else if (forAction == "resetPassword") {
-    //   const res = await axiosPostRequest(VERIFY_OTP_API, {
-    //     email,
-    //     OTP: value,
-    //   });
-    //   if (!res) return;
-    //   successPopup(res.message || "OTP is verified");
-    //   navigate("/auth/resetPassword", {
-    //     state: {
-    //       email,
-    //     },
-    //   });
-    // }
   };
 
   const resendOTP = async () => {

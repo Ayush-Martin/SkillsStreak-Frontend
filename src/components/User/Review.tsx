@@ -1,16 +1,4 @@
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  Input,
-  Label,
-  Textarea,
-} from "@/components/ui";
+import { Button, Input, Textarea } from "@/components/ui";
 import { FC, useEffect, useState } from "react";
 import { Rating } from "@smastrom/react-rating";
 import {
@@ -23,7 +11,7 @@ import { successPopup } from "@/utils/popup";
 import { useSelector } from "react-redux";
 import { RootReducer } from "@/store";
 import ProfileImage from "../ProfileImage";
-import { MdDelete } from "@/assets/icons";
+import { MdDelete, IoIosSave } from "@/assets/icons";
 
 interface IUser {
   _id: string;
@@ -66,60 +54,42 @@ interface IReviewCardProps {
 }
 
 const AddReview: FC<IAddReviewProps> = ({ addReview }) => {
-  const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(0);
   const [content, setContent] = useState("");
+  const { profileImage } = useSelector((state: RootReducer) => state.user);
+  const save = () => {
+    addReview({ content, rating });
+    setRating(0);
+    setContent("");
+  };
 
   return (
-    <div className="mb-10">
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button variant="v1">Add review</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[420px] bg-black/80 backdrop-blur-sm text-white border-app-accent">
-          <DialogHeader>
-            <DialogTitle>Add Review</DialogTitle>
-            <DialogDescription className="text-app-neutral">
-              Make sure to fill up all the fields
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex flex-col gap-6 py-4">
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="content" className="text-lg">
-                Content
-              </Label>
-              <Textarea
-                id="content"
-                className="w-full bg-transparent "
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-              />
-            </div>
-            <div className="flex flex-col w-full gap-2 text-xl">
-              <Label htmlFor="rating" className="text-lg">
-                Rating
-              </Label>
-              <Rating
-                id="rating"
-                style={{
-                  maxWidth: 170,
-                  maxHeight: 50,
-                }}
-                value={rating}
-                onChange={setRating}
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button
-              variant={"v3"}
-              onClick={() => addReview({ content, rating })}
-            >
-              Add
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+    <div className="flex w-full gap-5 py-2 pb-5 mb-10 border-b border-app-border">
+      <ProfileImage profileImage={profileImage} textSize="2xl" size={10} />
+
+      <div className="flex flex-col gap-1">
+        <Input
+          id="content"
+          className="w-full bg-transparent border border-app-border placeholder:text-app"
+          placeholder="add a review"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
+        <div className="flex gap-2">
+          <Rating
+            id="rating"
+            style={{
+              maxWidth: 120,
+              maxHeight: 50,
+            }}
+            value={rating}
+            onChange={setRating}
+          />
+          <button className="text-2xl text-app-tertiary" onClick={save}>
+            <IoIosSave />
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
@@ -200,7 +170,7 @@ const ReviewCard: FC<IReviewCardProps> = ({
       </div>
 
       {showReplies && (
-        <div className="flex flex-col gap-6 mt-5 ml-10">
+        <div className="flex flex-col gap-6 pt-4 mt-5 ml-10 border-t border-app-border">
           {review.replies &&
             review.replies.map((reply) => (
               <div className="flex w-full gap-4">

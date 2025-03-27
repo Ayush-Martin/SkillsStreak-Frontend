@@ -23,17 +23,17 @@ const CourseCard: FC<ICourseCardParams> = ({
   return (
     <Link
       to={`/courses/${_id}`}
-      className="bg-[#1E1E1E] h-[250px] w-[300px] rounded-md"
+      className="bg-[#1E1E1E] h-[200px] w-[250px] sm:h-[250px] sm:w-[300px] rounded-md block hover:scale-105 transition-all duration-300 ease-in-out"
     >
       <div className="w-full rounded-md ">
         <img
           src={thumbnail}
           alt=""
-          className="object-cover rounded-ss-md rounded-se-md h-[160px] w-full"
+          className="object-cover rounded-ss-md rounded-se-md h-[110px] sm:h-[160px] w-full"
         />
       </div>
       <div className="flex flex-col gap-1 px-3 ">
-        <p className="text-xl font-semibold text-center text-app-secondary">
+        <p className="text-lg font-semibold text-center sm:text-xl text-app-secondary">
           {title}
         </p>
         <div className="flex justify-between">

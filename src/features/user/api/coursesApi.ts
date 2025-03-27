@@ -1,5 +1,6 @@
 import appApi from "@/config/axios";
 import { COURSES_API } from "@/constants/API";
+import { ICourseDifficulty, IPrice, ISort } from "@/types/courseType";
 import { IApiResponseError, IResponse } from "@/types/responseType";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -9,19 +10,29 @@ export const getCoursesApi = createAsyncThunk<
     page: number;
     search: string;
     category: string;
-    difficulty: "all" | "beginner" | "intermediate" | "advance";
-    price: "all" | "free" | "paid";
+    difficulty: "all" | ICourseDifficulty;
+    price: "all" | IPrice;
+    sort: "none" | ISort;
+    limit: number;
   }
 >(
   "userCourses/getCourses",
   async (
-    { page, search, category, difficulty, price },
+    { page, search, category, difficulty, price, limit, sort },
     { rejectWithValue }
   ) => {
     try {
-      const response = await appApi.get(
-        `${COURSES_API}?search=${search}&page=${page}&category=${category}&difficulty=${difficulty}&price=${price}`
-      );
+      const params = new URLSearchParams({
+        page: page.toString(),
+        search,
+        category,
+        difficulty,
+        price,
+        limit: limit.toString(),
+        sort,
+      });
+
+      const response = await appApi.get(`${COURSES_API}?${params.toString()}`);
       return response.data;
     } catch (err) {
       const resErr = err as IApiResponseError;

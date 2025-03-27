@@ -1,9 +1,10 @@
-import { Button, Input, ScrollArea } from "@/components/ui";
+import { Input, ScrollArea } from "@/components/ui";
 import { getSocket } from "@/config/socket";
 import { FC, useEffect, useRef, useState } from "react";
 import { Paperclip, Send } from "lucide-react";
 import { axiosGetRequest, axiosPostRequest } from "@/config/axios";
 import { IPremiumChat, IPremiumMessage } from "@/types/chatType";
+import { SocketEvents } from "@/constants";
 
 interface IChatProps {
   userId: string;
@@ -18,6 +19,29 @@ const Chat: FC<IChatProps> = ({ userId, chatUserId, chatId, chatUserName }) => {
   const [messages, setMessages] = useState<Array<IPremiumMessage>>([]);
   const [message, setMessage] = useState("");
   const scrollAreaRef = useRef<HTMLDivElement | null>(null); // Ref to ScrollArea
+
+  console.log(chatId, chatUserName, id);
+
+  useEffect(() => {
+    socket.on(SocketEvents.CHAT_NEW_MESSAGE, (data: IPremiumMessage) => {
+      console.log(data);
+      if (data.chatId == id || !id) {
+        setMessages((prevMessages) => [...prevMessages, data]);
+        scrollToBottom(); // Scroll when a new message arrives
+      }
+    });
+
+    socket.on(SocketEvents.CHAT_JOIN, (data: IPremiumChat) => {
+      if (data.userId == userId) {
+        setId(data._id);
+      }
+    });
+
+    return () => {
+      socket.off(SocketEvents.CHAT_JOIN);
+      socket.off(SocketEvents.CHAT_NEW_MESSAGE);
+    };
+  }, []);
 
   const scrollToBottom = () => {
     if (scrollAreaRef.current) {
@@ -34,22 +58,8 @@ const Chat: FC<IChatProps> = ({ userId, chatUserId, chatId, chatUserName }) => {
       scrollToBottom(); // Scroll to the bottom after loading messages
     };
 
-    // Ensure socket listeners are not added multiple times
-    socket.off("new message");
-    socket.off("new chat");
-
-    socket.on("new message", (data: IPremiumMessage) => {
-      if (data.chatId == id || !id) {
-        setMessages((prevMessages) => [...prevMessages, data]);
-        scrollToBottom(); // Scroll when a new message arrives
-      }
-    });
-
-    socket.on("new chat", (data: IPremiumChat) => {
-      if (data.userId == userId) {
-        setId(data._id);
-      }
-    });
+    // socket.off(SocketEvents.CHAT_JOIN);
+    // socket.off(SocketEvents.CHAT_NEW_MESSAGE);
 
     if (chatId) fetchMessages();
   }, [chatId, id, socket, userId]);
@@ -79,10 +89,12 @@ const Chat: FC<IChatProps> = ({ userId, chatUserId, chatId, chatUserName }) => {
   };
 
   return (
-    <div className="flex flex-col h-[620px]">
+    <div className="flex flex-col h-[600px]">
       {/* Header */}
-      <div className="p-4 border-b border-gray-700 bg-app-border">
-        <h3 className="font-semibold text-center">{chatUserName}</h3>
+      <div className="p-4 border-b border-gray-700 ">
+        <h3 className="text-xl font-semibold text-center font-tektur">
+          {chatUserName}
+        </h3>
       </div>
 
       {/* Messages container */}
@@ -113,13 +125,22 @@ const Chat: FC<IChatProps> = ({ userId, chatUserId, chatId, chatUserName }) => {
                     } mb-4`}
                   >
                     <div
-                      className={`max-w-[70%] p-3 rounded-lg ${
+                      className={`max-w-[70%] px-6 py-3 rounded-lg border border-app-border ${
                         msg.senderId == userId
-                          ? "bg-white text-black font-medium"
-                          : "bg-black text-white font-medium"
+                          ? " text-white font-medium border-l-4 border-l-app-secondary"
+                          : "border-l-4 border-l-app-tertiary text-white font-medium"
                       }`}
                     >
-                      <p>{msg.message}</p>
+                      <h1 className=" text-start font-winkysans">
+                        {msg.message}
+                      </h1>
+                      <p className="text-[13px] font-light text-end text-app-accent">
+                        {new Date(msg.createdAt).toLocaleString("en-US", {
+                          hour: "numeric",
+                          minute: "numeric",
+                          hour12: true,
+                        })}
+                      </p>
                     </div>
                   </div>
                 );
@@ -129,27 +150,26 @@ const Chat: FC<IChatProps> = ({ userId, chatUserId, chatId, chatUserName }) => {
       </div>
 
       {/* Input area */}
-      <div className="p-4 border-t border-gray-700 bg-app-border">
+      <div className="p-4 border-t border-gray-700">
         <div className="flex items-center gap-2">
           <Input
             placeholder="Type a message..."
-            className="flex-1 text-white bg-gray-700 border-gray-600"
+            className="flex-1 text-white bg-transparent border-gray-600 "
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
-          <Button
+          <button
             type="submit"
-            size="icon"
             onClick={sendMessage}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="hover:scale-110"
           >
             <Send className="w-5 h-5" />
-          </Button>
+          </button>
 
           <div className="flex">
             <label
               htmlFor="file-upload"
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md cursor-pointer hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white rounded-md cursor-pointer hover:scale-110"
             >
               <Paperclip className="w-5 h-5" />
               <input

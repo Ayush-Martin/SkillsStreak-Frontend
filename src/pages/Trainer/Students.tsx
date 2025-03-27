@@ -1,4 +1,5 @@
 import { Pagination, RefreshData, SearchBox } from "@/components";
+import { TrainerStudentsTableSkeleton } from "@/components/skeletons";
 import {
   Button,
   Collapsible,
@@ -71,7 +72,7 @@ const EnrolledCourses: FC<IEnrolledCoursesProps> = ({ enrolledCourses }) => {
 };
 
 const Students: FC = () => {
-  const { students, currentPage, totalPages } = useSelector(
+  const { students, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.trainerStudents
   );
   const {
@@ -106,23 +107,28 @@ const Students: FC = () => {
             <TableHead>Enrolled Courses</TableHead>
           </TableRow>
         </TableHeader>
-
-        <TableBody>
-          {!paginatedData.length ? (
-            <h1 className="mt-3 text-2xl">No Courses</h1>
-          ) : (
-            paginatedData.map((student) => (
-              <TableRow key={student._id}>
-                <TableCell>{student.username}</TableCell>
-                <TableCell>{student.email}</TableCell>
-                <TableCell>{student.enrolledCourses.length}</TableCell>
-                <TableCell>
-                  <EnrolledCourses enrolledCourses={student.enrolledCourses} />
-                </TableCell>
-              </TableRow>
-            ))
-          )}
-        </TableBody>
+        {loading ? (
+          <TrainerStudentsTableSkeleton />
+        ) : (
+          <TableBody>
+            {!paginatedData.length ? (
+              <h1 className="mt-3 text-2xl">No Courses</h1>
+            ) : (
+              paginatedData.map((student) => (
+                <TableRow key={student._id}>
+                  <TableCell>{student.username}</TableCell>
+                  <TableCell>{student.email}</TableCell>
+                  <TableCell>{student.enrolledCourses.length}</TableCell>
+                  <TableCell>
+                    <EnrolledCourses
+                      enrolledCourses={student.enrolledCourses}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        )}
       </Table>
 
       {paginatedData.length != 0 && (

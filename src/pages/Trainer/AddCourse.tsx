@@ -15,6 +15,7 @@ import {
 } from "@/components/ui";
 import useAddCourse from "@/hooks/useAddCourse";
 import TrainerLayout from "@/layouts/TrainerLayout";
+import { MdOutlinePublish } from "@/assets/icons";
 
 const AddCourse: FC = () => {
   const {
@@ -73,8 +74,12 @@ const AddCourse: FC = () => {
       </Tabs>
 
       <div className="flex justify-end mb-5">
-        <Button variant={"v2"} onClick={publishCourse}>
-          Publish
+        <Button
+          variant={"v2"}
+          onClick={publishCourse}
+          className="flex items-center gap-2"
+        >
+          Publish <MdOutlinePublish />
         </Button>
       </div>
     </TrainerLayout>

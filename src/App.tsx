@@ -8,7 +8,6 @@ import {
   PublicRoutes,
   AuthRoutes,
   AdminRoutes,
-  PremiumUserRoutes,
   TrainerRoutes,
   UserRoutes,
   ChatRouter,
@@ -16,7 +15,7 @@ import {
 import { AppDispatch, RootReducer } from "./store";
 import { IResponse } from "@/types/responseType";
 import { login } from "@/features/Auth/slice/userSlice";
-import { BACKEND_BASE_URL, REFRESH_TOKEN_API } from "@/constants/API";
+import { BACKEND_BASE_URL, REFRESH_TOKEN_API } from "@/constants";
 import { connectSocket, disconnectSocket } from "./config/socket";
 
 const App = () => {
@@ -24,6 +23,7 @@ const App = () => {
   const dispatch: AppDispatch = useDispatch();
   const { accessToken } = useSelector((state: RootReducer) => state.user);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchApi = async () => {
       try {
@@ -42,7 +42,6 @@ const App = () => {
         setLoading(false);
       }
     };
-
     fetchApi();
   }, []);
 
@@ -99,15 +98,6 @@ const App = () => {
 
           <Route path="/user/*" element={<RoutesHandler requiredRole="user" />}>
             {UserRoutes.map(({ path, Component }) => (
-              <Route key={path} path={path} element={<Component />} />
-            ))}
-          </Route>
-
-          <Route
-            path="/premium/*"
-            element={<RoutesHandler requiredRole="premium" />}
-          >
-            {PremiumUserRoutes.map(({ path, Component }) => (
               <Route key={path} path={path} element={<Component />} />
             ))}
           </Route>

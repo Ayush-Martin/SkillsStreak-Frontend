@@ -11,7 +11,6 @@ import {
 
 import { addCourseSchemaType } from "@/hooks/useAddCourse";
 import {
-  Button,
   Input,
   Table,
   TableBody,
@@ -21,7 +20,13 @@ import {
   TableRow,
 } from "@/components/ui";
 import { ErrorText } from "@/components";
-import { MdDelete, MdEdit, IoIosSave, RiFolderCloseFill } from "@/assets/icons";
+import {
+  MdDelete,
+  MdEdit,
+  IoIosSave,
+  RiFolderCloseFill,
+  IoMdAddCircleOutline,
+} from "@/assets/icons";
 
 interface ICourseSkillsCoveredProps {
   watch: UseFormWatch<addCourseSchemaType>;
@@ -69,7 +74,7 @@ const CourseSkillsCoveredEdit: FC<ICourseSkillsCoveredEditProps> = ({
         <Input
           placeholder="Enter category name"
           {...register("skillCovered")}
-          className="w-30 bg-app-border"
+          className="bg-transparent border w-30 border-app-border"
           onBlur={() => trigger("skillCovered")}
         />
         <button
@@ -110,6 +115,7 @@ const CourseSkillsCovered: FC<ICourseSkillsCoveredProps> = ({
     setRequirements(updatedSkillsCovered);
     setValue("skillsCovered", updatedSkillsCovered);
     trigger("skillsCovered");
+    setInput("");
   };
 
   const deleteRequirement = (skillCovered: string) => {
@@ -133,58 +139,65 @@ const CourseSkillsCovered: FC<ICourseSkillsCoveredProps> = ({
     <div className="my-10">
       <div className="flex gap-4">
         <Input
-          className="w-60 bg-app-border"
+          className="bg-transparent border w-60 border-app-border placeholder:text-muted-foreground"
           placeholder="enter text here"
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
-        <Button
-          variant={"v1"}
+        <button
           onClick={addRequirement}
           disabled={!input || skillsCovered.includes(input)}
+          className="text-3xl text-white disabled:text-app-border"
         >
-          Add
-        </Button>
+          <IoMdAddCircleOutline />
+        </button>
       </div>
       {errors.skillsCovered && (
         <ErrorText error={errors.skillsCovered.message!} />
       )}
 
-      <Table className="mt-10">
-        <TableHeader>
-          <TableRow>
-            <TableHead>Requirement</TableHead>
-            <TableHead>Edit</TableHead>
-            <TableHead>Delete</TableHead>
+      <Table className="mt-10 max-w-[800px] border border-app-border">
+        <TableHeader className="rounded-md ">
+          <TableRow className="border-b-4 border-green-300 ">
+            <TableHead className="text-white font-josefinsans ">
+              Skills Covered
+            </TableHead>
+            <TableHead className="text-white font-josefinsans ">Edit</TableHead>
+            <TableHead className="text-white font-josefinsans ">
+              Delete
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {!skillsCovered.length ? (
-            <p className="text-xl">No skillCovered</p>
+            <p className="px-4 my-3 text-lg font-tektur">No skills added</p>
           ) : (
-            skillsCovered.map((skillCovered) => (
-              <TableRow key={skillCovered}>
+            skillsCovered.map((requirement) => (
+              <TableRow
+                key={requirement}
+                className="border-app-border text-app-neutral font-winkysans"
+              >
                 <TableCell>
-                  {selected == skillCovered ? (
+                  {selected == requirement ? (
                     <CourseSkillsCoveredEdit
-                      skillCovered={skillCovered}
+                      skillCovered={requirement}
                       skillsCovered={skillsCovered}
                       submit={(editedRequirement) => {
-                        editRequirement(skillCovered, editedRequirement);
+                        editRequirement(requirement, editedRequirement);
                       }}
                     />
                   ) : (
-                    skillCovered
+                    requirement
                   )}
                 </TableCell>
                 <TableCell
-                  onClick={() => setSelected(skillCovered)}
+                  onClick={() => setSelected(requirement)}
                   className="text-2xl cursor-pointer text-app-accent"
                 >
                   <MdEdit />
                 </TableCell>
                 <TableCell
-                  onClick={() => deleteRequirement(skillCovered)}
+                  onClick={() => deleteRequirement(requirement)}
                   className="text-2xl text-red-500 cursor-pointer"
                 >
                   <MdDelete />

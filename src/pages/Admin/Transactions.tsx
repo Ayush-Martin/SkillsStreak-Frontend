@@ -16,10 +16,11 @@ import usePaginatedData from "@/hooks/usePaginatedData";
 import AdminLayout from "@/layouts/AdminLayout";
 import { AppDispatch, RootReducer } from "@/store";
 import { MdOutlineRefresh } from "@/assets/icons";
+import { TableSkeleton } from "@/components/skeletons";
 
 const Transactions: FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { transactions, currentPage, totalPages } = useSelector(
+  const { transactions, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.adminTransactions
   );
   const { nextPage, previousPage, paginatedData } = usePaginatedData({
@@ -51,11 +52,13 @@ const Transactions: FC = () => {
           </TableRow>
         </TableHeader>
 
-        <TableBody>
-          {!paginatedData.length ? (
-            <h1 className="mt-3 text-2xl">No Courses</h1>
-          ) : (
-            paginatedData.map((transaction) => (
+        {loading ? (
+          <TableSkeleton widths={[200, 100, 100, 100, 100, 100]} />
+        ) : paginatedData.length === 0 ? (
+          <h1 className="mt-3 text-2xl">No Courses</h1>
+        ) : (
+          <TableBody>
+            {paginatedData.map((transaction) => (
               <TableRow key={transaction._id}>
                 <TableCell>{transaction.transactionId}</TableCell>
                 <TableCell>{transaction.payerId.email}</TableCell>
@@ -70,9 +73,9 @@ const Transactions: FC = () => {
                 <TableCell>{transaction.amount}</TableCell>
                 <TableCell>{transaction.courseId?.title}</TableCell>
               </TableRow>
-            ))
-          )}
-        </TableBody>
+            ))}
+          </TableBody>
+        )}
       </Table>
       <Pagination
         currentPage={currentPage}

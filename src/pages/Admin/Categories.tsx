@@ -19,7 +19,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  Input
+  Input,
 } from "@/components/ui";
 import {
   adminCategoryEditApi,
@@ -32,6 +32,7 @@ import { AppDispatch, RootReducer } from "@/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CategoryNameValidationRule } from "@/utils/validationRules";
 import usePaginatedData from "@/hooks/usePaginatedData";
+import { TableSkeleton } from "@/components/skeletons";
 
 const CategoryEditSchema = z.object({
   categoryName: CategoryNameValidationRule,
@@ -95,7 +96,7 @@ const CategoryEdit: FC<ICategoryEdit> = ({
 const Categories: FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const [selected, setSelected] = useState<string | null>();
-  const { categories, currentPage, totalPages } = useSelector(
+  const { categories, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.adminCategory
   );
 
@@ -132,7 +133,9 @@ const Categories: FC = () => {
           </TableRow>
         </TableHeader>
 
-        {paginatedData.length === 0 ? (
+        {loading ? (
+          <TableSkeleton widths={[200, 100, 100, 100]} />
+        ) : paginatedData.length === 0 ? (
           <div className="mt-10 mb-10 text-3xl">No categories found</div>
         ) : (
           <TableBody>

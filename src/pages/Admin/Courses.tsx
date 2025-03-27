@@ -26,10 +26,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui";
+import { CourseTableSkeleton } from "@/components/skeletons";
 
 const Courses: FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { courses, currentPage, totalPages } = useSelector(
+  const { courses, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.adminCourses
   );
 
@@ -79,7 +80,9 @@ const Courses: FC = () => {
           </TableRow>
         </TableHeader>
 
-        {paginatedData.length === 0 ? (
+        {loading ? (
+          <CourseTableSkeleton />
+        ) : paginatedData.length === 0 ? (
           <div className="mt-10 mb-10 text-3xl">No categories found</div>
         ) : (
           <TableBody>

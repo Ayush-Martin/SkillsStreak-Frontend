@@ -1,37 +1,43 @@
 import { FC, useEffect, useState } from "react";
-import { useDispatch ,useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { CourseCard, Pagination, SearchBox } from "@/components";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
+  CourseCard,
+  CourseFilter,
+  Footer,
+  Pagination,
+  SearchBox,
+} from "@/components";
+import {
+  Button,
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
 } from "@/components/ui";
-import { axiosGetRequest } from "@/config/axios";
-import { CATEGORY_API } from "@/constants/API";
 import { getCoursesApi } from "@/features/user/api/coursesApi";
 import { changePage } from "@/features/user/slice/coursesSlice";
-import usePaginatedData from "@/hooks/usePaginatedData";
-import UserLayout from "@/layouts/UserLayout";
+import { usePaginatedData } from "@/hooks";
+import { UserLayout } from "@/layouts";
 import { AppDispatch, RootReducer } from "@/store";
+import { CourseCardSkeleton } from "@/components/skeletons";
+import { ICourseDifficulty, IPrice, ISort } from "@/types/courseType";
 
+const PAGE_RECORD_LIMIT = 8;
 
 const Courses: FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { courses, currentPage, totalPages } = useSelector(
+  const { courses, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.courses
   );
 
-
   const [category, setCategory] = useState("all");
-  const [difficulty, setDifficulty] = useState<
-    "all" | "beginner" | "intermediate" | "advance"
-  >("all");
-  const [price, setPrice] = useState<"all" | "free" | "paid">("all");
+  const [difficulty, setDifficulty] = useState<"all" | ICourseDifficulty>(
+    "all"
+  );
+  const [price, setPrice] = useState<"all" | IPrice>("all");
+  const [sort, setSort] = useState<ISort>("popularity");
 
   const { paginatedData, nextPage, previousPage, search, searchHandler } =
     usePaginatedData({
@@ -39,35 +45,32 @@ const Courses: FC = () => {
       currentPage,
       getDataApi: getCoursesApi,
       changePageApi: changePage,
+      limit: PAGE_RECORD_LIMIT,
       extraData: {
         category,
         difficulty,
         price,
+        sort,
       },
     });
 
-  const [categories, SetCategories] = useState<
-    Array<{ _id: string; categoryName: string }>
-  >([]);
-
   useEffect(() => {
-    const fetchCategories = async () => {
-      const res = await axiosGetRequest(CATEGORY_API);
-      if (!res) return;
-
-      SetCategories(res.data);
-    };
-
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    dispatch(getCoursesApi({ page: 1, search, category, difficulty, price }));
-  }, [category, difficulty, price]);
+    dispatch(
+      getCoursesApi({
+        page: 1,
+        search,
+        category,
+        difficulty,
+        price,
+        sort,
+        limit: PAGE_RECORD_LIMIT,
+      })
+    );
+  }, [category, difficulty, price, sort]);
 
   return (
     <UserLayout>
-      <div className="px-7">
+      <div className="mt-5 px-7">
         <SearchBox
           placeholder="search ..."
           search={search}
@@ -75,79 +78,47 @@ const Courses: FC = () => {
         />
       </div>
       <div className="flex justify-center gap-2 px-8 mt-5 sm:px-0">
-        <Select
-          defaultValue="all"
-          onValueChange={(
-            value: "all" | "beginner" | "intermediate" | "advance"
-          ) => setDifficulty(value)}
-        >
-          <SelectTrigger className="text-white w-[150px]">
-            <SelectValue placeholder="Difficulty " className="text-white" />
-          </SelectTrigger>
-          <SelectContent className="bg-app-neutral ">
-            <SelectGroup>
-              <SelectLabel>Difficulty</SelectLabel>
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="beginner">Beginner</SelectItem>
-              <SelectItem value="intermediate">Intermediate</SelectItem>
-              <SelectItem value="advance">Advance</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Select
-          defaultValue="all"
-          onValueChange={(value) => setCategory(value)}
-        >
-          <SelectTrigger className="text-white w-[150px]">
-            <SelectValue placeholder="Category " className="text-white" />
-          </SelectTrigger>
-          <SelectContent className="bg-app-neutral ">
-            <SelectGroup>
-              <SelectLabel>Category</SelectLabel>
-              <SelectItem value="all">All</SelectItem>
-              {categories.map((category) => (
-                <SelectItem value={category._id} key={category._id}>
-                  {category.categoryName}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Select
-          defaultValue="all"
-          onValueChange={(value: "all" | "free" | "paid") => setPrice(value)}
-        >
-          <SelectTrigger className="text-white w-[150px]">
-            <SelectValue placeholder="Difficulty " className="text-white" />
-          </SelectTrigger>
-          <SelectContent className="bg-app-neutral ">
-            <SelectGroup>
-              <SelectLabel>Price</SelectLabel>
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="free">Free</SelectItem>
-              <SelectItem value="paid">Paid</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+        <Sheet>
+          <SheetTrigger>
+            <Button variant={"v1"}>Filter & Sort</Button>
+          </SheetTrigger>
+          <SheetContent className="text-white bg-black border-app-border">
+            <SheetHeader>
+              <SheetTitle className="text-2xl text-white">
+                Filter & Sort
+              </SheetTitle>
+              <CourseFilter
+                setCategory={setCategory}
+                setDifficulty={setDifficulty}
+                setPrice={setPrice}
+                setSort={setSort}
+              />
+            </SheetHeader>
+          </SheetContent>
+        </Sheet>
       </div>
       <div className="flex justify-center mt-10 lg:block sm:px-14 lg:px-24">
         <div className="grid grid-cols-1 gap-x-2 gap-y-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {paginatedData.map((course) => (
-            <CourseCard
-              _id={course._id}
-              key={course._id}
-              category={course.category.categoryName}
-              noOfEnrolled={10}
-              noOfModules={course.moduleCount}
-              price={course.price}
-              thumbnail={course.thumbnail}
-              title={course.title}
-            />
-          ))}
+          {loading
+            ? Array.from({ length: PAGE_RECORD_LIMIT }, (_, i) => i).map(
+                (index) => <CourseCardSkeleton key={index} />
+              )
+            : paginatedData.map((course) => (
+                <CourseCard
+                  _id={course._id}
+                  key={course._id}
+                  category={course.category.categoryName}
+                  noOfEnrolled={course.noOfEnrolled}
+                  noOfModules={course.moduleCount}
+                  price={course.price}
+                  thumbnail={course.thumbnail}
+                  title={course.title}
+                />
+              ))}
         </div>
       </div>
 
-      {paginatedData.length != 0 && (
+      {!!paginatedData.length && (
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
@@ -155,6 +126,8 @@ const Courses: FC = () => {
           nextPage={nextPage}
         />
       )}
+
+      <Footer />
     </UserLayout>
   );
 };

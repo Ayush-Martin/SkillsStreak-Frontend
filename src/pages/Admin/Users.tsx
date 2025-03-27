@@ -19,10 +19,11 @@ import {
 } from "@/features/admin/api/adminUserApi";
 import { changePage } from "@/features/admin/slice/adminUserSlice";
 import usePaginatedData from "@/hooks/usePaginatedData";
+import { TableSkeleton } from "@/components/skeletons";
 
 const Users: FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { users, currentPage, totalPages } = useSelector(
+  const { users, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.adminUser
   );
   const { nextPage, previousPage, paginatedData, search, searchHandler } =
@@ -58,7 +59,9 @@ const Users: FC = () => {
           </TableRow>
         </TableHeader>
 
-        {paginatedData.length === 0 ? (
+        {loading ? (
+          <TableSkeleton widths={[200, 150, 100, 50]} />
+        ) : paginatedData.length === 0 ? (
           <div className="mt-10 mb-10 text-3xl">No users found</div>
         ) : (
           <TableBody>

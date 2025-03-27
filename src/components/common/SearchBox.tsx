@@ -23,7 +23,11 @@ const SearchBox: FC<ISearchBoxProps> = ({
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
-        <Button variant={"v3"} onClick={() => searchHandler(input)}>
+        <Button
+          variant={"v3"}
+          onClick={() => searchHandler(input)}
+          className="hover:bg-app-secondary"
+        >
           Search
         </Button>
       </div>

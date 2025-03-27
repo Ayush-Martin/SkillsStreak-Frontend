@@ -9,6 +9,8 @@ export {
   MdOutlineRefresh,
   MdViewModule,
   MdClear,
+  MdOutlinePublish,
+  MdAttachFile,
 } from "react-icons/md";
 export {
   FaUsers,
@@ -17,8 +19,14 @@ export {
   FaFilePdf,
   FaUserTie,
   FaDownload,
+  FaGithub,
 } from "react-icons/fa6";
-export { FaChalkboardTeacher, FaWallet, FaLock } from "react-icons/fa";
+export {
+  FaChalkboardTeacher,
+  FaWallet,
+  FaLock,
+  FaLinkedin,
+} from "react-icons/fa";
 export { TbCategoryFilled, TbDiamondFilled } from "react-icons/tb";
 export {
   IoChatbox,
@@ -32,6 +40,8 @@ export {
   IoMdArrowBack,
   IoIosNotifications,
   IoIosNotificationsOutline,
+  IoMdSearch,
+  IoMdAddCircleOutline,
 } from "react-icons/io";
 export {
   RiFolderCloseFill,
@@ -40,8 +50,13 @@ export {
 } from "react-icons/ri";
 export { ImProfile } from "react-icons/im";
 export { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
-export { CgMenuGridO, CgUnblock, CgBlock } from "react-icons/cg";
+export { CgMenuGridO, CgUnblock, CgBlock, CgLogIn } from "react-icons/cg";
 export { AiOutlineCheckCircle, AiFillCloseCircle } from "react-icons/ai";
 export { PiStudentBold, PiCertificateFill } from "react-icons/pi";
 export { BsFillChatLeftTextFill } from "react-icons/bs";
-export { BiSolidMessageSquareAdd } from "react-icons/bi";
+export { BiSolidMessageSquareAdd, BiSave } from "react-icons/bi";
+export { LuImageOff } from "react-icons/lu";
+export { default as courseIcon } from "./course.png";
+export { default as aiChatIcon } from "./aiChat.png";
+export { default as trainerChatIcon } from "./trainerChat.png";
+export { default as liveStreamIcon } from "./liveStream.png";

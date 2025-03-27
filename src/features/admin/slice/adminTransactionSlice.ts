@@ -26,12 +26,14 @@ interface IInitialState {
   transactions: Array<ITransaction>;
   currentPage: number;
   totalPages: number;
+  loading: boolean;
 }
 
 const initialState: IInitialState = {
   transactions: [],
   currentPage: 1,
   totalPages: 1,
+  loading: false,
 };
 
 const adminTransactionSlice = createSlice({
@@ -43,6 +45,10 @@ const adminTransactionSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(getAdminTransactionsApi.pending, (state) => {
+      state.loading = true;
+    });
+
     builder.addCase(getAdminTransactionsApi.fulfilled, (state, action) => {
       const data: IInitialState = action.payload.data;
       if (data.currentPage == 1) {
@@ -52,6 +58,7 @@ const adminTransactionSlice = createSlice({
       }
       state.currentPage = data.currentPage;
       state.totalPages = data.totalPages;
+      state.loading = false;
     });
   },
 });

@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { z } from "zod";
 import { useParams } from "react-router-dom";
 
-import { Button, Input } from "@/components/ui";
+import { Button, Input, Textarea } from "@/components/ui";
 import {
   axiosDeleteRequest,
   axiosGetRequest,
@@ -13,12 +13,22 @@ import {
 import { TRAINER_COURSES_API } from "@/constants/API";
 import TrainerLayout from "@/layouts/TrainerLayout";
 import { successPopup } from "@/utils/popup";
-import { BackButton, LessonCard, AddLesson } from "@/components";
+import {
+  BackButton,
+  LessonCard,
+  AddLesson,
+  PdfViewer,
+  VideoPlayer,
+} from "@/components";
 import {
   LessonDescriptionValidationRule,
   LessonTitleValidationRule,
 } from "@/utils/validationRules";
 import { ModuleType } from "@/types/courseType";
+import { BiSave, IoMdAddCircleOutline, MdDelete, MdEdit } from "@/assets/icons";
+import { register } from "module";
+import { type } from "os";
+import path from "path";
 
 export const LessonSchema = z.object({
   title: LessonTitleValidationRule,
@@ -31,6 +41,7 @@ const EditModule: FC = () => {
   const { moduleId, courseId } = useParams();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
+  const [loading, setLoading] = useState(false);
   const [module, setModule] = useState<ModuleType>({
     _id: "",
     title: "",
@@ -64,6 +75,7 @@ const EditModule: FC = () => {
   };
 
   const submit = async (data: LessonSchemaType & { file: File }) => {
+    setLoading(true);
     const { description, file, title } = data;
     const type = file.type.startsWith("video") ? "video" : "pdf";
 
@@ -81,6 +93,7 @@ const EditModule: FC = () => {
         },
       }
     );
+    setLoading(false);
     console.log(res);
 
     if (!res) return;
@@ -147,23 +160,39 @@ const EditModule: FC = () => {
   return (
     <TrainerLayout>
       <BackButton />
-      <p className="mb-2 text-xl text-app-accent">Title</p>
+      <p className="mt-5 mb-2 text-xl text-white font-tektur">Title :</p>
       <div className="flex gap-2 w-[300px]">
         <Input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="bg-app-border"
+          className="bg-transparent border border-app-border"
         />
-        <Button onClick={updateTitle}>Change</Button>
+        <button onClick={updateTitle} className="text-2xl text-green-400">
+          <BiSave />
+        </button>
       </div>
 
-      <Button variant={"v2"} className="mt-10" onClick={() => setOpen(true)}>
+      <p className="pt-5 mt-5 mb-2 text-xl text-white border-t-2 font-tektur border-app-highlight">
+        Lessons :
+      </p>
+      <Button
+        variant={"v1"}
+        className="flex items-center gap-2"
+        onClick={() => setOpen(true)}
+      >
+        <IoMdAddCircleOutline className="text-2xl" />
         Add Lesson
       </Button>
 
-      {open && <AddLesson close={() => setOpen(false)} submit={submit} />}
+      {open && (
+        <AddLesson
+          close={() => setOpen(false)}
+          submit={submit}
+          loading={loading}
+        />
+      )}
 
-      <div className="flex flex-col mt-10 gap-7">
+      <div className="flex flex-col py-5 mt-2 gap-7">
         {module.lessons.map((lesson) => (
           <LessonCard
             key={lesson._id}

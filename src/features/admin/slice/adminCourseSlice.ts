@@ -28,12 +28,14 @@ interface IInitialState {
   courses: Array<ICourse>;
   currentPage: number;
   totalPages: number;
+  loading: boolean;
 }
 
 const initialState: IInitialState = {
   courses: [],
   currentPage: 0,
   totalPages: 0,
+  loading: false,
 };
 
 const adminCourseSlice = createSlice({
@@ -45,6 +47,10 @@ const adminCourseSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(getAdminCoursesApi.pending, (state) => {
+      state.loading = true;
+    });
+
     builder.addCase(getAdminCoursesApi.fulfilled, (state, action) => {
       const data: IInitialState = action.payload.data;
       console.log(data);
@@ -55,6 +61,7 @@ const adminCourseSlice = createSlice({
       }
       state.currentPage = data.currentPage;
       state.totalPages = data.totalPages;
+      state.loading = false;
     });
 
     builder.addCase(adminCourseListUnListApi.fulfilled, (state, action) => {

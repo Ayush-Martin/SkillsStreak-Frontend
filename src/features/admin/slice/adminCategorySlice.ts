@@ -19,12 +19,14 @@ type initialStateType = {
   categories: CategoriesType;
   currentPage: number;
   totalPages: number;
+  loading: boolean;
 };
 
 const initialState: initialStateType = {
   categories: [],
   currentPage: 1,
   totalPages: 1,
+  loading: false,
 };
 
 const AdminCategorySlice = createSlice({
@@ -36,6 +38,10 @@ const AdminCategorySlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(getAdminCategoriesApi.pending, (state) => {
+      state.loading = true;
+    });
+
     builder.addCase(getAdminCategoriesApi.fulfilled, (state, action) => {
       const data: initialStateType = action.payload.data;
       if (data.currentPage == 1) {
@@ -45,6 +51,7 @@ const AdminCategorySlice = createSlice({
       }
       state.currentPage = data.currentPage;
       state.totalPages = data.totalPages;
+      state.loading = false;
     });
 
     builder.addCase(getAdminCategoriesApi.rejected, (_, action) => {

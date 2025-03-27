@@ -23,10 +23,11 @@ import {
   getAdminTrainerRequestsApi,
 } from "@/features/admin/api/adminTrainerRequestApi";
 import usePaginatedData from "@/hooks/usePaginatedData";
+import { TableSkeleton } from "@/components/skeletons";
 
 const TrainerRequest: FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { users, currentPage, totalPages } = useSelector(
+  const { users, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.adminTrainerRequest
   );
 
@@ -56,7 +57,9 @@ const TrainerRequest: FC = () => {
           </TableRow>
         </TableHeader>
 
-        {paginatedData.length === 0 ? (
+        {loading ? (
+          <TableSkeleton widths={[200, 150, 100, 50]} />
+        ) : paginatedData.length === 0 ? (
           <div className="mt-10 mb-10 text-3xl">No users found</div>
         ) : (
           <TableBody>

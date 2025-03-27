@@ -5,12 +5,17 @@ export interface IPremiumMessage {
   message: string;
   messageType: "text" | "image";
   chatId: string;
+  createdAt: string;
 }
 
 export interface IPremiumChat {
   _id: string;
   userId: string;
   trainerId: string;
-  lastMessage: string;
+  lastMessage: {
+    message: string;
+    createdAt: string;
+    messageType: "text" | "image";
+  };
   name: string;
 }
