@@ -23,6 +23,7 @@ import { UserLayout } from "@/layouts";
 import { AppDispatch, RootReducer } from "@/store";
 import { CourseCardSkeleton } from "@/components/skeletons";
 import { ICourseDifficulty, IPrice, ISort } from "@/types/courseType";
+import { SourceTextModule } from "vm";
 
 const PAGE_RECORD_LIMIT = 8;
 
@@ -92,6 +93,10 @@ const Courses: FC = () => {
                 setDifficulty={setDifficulty}
                 setPrice={setPrice}
                 setSort={setSort}
+                category={category}
+                difficulty={difficulty}
+                price={price}
+                sort={sort}
               />
             </SheetHeader>
           </SheetContent>

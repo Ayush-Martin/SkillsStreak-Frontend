@@ -26,7 +26,7 @@ const usePaginatedData = <T,>({
   limit = RECORDS_PER_PAGE,
 }: IUsePaginatedData<T>) => {
   const dispatch: AppDispatch = useDispatch();
-  const startIndex = (currentPage - 1) * limit;
+  const startIndex = currentPage == 0 ? 0 : (currentPage - 1) * limit;
   const [search, setSearch] = useState("");
 
   useEffect(() => {
@@ -42,6 +42,8 @@ const usePaginatedData = <T,>({
   const paginatedData = useMemo(() => {
     return data.slice(startIndex, startIndex + limit);
   }, [data, startIndex]);
+
+  console.log(paginatedData, startIndex, limit);
 
   const previousPage = () => {
     if (currentPage > 1) dispatch(changePageApi(currentPage - 1));

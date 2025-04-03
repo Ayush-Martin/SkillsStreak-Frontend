@@ -20,6 +20,7 @@ export {
   FaUserTie,
   FaDownload,
   FaGithub,
+  FaCheck,
 } from "react-icons/fa6";
 export {
   FaChalkboardTeacher,
@@ -54,7 +55,13 @@ export { CgMenuGridO, CgUnblock, CgBlock, CgLogIn } from "react-icons/cg";
 export { AiOutlineCheckCircle, AiFillCloseCircle } from "react-icons/ai";
 export { PiStudentBold, PiCertificateFill } from "react-icons/pi";
 export { BsFillChatLeftTextFill } from "react-icons/bs";
-export { BiSolidMessageSquareAdd, BiSave } from "react-icons/bi";
+export {
+  BiSolidMessageSquareAdd,
+  BiSave,
+  BiSkipPreviousCircle,
+  BiSolidSkipNextCircle,
+} from "react-icons/bi";
+export { CiStreamOn } from "react-icons/ci";
 export { LuImageOff } from "react-icons/lu";
 export { default as courseIcon } from "./course.png";
 export { default as aiChatIcon } from "./aiChat.png";

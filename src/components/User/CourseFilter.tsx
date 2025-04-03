@@ -18,6 +18,10 @@ import {
 } from "@/constants/sections/courseFilter";
 
 interface ICourseFilterProps {
+  difficulty: "all" | ICourseDifficulty;
+  category: string;
+  price: "all" | IPrice;
+  sort: ISort;
   setDifficulty: (value: "all" | ICourseDifficulty) => void;
   setCategory: (value: string) => void;
   setPrice: (value: "all" | IPrice) => void;
@@ -29,6 +33,10 @@ const CourseFilter: FC<ICourseFilterProps> = ({
   setDifficulty,
   setPrice,
   setSort,
+  difficulty,
+  category,
+  price,
+  sort,
 }) => {
   const [categories, SetCategories] = useState<
     Array<{ _id: string; categoryName: string }>
@@ -50,7 +58,7 @@ const CourseFilter: FC<ICourseFilterProps> = ({
       <div className="flex flex-col gap-1">
         <p>Difficulty </p>
         <Select
-          defaultValue="all"
+          defaultValue={difficulty}
           onValueChange={(value: "all" | ICourseDifficulty) =>
             setDifficulty(value)
           }
@@ -73,7 +81,7 @@ const CourseFilter: FC<ICourseFilterProps> = ({
       <div className="flex flex-col gap-1">
         <p>Category </p>
         <Select
-          defaultValue="all"
+          defaultValue={category}
           onValueChange={(value) => setCategory(value)}
         >
           <SelectTrigger className="text-white ">
@@ -95,7 +103,7 @@ const CourseFilter: FC<ICourseFilterProps> = ({
       <div className="flex flex-col gap-1">
         <p>Price </p>
         <Select
-          defaultValue="all"
+          defaultValue={price}
           onValueChange={(value: "all" | IPrice) => setPrice(value)}
         >
           <SelectTrigger className="text-white ">
@@ -116,7 +124,7 @@ const CourseFilter: FC<ICourseFilterProps> = ({
       <div className="flex flex-col gap-1">
         <p>Sort by </p>
         <Select
-          defaultValue="popularity"
+          defaultValue={sort}
           onValueChange={(value: ISort) => setSort(value)}
         >
           <SelectTrigger className="text-white ">

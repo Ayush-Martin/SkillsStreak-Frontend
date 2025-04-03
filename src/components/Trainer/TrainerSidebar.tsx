@@ -9,6 +9,7 @@ import {
   FaWallet,
   IoChatbox,
   PiStudentBold,
+  CiStreamOn,
 } from "@/assets/icons";
 
 const sidebarItems = [
@@ -17,6 +18,7 @@ const sidebarItems = [
   { name: "Students", icon: <PiStudentBold />, link: "/trainer/students" },
   { name: "Wallet", icon: <FaWallet />, link: "/trainer/wallet" },
   { name: "Chat", icon: <IoChatbox />, link: "/trainer/chat" },
+  { name: "Live", icon: <CiStreamOn />, link: "/trainer/live" },
   { name: "Home", icon: <MdHome />, link: "/" },
 ];
 

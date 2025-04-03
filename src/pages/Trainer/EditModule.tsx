@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { z } from "zod";
 import { useParams } from "react-router-dom";
 
-import { Button, Input, Textarea } from "@/components/ui";
+import { Button, Input } from "@/components/ui";
 import {
   axiosDeleteRequest,
   axiosGetRequest,
@@ -13,22 +13,13 @@ import {
 import { TRAINER_COURSES_API } from "@/constants/API";
 import TrainerLayout from "@/layouts/TrainerLayout";
 import { successPopup } from "@/utils/popup";
-import {
-  BackButton,
-  LessonCard,
-  AddLesson,
-  PdfViewer,
-  VideoPlayer,
-} from "@/components";
+import { BackButton, LessonCard, AddLesson } from "@/components";
 import {
   LessonDescriptionValidationRule,
   LessonTitleValidationRule,
 } from "@/utils/validationRules";
 import { ModuleType } from "@/types/courseType";
-import { BiSave, IoMdAddCircleOutline, MdDelete, MdEdit } from "@/assets/icons";
-import { register } from "module";
-import { type } from "os";
-import path from "path";
+import { BiSave, IoMdAddCircleOutline } from "@/assets/icons";
 
 export const LessonSchema = z.object({
   title: LessonTitleValidationRule,

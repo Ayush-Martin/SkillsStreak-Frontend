@@ -101,8 +101,14 @@ const ChatI = () => {
     }
     setChats(res.data);
     setChatAccess(true);
+  };
+
+  useEffect(() => {
+    fetchChat();
+
     socket.on(SocketEvents.CHAT_JOIN, (data: IPremiumChat) => {
-      if (data.trainerId == _id) return;
+      if (data.userId != _id) return;
+
       setChats((chats) => [
         {
           ...data,
@@ -110,18 +116,13 @@ const ChatI = () => {
         },
         ...chats,
       ]);
+
       setSelectedChat({
-        chatUserId: data.trainerId,
         chatId: data._id,
+        chatUserId: data.trainerId,
         chatUserName: data.name,
       });
     });
-  };
-
-  console.log(selectedChat);
-
-  useEffect(() => {
-    fetchChat();
 
     return () => {
       socket.off(SocketEvents.CHAT_JOIN);
@@ -132,11 +133,11 @@ const ChatI = () => {
   useEffect(() => {
     if (chats.length > 0) {
       socket.on(SocketEvents.CHAT_NEW_MESSAGE, (data: IPremiumMessage) => {
-        console.log("__ ____ -__ -____ -__ ___-");
-        console.log(chats, data);
+        console.log("new message", data);
+        console.log("chats", chats);
         const updatedChat = chats.find((chat) => chat._id === data.chatId);
-        console.log(updatedChat);
         if (!updatedChat) return;
+
         const updatedChatCopy = {
           ...updatedChat,
           lastMessage: {

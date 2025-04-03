@@ -34,6 +34,7 @@ export { default as UserHeader } from "./User/UserHeader";
 export { default as Certificate } from "./User/Certificate";
 export { default as AiChat } from "./User/AiChat";
 export { default as CourseFilter } from "./User/CourseFilter";
+export { default as LiveStreamCard } from "./User/LiveStreamCard";
 
 //trainer
 export { default as TrainerSidebar } from "./Trainer/TrainerSidebar";
@@ -48,6 +49,8 @@ export { default as AddModule } from "./Trainer/AddModule";
 export { default as CourseModules } from "./Trainer/CourseModules";
 export { default as LessonCard } from "./Trainer/LessonCard";
 export { default as TrainerHeader } from "./Trainer/TrainerHeader";
+export { default as TrainerStream } from "./Trainer/TrainerStream";
+export { default as NewStream } from "./Trainer/NewStream";
 
 //admin
 export { default as AdminSidebar } from "./Admin/AdminSidebar";

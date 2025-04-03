@@ -13,6 +13,7 @@ const LINKS = [
   { to: "/", label: "Home" },
   { to: "/courses", label: "Courses" },
   { to: "/chat", label: "Chats" },
+  { to: "/user/live", label: "Live" },
 ];
 
 const DROPDOWN_LINKS = [

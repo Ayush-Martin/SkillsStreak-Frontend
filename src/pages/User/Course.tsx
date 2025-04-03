@@ -33,7 +33,13 @@ import {
   Certificate,
   Footer,
 } from "@/components";
-import { FaLock, IoVideocam, FaFilePdf } from "@/assets/icons";
+import {
+  FaLock,
+  IoVideocam,
+  FaFilePdf,
+  BiSkipPreviousCircle,
+  BiSolidSkipNextCircle,
+} from "@/assets/icons";
 import { successPopup } from "@/utils/popup";
 import { usePayment } from "@/hooks";
 
@@ -50,6 +56,45 @@ const Course: FC = () => {
     title: string;
     type: string;
   } | null>(null);
+
+  const getPreviousLesson = (lessonId: string) => {
+    const lessons = course?.modules.map((module) => module.lessons).flat();
+    if (!lessons) return null;
+
+    const index = lessons.findIndex((lesson) => lesson._id === lessonId);
+
+    const data = index === -1 || index === 0 ? null : lessons[index - 1];
+    console.log(data);
+    return data;
+  };
+
+  const getNextLesson = (lessonId: string) => {
+    const lessons = course?.modules.map((module) => module.lessons).flat();
+    if (!lessons) return null;
+
+    const index = lessons.findIndex((lesson) => lesson._id === lessonId);
+
+    const data =
+      index === -1 || index === lessons.length - 1 ? null : lessons[index + 1];
+
+    console.log(data);
+    return data;
+  };
+
+  const goToPreviousLesson = (
+    currentLessonId: string,
+    previousLessonId: string
+  ) => {
+    fetchLesson(previousLessonId);
+  };
+
+  const goToNextLesson = (currentLessonId: string, nextLessonId: string) => {
+    if (!completedLessons.includes(currentLessonId)) {
+      completeUnCompleteCourse(currentLessonId);
+    }
+
+    fetchLesson(nextLessonId);
+  };
 
   const fetchLesson = async (lessonId: string) => {
     const res = await axiosGetRequest(
@@ -169,8 +214,49 @@ const Course: FC = () => {
         </Breadcrumb>
 
         <div className="relative flex flex-col md:flex-row w-full mt-10 h-full md:h-[400px] lg:h-[600px]">
-          <div className="h-full md:h-[400px] lg:h-[600px] md:w-3/4 ">
+          <div className="h-full md:h-[400px] lg:h-[600px] md:w-3/4 relative">
             {selectedLesson ? (
+              <>
+                {selectedLesson.type == "video" ? (
+                  <VideoPlayer url={selectedLesson?.path} />
+                ) : (
+                  <PdfViewer path={selectedLesson?.path} />
+                )}
+
+                <div className="absolute top-[300px] left-2">
+                  <button
+                    disabled={!getPreviousLesson(selectedLesson?._id)}
+                    onClick={() =>
+                      goToPreviousLesson(
+                        selectedLesson?._id,
+                        getPreviousLesson(selectedLesson?._id)?._id || ""
+                      )
+                    }
+                    className="text-5xl text-app-highlight disabled:text-app-border hover:text-app-accent"
+                  >
+                    <BiSkipPreviousCircle />
+                  </button>
+                </div>
+
+                <div className="absolute  top-[300px] right-2 t">
+                  <button
+                    disabled={!getNextLesson(selectedLesson?._id)}
+                    onClick={() =>
+                      goToNextLesson(
+                        selectedLesson?._id,
+                        getNextLesson(selectedLesson?._id)?._id || ""
+                      )
+                    }
+                    className="text-5xl text-app-highlight disabled:text-app-border hover:text-app-accent"
+                  >
+                    <BiSolidSkipNextCircle />
+                  </button>
+                </div>
+              </>
+            ) : (
+              <h1>Loading</h1>
+            )}
+            {/* {selectedLesson ? (
               selectedLesson.type == "video" ? (
                 <VideoPlayer url={selectedLesson?.path} />
               ) : (
@@ -178,11 +264,11 @@ const Course: FC = () => {
               )
             ) : (
               <h1>Loading</h1>
-            )}
+            )} */}
           </div>
           <div className="h-full px-5 py-2 md:w-1/4 ">
             <h1 className="text-xl text-center text-white lg:text-2xl font-boldonse ">
-              <span className="pb-1 pb-2 border-b-4 border-green-400">
+              <span className="pb-2 border-b-4 border-green-400 ">
                 {course.title}
               </span>
             </h1>

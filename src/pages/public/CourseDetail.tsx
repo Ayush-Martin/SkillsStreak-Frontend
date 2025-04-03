@@ -21,14 +21,11 @@ import {
   Badge,
   Button,
 } from "@/components/ui";
-import {
-  BreadcrumbNav,
-  Footer,
-  Loading,
-  Review,
-} from "@/components";
-import { successPopup } from "@/utils/popup";
+import { BreadcrumbNav, Footer, Loading, Review } from "@/components";
+import { errorPopup, successPopup } from "@/utils/popup";
 import { usePayment } from "@/hooks";
+import { useSelector } from "react-redux";
+import { RootReducer } from "@/store";
 
 const CourseDetail: FC = () => {
   const navigate = useNavigate();
@@ -36,6 +33,7 @@ const CourseDetail: FC = () => {
   const handlePayment = usePayment();
   const [course, setCourse] = useState<ICourseDetails | null>(null);
   const [courseAccess, setCourseAccess] = useState<boolean | null>(null);
+  const { accessToken } = useSelector((state: RootReducer) => state.user);
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -54,7 +52,9 @@ const CourseDetail: FC = () => {
     };
 
     fetchCourse();
-    fetchAccess();
+    if (accessToken) {
+      fetchAccess();
+    }
   }, [courseId]);
 
   const breadcrumbItems = useMemo(
@@ -66,6 +66,10 @@ const CourseDetail: FC = () => {
   );
 
   const handleEnroll = async () => {
+    if (!accessToken) {
+      errorPopup("You must be logged in to enroll in a course.");
+      return;
+    }
     const res = await axiosPostRequest(`${COURSES_API}/${courseId}`, {});
     if (!res) return;
     if (!res.data) {
@@ -126,7 +130,7 @@ const CourseDetail: FC = () => {
             <p className="flex items-center gap-1 text-app-accent">
               {" "}
               <PiStudentBold className="md:text-2xl" />
-              {10} enrolled
+              {course.noOfEnrolled ? course.noOfEnrolled : 0} enrolled
             </p>
             <p className="flex items-center gap-1 text-app-accent">
               <MdViewModule className="md:text-2xl" /> {course.modules.length}{" "}

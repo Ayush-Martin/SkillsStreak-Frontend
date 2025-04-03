@@ -18,60 +18,81 @@ const Chat: FC<IChatProps> = ({ userId, chatUserId, chatId, chatUserName }) => {
   const [id, setId] = useState(chatId);
   const [messages, setMessages] = useState<Array<IPremiumMessage>>([]);
   const [message, setMessage] = useState("");
-  const scrollAreaRef = useRef<HTMLDivElement | null>(null); // Ref to ScrollArea
 
-  console.log(chatId, chatUserName, id);
+  // Use a ref for the ScrollArea component itself
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+  // This effect handles scrolling when messages change
+  useEffect(() => {
+    if (messagesContainerRef.current && scrollAreaRef.current) {
+      // Find the actual scrollable element within your custom ScrollArea component
+      const scrollableElement =
+        scrollAreaRef.current.querySelector(
+          "[data-radix-scroll-area-viewport]"
+        ) || scrollAreaRef.current;
+      scrollableElement.scrollTop = scrollableElement.scrollHeight;
+    }
+  }, [messages]);
 
   useEffect(() => {
-    socket.on(SocketEvents.CHAT_NEW_MESSAGE, (data: IPremiumMessage) => {
-      console.log(data);
-      if (data.chatId == id || !id) {
+    // Socket listener for new messages
+    const handleNewMessage = (data: IPremiumMessage) => {
+      if (data.chatId === id || !id) {
         setMessages((prevMessages) => [...prevMessages, data]);
-        scrollToBottom(); // Scroll when a new message arrives
       }
-    });
+    };
 
-    socket.on(SocketEvents.CHAT_JOIN, (data: IPremiumChat) => {
-      if (data.userId == userId) {
+    // Socket listener for chat join
+    const handleChatJoin = (data: IPremiumChat) => {
+      if (data.userId === userId) {
         setId(data._id);
       }
-    });
-
-    return () => {
-      socket.off(SocketEvents.CHAT_JOIN);
-      socket.off(SocketEvents.CHAT_NEW_MESSAGE);
     };
-  }, []);
 
-  const scrollToBottom = () => {
-    if (scrollAreaRef.current) {
-      // Scroll only the chat container (ScrollArea)
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
-    }
-  };
+    socket.on(SocketEvents.CHAT_NEW_MESSAGE, handleNewMessage);
+    socket.on(SocketEvents.CHAT_JOIN, handleChatJoin);
+
+    // Clean up socket listeners when component unmounts
+    return () => {
+      socket.off(SocketEvents.CHAT_NEW_MESSAGE, handleNewMessage);
+      // socket.off(SocketEvents.CHAT_JOIN, handleChatJoin);
+    };
+  }, [id, socket, userId]);
 
   useEffect(() => {
     const fetchMessages = async () => {
+      if (!chatId) return;
+
       const res = await axiosGetRequest(`/chats/${chatId}`);
       if (!res) return;
+
       setMessages(res.data);
-      scrollToBottom(); // Scroll to the bottom after loading messages
     };
 
-    // socket.off(SocketEvents.CHAT_JOIN);
-    // socket.off(SocketEvents.CHAT_NEW_MESSAGE);
-
-    if (chatId) fetchMessages();
-  }, [chatId, id, socket, userId]);
+    if (chatId) {
+      fetchMessages();
+      setId(chatId);
+    }
+  }, [chatId]);
 
   const sendMessage = () => {
-    if (!message) return; // Prevent sending empty messages
+    if (!message.trim()) return; // Prevent sending empty messages
+
     socket.emit("new message", {
       message,
       receiverId: chatUserId,
       chatId: id,
     });
+
     setMessage(""); // Clear the message input after sending
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
   };
 
   const sendMedia = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,18 +112,15 @@ const Chat: FC<IChatProps> = ({ userId, chatUserId, chatId, chatUserName }) => {
   return (
     <div className="flex flex-col h-[600px]">
       {/* Header */}
-      <div className="p-4 border-b border-gray-700 ">
+      <div className="p-4 border-b border-gray-700">
         <h3 className="text-xl font-semibold text-center font-tektur">
           {chatUserName}
         </h3>
       </div>
 
       {/* Messages container */}
-      <div className="flex flex-col flex-1 overflow-hidden">
-        <ScrollArea
-          className="flex-1 p-4 overflow-y-auto"
-          ref={scrollAreaRef} // Ref for scrolling
-        >
+      <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
+        <div className="flex flex-col" ref={messagesContainerRef}>
           {messages.map((msg) => {
             switch (msg.messageType) {
               case "image":
@@ -110,7 +128,7 @@ const Chat: FC<IChatProps> = ({ userId, chatUserId, chatId, chatUserName }) => {
                   <div
                     key={msg._id}
                     className={`flex ${
-                      msg.senderId == userId ? "justify-end" : "justify-start"
+                      msg.senderId === userId ? "justify-end" : "justify-start"
                     } mb-4`}
                   >
                     <img src={msg.message} alt="" className="w-56" />
@@ -121,12 +139,12 @@ const Chat: FC<IChatProps> = ({ userId, chatUserId, chatId, chatUserName }) => {
                   <div
                     key={msg._id}
                     className={`flex ${
-                      msg.senderId == userId ? "justify-end" : "justify-start"
+                      msg.senderId === userId ? "justify-end" : "justify-start"
                     } mb-4`}
                   >
                     <div
                       className={`max-w-[70%] px-6 py-3 rounded-lg border border-app-border ${
-                        msg.senderId == userId
+                        msg.senderId === userId
                           ? " text-white font-medium border-l-4 border-l-app-secondary"
                           : "border-l-4 border-l-app-tertiary text-white font-medium"
                       }`}
@@ -146,17 +164,18 @@ const Chat: FC<IChatProps> = ({ userId, chatUserId, chatId, chatUserName }) => {
                 );
             }
           })}
-        </ScrollArea>
-      </div>
+        </div>
+      </ScrollArea>
 
       {/* Input area */}
       <div className="p-4 border-t border-gray-700">
         <div className="flex items-center gap-2">
           <Input
             placeholder="Type a message..."
-            className="flex-1 text-white bg-transparent border-gray-600 "
+            className="flex-1 text-white bg-transparent border-gray-600"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleKeyPress}
           />
           <button
             type="submit"

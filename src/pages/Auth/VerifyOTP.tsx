@@ -22,7 +22,7 @@ const VerifyOTP: FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [value, setValue] = useState("");
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState(20);
 
   const { forAction, email }: { forAction: string; email: string } =
     location.state || {};

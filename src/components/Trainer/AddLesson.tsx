@@ -7,7 +7,6 @@ import {
   IoCloseCircle,
   IoMdAddCircleOutline,
   MdAttachFile,
-  MdDelete,
 } from "@/assets/icons";
 import { Button, Input, Textarea } from "@/components/ui";
 import { LessonSchema, LessonSchemaType } from "@/pages/Trainer/EditModule";
