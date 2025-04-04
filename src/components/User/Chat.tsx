@@ -23,7 +23,6 @@ const Chat: FC<IChatProps> = ({ userId, chatUserId, chatId, chatUserName }) => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
-  // This effect handles scrolling when messages change
   useEffect(() => {
     if (messagesContainerRef.current && scrollAreaRef.current) {
       // Find the actual scrollable element within your custom ScrollArea component
@@ -127,7 +126,7 @@ const Chat: FC<IChatProps> = ({ userId, chatUserId, chatId, chatUserName }) => {
                 return (
                   <div
                     key={msg._id}
-                    className={`flex ${
+                    className={`flex animate-fade-in ${
                       msg.senderId === userId ? "justify-end" : "justify-start"
                     } mb-4`}
                   >
@@ -138,7 +137,7 @@ const Chat: FC<IChatProps> = ({ userId, chatUserId, chatId, chatUserName }) => {
                 return (
                   <div
                     key={msg._id}
-                    className={`flex ${
+                    className={`flex animate-fade-in ${
                       msg.senderId === userId ? "justify-end" : "justify-start"
                     } mb-4`}
                   >

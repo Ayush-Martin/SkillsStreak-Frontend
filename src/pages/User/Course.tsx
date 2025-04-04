@@ -32,6 +32,7 @@ import {
   Loading,
   Certificate,
   Footer,
+  AiChat,
 } from "@/components";
 import {
   FaLock,
@@ -175,7 +176,7 @@ const Course: FC = () => {
 
   return (
     <UserLayout>
-      <div className="w-full px-2 mt-5 md:px-10">
+      <div className="relative w-full px-2 mt-5 md:px-10">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -223,7 +224,7 @@ const Course: FC = () => {
                   <PdfViewer path={selectedLesson?.path} />
                 )}
 
-                <div className="absolute top-[300px] left-2">
+                <div className="absolute top-[50px] md:top-[200px] lg:top-[300px] left-2">
                   <button
                     disabled={!getPreviousLesson(selectedLesson?._id)}
                     onClick={() =>
@@ -238,7 +239,7 @@ const Course: FC = () => {
                   </button>
                 </div>
 
-                <div className="absolute  top-[300px] right-2 t">
+                <div className="absolute  top-[50px] md:top-[200px] lg:top-[300px] right-2 t">
                   <button
                     disabled={!getNextLesson(selectedLesson?._id)}
                     onClick={() =>
@@ -256,15 +257,6 @@ const Course: FC = () => {
             ) : (
               <h1>Loading</h1>
             )}
-            {/* {selectedLesson ? (
-              selectedLesson.type == "video" ? (
-                <VideoPlayer url={selectedLesson?.path} />
-              ) : (
-                <PdfViewer path={selectedLesson?.path} />
-              )
-            ) : (
-              <h1>Loading</h1>
-            )} */}
           </div>
           <div className="h-full px-5 py-2 md:w-1/4 ">
             <h1 className="text-xl text-center text-white lg:text-2xl font-boldonse ">
@@ -389,6 +381,8 @@ const Course: FC = () => {
             </Tabs>
           </div>
         </div>
+
+        <AiChat courseId={course._id} />
       </div>
       <Footer />
     </UserLayout>

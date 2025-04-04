@@ -75,5 +75,5 @@ export interface ICourseDetails {
     _id: string;
     categoryName: string;
   };
-  noOfEnrolled: number | null;
+  noOfEnrolled: null;
 }

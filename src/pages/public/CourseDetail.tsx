@@ -130,7 +130,7 @@ const CourseDetail: FC = () => {
             <p className="flex items-center gap-1 text-app-accent">
               {" "}
               <PiStudentBold className="md:text-2xl" />
-              {course.noOfEnrolled ? course.noOfEnrolled : 0} enrolled
+              {course.noOfEnrolled} enrolled
             </p>
             <p className="flex items-center gap-1 text-app-accent">
               <MdViewModule className="md:text-2xl" /> {course.modules.length}{" "}
