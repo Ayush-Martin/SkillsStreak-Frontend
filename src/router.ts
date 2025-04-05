@@ -121,7 +121,7 @@ export const UserRoutes: Routes = [
     Component: LiveStreams,
   },
   {
-    path: "live/:roomId",
+    path: "live/:streamId",
     Component: LiveStream,
   },
 ];

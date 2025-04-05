@@ -11,6 +11,8 @@ export {
   MdClear,
   MdOutlinePublish,
   MdAttachFile,
+  MdOutlineScreenShare,
+  MdOutlineStopScreenShare,
 } from "react-icons/md";
 export {
   FaUsers,
@@ -21,13 +23,18 @@ export {
   FaDownload,
   FaGithub,
   FaCheck,
-  FaRobot 
+  FaRobot,
 } from "react-icons/fa6";
 export {
   FaChalkboardTeacher,
   FaWallet,
   FaLock,
   FaLinkedin,
+  FaVideo,
+  FaVideoSlash,
+  FaMicrophoneAlt,
+  FaMicrophoneAltSlash,
+  FaRegStopCircle,
 } from "react-icons/fa";
 export { TbCategoryFilled, TbDiamondFilled } from "react-icons/tb";
 export {
@@ -44,6 +51,7 @@ export {
   IoIosNotificationsOutline,
   IoMdSearch,
   IoMdAddCircleOutline,
+  IoIosPeople,
 } from "react-icons/io";
 export {
   RiFolderCloseFill,

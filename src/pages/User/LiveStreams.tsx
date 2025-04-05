@@ -12,7 +12,6 @@ const LIveStreams = () => {
     (state: RootReducer) => state.userStream
   );
 
-  // console.log(liveStreams);
 
   const { nextPage, paginatedData, previousPage, search, searchHandler } =
     usePaginatedData({
@@ -43,7 +42,7 @@ const LIveStreams = () => {
                   <LiveStreamCard
                     key={stream._id}
                     description={stream.description}
-                    roomId={stream.roomId}
+                    streamId={stream._id}
                     thumbnail={stream.thumbnail}
                     title={stream.title}
                   />

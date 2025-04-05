@@ -2,21 +2,21 @@ import { FC } from "react";
 import { Link } from "react-router-dom";
 
 interface ILiveStreamCardProps {
-  roomId: string;
+  streamId: string;
   thumbnail: string;
   title: string;
   description: string;
 }
 
 const LiveStreamCard: FC<ILiveStreamCardProps> = ({
-  roomId,
+  streamId,
   thumbnail,
   title,
   description,
 }) => {
   return (
     <Link
-      to={`/user/live/${roomId}`}
+      to={`/user/live/${streamId}`}
       className="bg-[#1E1E1E] h-[200px] w-[250px] sm:h-[250px] sm:w-[300px] rounded-md block hover:scale-105 transition-all duration-300 ease-in-out"
     >
       <div className="w-full rounded-md ">

@@ -3,8 +3,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { axiosPostRequest } from "@/config/axios";
-import { startStream } from "@/features/trainer/slice/TrinerStreamSlice";
-import { useDispatch } from "react-redux";
 import { MdEdit } from "@/assets/icons";
 import { Button, Input, Textarea } from "../ui";
 import { ThreeDot } from "react-loading-indicators";
@@ -17,7 +15,11 @@ const StreamSchema = z.object({
 
 type StreamSchemaType = z.infer<typeof StreamSchema>;
 
-const NewStream: FC = () => {
+interface INewStreamProps {
+  startStream: (token: string) => void;
+}
+
+const NewStream: FC<INewStreamProps> = ({ startStream }) => {
   const {
     register,
     handleSubmit,
@@ -26,7 +28,6 @@ const NewStream: FC = () => {
     resolver: zodResolver(StreamSchema),
     mode: "onBlur",
   });
-  const dispatch = useDispatch();
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -52,11 +53,10 @@ const NewStream: FC = () => {
 
     if (!res) return;
     setIsLoading(false);
-    console.log(res);
-    dispatch(
-      startStream({ roomId: res.data.stream.roomId, token: res.data.token })
-    );
+    startStream(res.data);
   };
+
+  
 
   return (
     <div className="w-full px-5 py-2 border rounded-md border-app-border">

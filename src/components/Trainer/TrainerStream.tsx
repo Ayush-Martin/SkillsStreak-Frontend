@@ -1,93 +1,112 @@
-import { FC, useEffect, useRef, useState } from "react";
-import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
-import { RootReducer } from "@/store";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { endStream } from "@/features/trainer/slice/TrinerStreamSlice";
-import { axiosPatchRequest } from "@/config/axios";
+import { forwardRef } from "react";
+
+import {
+  FaVideo,
+  FaVideoSlash,
+  FaMicrophoneAlt,
+  FaMicrophoneAltSlash,
+  MdOutlineScreenShare,
+  MdOutlineStopScreenShare,
+  FaRegStopCircle,
+} from "@/assets/icons";
 
 interface ITrainerStreamProps {
-  token: string;
-  roomId: string;
+  stopStreaming: () => void;
+  toggleVideo: () => void;
+  toggleAudio: () => void;
+  toggleScreenShare: () => void;
+  isVideoEnabled: boolean;
+  isAudioEnabled: boolean;
+  isScreenSharing: boolean;
 }
 
-const ZEGO_APP_ID = Number(import.meta.env.VITE_ZEGO_APP_ID);
+const TrainerStream = forwardRef<HTMLVideoElement, ITrainerStreamProps>(
+  (
+    {
+      stopStreaming,
+      isAudioEnabled,
+      isScreenSharing,
+      isVideoEnabled,
+      toggleAudio,
+      toggleScreenShare,
+      toggleVideo,
+    },
+    ref
+  ) => {
+    return (
+      <div className="flex gap-4">
+        <div className="w-4/6">
+          <video
+            ref={ref}
+            autoPlay
+            muted={!isAudioEnabled}
+            style={{
+              width: "100%",
+              height: "auto",
+              transform: "scaleX(-1)", 
+            }}
+          />
 
-const TrainerStream: FC<ITrainerStreamProps> = ({ token, roomId }) => {
-  const { _id, username } = useSelector((state: RootReducer) => state.user);
-  const meetingContainerRef = useRef<HTMLDivElement>(null);
-  const [viewerCount, setViewerCount] = useState(0);
-  const dispatch = useDispatch();
-
-  const stopStream = async () => {
-    await axiosPatchRequest(`/trainer/streams/${roomId}`);
-  };
-
-  useEffect(() => {
-    if (!roomId || !token) {
-      console.warn("Waiting for roomId and token...", roomId, token);
-      return;
-    }
-
-    const kitToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(
-      ZEGO_APP_ID,
-      token,
-      roomId,
-      _id,
-      username
-    );
-
-    const zp = ZegoUIKitPrebuilt.create(kitToken);
-
-    zp.joinRoom({
-      container: meetingContainerRef.current,
-      scenario: {
-        mode: ZegoUIKitPrebuilt.LiveStreaming,
-        config: { role: ZegoUIKitPrebuilt.Host },
-      },
-      showPreJoinView: false,
-      turnOnCameraWhenJoining: true,
-      turnOnMicrophoneWhenJoining: true,
-      sharedLinks: [
-        {
-          name: "Join as Co-Host",
-          url: `${window.location.origin}/trainer/stream?roomID=${roomId}&role=Cohost`,
-        },
-        {
-          name: "Join as Audience",
-          url: `${window.location.origin}/stream/${roomId}`,
-        },
-      ],
-      onUserJoin: (users) => {
-        console.log("Users joined:", users);
-        setViewerCount((prev) => prev + users.length);
-      },
-      onUserLeave: (users) => {
-        console.log("Users left:", users);
-        setViewerCount((prev) => Math.max(0, prev - users.length));
-      },
-      onLiveEnd() {
-        stopStream();
-        dispatch(endStream());
-      },
-    });
-
-    return () => {
-      zp.destroy();
-    };
-  }, []);
-
-  return (
-    <>
-      {/* Live Viewer Count */}
-      <div className="px-4 py-2 text-white bg-black bg-opacity-50 rounded-md left-3">
-        Viewers: {viewerCount}
+          <div className="flex items-center justify-between px-10 mt-5">
+            <p className="text-sm font-boldonse">10 People watching </p>
+            <div className="flex gap-4 ">
+              <button
+                onClick={stopStreaming}
+                className="p-3 text-2xl text-red-500 bg-transparent border border-red-500 rounded-full"
+              >
+                <FaRegStopCircle />
+              </button>
+              <button
+                onClick={toggleVideo}
+                className={`p-3 bg-transparent border text-2xl rounded-full ${
+                  isVideoEnabled
+                    ? "text-red-500 border-red-500"
+                    : "text-green-500 border-green-500"
+                }`}
+              >
+                {isVideoEnabled ? <FaVideoSlash /> : <FaVideo />}
+              </button>
+              <button
+                onClick={toggleAudio}
+                className={`p-3 bg-transparent border text-2xl rounded-full ${
+                  isAudioEnabled
+                    ? "text-red-500 border-red-500"
+                    : "text-green-500 border-green-500"
+                }`}
+              >
+                {isAudioEnabled ? (
+                  <FaMicrophoneAltSlash />
+                ) : (
+                  <FaMicrophoneAlt />
+                )}
+              </button>
+              <button
+                onClick={toggleScreenShare}
+                className={`p-3 bg-transparent border text-2xl rounded-full ${
+                  isScreenSharing
+                    ? "text-red-500 border-red-500"
+                    : "text-green-500 border-green-500"
+                }`}
+              >
+                {isScreenSharing ? (
+                  <MdOutlineStopScreenShare />
+                ) : (
+                  <MdOutlineScreenShare />
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="w-2/6 rounded-md bg-app-border h-[500px]">
+          <div className="w-full py-3 text-center border-b border-app-neutral">
+            <h1 className="text-white font-boldonse">Live Chat</h1>
+          </div>
+          <div className="h-[400px] w-full "></div>
+          <div className="w-full h-[50px] border-t border-app-neutral"></div>
+        </div>
       </div>
-
-      {/* Streaming Container */}
-      <div ref={meetingContainerRef} className="w-full h-[600px]"></div>
-    </>
-  );
-};
+    );
+  }
+);
 
 export default TrainerStream;
