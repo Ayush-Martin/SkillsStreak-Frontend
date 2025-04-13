@@ -41,7 +41,7 @@ const Home: FC = () => {
         category: "all",
         difficulty: "all",
         price: "all",
-        limit: PAGE_RECORD_LIMIT.toString(),
+        size: PAGE_RECORD_LIMIT.toString(),
         sort: "popularity",
       });
 

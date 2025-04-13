@@ -12,6 +12,7 @@ import {
   Button,
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -23,9 +24,8 @@ import { UserLayout } from "@/layouts";
 import { AppDispatch, RootReducer } from "@/store";
 import { CourseCardSkeleton } from "@/components/skeletons";
 import { ICourseDifficulty, IPrice, ISort } from "@/types/courseType";
-import { SourceTextModule } from "vm";
 
-const PAGE_RECORD_LIMIT = 8;
+const PAGE_SIZE = 8;
 
 const Courses: FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -46,7 +46,7 @@ const Courses: FC = () => {
       currentPage,
       getDataApi: getCoursesApi,
       changePageApi: changePage,
-      limit: PAGE_RECORD_LIMIT,
+      size: PAGE_SIZE,
       extraData: {
         category,
         difficulty,
@@ -64,7 +64,7 @@ const Courses: FC = () => {
         difficulty,
         price,
         sort,
-        limit: PAGE_RECORD_LIMIT,
+        size: PAGE_SIZE,
       })
     );
   }, [category, difficulty, price, sort]);
@@ -80,14 +80,18 @@ const Courses: FC = () => {
       </div>
       <div className="flex justify-center gap-2 px-8 mt-5 sm:px-0">
         <Sheet>
-          <SheetTrigger>
+          <SheetTrigger asChild>
             <Button variant={"v1"}>Filter & Sort</Button>
           </SheetTrigger>
+
           <SheetContent className="text-white bg-black border-app-border">
             <SheetHeader>
               <SheetTitle className="text-2xl text-white">
                 Filter & Sort
               </SheetTitle>
+              <SheetDescription>
+                Apply filters and sorting options to refine the courses list.
+              </SheetDescription>
               <CourseFilter
                 setCategory={setCategory}
                 setDifficulty={setDifficulty}
@@ -105,9 +109,9 @@ const Courses: FC = () => {
       <div className="flex justify-center mt-10 lg:block sm:px-14 lg:px-24">
         <div className="grid grid-cols-1 gap-x-2 gap-y-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {loading
-            ? Array.from({ length: PAGE_RECORD_LIMIT }, (_, i) => i).map(
-                (index) => <CourseCardSkeleton key={index} />
-              )
+            ? Array.from({ length: PAGE_SIZE }, (_, i) => i).map((index) => (
+                <CourseCardSkeleton key={index} />
+              ))
             : paginatedData.map((course) => (
                 <CourseCard
                   _id={course._id}

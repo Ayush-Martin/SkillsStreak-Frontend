@@ -23,6 +23,8 @@ import { AppDispatch, RootReducer } from "@/store";
 import { IoEye, IoEyeOff, MdOutlineRefresh } from "@/assets/icons";
 import { CourseTableSkeleton } from "@/components/skeletons";
 
+const pageSize = 10;
+
 const MyCourses: FC = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
@@ -30,17 +32,20 @@ const MyCourses: FC = () => {
     (state: RootReducer) => state.trainerCourses
   );
 
-  const { nextPage, paginatedData, previousPage, search, searchHandler } =
-    usePaginatedData({
-      data: courses,
-      currentPage,
-      getDataApi: getTrainerCoursesApi,
-      changePageApi: changePage,
-    });
-
-  const refreshHandler = () => {
-    dispatch(getTrainerCoursesApi({ page: 1, search }));
-  };
+  const {
+    nextPage,
+    paginatedData,
+    previousPage,
+    search,
+    searchHandler,
+    refreshHandler,
+  } = usePaginatedData({
+    data: courses,
+    currentPage,
+    getDataApi: getTrainerCoursesApi,
+    changePageApi: changePage,
+    size: pageSize,
+  });
 
   return (
     <TrainerLayout>

@@ -39,12 +39,13 @@ const liveStreamSlice = createSlice({
     builder.addCase(getUserLiveStreams.fulfilled, (state, action) => {
       state.loading = false;
       const data: IInitialState = action.payload.data;
-      console.log(data);
       if (data.currentPage == 1) {
         state.liveStreams = data.liveStreams;
       } else {
         state.liveStreams = [...state.liveStreams, ...data.liveStreams];
       }
+      state.currentPage = data.currentPage;
+      state.totalPages = data.totalPages;
     });
   },
 });

@@ -7,11 +7,14 @@ import { UserLayout } from "@/layouts";
 import { RootReducer } from "@/store";
 import { useSelector } from "react-redux";
 
+const pageSize = 4;
+
 const LIveStreams = () => {
   const { currentPage, liveStreams, loading, totalPages } = useSelector(
     (state: RootReducer) => state.userStream
   );
 
+  console.log("dfdf", currentPage, loading, totalPages);
 
   const { nextPage, paginatedData, previousPage, search, searchHandler } =
     usePaginatedData({
@@ -19,9 +22,8 @@ const LIveStreams = () => {
       currentPage,
       getDataApi: getUserLiveStreams,
       changePageApi: changePage,
+      size: pageSize,
     });
-
-  console.log(paginatedData);
 
   return (
     <UserLayout>

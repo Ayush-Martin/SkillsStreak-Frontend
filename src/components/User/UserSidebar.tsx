@@ -7,7 +7,6 @@ import {
   RiGraduationCapFill,
   FaChalkboardTeacher,
   MdDashboard,
-  PiCertificateFill,
 } from "@/assets/icons";
 import { SideBar } from "@/components";
 import { RootReducer } from "@/store";
@@ -26,11 +25,6 @@ const UserSidebar: FC = () => {
       name: "Enrolled Courses",
       icon: <RiGraduationCapFill />,
       link: "/user/enrolledCourses",
-    },
-    {
-      name: "Certificates",
-      icon: <PiCertificateFill />,
-      link: "/user/certificates",
     },
     {
       name: "Transactions",

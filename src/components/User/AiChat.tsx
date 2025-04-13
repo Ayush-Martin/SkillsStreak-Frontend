@@ -1,11 +1,12 @@
 import { FaRobot } from "@/assets/icons";
 import { Send } from "lucide-react";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { Input } from "../ui/input";
 import { axiosPostRequest } from "@/config/axios";
 import { ScrollArea } from "@/components/ui";
 import { Mosaic } from "react-loading-indicators";
+import { useScrollToBottom } from "@/hooks";
 
 interface IAiChatProps {
   courseId: string;
@@ -21,7 +22,7 @@ const AiChat: FC<IAiChatProps> = ({ courseId }) => {
   const [loading, setLading] = useState(false);
   const [open, setOpen] = useState(false);
   const [chats, setChats] = useState<Array<IAiChat>>([]);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatEndRef = useScrollToBottom([chats, loading]);
 
   useEffect(() => {
     const fetchWelcomeChat = async () => {
@@ -44,10 +45,6 @@ const AiChat: FC<IAiChatProps> = ({ courseId }) => {
 
     fetchWelcomeChat();
   }, []);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chats, loading]);
 
   const sendMessage = async () => {
     setLading(true);
@@ -124,7 +121,7 @@ const AiChat: FC<IAiChatProps> = ({ courseId }) => {
                 <p className="font-tektur">Thinking ...</p>
               </div>
             )}
-            <div ref={messagesEndRef} />
+            <div ref={chatEndRef} />
           </ScrollArea>
           <div className="bottom-0 p-4 border-t border-gray-700">
             <div className="flex items-center gap-2">

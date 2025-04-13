@@ -5,16 +5,15 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getAdminUsersApi = createAsyncThunk<
   IResponse,
-  { page: number; search: string }
->("adminUser/getUsers", async ({ page, search }, { rejectWithValue }) => {
+  { page: number; search: string; size: number }
+>("adminUser/getUsers", async ({ page, search, size }, { rejectWithValue }) => {
   try {
     const response = await appApi.get(
-      `${ADMIN_USERS_API}?search=${search}&page=${page}`
+      `${ADMIN_USERS_API}?search=${search}&page=${page}&size=${size}`
     );
     return response.data;
   } catch (err) {
     const resErr = err as IApiResponseError;
-    console.log(err);
     return rejectWithValue(resErr.response.data.error);
   }
 });
@@ -27,7 +26,6 @@ export const adminBlockUnblockUserApi = createAsyncThunk<IResponse, string>(
       return response.data;
     } catch (err) {
       const resErr = err as IApiResponseError;
-      console.log(err);
       return rejectWithValue(resErr.response.data.error);
     }
   }

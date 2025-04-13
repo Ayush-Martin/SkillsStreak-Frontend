@@ -16,7 +16,6 @@ const Wallet = () => {
       const res = await axiosGetRequest("/trainer/wallet");
       if (!res) return;
       setWallet(res.data);
-      console.log(res);
     };
 
     fetchWalletInfo();

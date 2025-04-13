@@ -3,7 +3,6 @@ import { getUserTransactionsApi } from "../api/transactionApi";
 
 interface ITransaction {
   _id: string;
-  transactionId: string;
   payerId: {
     _id: string;
     email: string;
@@ -19,7 +18,7 @@ interface ITransaction {
     title: string;
   };
   amount: number;
-  type: "payment" | "commission" | "subscription" | "redeem";
+  type: "payment" | "commission" | "subscription" | "refund";
 }
 
 interface IInitialState {

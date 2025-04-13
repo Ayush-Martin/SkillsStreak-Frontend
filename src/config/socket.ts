@@ -25,20 +25,16 @@ export const connectSocket = () => {
         timeout: 10000,
       });
 
-      socket.on(SocketEvents.CONNECT_ERROR, (err: Error) => {
-        console.error("Socket connection error:", err.message);
-      });
-
-      socket.on("message", (data: string) => {
-        console.log(data);
-      });
+      // socket.on(SocketEvents., (err: Error) => {
+      //   console.warn("Socket connection error:", err.message);
+      // });
 
       socket.on(SocketEvents.CONNECT, () => {
-        console.log("Socket connected successfully with ID:", socket.id);
+        console.info("Socket connected successfully with ID:", socket.id);
       });
 
       socket.on(SocketEvents.DISCONNECT, (reason: string) => {
-        console.log("Socket disconnected:", reason);
+        console.warn("Socket disconnected:", reason);
       });
 
       return socket;
@@ -60,6 +56,6 @@ export const getSocket = () => {
 export const disconnectSocket = () => {
   if (socket) {
     socket.disconnect();
-    console.log("Socket disconnected manually");
+    console.warn("Socket disconnected manually");
   }
 };

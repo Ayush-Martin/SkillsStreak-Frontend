@@ -53,7 +53,6 @@ const adminCourseSlice = createSlice({
 
     builder.addCase(getAdminCoursesApi.fulfilled, (state, action) => {
       const data: IInitialState = action.payload.data;
-      console.log(data);
       if (data.currentPage == 1) {
         state.courses = data.courses;
       } else {

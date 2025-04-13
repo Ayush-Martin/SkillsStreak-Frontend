@@ -69,7 +69,7 @@ const UserProfile: FC<IUserProfileProps> = ({
       const res = await axiosPatchRequest(PROFILE_API, formData);
       if (!res) return;
       successPopup(res.message || "updated");
-      console.log(res.data);
+
       dispatch(updateProfileImage(res.data.profileImage));
     }
   };
@@ -78,7 +78,6 @@ const UserProfile: FC<IUserProfileProps> = ({
     const res = await axiosPutRequest(PROFILE_API, data);
     if (!res) return;
     successPopup(res.message || "updated");
-    console.log(res.data);
 
     dispatch(updateProfileData(res.data));
   };

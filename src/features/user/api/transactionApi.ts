@@ -7,14 +7,20 @@ export const getUserTransactionsApi = createAsyncThunk<
   IResponse,
   {
     page: number;
+    size: number;
   }
->("userTransactions/getTransactions", async ({ page }, { rejectWithValue }) => {
-  try {
-    const response = await appApi.get(`${TRANSACTIONS_API}?page=${page}`);
-    return response.data;
-  } catch (err) {
-    const resErr = err as IApiResponseError;
-    console.log(err);
-    return rejectWithValue(resErr.response.data.error);
+>(
+  "userTransactions/getTransactions",
+  async ({ page, size }, { rejectWithValue }) => {
+    try {
+      const response = await appApi.get(
+        `${TRANSACTIONS_API}?page=${page}&size=${size}`
+      );
+      return response.data;
+    } catch (err) {
+      const resErr = err as IApiResponseError;
+
+      return rejectWithValue(resErr.response.data.error);
+    }
   }
-});
+);

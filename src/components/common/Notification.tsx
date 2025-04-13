@@ -20,7 +20,7 @@ const Notification: FC = () => {
   const [notifications, setNotifications] = useState<Array<INotification>>([]);
   const [open, setOpen] = useState(false);
   const { accessToken } = useSelector((state: RootReducer) => state.user);
-  const dropdownRef = useClickOutside<HTMLDivElement>(close);
+  const dropdownRef = useClickOutside<HTMLDivElement>(() => setOpen(false));
   const navigate = useNavigate();
 
   const socket = getSocket();

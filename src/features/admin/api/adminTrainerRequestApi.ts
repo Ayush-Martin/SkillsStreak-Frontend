@@ -5,19 +5,22 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getAdminTrainerRequestsApi = createAsyncThunk<
   IResponse,
-  { page: number }
->("adminUser/getTrainerRequests", async ({ page }, { rejectWithValue }) => {
-  try {
-    const response = await appApi.get(
-      `${ADMIN_TRAINER_REQUEST_API}?&page=${page}`
-    );
-    return response.data;
-  } catch (err) {
-    const resErr = err as IApiResponseError;
-    console.log(err);
-    return rejectWithValue(resErr.response.data.error);
+  { page: number; size: number }
+>(
+  "adminUser/getTrainerRequests",
+  async ({ page, size }, { rejectWithValue }) => {
+    try {
+      const response = await appApi.get(
+        `${ADMIN_TRAINER_REQUEST_API}?&page=${page}&size=${size}`
+      );
+      return response.data;
+    } catch (err) {
+      const resErr = err as IApiResponseError;
+
+      return rejectWithValue(resErr.response.data.error);
+    }
   }
-});
+);
 
 export const AdminChangeTrainerRequestStatus = createAsyncThunk<
   IResponse,
@@ -30,7 +33,7 @@ export const AdminChangeTrainerRequestStatus = createAsyncThunk<
     return response.data;
   } catch (err) {
     const resErr = err as IApiResponseError;
-    console.log(err);
+
     return rejectWithValue(resErr.response.data.error);
   }
 });

@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { FC } from "react";
 
 import { Pagination, UserSidebar } from "@/components";
@@ -14,26 +14,25 @@ import { getUserTransactionsApi } from "@/features/user/api/transactionApi";
 import { changePage } from "@/features/user/slice/transactionSlice";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import UserLayout from "@/layouts/UserLayout";
-import { AppDispatch, RootReducer } from "@/store";
+import { RootReducer } from "@/store";
 import { MdOutlineRefresh } from "@/assets/icons";
 import { TableSkeleton } from "@/components/skeletons";
 
+const pageSize = 10;
+
 const Transactions: FC = () => {
-  const dispatch: AppDispatch = useDispatch();
   const { email } = useSelector((state: RootReducer) => state.user);
   const { transactions, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.userTransactions
   );
-  const { nextPage, previousPage, paginatedData } = usePaginatedData({
-    data: transactions,
-    currentPage,
-    getDataApi: getUserTransactionsApi,
-    changePageApi: changePage,
-  });
-
-  const refreshHandler = () => {
-    dispatch(getUserTransactionsApi({ page: 1 }));
-  };
+  const { nextPage, previousPage, paginatedData, refreshHandler } =
+    usePaginatedData({
+      data: transactions,
+      currentPage,
+      getDataApi: getUserTransactionsApi,
+      changePageApi: changePage,
+      size: pageSize,
+    });
 
   return (
     <UserLayout>
@@ -67,11 +66,15 @@ const Transactions: FC = () => {
               <TableBody>
                 {paginatedData.map((transaction) => (
                   <TableRow key={transaction._id}>
-                    <TableCell>{transaction.transactionId}</TableCell>
+                    <TableCell>{transaction._id}</TableCell>
                     <TableCell>
-                      {transaction.payerId.email == email
-                        ? "You"
-                        : transaction.payerId.email}
+                      {transaction.payerId
+                        ? transaction.payerId.email == email
+                          ? "You"
+                          : transaction.payerId.role == "admin"
+                          ? "Admin"
+                          : transaction.payerId.email
+                        : "admin"}
                     </TableCell>
                     <TableCell>
                       {transaction.receiverId

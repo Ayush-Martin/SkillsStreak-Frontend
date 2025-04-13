@@ -18,7 +18,6 @@ const EnrolledCourses = lazy(() => import("./pages/User/EnrolledCourse"));
 const Transactions = lazy(() => import("./pages/User/Transactions"));
 const SendTrainerRequest = lazy(() => import("./pages/User/TrainerRequest"));
 const Course = lazy(() => import("./pages/User/Course"));
-const Certificates = lazy(() => import("./pages/User/Certificates"));
 const Chat = lazy(() => import("./pages/User/Chat"));
 const LiveStreams = lazy(() => import("./pages/User/LiveStreams"));
 const LiveStream = lazy(() => import("./pages/User/LiveStream"));
@@ -37,14 +36,12 @@ const TrainerLiveStream = lazy(() => import("./pages/Trainer/LiveStream"));
 //Admin Routes
 const AdminDashboard = lazy(() => import("./pages/Admin/Dashboard"));
 const AdminUsers = lazy(() => import("./pages/Admin/Users"));
-const AdminTrainers = lazy(() => import("./pages/Admin/Trainers"));
 const AdminTrainerRequests = lazy(
   () => import("./pages/Admin/TrainerRequests")
 );
 const AdminCourses = lazy(() => import("./pages/Admin/Courses"));
 const AdminCategories = lazy(() => import("./pages/Admin/Categories"));
 const AdminTransactions = lazy(() => import("./pages/Admin/Transactions"));
-const AdminDoubts = lazy(() => import("./pages/Admin/Doubts"));
 
 type Route = {
   path: string;
@@ -113,10 +110,6 @@ export const UserRoutes: Routes = [
     Component: Course,
   },
   {
-    path: "certificates",
-    Component: Certificates,
-  },
-  {
     path: "live",
     Component: LiveStreams,
   },
@@ -182,10 +175,6 @@ export const AdminRoutes: Routes = [
     Component: AdminUsers,
   },
   {
-    path: "trainers",
-    Component: AdminTrainers,
-  },
-  {
     path: "trainerRequests",
     Component: AdminTrainerRequests,
   },
@@ -200,9 +189,5 @@ export const AdminRoutes: Routes = [
   {
     path: "transactions",
     Component: AdminTransactions,
-  },
-  {
-    path: "doubts",
-    Component: AdminDoubts,
   },
 ];

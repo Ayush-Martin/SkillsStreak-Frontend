@@ -179,7 +179,10 @@ const CourseDetail: FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-4">
             {course.skillsCovered.map((skill) => (
-              <p className="flex items-center w-full gap-2 text-sm text-white md:text-base font-josefinsans">
+              <p
+                key={skill}
+                className="flex items-center w-full gap-2 text-sm text-white md:text-base font-josefinsans"
+              >
                 <TbDiamondFilled className="text-xl md:text-3xl text-app-secondary" />
                 {skill}
               </p>
@@ -194,7 +197,10 @@ const CourseDetail: FC = () => {
 
           <div className="grid grid-cols-1 text-sm md:grid-cols-2 md:text-base gap-x-10 gap-y-4">
             {course.requirements.map((requirement) => (
-              <p className="flex items-center w-full gap-2 text-white font-josefinsans">
+              <p
+                key={requirement}
+                className="flex items-center w-full gap-2 text-white font-josefinsans"
+              >
                 <TbDiamondFilled className="text-xl md:text-3xl text-app-secondary" />
                 {requirement}
               </p>

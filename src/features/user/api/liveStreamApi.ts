@@ -7,18 +7,19 @@ export const getUserLiveStreams = createAsyncThunk<
   {
     page: number;
     search: string;
+    size: number;
   }
 >(
   "userLiveStreams/getLiveStreams",
-  async ({ search, page }, { rejectWithValue }) => {
+  async ({ search, page, size }, { rejectWithValue }) => {
     try {
       const response = await appApi.get(
-        `${"/streams"}?page=${page}&search=${search}`
+        `${"/streams"}?page=${page}&search=${search}&size=${size}`
       );
       return response.data;
     } catch (err) {
       const resErr = err as IApiResponseError;
-      console.log(err);
+
       return rejectWithValue(resErr.response.data.error);
     }
   }

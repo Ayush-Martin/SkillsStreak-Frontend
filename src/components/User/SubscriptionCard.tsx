@@ -156,7 +156,6 @@ const SubscriptionCard: FC = () => {
     const res = await axiosGetRequest("/subscription/detail");
     if (!res || !res.data) return;
     const { startDate, endDate } = res.data;
-    console.log(res.data);
     setSubscription({ startDate, endDate });
   };
 

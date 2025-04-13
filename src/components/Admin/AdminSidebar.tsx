@@ -7,9 +7,7 @@ import {
   FaUsers,
   FaChalkboardTeacher,
   MdVideoLibrary,
-  FaBoxesStacked,
   TbCategoryFilled,
-  IoChatbox,
   MdPayments,
 } from "@/assets/icons";
 

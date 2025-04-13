@@ -7,16 +7,18 @@ export const getAdminTransactionsApi = createAsyncThunk<
   IResponse,
   {
     page: number;
+    size: number;
   }
 >(
   "adminTransactions/getTransactions",
-  async ({ page }, { rejectWithValue }) => {
+  async ({ page, size }, { rejectWithValue }) => {
     try {
-      const response = await appApi.get(`${ADMIN_TRANSITION_API}?page=${page}`);
+      const response = await appApi.get(
+        `${ADMIN_TRANSITION_API}?page=${page}&size=${size}`
+      );
       return response.data;
     } catch (err) {
       const resErr = err as IApiResponseError;
-      console.log(err);
       return rejectWithValue(resErr.response.data.error);
     }
   }

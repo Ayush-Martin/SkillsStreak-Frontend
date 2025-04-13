@@ -65,7 +65,6 @@ const Course: FC = () => {
     const index = lessons.findIndex((lesson) => lesson._id === lessonId);
 
     const data = index === -1 || index === 0 ? null : lessons[index - 1];
-    console.log(data);
     return data;
   };
 
@@ -78,7 +77,6 @@ const Course: FC = () => {
     const data =
       index === -1 || index === lessons.length - 1 ? null : lessons[index + 1];
 
-    console.log(data);
     return data;
   };
 
@@ -381,8 +379,7 @@ const Course: FC = () => {
             </Tabs>
           </div>
         </div>
-
-        <AiChat courseId={course._id} />
+        {courseId && <AiChat courseId={courseId} />}
       </div>
       <Footer />
     </UserLayout>

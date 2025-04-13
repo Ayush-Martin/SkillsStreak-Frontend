@@ -30,6 +30,8 @@ interface IEnrolledCoursesProps {
   }[];
 }
 
+const pageSize = 10;
+
 const EnrolledCourses: FC<IEnrolledCoursesProps> = ({ enrolledCourses }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -87,6 +89,7 @@ const Students: FC = () => {
     currentPage,
     changePageApi: changePage,
     getDataApi: getTrainerStudentsApi,
+    size: pageSize,
   });
 
   return (

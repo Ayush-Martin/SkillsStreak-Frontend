@@ -11,7 +11,7 @@ import adminTransactions from "./features/admin/slice/adminTransactionSlice";
 import adminCourses from "./features/admin/slice/adminCourseSlice";
 import completedEnrolledCourses from "./features/user/slice/completedEnrolledCourses";
 import trainerStudents from "./features/trainer/slice/StudentsSlice";
-import trainerStream from "./features/trainer/slice/TrinerStreamSlice";
+import trainerStream from "./features/trainer/slice/TrainerStreamSlice";
 import userStream from "./features/user/slice/liveStreamSlice";
 
 const store = configureStore({

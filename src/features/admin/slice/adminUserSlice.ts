@@ -11,6 +11,7 @@ type UsersType = Array<{
   _id: string;
   isBlocked: boolean;
   role: "user" | "trainer";
+  profileImage: string;
 }>;
 
 type initialStateType = {

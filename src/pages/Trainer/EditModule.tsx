@@ -85,7 +85,6 @@ const EditModule: FC = () => {
       }
     );
     setLoading(false);
-    console.log(res);
 
     if (!res) return;
     successPopup(res.message || "added");

@@ -5,7 +5,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui";
-import { FC } from "react";
+import { FC, Fragment } from "react";
 
 interface IBreadcrumbNavProps {
   breadcrumbItems: Array<{ link: string; text: string }>;
@@ -16,14 +16,14 @@ const BreadcrumbNav: FC<IBreadcrumbNavProps> = ({ breadcrumbItems }) => {
     <Breadcrumb>
       <BreadcrumbList>
         {breadcrumbItems.map(({ link, text }) => (
-          <>
+          <Fragment key={link}>
             <BreadcrumbItem>
               <Link to={link} className="md:text-lg text-app-neutral">
                 {text}
               </Link>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-          </>
+          </Fragment>
         ))}
       </BreadcrumbList>
     </Breadcrumb>

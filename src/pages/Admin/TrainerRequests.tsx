@@ -25,22 +25,22 @@ import {
 import usePaginatedData from "@/hooks/usePaginatedData";
 import { TableSkeleton } from "@/components/skeletons";
 
+const PAGE_SIZE = 10;
+
 const TrainerRequest: FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const { users, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.adminTrainerRequest
   );
 
-  const { nextPage, paginatedData, previousPage } = usePaginatedData({
-    data: users,
-    currentPage,
-    getDataApi: getAdminTrainerRequestsApi,
-    changePageApi: changePage,
-  });
-
-  const refreshHandler = () => {
-    dispatch(getAdminTrainerRequestsApi({ page: 1 }));
-  };
+  const { nextPage, paginatedData, previousPage, refreshHandler } =
+    usePaginatedData({
+      data: users,
+      currentPage,
+      getDataApi: getAdminTrainerRequestsApi,
+      changePageApi: changePage,
+      size: PAGE_SIZE,
+    });
 
   return (
     <AdminLayout>

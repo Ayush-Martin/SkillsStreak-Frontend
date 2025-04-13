@@ -5,18 +5,18 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getTrainerCoursesApi = createAsyncThunk<
   IResponse,
-  { page: number; search: string }
+  { page: number; search: string; size: number }
 >(
   "trainerCourses/getCourses",
-  async ({ page, search }, { rejectWithValue }) => {
+  async ({ page, search, size }, { rejectWithValue }) => {
     try {
       const response = await appApi.get(
-        `${TRAINER_COURSES_API}?search=${search}&page=${page}`
+        `${TRAINER_COURSES_API}?search=${search}&page=${page}&size=${size}`
       );
       return response.data;
     } catch (err) {
       const resErr = err as IApiResponseError;
-      console.log(err);
+
       return rejectWithValue(resErr.response.data.error);
     }
   }
@@ -30,7 +30,6 @@ export const trainerCourseListUnListApi = createAsyncThunk<IResponse, string>(
       return response.data;
     } catch (err) {
       const resErr = err as IApiResponseError;
-      console.log(err);
       return rejectWithValue(resErr.response.data.error);
     }
   }

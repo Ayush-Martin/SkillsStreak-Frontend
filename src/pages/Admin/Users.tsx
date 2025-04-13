@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { Pagination, SearchBox } from "@/components";
+import { Pagination, ProfileImage, SearchBox } from "@/components";
 import AdminLayout from "@/layouts/AdminLayout";
 import {
   Table,
@@ -21,22 +21,27 @@ import { changePage } from "@/features/admin/slice/adminUserSlice";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import { TableSkeleton } from "@/components/skeletons";
 
+const pageSize = 5;
+
 const Users: FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const { users, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.adminUser
   );
-  const { nextPage, previousPage, paginatedData, search, searchHandler } =
-    usePaginatedData({
-      data: users,
-      currentPage,
-      getDataApi: getAdminUsersApi,
-      changePageApi: changePage,
-    });
-
-  const refreshHandler = () => {
-    dispatch(getAdminUsersApi({ page: 1, search }));
-  };
+  const {
+    nextPage,
+    previousPage,
+    paginatedData,
+    search,
+    searchHandler,
+    refreshHandler,
+  } = usePaginatedData({
+    data: users,
+    currentPage,
+    getDataApi: getAdminUsersApi,
+    changePageApi: changePage,
+    size: pageSize,
+  });
 
   return (
     <AdminLayout>
@@ -52,6 +57,7 @@ const Users: FC = () => {
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead>User</TableHead>
             <TableHead>User Email</TableHead>
             <TableHead>Username</TableHead>
             <TableHead>Role</TableHead>
@@ -67,6 +73,13 @@ const Users: FC = () => {
           <TableBody>
             {paginatedData.map((user) => (
               <TableRow key={user._id}>
+                <TableCell>
+                  <ProfileImage
+                    profileImage={user.profileImage}
+                    size={16}
+                    textSize="4xl"
+                  />
+                </TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.username}</TableCell>
                 <TableCell>{user.role}</TableCell>

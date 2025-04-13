@@ -11,6 +11,7 @@ import {
   IoEyeOff,
   MdEdit,
   MdOutlineRefresh,
+  IoMdAddCircleOutline,
 } from "@/assets/icons";
 import {
   Table,
@@ -22,6 +23,7 @@ import {
   Input,
 } from "@/components/ui";
 import {
+  adminCategoryAddApi,
   adminCategoryEditApi,
   adminCategoryListUnListApi,
   getAdminCategoriesApi,
@@ -34,11 +36,13 @@ import { CategoryNameValidationRule } from "@/utils/validationRules";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import { TableSkeleton } from "@/components/skeletons";
 
-const CategoryEditSchema = z.object({
+const PAGE_SIZE = 5;
+
+const CategorySchema = z.object({
   categoryName: CategoryNameValidationRule,
 });
 
-type CategoryEditSchemaType = z.infer<typeof CategoryEditSchema>;
+type CategorySchemaType = z.infer<typeof CategorySchema>;
 
 interface ICategoryEdit {
   categoryId: string;
@@ -58,8 +62,8 @@ const CategoryEdit: FC<ICategoryEdit> = ({
     formState: { errors },
     register,
     trigger,
-  } = useForm<CategoryEditSchemaType>({
-    resolver: zodResolver(CategoryEditSchema),
+  } = useForm<CategorySchemaType>({
+    resolver: zodResolver(CategorySchema),
     defaultValues: {
       categoryName,
     },
@@ -93,6 +97,43 @@ const CategoryEdit: FC<ICategoryEdit> = ({
   );
 };
 
+const AddCategory: FC = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<CategorySchemaType>({
+    resolver: zodResolver(CategorySchema),
+    mode: "onBlur",
+  });
+
+  const addCategory = (data: CategorySchemaType) => {
+    dispatch(adminCategoryAddApi(data.categoryName));
+  };
+
+  return (
+    <div className="flex flex-col gap-0 my-3">
+      <form className="flex gap-4" onSubmit={handleSubmit(addCategory)}>
+        <Input
+          className="bg-transparent border w-60 border-app-border placeholder:text-muted-foreground"
+          placeholder="enter text here"
+          {...register("categoryName")}
+        />
+        <button
+          disabled={!!errors.categoryName}
+          className="text-3xl text-white disabled:text-app-border"
+        >
+          <IoMdAddCircleOutline />
+        </button>
+      </form>
+      {errors.categoryName && (
+        <ErrorText error={errors.categoryName.message!} />
+      )}
+    </div>
+  );
+};
+
 const Categories: FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const [selected, setSelected] = useState<string | null>();
@@ -100,17 +141,20 @@ const Categories: FC = () => {
     (state: RootReducer) => state.adminCategory
   );
 
-  const { nextPage, paginatedData, previousPage, search, searchHandler } =
-    usePaginatedData({
-      data: categories,
-      currentPage,
-      changePageApi: changePage,
-      getDataApi: getAdminCategoriesApi,
-    });
-
-  const refreshHandler = () => {
-    dispatch(getAdminCategoriesApi({ page: 1, search }));
-  };
+  const {
+    nextPage,
+    paginatedData,
+    previousPage,
+    search,
+    searchHandler,
+    refreshHandler,
+  } = usePaginatedData({
+    data: categories,
+    currentPage,
+    changePageApi: changePage,
+    getDataApi: getAdminCategoriesApi,
+    size: PAGE_SIZE,
+  });
 
   return (
     <AdminLayout>
@@ -123,6 +167,7 @@ const Categories: FC = () => {
       <button className="mt-10 text-3xl text-blue-600" onClick={refreshHandler}>
         <MdOutlineRefresh />
       </button>
+      <AddCategory />
       <Table>
         <TableHeader>
           <TableRow>

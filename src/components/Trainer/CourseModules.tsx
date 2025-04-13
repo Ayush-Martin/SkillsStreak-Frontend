@@ -17,7 +17,6 @@ import {
 } from "@/config/axios";
 import { TRAINER_COURSES_API } from "@/constants/API";
 import { successPopup } from "@/utils/popup";
-import { AddModule } from "@/components";
 import { ModuleType } from "@/types/courseType";
 
 interface ICourseModulesParams {

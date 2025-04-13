@@ -5,6 +5,7 @@ import { Paperclip, Send } from "lucide-react";
 import { axiosGetRequest, axiosPostRequest } from "@/config/axios";
 import { IPremiumChat, IPremiumMessage } from "@/types/chatType";
 import { SocketEvents } from "@/constants";
+import { useScrollToBottom } from "@/hooks";
 
 interface IChatProps {
   userId: string;
@@ -18,21 +19,7 @@ const Chat: FC<IChatProps> = ({ userId, chatUserId, chatId, chatUserName }) => {
   const [id, setId] = useState(chatId);
   const [messages, setMessages] = useState<Array<IPremiumMessage>>([]);
   const [message, setMessage] = useState("");
-
-  // Use a ref for the ScrollArea component itself
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const messagesContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (messagesContainerRef.current && scrollAreaRef.current) {
-      // Find the actual scrollable element within your custom ScrollArea component
-      const scrollableElement =
-        scrollAreaRef.current.querySelector(
-          "[data-radix-scroll-area-viewport]"
-        ) || scrollAreaRef.current;
-      scrollableElement.scrollTop = scrollableElement.scrollHeight;
-    }
-  }, [messages]);
+  const chatEndRef = useScrollToBottom([messages]);
 
   useEffect(() => {
     // Socket listener for new messages
@@ -118,8 +105,8 @@ const Chat: FC<IChatProps> = ({ userId, chatUserId, chatId, chatUserName }) => {
       </div>
 
       {/* Messages container */}
-      <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
-        <div className="flex flex-col" ref={messagesContainerRef}>
+      <ScrollArea className="flex-1 p-4">
+        <div className="flex flex-col">
           {messages.map((msg) => {
             switch (msg.messageType) {
               case "image":
@@ -164,6 +151,7 @@ const Chat: FC<IChatProps> = ({ userId, chatUserId, chatId, chatUserName }) => {
             }
           })}
         </div>
+        <div ref={chatEndRef}></div>
       </ScrollArea>
 
       {/* Input area */}

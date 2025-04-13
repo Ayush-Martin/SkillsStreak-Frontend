@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { Pagination } from "@/components";
 import {
@@ -14,25 +14,24 @@ import { getAdminTransactionsApi } from "@/features/admin/api/adminTransactionAp
 import { changePage } from "@/features/admin/slice/adminTransactionSlice";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import AdminLayout from "@/layouts/AdminLayout";
-import { AppDispatch, RootReducer } from "@/store";
+import { RootReducer } from "@/store";
 import { MdOutlineRefresh } from "@/assets/icons";
 import { TableSkeleton } from "@/components/skeletons";
 
+const pageSize = 10;
+
 const Transactions: FC = () => {
-  const dispatch: AppDispatch = useDispatch();
   const { transactions, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.adminTransactions
   );
-  const { nextPage, previousPage, paginatedData } = usePaginatedData({
-    data: transactions,
-    currentPage,
-    getDataApi: getAdminTransactionsApi,
-    changePageApi: changePage,
-  });
-
-  const refreshHandler = () => {
-    dispatch(getAdminTransactionsApi({ page: 1 }));
-  };
+  const { nextPage, previousPage, paginatedData, refreshHandler } =
+    usePaginatedData({
+      data: transactions,
+      currentPage,
+      getDataApi: getAdminTransactionsApi,
+      changePageApi: changePage,
+      size: pageSize,
+    });
 
   return (
     <AdminLayout>
@@ -60,8 +59,14 @@ const Transactions: FC = () => {
           <TableBody>
             {paginatedData.map((transaction) => (
               <TableRow key={transaction._id}>
-                <TableCell>{transaction.transactionId}</TableCell>
-                <TableCell>{transaction.payerId.email}</TableCell>
+                <TableCell>{transaction._id}</TableCell>
+                <TableCell>
+                  {transaction.payerId
+                    ? transaction.payerId.role == "admin"
+                      ? "Admin"
+                      : transaction.payerId.email
+                    : "Admin"}
+                </TableCell>
                 <TableCell>
                   {transaction.receiverId
                     ? transaction.receiverId.role == "admin"

@@ -133,8 +133,6 @@ const ChatI = () => {
   useEffect(() => {
     if (chats.length > 0) {
       socket.on(SocketEvents.CHAT_NEW_MESSAGE, (data: IPremiumMessage) => {
-        console.log("new message", data);
-        console.log("chats", chats);
         const updatedChat = chats.find((chat) => chat._id === data.chatId);
         if (!updatedChat) return;
 

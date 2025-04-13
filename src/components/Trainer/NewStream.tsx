@@ -16,7 +16,7 @@ const StreamSchema = z.object({
 type StreamSchemaType = z.infer<typeof StreamSchema>;
 
 interface INewStreamProps {
-  startStream: (token: string) => void;
+  startStream: (token: string, roomId: string) => void;
 }
 
 const NewStream: FC<INewStreamProps> = ({ startStream }) => {
@@ -53,10 +53,8 @@ const NewStream: FC<INewStreamProps> = ({ startStream }) => {
 
     if (!res) return;
     setIsLoading(false);
-    startStream(res.data);
+    startStream(res.data.token, res.data.stream.roomId);
   };
-
-  
 
   return (
     <div className="w-full px-5 py-2 border rounded-md border-app-border">

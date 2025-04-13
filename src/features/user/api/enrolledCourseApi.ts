@@ -7,16 +7,32 @@ export const getEnrolledCoursesApi = createAsyncThunk<
   IResponse,
   {
     page: number;
+    size: number;
   }
 >(
   "userEnrolledCourses/getEnrolledCourses",
-  async ({ page }, { rejectWithValue }) => {
+  async ({ page, size }, { rejectWithValue }) => {
     try {
-      const response = await appApi.get(`${ENROLLED_COURSES}?page=${page}`);
+      const response = await appApi.get(
+        `${ENROLLED_COURSES}?page=${page}&size=${size}`
+      );
       return response.data;
     } catch (err) {
       const resErr = err as IApiResponseError;
-      console.log(err);
+
+      return rejectWithValue(resErr.response.data.error);
+    }
+  }
+);
+
+export const cancelEnrolledCourseApi = createAsyncThunk<IResponse, string>(
+  "userEnrolledCourses/cancelEnrolledCourse",
+  async (courseId, { rejectWithValue }) => {
+    try {
+      const response = await appApi.delete(`${ENROLLED_COURSES}/${courseId}`);
+      return response.data;
+    } catch (err) {
+      const resErr = err as IApiResponseError;
       return rejectWithValue(resErr.response.data.error);
     }
   }

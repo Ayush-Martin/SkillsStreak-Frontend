@@ -13,6 +13,7 @@ export { default as Footer } from "./common/Footer";
 export { default as Header } from "./common/Header";
 export { default as Logo } from "./common/Logo";
 export { default as BreadcrumbNav } from "./common/BreadcrumbNav";
+export { default as LiveChat } from "./common/LiveChat";
 
 export { default as ProfileImage } from "./ProfileImage";
 export { default as Profile } from "./common/Profile";
@@ -26,7 +27,7 @@ export { default as Register } from "./Auth/Register";
 //user
 export { default as UserSidebar } from "./User/UserSidebar";
 export { default as CourseCard } from "./User/CourseCard";
-export { default as Chat } from "./User/Chat";
+export { default as Chat } from "./common/Chat";
 export { default as UserProfile } from "./User/UserProfile";
 export { default as SubscriptionCard } from "./User/SubscriptionCard";
 export { default as Review } from "./User/Review";
@@ -35,6 +36,7 @@ export { default as Certificate } from "./User/Certificate";
 export { default as AiChat } from "./User/AiChat";
 export { default as CourseFilter } from "./User/CourseFilter";
 export { default as LiveStreamCard } from "./User/LiveStreamCard";
+export { default as EnrolledCourseCard } from "./User/EnrolledCourseCard";
 
 //trainer
 export { default as TrainerSidebar } from "./Trainer/TrainerSidebar";

@@ -36,7 +36,7 @@ const App = () => {
         );
         dispatch(login(res.data.data));
       } catch (err) {
-        console.log(err);
+        console.warn(err);
         navigate("/");
       } finally {
         setLoading(false);

@@ -8,19 +8,22 @@ export const getAdminCoursesApi = createAsyncThunk<
   {
     page: number;
     search: string;
+    size: number;
   }
->("adminCourses/getCourses", async ({ page, search }, { rejectWithValue }) => {
-  try {
-    const response = await appApi.get(
-      `${ADMIN_COURSES_API}?search=${search}&page=${page}`
-    );
-    return response.data;
-  } catch (err) {
-    const resErr = err as IApiResponseError;
-    console.log(err);
-    return rejectWithValue(resErr.response.data.error);
+>(
+  "adminCourses/getCourses",
+  async ({ page, search, size }, { rejectWithValue }) => {
+    try {
+      const response = await appApi.get(
+        `${ADMIN_COURSES_API}?search=${search}&page=${page}&size=${size}`
+      );
+      return response.data;
+    } catch (err) {
+      const resErr = err as IApiResponseError;
+      return rejectWithValue(resErr.response.data.error);
+    }
   }
-});
+);
 
 export const adminCourseListUnListApi = createAsyncThunk<IResponse, string>(
   "adminCourses/listUnListCategory",
@@ -30,7 +33,7 @@ export const adminCourseListUnListApi = createAsyncThunk<IResponse, string>(
       return response.data;
     } catch (err) {
       const resErr = err as IApiResponseError;
-      console.log(err);
+
       return rejectWithValue(resErr.response.data.error);
     }
   }
@@ -49,7 +52,7 @@ export const adminCourseApproveRejectApi = createAsyncThunk<
       return response.data;
     } catch (err) {
       const resErr = err as IApiResponseError;
-      console.log(err);
+
       return rejectWithValue(resErr.response.data.error);
     }
   }

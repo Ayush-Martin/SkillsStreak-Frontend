@@ -6,3 +6,6 @@ export { default as useSubscription } from "./useSubscription";
 export { default as useLogout } from "./useLogout";
 export { default as useClickOutside } from "./useClickOutside";
 export { default as usePaginatedData } from "./usePaginatedData";
+export { default as useScrollToBottom } from "./useScrollToBottom";
+export { default as useTrainerStream } from "./useTrainerStream";
+export { default as useUserStream } from "./useUserStream";

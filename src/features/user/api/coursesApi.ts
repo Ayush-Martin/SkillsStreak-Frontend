@@ -13,12 +13,12 @@ export const getCoursesApi = createAsyncThunk<
     difficulty: "all" | ICourseDifficulty;
     price: "all" | IPrice;
     sort: "none" | ISort;
-    limit: number;
+    size: number;
   }
 >(
   "userCourses/getCourses",
   async (
-    { page, search, category, difficulty, price, limit, sort },
+    { page, search, category, difficulty, price, size, sort },
     { rejectWithValue }
   ) => {
     try {
@@ -28,7 +28,7 @@ export const getCoursesApi = createAsyncThunk<
         category,
         difficulty,
         price,
-        limit: limit.toString(),
+        size: size.toString(),
         sort,
       });
 
@@ -36,7 +36,7 @@ export const getCoursesApi = createAsyncThunk<
       return response.data;
     } catch (err) {
       const resErr = err as IApiResponseError;
-      console.log(err);
+
       return rejectWithValue(resErr.response.data.error);
     }
   }

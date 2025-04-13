@@ -5,18 +5,17 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getAdminCategoriesApi = createAsyncThunk<
   IResponse,
-  { page: number; search: string }
+  { page: number; search: string; size: number }
 >(
   "adminCategory/getCategories",
-  async ({ page, search }, { rejectWithValue }) => {
+  async ({ page, search, size }, { rejectWithValue }) => {
     try {
       const response = await appApi.get(
-        `${ADMIN_CATEGORY_API}?search=${search}&page=${page}`
+        `${ADMIN_CATEGORY_API}?search=${search}&page=${page}&size=${size}`
       );
       return response.data;
     } catch (err) {
       const resErr = err as IApiResponseError;
-      console.log(err);
       return rejectWithValue(resErr.response.data.error);
     }
   }
@@ -32,7 +31,6 @@ export const adminCategoryListUnListApi = createAsyncThunk<IResponse, string>(
       return response.data;
     } catch (err) {
       const resErr = err as IApiResponseError;
-      console.log(err);
       return rejectWithValue(resErr.response.data.error);
     }
   }
@@ -51,7 +49,6 @@ export const adminCategoryEditApi = createAsyncThunk<
       return response.data;
     } catch (err) {
       const resErr = err as IApiResponseError;
-      console.log(err);
       return rejectWithValue(resErr.response.data.error);
     }
   }
@@ -67,7 +64,6 @@ export const adminCategoryAddApi = createAsyncThunk<IResponse, string>(
       return response.data;
     } catch (err) {
       const resErr = err as IApiResponseError;
-      console.log(err);
       return rejectWithValue(resErr.response.data.error);
     }
   }

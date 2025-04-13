@@ -278,6 +278,7 @@ const Review: FC<IReviewProps> = ({ courseId, trainerId }) => {
       <div className="flex flex-col gap-6 ">
         {reviews.map((review) => (
           <ReviewCard
+            key={review._id}
             addReply={addReply}
             authorId={trainerId}
             fetchReplies={fetchReplies}

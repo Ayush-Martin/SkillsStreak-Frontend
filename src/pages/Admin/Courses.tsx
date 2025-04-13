@@ -28,23 +28,28 @@ import {
 } from "@/components/ui";
 import { CourseTableSkeleton } from "@/components/skeletons";
 
+const PAGE_SIZE = 3;
+
 const Courses: FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const { courses, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.adminCourses
   );
 
-  const { paginatedData, nextPage, previousPage, search, searchHandler } =
-    usePaginatedData({
-      data: courses,
-      currentPage,
-      getDataApi: getAdminCoursesApi,
-      changePageApi: changePage,
-    });
-
-  const refreshHandler = () => {
-    dispatch(getAdminCoursesApi({ page: 1, search }));
-  };
+  const {
+    paginatedData,
+    nextPage,
+    previousPage,
+    search,
+    searchHandler,
+    refreshHandler,
+  } = usePaginatedData({
+    data: courses,
+    currentPage,
+    getDataApi: getAdminCoursesApi,
+    changePageApi: changePage,
+    size: PAGE_SIZE,
+  });
 
   const approvedRejectCourse = (
     courseId: string,
