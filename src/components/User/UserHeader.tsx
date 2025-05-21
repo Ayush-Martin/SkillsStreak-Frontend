@@ -35,7 +35,9 @@ const UserHeader: FC = () => {
 
   return (
     <Header>
-      <Logo />
+      <Link to={"/"}>
+        <Logo />
+      </Link>
       <ul className="hidden gap-4 text-lg text-white sm:flex">
         {LINKS.map(({ to, label }) => (
           <li
@@ -61,7 +63,7 @@ const UserHeader: FC = () => {
             <button onClick={() => setDropdownOpen(!dropdownOpen)}>
               <ProfileImage
                 profileImage={profileImage}
-                size={10}
+                size={9}
                 textSize="2xl"
               />
             </button>

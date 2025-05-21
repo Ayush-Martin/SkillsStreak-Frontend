@@ -37,13 +37,15 @@ const VerifyOTP: FC = () => {
     }
   }, [email, forAction, navigate]);
 
-  const timerInterval = setTimeout(() => {
-    setTimer((prev) => prev - 1);
-  }, 1000);
+  useEffect(() => {
+    if (timer <= 0) return;
 
-  if (timer == 0) {
-    clearTimeout(timerInterval);
-  }
+    const interval = setInterval(() => {
+      setTimer((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(interval); // cleanup on re-run
+  }, [timer]);
 
   const submit = async () => {
     const res = await axiosPostRequest(VERIFY_OTP_API, {

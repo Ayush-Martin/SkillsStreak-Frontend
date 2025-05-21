@@ -3,11 +3,4 @@
   /* border: 1px solid #fc831b; Define width, style, and color */
   /* box-shadow: inset 0px 0px 0px 2px #fc831b; */
   border-radius: 10px;
-  background-image: repeating-linear-gradient(
-    45deg,
-    #333 0px,
-    #333 5px,
-    transparent 2px,
-    transparent 8px
-  );
 }
