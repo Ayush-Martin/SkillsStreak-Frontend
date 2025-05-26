@@ -6,6 +6,7 @@ import {
   EditCourseBasicDetails,
   EditCourseRequirements,
   EditCourseSkillsCovered,
+  LiveSession,
 } from "@/components";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
 import useEditCourse from "@/hooks/useEditCourse";
@@ -31,6 +32,9 @@ const EditCourse: FC = () => {
           <TabsTrigger value="modules" className="w-full">
             Modules
           </TabsTrigger>
+          <TabsTrigger value="live" className="w-full">
+            Live Sessions
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="basic_details">
           {course && (
@@ -49,6 +53,9 @@ const EditCourse: FC = () => {
         </TabsContent>
         <TabsContent value="modules">
           {course && <CourseModules course={course} />}
+        </TabsContent>
+        <TabsContent value="live">
+          {course && <LiveSession course={course} />}
         </TabsContent>
       </Tabs>
     </TrainerLayout>

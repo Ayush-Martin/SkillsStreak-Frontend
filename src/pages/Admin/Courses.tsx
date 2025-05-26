@@ -17,7 +17,7 @@ import {
   getAdminCoursesApi,
 } from "@/features/admin/api/adminCourseApi";
 import { changePage } from "@/features/admin/slice/adminCourseSlice";
-import { Pagination, SearchBox } from "@/components";
+import { HighlightText, Pagination, SearchBox } from "@/components";
 import {
   Table,
   TableBody,
@@ -96,7 +96,9 @@ const Courses: FC = () => {
                 <TableCell>
                   <img src={course.thumbnail} width={"200px"} />
                 </TableCell>
-                <TableCell>{course.title}</TableCell>
+                <TableCell>
+                  <HighlightText search={search} text={course.title} />
+                </TableCell>
                 <TableCell>{course.trainerId.email}</TableCell>
                 <TableCell>{course.categoryId.categoryName}</TableCell>
                 <TableCell>{course.price}</TableCell>

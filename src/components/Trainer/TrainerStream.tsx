@@ -35,7 +35,7 @@ const TrainerStream = forwardRef<HTMLVideoElement, ITrainerStreamProps>(
   ) => {
     return (
       <div className="flex gap-4">
-        <div className="w-4/6">
+        <div className="w-3/4">
           <video
             ref={ref}
             autoPlay
@@ -43,7 +43,7 @@ const TrainerStream = forwardRef<HTMLVideoElement, ITrainerStreamProps>(
             style={{
               width: "100%",
               height: "auto",
-              transform: "scaleX(-1)", 
+              transform: "scaleX(-1)",
             }}
           />
 
@@ -97,7 +97,7 @@ const TrainerStream = forwardRef<HTMLVideoElement, ITrainerStreamProps>(
             </div>
           </div>
         </div>
-        <div className="w-2/6 rounded-md bg-app-border h-[500px]">
+        <div className="w-2/4 rounded-md bg-app-border h-[500px]">
           <div className="w-full py-3 text-center border-b border-app-neutral">
             <h1 className="text-white font-boldonse">Live Chat</h1>
           </div>

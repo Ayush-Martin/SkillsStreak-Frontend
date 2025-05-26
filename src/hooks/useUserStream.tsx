@@ -6,8 +6,8 @@ import { useParams, useNavigate } from "react-router-dom";
 
 const LIVEKIT_URL = import.meta.env.VITE_LIVEKIT_URL;
 
-const useUserStream = () => {
-  const { streamId } = useParams();
+
+const useUserStream = (streamId:string) => {
   const navigate = useNavigate();
   const [camera, setCamera] = useState(false);
   const [screen, setScreen] = useState(false);

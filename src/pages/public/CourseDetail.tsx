@@ -20,12 +20,25 @@ import {
   AccordionTrigger,
   Badge,
   Button,
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
 } from "@/components/ui";
-import { BreadcrumbNav, Footer, Loading, Review } from "@/components";
+import {
+  BreadcrumbNav,
+  CourseCard,
+  Footer,
+  LiveSessionCard,
+  Loading,
+  Review,
+} from "@/components";
 import { errorPopup, successPopup } from "@/utils/popup";
 import { usePayment } from "@/hooks";
 import { useSelector } from "react-redux";
 import { RootReducer } from "@/store";
+import { CourseCardSkeleton } from "@/components/skeletons";
 
 const CourseDetail: FC = () => {
   const navigate = useNavigate();
@@ -144,6 +157,35 @@ const CourseDetail: FC = () => {
       </section>
 
       <section className="flex flex-col w-full gap-16 py-5 mt-5 mb-10 px-7 md:px-32 lg:px-56">
+        <div>
+          <h1 className="mb-2 text-xl md:text-2xl text-app-neutral font-tektur">
+            Live Sessions :
+          </h1>
+          <div className="px-10 mt-10">
+            <Carousel className="w-full">
+              <CarouselContent className="-ml-4 flex">
+                {course.liveSessions.map((session) => (
+                  <CarouselItem
+                    key={session._id}
+                    className=" basis-[300px] sm:basis-[350px] lg:basis-[340px]"
+                  >
+                    <LiveSessionCard
+                      isLive={session.isLive}
+                      isPublic={session.isPublic}
+                      streamId={session._id}
+                      thumbnail={session.thumbnail}
+                      title={session.title}
+                      courseAccess={courseAccess || false}
+                      courseId={course._id}
+                    />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          </div>
+        </div>
         <div>
           <h1 className="mb-2 text-xl md:text-2xl text-app-neutral font-tektur">
             Course Contents :

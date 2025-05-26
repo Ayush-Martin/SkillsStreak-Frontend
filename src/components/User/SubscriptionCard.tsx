@@ -171,7 +171,7 @@ const SubscriptionCard: FC = () => {
   };
 
   return (
-    <div className=" overflow-hidden transition-shadow duration-300 transform  border border-gray-700 shadow-lg rounded-xl hover:shadow-xl w-[300px] md:w-[500px]">
+    <div className=" overflow-hidden transition-shadow duration-300 transform  border border-gray-700 shadow-lg rounded-xl hover:shadow-xl w-[350px] md:w-[450px]">
       <div className="flex items-center justify-between p-4 border-b-4 border-indigo-600">
         <h2 className="text-lg font-bold text-white font-tektur">
           Premium Subscription

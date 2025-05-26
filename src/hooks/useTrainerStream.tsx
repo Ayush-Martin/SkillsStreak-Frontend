@@ -1,4 +1,3 @@
-import { axiosPatchRequest } from "@/config/axios";
 import { endStream } from "@/features/trainer/slice/TrainerStreamSlice";
 import { Room, createLocalTracks, VideoPresets } from "livekit-client";
 import { useRef, useState, useEffect } from "react";
@@ -91,7 +90,6 @@ const useTrainerStream = () => {
   const stopStreaming = async () => {
     if (room) {
       try {
-        await axiosPatchRequest(`/trainer/streams/${room.name}`);
         await room.disconnect();
         setRoom(null);
         setIsStreaming(false);

@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 
 import { Button, Input } from "@/components/ui";
+import { IoMdSearch } from "@/assets/icons/icons";
 
 interface ISearchBoxProps {
   search: string;
@@ -14,23 +15,26 @@ const SearchBox: FC<ISearchBoxProps> = ({
   searchHandler,
 }) => {
   const [input, setInput] = useState(search);
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    searchHandler(input);
+  };
   return (
     <div className="flex justify-center">
-      <div className="flex gap-2 w-full px-0 sm:px-10 md:px-0 md:w-[350px] lg:w-[600px] xl:w-[700px]">
+      <form
+        onSubmit={handleSearch}
+        className="flex gap-2 w-full px-0 sm:px-10 md:px-0 md:w-[350px] lg:w-[600px] xl:w-[700px] items-center"
+      >
         <Input
           placeholder={placeholder}
-          className="bg-app-border"
+          className="border-2 bg-transparent border-app-border rounded-full"
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
-        <Button
-          variant={"v3"}
-          onClick={() => searchHandler(input)}
-          className="hover:bg-app-secondary"
-        >
-          Search
-        </Button>
-      </div>
+        <button className="hover:bg-app-secondary bg-transparent border-2 border-app-border text-white rounded-full p-2 text-xl">
+          <IoMdSearch />
+        </button>
+      </form>
     </div>
   );
 };

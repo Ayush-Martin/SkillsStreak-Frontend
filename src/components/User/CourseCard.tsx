@@ -23,16 +23,16 @@ const CourseCard: FC<ICourseCardParams> = ({
   return (
     <Link
       to={`/courses/${_id}`}
-      className="bg-[#1E1E1E] h-[200px] w-[250px] sm:h-[250px] sm:w-[300px] rounded-md block hover:scale-105 transition-all duration-300 ease-in-out"
+      className="bg-[#06070d] border border-[#0f1423] h-[230px] w-[250px] sm:h-[280px] sm:w-[300px] rounded-md block hover:scale-105 transition-all duration-300 ease-in-out p-2"
     >
-      <div className="w-full rounded-md ">
+      <div className="w-full rounded-md border-b border-orange-300 pb-3">
         <img
           src={thumbnail}
           alt=""
           className="object-cover rounded-ss-md rounded-se-md h-[110px] sm:h-[160px] w-full"
         />
       </div>
-      <div className="flex flex-col gap-1 px-3 ">
+      <div className="flex flex-col gap-1 px-3 py-2">
         <p className="text-lg font-semibold text-center sm:text-xl text-app-secondary">
           {title}
         </p>

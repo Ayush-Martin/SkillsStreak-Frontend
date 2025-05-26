@@ -19,8 +19,7 @@ const Transactions = lazy(() => import("./pages/User/Transactions"));
 const SendTrainerRequest = lazy(() => import("./pages/User/TrainerRequest"));
 const Course = lazy(() => import("./pages/User/Course"));
 const Chat = lazy(() => import("./pages/User/Chat"));
-const LiveStreams = lazy(() => import("./pages/User/LiveStreams"));
-const LiveStream = lazy(() => import("./pages/User/LiveStream"));
+const LiveSession = lazy(() => import("./pages/User/LiveSession"));
 
 //Trainer Routes
 const TrainerDashboard = lazy(() => import("./pages/Trainer/Dashboard"));
@@ -110,12 +109,8 @@ export const UserRoutes: Routes = [
     Component: Course,
   },
   {
-    path: "live",
-    Component: LiveStreams,
-  },
-  {
-    path: "live/:streamId",
-    Component: LiveStream,
+    path: "courses/:courseId/live/:streamId",
+    Component: LiveSession,
   },
 ];
 
@@ -160,7 +155,7 @@ export const TrainerRoutes: Routes = [
     Component: TrainerChat,
   },
   {
-    path: "live",
+    path: "courses/:courseId/live/new",
     Component: TrainerLiveStream,
   },
 ];

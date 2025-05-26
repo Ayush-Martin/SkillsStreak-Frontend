@@ -39,12 +39,14 @@ const Trainer: FC = () => {
   return (
     <UserLayout>
       <section className="mt-5 mb-10">
-        <Profile
-          email={trainer.email}
-          username={trainer.username}
-          about={trainer.about}
-          profileImage={trainer.profileImage}
-        />
+        <div className="flex justify-center items-center">
+          <Profile
+            email={trainer.email}
+            username={trainer.username}
+            about={trainer.about}
+            profileImage={trainer.profileImage}
+          />
+        </div>
         <div className="block px-10 mt-10 md:px-40">
           <h1 className="mb-2 text-xl md:text-2xl text-app-neutral font-tektur">
             Courses

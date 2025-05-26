@@ -52,11 +52,11 @@ const LiveChat: FC<ILiveChatProps> = ({ roomId }) => {
   };
 
   return (
-    <div className="lg:w-2/6 rounded-md border border-app-border h-[400px] md:h-[450px] lg:h-[550px] text-white">
+    <div className="w-full rounded-md border bg-black border-app-border h-[400px] md:h-[450px] lg:h-[620px] text-white ">
       <div className="w-full py-3 text-center border-b border-app-border">
         <h1 className="text-white font-boldonse">Live Chat</h1>
       </div>
-      <ScrollArea className="h-[300px] md-[350px] lg:h-[450px] w-full p-4 gap-2">
+      <ScrollArea className="h-[300px] md-[350px] lg:h-[500px] w-full p-4 gap-2">
         {comments.map((comment, i) => (
           <div
             className="flex items-center gap-2 my-2"

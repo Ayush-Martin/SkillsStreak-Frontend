@@ -1,7 +1,12 @@
 import { FC } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { Pagination, ProfileImage, SearchBox } from "@/components";
+import {
+  HighlightText,
+  Pagination,
+  ProfileImage,
+  SearchBox,
+} from "@/components";
 import AdminLayout from "@/layouts/AdminLayout";
 import {
   Table,
@@ -80,7 +85,9 @@ const Users: FC = () => {
                     textSize="4xl"
                   />
                 </TableCell>
-                <TableCell>{user.email}</TableCell>
+                <TableCell>
+                  <HighlightText search={search} text={user.email} />
+                </TableCell>
                 <TableCell>{user.username}</TableCell>
                 <TableCell>{user.role}</TableCell>
                 <TableCell>

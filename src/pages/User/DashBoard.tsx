@@ -37,7 +37,7 @@ const DashBoard: FC = () => {
     <UserLayout>
       <div className="relative flex">
         <UserSidebar />
-        <div className="w-full mt-10 ml-0 text-white md:ml-64 md:mt-0">
+        <div className="w-full mt-10 ml-0 text-white md:ml-64 md:mt-0 p-5">
           <div className="relative">
             {editProfile && (
               <UserProfile
@@ -49,23 +49,26 @@ const DashBoard: FC = () => {
                 close={() => setEditProfile(false)}
               />
             )}
-            <Profile
-              email={email}
-              username={username}
-              about={about}
-              profileImage={profileImage}
-            />
-            <div className="flex justify-center gap-4 mt-3">
-              <Button variant={"v1"} onClick={() => setEditProfile(true)}>
-                Update profile
-              </Button>
-              <Button variant={"v2"} onClick={changePassword}>
-                Change password
-              </Button>
-            </div>
-            <div className="flex flex-col justify-center gap-2 mt-5 md:px-5 md:flex-col lg:flex-row">
-              <SubscriptionCard />
-              <div className="w-full border rounded-md border-app-border"></div>
+            <div className="flex flex-col gap-4 xl:gap-0 xl:flex-row items-center justify-center">
+              <div className="border border-gray-700 p-6 rounded-lg">
+                <Profile
+                  email={email}
+                  username={username}
+                  about={about}
+                  profileImage={profileImage}
+                />
+                <div className="flex justify-center gap-4 mt-3">
+                  <Button variant={"v1"} onClick={() => setEditProfile(true)}>
+                    Update profile
+                  </Button>
+                  <Button variant={"v2"} onClick={changePassword}>
+                    Change password
+                  </Button>
+                </div>
+              </div>
+              <div className="flex flex-col justify-center gap-2  md:px-5 md:flex-col lg:flex-row">
+                <SubscriptionCard />
+              </div>
             </div>
           </div>
         </div>
