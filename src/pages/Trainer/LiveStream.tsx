@@ -4,11 +4,13 @@ import {
   FaRegStopCircle,
   FaMicrophoneAltSlash,
   FaMicrophoneAlt,
+  FaVideoSlash,
+  FaVideo,
 } from "react-icons/fa";
-import { FaVideoSlash, FaVideo } from "react-icons/fa6";
 import { MdOutlineStopScreenShare, MdOutlineScreenShare } from "react-icons/md";
 import { useTrainerStream } from "@/hooks";
 import { useParams } from "react-router-dom";
+import { ReactNode, useState } from "react";
 
 const LiveStream = () => {
   const {
@@ -27,106 +29,99 @@ const LiveStream = () => {
   } = useTrainerStream();
 
   const { courseId } = useParams();
+  const [isChatVisible, setIsChatVisible] = useState(true);
+
+  const toggleChat = () => setIsChatVisible(!isChatVisible);
 
   return (
     <TrainerLayout>
       {!isStreaming ? (
-        <div>
+        <div className="flex flex-col items-center justify-center w-full p-4">
           <NewStream startStream={startStream} courseId={courseId} />
-          <h2>Past Streams</h2>
         </div>
       ) : (
-        <div className="flex flex-col gap-4 lg:flex-row">
-          <div className="p-3 border rounded-md lg:w-3/4 border-app-border bg-black">
-            <div className="relative ">
+        <div className="flex justify-center gap-3">
+          {/* Video Section */}
+          <div className="relative w-full overflow-hidden rounded-md border border-app-border bg-black lg:w-3/4">
+            <div className="relative aspect-video bg-black">
+              {/* Screen Share */}
               <video
                 ref={screenShareRef}
-                className={isScreenSharing ? "block" : "hidden"}
+                className={`absolute top-0 left-0 w-full h-full object-contain ${
+                  isScreenSharing ? "block" : "hidden"
+                }`}
                 autoPlay
-                style={{
-                  width: "100%",
-                  height: "auto",
-                }}
               />
+              {/* Camera Feed */}
               <video
                 ref={cameraVideoRef}
-                style={{
-                  transform: "rotateY(180deg)",
-                }}
-                className={
+                className={`${
                   isScreenSharing
-                    ? "absolute bottom-6 right-6 w-16 h-16 md:w-20 md:h-20  lg:w-32 lg:h-32  object-cover block border-4 border-white shadow-xl"
-                    : "w-full h-auto"
-                }
+                    ? "absolute bottom-4 right-4 w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 border-4 border-white shadow-xl rounded-md object-cover"
+                    : "w-full h-full object-cover"
+                }`}
                 autoPlay
                 playsInline
+                style={{ transform: "rotateY(180deg)" }}
               />
             </div>
 
-            <div className="flex items-center justify-center px-2 mt-5 border rounded jus md:px-10 border-app-border md">
-              <div className="flex gap-1 flex-wrap justify-center items-center">
-                <div className="px-2 py-3   flex items-center gap-2">
-                  <button
-                    onClick={stopStreaming}
-                    className="p-2 text-lg text-red-500 bg-transparent border border-red-500 rounded-full md:p-3 md:text-2xl"
-                  >
-                    <FaRegStopCircle />
-                  </button>
-                  <p>End Stream</p>
-                </div>
-                <div className="px-2 py-3   flex items-center gap-2">
-                  <button
-                    onClick={toggleVideo}
-                    className={`p-2 md:p-3 text-lg md:text-2xl  bg-transparent border  rounded-full ${
-                      isVideoEnabled
-                        ? "text-red-500 border-red-500"
-                        : "text-green-500 border-green-500"
-                    }`}
-                  >
-                    {isVideoEnabled ? <FaVideoSlash /> : <FaVideo />}
-                  </button>
-                  <p>{isVideoEnabled ? "Mute Video" : "Unmute Video"}</p>
-                </div>
-                <div className="px-2 py-3   flex items-center gap-2">
-                  <button
-                    onClick={toggleAudio}
-                    className={`p-2 md:p-3 text-lg md:text-2xl bg-transparent border  rounded-full ${
-                      isAudioEnabled
-                        ? "text-red-500 border-red-500"
-                        : "text-green-500 border-green-500"
-                    }`}
-                  >
-                    {isAudioEnabled ? (
-                      <FaMicrophoneAltSlash />
-                    ) : (
-                      <FaMicrophoneAlt />
-                    )}
-                  </button>
-                  <p>{isAudioEnabled ? "Mute Video" : "Unmute Video"}</p>
-                </div>
-                <div className="px-2 py-3   flex items-center gap-2">
-                  <button
-                    onClick={toggleScreenShare}
-                    className={`p-2 md:p-3 text-lg md:text-2xl bg-transparent border  rounded-full ${
-                      isScreenSharing
-                        ? "text-red-500 border-red-500"
-                        : "text-green-500 border-green-500"
-                    }`}
-                  >
-                    {isScreenSharing ? (
-                      <MdOutlineStopScreenShare />
-                    ) : (
-                      <MdOutlineScreenShare />
-                    )}
-                  </button>
-                  <p>{isScreenSharing ? "Stop Sharing" : "Share Screen"}</p>
-                </div>
-              </div>
+            {/* Control Panel */}
+            <div className="flex flex-wrap justify-center gap-4 p-4 border-t border-app-border bg-gray-900/80">
+              <ControlButton
+                onClick={stopStreaming}
+                icon={<FaRegStopCircle />}
+                label="End Stream"
+                color="red"
+              />
+              <ControlButton
+                onClick={toggleVideo}
+                icon={isVideoEnabled ? <FaVideoSlash /> : <FaVideo />}
+                label={isVideoEnabled ? "Mute Video" : "Unmute Video"}
+                color={isVideoEnabled ? "red" : "green"}
+              />
+              <ControlButton
+                onClick={toggleAudio}
+                icon={
+                  isAudioEnabled ? (
+                    <FaMicrophoneAltSlash />
+                  ) : (
+                    <FaMicrophoneAlt />
+                  )
+                }
+                label={isAudioEnabled ? "Mute Audio" : "Unmute Audio"}
+                color={isAudioEnabled ? "red" : "green"}
+              />
+              <ControlButton
+                onClick={toggleScreenShare}
+                icon={
+                  isScreenSharing ? (
+                    <MdOutlineStopScreenShare />
+                  ) : (
+                    <MdOutlineScreenShare />
+                  )
+                }
+                label={isScreenSharing ? "Stop Sharing" : "Share Screen"}
+                color={isScreenSharing ? "red" : "green"}
+              />
+              <ControlButton
+                onClick={toggleChat}
+                icon={<span className="text-xl">💬</span>}
+                label={isChatVisible ? "Hide Chat" : "Show Chat"}
+                color="blue"
+              />
             </div>
           </div>
-          <div className="lg:w-1/3">
-            <LiveChat roomId={roomId} />
-          </div>
+
+          {/* Chat Section */}
+
+          {isChatVisible && (
+            <LiveChat
+              roomId={roomId}
+              isChatVisible={isChatVisible}
+              toggleChat={toggleChat}
+            />
+          )}
         </div>
       )}
     </TrainerLayout>
@@ -134,3 +129,23 @@ const LiveStream = () => {
 };
 
 export default LiveStream;
+
+const ControlButton = ({
+  onClick,
+  icon,
+  label,
+  color = "gray",
+}: {
+  onClick: () => void;
+  icon: ReactNode;
+  label: string;
+  color?: string;
+}) => {
+  const baseStyle = `flex flex-col items-center gap-1 p-2 md:p-3 rounded-lg text-${color}-500 border border-${color}-500 hover:bg-${color}-500 hover:text-white transition`;
+  return (
+    <button onClick={onClick} className={baseStyle}>
+      <div className="text-2xl">{icon}</div>
+      <span className="text-sm">{label}</span>
+    </button>
+  );
+};

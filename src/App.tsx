@@ -10,7 +10,6 @@ import {
   AdminRoutes,
   TrainerRoutes,
   UserRoutes,
-  ChatRouter,
 } from "@/router";
 import { AppDispatch, RootReducer } from "./store";
 import { IResponse } from "@/types/responseType";
@@ -62,12 +61,6 @@ const App = () => {
         <Routes>
           <Route path="/*" element={<RoutesHandler requiredRole="public" />}>
             {PublicRoutes.map(({ path, Component }) => (
-              <Route key={path} path={path} element={<Component />} />
-            ))}
-          </Route>
-
-          <Route path="/chat/*" element={<RoutesHandler requiredRole="user" />}>
-            {ChatRouter.map(({ path, Component }) => (
               <Route key={path} path={path} element={<Component />} />
             ))}
           </Route>

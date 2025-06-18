@@ -23,30 +23,36 @@ const LiveSessionCard: FC<ILiveSessionCardProps> = ({
   courseId,
 }) => {
   return (
-    <div className="border border-app-primary bg-black  h-[170px] w-[250px] sm:h-[220px] sm:w-[300px] rounded-md block hover:scale-105 transition-all duration-300 ease-in-out p-1 relative">
+    <div className="border border-app-primary bg-[#111827] h-[170px] w-[250px] sm:h-[220px] sm:w-[300px] rounded-lg overflow-hidden shadow-sm hover:shadow-lg hover:scale-[1.03] transition-all duration-300 ease-in-out relative group">
       <Link
         to={`/user/courses/${courseId}/live/${streamId}`}
-        className="w-full rounded-md border-b pb-2 border-app-border relative"
+        className="block w-full h-full"
       >
-        <img
-          src={thumbnail}
-          alt=""
-          className="object-cover rounded-ss-md rounded-se-md h-[110px] sm:h-[160px] w-full"
-        />
-        {isLive && (
-          <Badge className="bg-green-700 absolute bottom-2 left-1 text-sm">
-            Live
-          </Badge>
-        )}
+        <div className="relative">
+          <img
+            src={thumbnail}
+            alt={title}
+            className="object-cover w-full h-[110px] sm:h-[160px] rounded-t-lg transition-opacity duration-300 group-hover:opacity-90"
+          />
+          {isLive && (
+            <Badge className="absolute top-2 left-2 text-white bg-green-600 text-xs px-2 py-[2px] rounded-full animate-pulse shadow-md">
+              LIVE
+            </Badge>
+          )}
+        </div>
+        <div className="flex flex-col justify-center items-center gap-1 px-2 py-1">
+          <p className="text-base sm:text-lg font-medium text-center text-app-neutral line-clamp-1">
+            {title}
+          </p>
+        </div>
       </Link>
-      <div className="flex flex-col gap-1 px-3 py-2 ">
-        <p className="text-xl font-semibold text-center sm:text-xl text-app-neutral">
-          {title}
-        </p>
-      </div>
+
       {!isPublic && !courseAccess && (
-        <div className="absolute top-0 left-0 right-0 bottom-0 bg-black opacity-70 rounded-md flex justify-center items-center">
-          <FaLock className="text-4xl text-white" />
+        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center rounded-lg z-10">
+          <div className="text-center">
+            <FaLock className="text-3xl text-white mb-1" />
+            <p className="text-xs text-white">Access Restricted</p>
+          </div>
         </div>
       )}
     </div>

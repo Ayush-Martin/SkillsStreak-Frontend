@@ -82,7 +82,7 @@ const AiChat: FC<IAiChatProps> = ({ courseId }) => {
       </button>
 
       <div
-        className={`fixed flex flex-col top-0 left-0 right-0 sm:left-auto sm:right-3 sm:top-[80px] w-full h-[689px] sm:w-[500px] sm:h-[667px] bg-[#031019] border-app-border rounded-none md:rounded-md transform transition-all duration-300 ease-in-out z-50 ${
+        className={`fixed flex flex-col top-0 left-0 right-0 sm:left-auto sm:right-3 sm:top-[80px] w-full h-[689px] sm:w-[500px] sm:h-[667px]  backdrop-blur-md backdrop-saturate-150 bg-[#031019]/70 border-[#031019]/20 shadow-[#031019]/10 rounded-none md:rounded-md transform transition-all duration-300 ease-in-out z-50 ${
           open
             ? "opacity-100 scale-100 pointer-events-auto"
             : "opacity-0 scale-95 pointer-events-none"

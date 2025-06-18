@@ -256,53 +256,53 @@ const Course: FC = () => {
               <h1>Loading</h1>
             )}
           </div>
-          <div className="h-full px-5 py-2 md:w-1/4 ">
-            <h1 className="text-xl text-center text-white lg:text-2xl font-boldonse ">
-              <span className="pb-2 border-b-4 border-green-400 ">
+
+          <div className="h-full px-4 mx-2 py-4 md:w-1/4 bg-[#111827] rounded-2xl shadow-lg">
+            <h1 className="text-2xl text-center text-white font-semibold tracking-wide">
+              <span className="pb-1 border-b-4 border-green-400 inline-block">
                 {course.title}
               </span>
             </h1>
-            <Progress value={completedPercentage} className="w-[100%] mt-10" />
-            <p className="mt-1 text-app-neutral font-josefinsans">
-              {completedPercentage}% lessons completed
-            </p>
+
+            <div className="mt-8">
+              <Progress value={completedPercentage} className="w-full" />
+              <p className="mt-2 text-sm text-gray-400 text-center">
+                {completedPercentage}% lessons completed
+              </p>
+            </div>
+
             <ScrollArea
-              className=" md:h-[260px] lg:h-[470px] mt-5 pr-3 border-y py-2 border-app-highlight"
+              className="mt-6 md:h-[260px] lg:h-[430px] pr-3 border-y border-gray-600 py-2"
               style={{ scrollbarWidth: "none" }}
             >
-              <Accordion type="single" collapsible className="w-full border-t ">
+              <Accordion type="single" collapsible className="w-full">
                 {course.modules.map((module) => (
                   <AccordionItem value={module._id} key={module._id}>
-                    <AccordionTrigger className=" font-josefinsans">
+                    <AccordionTrigger className="text-white font-medium tracking-wide">
                       {module.title}
                     </AccordionTrigger>
                     {module.lessons.map((lesson) => (
                       <AccordionContent
                         key={lesson._id}
-                        className={
-                          selectedLesson?._id == lesson._id
-                            ? "text-app-accent cursor-pointer"
-                            : "text-app-neutral cursor-pointer"
-                        }
+                        className={`cursor-pointer rounded px-3 py-1 mt-1 transition-all ${
+                          selectedLesson?._id === lesson._id
+                            ? "bg-green-600 text-white"
+                            : "hover:bg-gray-800 text-gray-300"
+                        }`}
+                        onClick={() => fetchLesson(lesson._id)}
                       >
-                        <div className="flex items-center justify-between ">
-                          <div
-                            className="flex gap-2 px-2 border-s border-app-accent"
-                            onClick={() => fetchLesson(lesson._id)}
-                          >
-                            {lesson.type == "video" ? (
-                              <IoVideocam className="text-xl" />
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            {lesson.type === "video" ? (
+                              <IoVideocam className="text-lg" />
                             ) : (
-                              <FaFilePdf className="text-xl" />
+                              <FaFilePdf className="text-lg" />
                             )}
-
-                            <p>{lesson.title}</p>
+                            <p className="text-sm">{lesson.title}</p>
                           </div>
-
                           <input
-                            key={lesson._id}
                             type="checkbox"
-                            className="w-5 h-5 bg-transparent"
+                            className="w-4 h-4 accent-green-400"
                             checked={completedLessons.includes(lesson._id)}
                             onChange={() =>
                               completeUnCompleteCourse(lesson._id)
@@ -316,6 +316,7 @@ const Course: FC = () => {
               </Accordion>
             </ScrollArea>
           </div>
+
           {courseAccess == false && (
             <div className="absolute top-0 bottom-0 left-0 right-0 z-10 flex flex-col items-center justify-center h-full gap-2 bg-black bg-opacity-55 backdrop-blur-sm">
               <h1 className="flex flex-col items-center justify-center gap-2 text-2xl text-app-accent">
@@ -334,35 +335,28 @@ const Course: FC = () => {
                 <TabsTrigger value="description" className="w-full">
                   Description
                 </TabsTrigger>
-                <TabsTrigger value="doubts" className="w-full">
-                  Doubts
-                </TabsTrigger>
                 <TabsTrigger value="certificate" className="w-full">
                   Certificate
                 </TabsTrigger>
               </TabsList>
               <TabsContent
                 value="description"
-                className="px-3 py-2 border-s border-app-accent"
+                className="mt-8 bg-gradient-to-br from-[#1e293b]/60 to-[#0f172a]/60 border border-gray-700 rounded-2xl shadow-inner p-6 backdrop-blur-lg text-white"
               >
-                <p className="text-white md:text-lg font-playwritehu">
-                  {selectedLesson?.description}
-                </p>
-              </TabsContent>
-              <TabsContent value="doubts">
-                <h1 className="text-lg text-white lg:text-2xl">Description</h1>
-                <p className="mt-2 text-sm text-white">
-                  {selectedLesson?.description}
+                <h2 className="text-xl font-bold mb-3">Lesson Description</h2>
+                <p className="text-base leading-relaxed text-gray-200 font-light">
+                  {selectedLesson?.description || "No description available."}
                 </p>
               </TabsContent>
               <TabsContent
                 value="certificate"
-                className="px-3 py-2 border-s border-app-accent font-playwritehu"
+                className="mt-8 bg-gradient-to-br from-[#1e293b]/60 to-[#0f172a]/60 border border-gray-700 rounded-2xl shadow-inner p-6 backdrop-blur-lg text-white"
               >
-                {completedPercentage == 100 ? (
-                  <div className="flex items-center gap-2">
-                    <p className="mt-2 font-thin text-white md:text-lg">
-                      Download Certificate here
+                <h2 className="text-xl font-bold mb-3">Your Certificate</h2>
+                {completedPercentage === 100 ? (
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                    <p className="text-base text-green-300 font-medium">
+                      🎉 Congratulations! You’ve completed the course.
                     </p>
                     <Certificate
                       courseName={course.title}
@@ -370,9 +364,12 @@ const Course: FC = () => {
                     />
                   </div>
                 ) : (
-                  <p className="mt-2 font-thin text-white md:text-lg">
-                    you have now only completed {completedPercentage}% complete
-                    all lessons to download certificate
+                  <p className="text-base text-gray-400">
+                    You’ve completed{" "}
+                    <span className="text-blue-400 font-semibold">
+                      {completedPercentage}%
+                    </span>
+                    . Finish all lessons to unlock your certificate.
                   </p>
                 )}
               </TabsContent>

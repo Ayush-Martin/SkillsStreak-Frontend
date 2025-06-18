@@ -1,11 +1,11 @@
 import { LiveChat, VideoPlayer } from "@/components";
-import LiveStream from "@/components/User/LiveSession";
+import { Button, Input, ScrollArea } from "@/components/ui";
 import { axiosGetRequest } from "@/config/axios";
-import { useUserStream } from "@/hooks";
 import { UserLayout } from "@/layouts";
 import { ILiveSession } from "@/types/courseType";
+import { MessageSquare } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const LiveSession = () => {
   const [liveSession, setLiveSession] = useState<{
@@ -13,6 +13,14 @@ const LiveSession = () => {
     token: string;
   }>();
   const { streamId } = useParams();
+  const navigate = useNavigate();
+  const [isChatVisible, setIsChatVisible] = useState(
+    !!liveSession?.stream.isLive
+  );
+
+  const toggleChat = () => {
+    setIsChatVisible(!isChatVisible);
+  };
 
   useEffect(() => {
     const fetchLiveSession = async () => {
@@ -24,37 +32,58 @@ const LiveSession = () => {
     fetchLiveSession();
   }, []);
 
+  console.log(liveSession);
+
   return (
-    <UserLayout>
-      <div
-        className={` gap-2 py-2 px-6 ${
-          liveSession?.stream.isLive
-            ? "flex flex-col lg:flex-row min-h-[calc(100vh-64px)]"
-            : "h-[calc(100vh-64px)]"
-        }`}
+    <div className="h-screen w-full py-10 px-10 bg-app-primary relative">
+      <button
+        className="text-white absolute top-2"
+        onClick={() => navigate(`/courses/${liveSession?.stream.courseId}`)}
       >
+        Go to course
+      </button>
+      <div className="flex h-full k relative">
+        {/* Main Video Area */}
         <div
-          className={`h-full ${
-            liveSession?.stream.isLive ? " lg:w-3/4" : "w-full"
+          className={`flex-1 transition-all duration-300 ${
+            isChatVisible ? "lg:w-[calc(100%-380px)]" : "w-full"
           }`}
         >
-          <VideoPlayer
-            title={liveSession?.stream.title || ""}
-            url={
-              liveSession?.stream.isLive
-                ? liveSession.stream.liveSrc
-                : liveSession?.stream.recordedSrc || ""
-            }
-            thumbnail={liveSession?.stream.thumbnail}
-          />
-        </div>
-        {liveSession?.stream.isLive && (
-          <div className="h-full lg:w-1/4">
-            <LiveChat roomId={liveSession?.stream.roomId || ""} />
+          <div className="relative h-full  flex items-center justify-center overflow-hidden">
+            <VideoPlayer
+              title="dfd"
+              url={
+                liveSession?.stream.isLive
+                  ? liveSession.stream.liveSrc
+                  : liveSession?.stream.recordedSrc || ""
+              }
+            />
+
+            {/* Chat Toggle Button */}
+            {!!liveSession?.stream.isLive && (
+              <div className="absolute top-6 right-6 z-10">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={toggleChat}
+                  className=" bg-white backdrop-blur-sm border-slate-600 text-black  transition-all duration-200 shadow-lg"
+                >
+                  <MessageSquare size={16} className="mr-2" />
+                  {isChatVisible ? "Hide Chat" : "Show Chat"}
+                </Button>
+              </div>
+            )}
           </div>
-        )}
+        </div>
+
+        {/* Chat Sidebar */}
+        <LiveChat
+          roomId={liveSession?.stream.roomId || ""}
+          isChatVisible={isChatVisible}
+          toggleChat={toggleChat}
+        />
       </div>
-    </UserLayout>
+    </div>
   );
 };
 

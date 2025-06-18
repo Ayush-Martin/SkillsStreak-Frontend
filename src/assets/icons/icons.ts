@@ -36,7 +36,11 @@ export {
   FaMicrophoneAltSlash,
   FaRegStopCircle,
 } from "react-icons/fa";
-export { TbCategoryFilled, TbDiamondFilled } from "react-icons/tb";
+export {
+  TbCategoryFilled,
+  TbDiamondFilled,
+  TbFilterSearch,
+} from "react-icons/tb";
 export {
   IoChatbox,
   IoCloseCircle,
@@ -69,6 +73,8 @@ export {
   BiSave,
   BiSkipPreviousCircle,
   BiSolidSkipNextCircle,
+  BiCategory,
+  BiSolidImageAdd,
 } from "react-icons/bi";
 export { CiStreamOn } from "react-icons/ci";
 export { LuImageOff } from "react-icons/lu";

@@ -12,7 +12,6 @@ import { useClickOutside, useLogout } from "@/hooks";
 const LINKS = [
   { to: "/", label: "Home" },
   { to: "/courses", label: "Courses" },
-  { to: "/chat", label: "Chats" },
 ];
 
 const DROPDOWN_LINKS = [

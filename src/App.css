@@ -1,6 +1,8 @@
 .active {
-  background: #fc831b;
+  background: #763af5;
   /* border: 1px solid #fc831b; Define width, style, and color */
   /* box-shadow: inset 0px 0px 0px 2px #fc831b; */
-  border-radius: 10px;
+
+  /* border-right-color: green;
+  border-radius: 10px; */
 }

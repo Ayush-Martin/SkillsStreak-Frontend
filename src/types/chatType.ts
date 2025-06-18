@@ -19,3 +19,32 @@ export interface IPremiumChat {
   };
   name: string;
 }
+
+export interface IChat {
+  _id: string;
+  chatType: "group" | "individual";
+  course: {
+    _id: string;
+    icon: string;
+    title: string;
+  };
+  otherMember: {
+    _id: string;
+    icon: string;
+    username: string;
+  };
+  lastMessage: string;
+}
+
+export interface IChatMessage {
+  chatId: string;
+  _id: string;
+  sender: {
+    _id: string;
+    username: string;
+    profileImage: string;
+  };
+  message: string;
+  messageType: "text" | "image";
+  createdAt: string;
+}

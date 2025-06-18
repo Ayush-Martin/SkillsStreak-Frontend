@@ -7,7 +7,6 @@ import {
   MdHome,
   MdVideoLibrary,
   FaWallet,
-  IoChatbox,
   PiStudentBold,
 } from "@/assets/icons";
 
@@ -16,7 +15,6 @@ const sidebarItems = [
   { name: "My Courses", icon: <MdVideoLibrary />, link: "/trainer/courses" },
   { name: "Students", icon: <PiStudentBold />, link: "/trainer/students" },
   { name: "Wallet", icon: <FaWallet />, link: "/trainer/wallet" },
-  { name: "Chat", icon: <IoChatbox />, link: "/trainer/chat" },
   { name: "Home", icon: <MdHome />, link: "/" },
 ];
 
@@ -28,7 +26,9 @@ const TrainerSidebar: FC = () => {
           to={item.link}
           key={item.name}
           end={item.end || false}
-          className={"w-full  px-2 py-2 flex items-center gap-2"}
+          className={
+            "w-full  px-2 py-2 flex items-center gap-2 border rounded-lg border-app-border"
+          }
         >
           {item.icon}
           {item.name}

@@ -74,7 +74,7 @@ const Notification: FC = () => {
       </button>
       {open && (
         <div
-          className="absolute  w-full  left-0 right-0  sm:left-auto max-h-[500px] bg-opacity-90  bg-app-border backdrop-blur-lg rounded-md sm:w-[500px] top-14  px-7 py-5 "
+          className="absolute  w-full  left-0 right-0  sm:left-auto max-h-[500px] backdrop-blur-md backdrop-saturate-150 bg-blue-500/10 border-blue-500/20 shadow-blue-500/10 rounded-md sm:w-[500px] top-14  px-7 py-5 "
           ref={dropdownRef}
         >
           <h1 className="text-2xl text-center text-white">Notifications</h1>
@@ -83,7 +83,7 @@ const Notification: FC = () => {
             {notifications.length > 0 ? (
               notifications.map((notification) => (
                 <div
-                  className="flex px-10 py-5 rounded bg-app-highlight full"
+                  className="flex px-10 py-5 rounded bg-app-primary bg-opacity-60 full backdrop-blur-md backdrop-saturate-150"
                   key={notification._id}
                 >
                   <div className="w-11/12">{notification.message}</div>

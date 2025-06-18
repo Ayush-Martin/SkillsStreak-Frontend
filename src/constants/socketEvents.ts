@@ -3,6 +3,9 @@ export enum SocketEvents {
   CONNECT = "connect",
   DISCONNECT = "disconnect",
 
+  //Errors
+  CONNECTION_ERROR = "error:connection",
+
   // Notification events
   NOTIFICATION_GET = "notifications:get",
   NOTIFICATION_NEW = "notifications:new",
@@ -11,5 +14,10 @@ export enum SocketEvents {
 
   // Chat events
   CHAT_JOIN = "chat:new",
-  CHAT_NEW_MESSAGE = "chat:newMessage",
+  CHAT_MESSAGE_SEND = "chat:newMessage_get",
+  CHAT_MESSAGE_BROADCAST = "chat:newMessage_emit",
+  CHAT_LAST_MESSAGE = "chat:lastMessage",
+
+  // LiveChat events
+  LIVE_CHAT_NEW_MESSAGE = "liveChat:newMessage",
 }

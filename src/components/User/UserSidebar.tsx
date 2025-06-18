@@ -7,6 +7,8 @@ import {
   RiGraduationCapFill,
   FaChalkboardTeacher,
   MdDashboard,
+  ImProfile,
+  IoChatbox,
 } from "@/assets/icons";
 import { SideBar } from "@/components";
 import { RootReducer } from "@/store";
@@ -22,9 +24,19 @@ const UserSidebar: FC = () => {
       end: true,
     },
     {
+      name: "Profile",
+      icon: <ImProfile />,
+      link: "/user/profile",
+    },
+    {
       name: "Enrolled Courses",
       icon: <RiGraduationCapFill />,
       link: "/user/enrolledCourses",
+    },
+    {
+      name: "Chats",
+      icon: <IoChatbox />,
+      link: "/user/chats",
     },
     {
       name: "Transactions",
@@ -45,7 +57,9 @@ const UserSidebar: FC = () => {
           to={item.link}
           key={item.name}
           end={item.end}
-          className={"w-full  px-2 py-2 flex items-center gap-2"}
+          className={
+            "w-full  px-2 py-2 flex items-center gap-2 border rounded-lg border-app-border"
+          }
         >
           {item.icon}
           {item.name}

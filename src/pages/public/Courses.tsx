@@ -24,6 +24,7 @@ import { UserLayout } from "@/layouts";
 import { AppDispatch, RootReducer } from "@/store";
 import { CourseCardSkeleton } from "@/components/skeletons";
 import { ICourseDifficulty, IPrice, ISort } from "@/types/courseType";
+import { TbFilterSearch } from "@/assets/icons";
 
 const PAGE_SIZE = 8;
 
@@ -80,10 +81,13 @@ const Courses: FC = () => {
       </div>
       <div className="flex justify-center gap-2 px-8 mt-5 sm:px-0">
         <Sheet>
+          f
           <SheetTrigger asChild>
-            <Button variant={"v1"}>Filter & Sort</Button>
+            <Button className="hover:bg-app-secondary hover:scale-110 transition-all duration-300 ease-in-out  text-white rounded-full px-4 py-2 flex items-center gap-2">
+              <TbFilterSearch />
+              Filter & Sort
+            </Button>
           </SheetTrigger>
-
           <SheetContent className="text-white bg-black border-app-border">
             <SheetHeader>
               <SheetTitle className="text-2xl text-white">

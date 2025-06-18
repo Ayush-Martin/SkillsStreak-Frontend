@@ -25,7 +25,7 @@ import { COURSES_API } from "@/constants";
 import { axiosGetRequest } from "@/config/axios";
 import { CourseCardSkeleton } from "@/components/skeletons";
 
-const PAGE_RECORD_LIMIT = 10;
+const PAGE_RECORD_LIMIT = 3;
 
 const Home: FC = () => {
   const navigate = useNavigate();
@@ -117,20 +117,41 @@ const Home: FC = () => {
               {POPULAR_COURSES_SECTION.title}
             </h1>
 
-            <div className="px-5 mt-5">
+            <div className="flex justify-center mt-10 lg:block sm:px-14 lg:px-24">
+              <div className="grid grid-cols-1 gap-x-2 gap-y-4 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-3">
+                {loading
+                  ? Array.from({ length: PAGE_RECORD_LIMIT }, (_, i) => i).map(
+                      (index) => <CourseCardSkeleton key={index} />
+                    )
+                  : courses.map((course) => (
+                      <CourseCard
+                        _id={course._id}
+                        key={course._id}
+                        category={course.category.categoryName}
+                        noOfEnrolled={course.noOfEnrolled}
+                        noOfModules={course.moduleCount}
+                        price={course.price}
+                        thumbnail={course.thumbnail}
+                        title={course.title}
+                      />
+                    ))}
+              </div>
+            </div>
+
+            {/* <div className="px-5 mt-5">
               <Carousel className="">
-                <CarouselContent className="flex justify-center gap-2 sm:gap-4 lg:gap-6">
+                <CarouselContent className="w-full gap-2 sm:gap-4 lg:gap-6">
                   {loading
                     ? Array.from(
                         { length: PAGE_RECORD_LIMIT },
                         (_, i) => i
                       ).map((index) => (
-                        <div key={index} className="w-full max-w-[300px]">
+                        <div key={index} className="w-[320px]">
                           <CourseCardSkeleton />
                         </div>
                       ))
                     : courses.map((course) => (
-                        <div key={course._id} className="w-full max-w-[300px]">
+                        <div key={course._id} className="w-[320px]">
                           <CourseCard
                             _id={course._id}
                             category={course.category.categoryName}
@@ -146,7 +167,7 @@ const Home: FC = () => {
                 <CarouselPrevious />
                 <CarouselNext />
               </Carousel>
-            </div>
+            </div> */}
           </div>
           <div>
             <h1 className="text-2xl text-center text-white font-tektur">

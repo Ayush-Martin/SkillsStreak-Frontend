@@ -39,6 +39,7 @@ import { usePayment } from "@/hooks";
 import { useSelector } from "react-redux";
 import { RootReducer } from "@/store";
 import { CourseCardSkeleton } from "@/components/skeletons";
+import { BookOpen, Tag, Users, Video } from "lucide-react";
 
 const CourseDetail: FC = () => {
   const navigate = useNavigate();
@@ -116,12 +117,19 @@ const CourseDetail: FC = () => {
       </section>
 
       <section className="w-full py-5 px-7 md:px-20 lg:px-32 xl:px-56 ">
-        <div className="flex flex-col items-center justify-between gap-3 md:flex-row">
-          <div className="flex flex-col gap-4 md:w-1/2">
-            <h1 className="text-2xl md:text-4xl text-app-secondary font-winkysans">
+        <div className="flex flex-col  justify-between gap-3 md:flex-row">
+          <div className="flex flex-col gap-4 ">
+            <h1 className="bg-purple-600 w-28 text-white px-3 py-1 rounded-full  font-semibold flex items-center gap-1">
+              <Tag size={12} />
+              {course.category.categoryName}
+            </h1>
+            <h1 className="text-4xl md:text-5xl text-app-secondary font-winkysans">
               {course.title}
             </h1>
-            <p className="text-white font-playwritehu">{course.description}</p>
+
+            <p className="text-white font-playwritehu text-lg">
+              {course.description}
+            </p>
             <Button
               variant={"v2"}
               size={"lg"}
@@ -139,19 +147,42 @@ const CourseDetail: FC = () => {
                   }`}
             </Button>
           </div>
-          <div className="flex gap-4 mt-5 md:mt-0">
-            <p className="flex items-center gap-1 text-app-accent">
-              {" "}
-              <PiStudentBold className="md:text-2xl" />
-              {course.noOfEnrolled} enrolled
-            </p>
-            <p className="flex items-center gap-1 text-app-accent">
-              <MdViewModule className="md:text-2xl" /> {course.modules.length}{" "}
-              modules
-            </p>
-            <Badge className="text-white font-extralight" variant={"outline"}>
-              {course.category.categoryName}
-            </Badge>
+        </div>
+
+        <div className="grid grid-cols-3 mt-5 gap-6">
+          <div className="bg-gray-900 rounded-xl p-4">
+            <div className="flex items-center gap-3">
+              <Users className="w-7 h-7 text-blue-400" />
+              <div>
+                <div className="text-2xl sm:text-3xl font-bold text-white">
+                  {course.noOfEnrolled}
+                </div>
+                <div className="text-gray-400 text-sm">Students Enrolled</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gray-900 rounded-xl p-4">
+            <div className="flex items-center gap-3">
+              <BookOpen className="w-7 h-7 text-green-400" />
+              <div>
+                <div className="text-2xl sm:text-3xl font-bold text-white">
+                  {course.modules.length}
+                </div>
+                <div className="text-gray-400 text-sm">Modules</div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-gray-900 rounded-xl p-4">
+            <div className="flex items-center gap-3">
+              <Video className="w-7 h-7 text-red-400" />
+              <div>
+                <div className="text-2xl sm:text-3xl font-bold text-white">
+                  {course.liveSessions.length}
+                </div>
+                <div className="text-gray-400 text-sm">Live Sessions</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -161,57 +192,69 @@ const CourseDetail: FC = () => {
           <h1 className="mb-2 text-xl md:text-2xl text-app-neutral font-tektur">
             Live Sessions :
           </h1>
-          <div className="px-10 mt-10">
-            <Carousel className="w-full">
-              <CarouselContent className="-ml-4 flex">
-                {course.liveSessions.map((session) => (
-                  <CarouselItem
-                    key={session._id}
-                    className=" basis-[300px] sm:basis-[350px] lg:basis-[340px]"
-                  >
-                    <LiveSessionCard
-                      isLive={session.isLive}
-                      isPublic={session.isPublic}
-                      streamId={session._id}
-                      thumbnail={session.thumbnail}
-                      title={session.title}
-                      courseAccess={courseAccess || false}
-                      courseId={course._id}
-                    />
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
+          <div className=" mt-10 px-5">
+            {course.liveSessions.length === 0 ? (
+              <p className="text-app-neutral text-lg font-josefinsans">
+                No live sessions available for this course.
+              </p>
+            ) : (
+              <Carousel className="w-full px-10">
+                <CarouselContent className="-ml-4 flex">
+                  {course.liveSessions.map((session) => (
+                    <CarouselItem
+                      key={session._id}
+                      className=" basis-[300px] sm:basis-[350px] lg:basis-[340px]"
+                    >
+                      <LiveSessionCard
+                        isLive={session.isLive}
+                        isPublic={session.isPublic}
+                        streamId={session._id}
+                        thumbnail={session.thumbnail}
+                        title={session.title}
+                        courseAccess={courseAccess || false}
+                        courseId={course._id}
+                      />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+            )}
           </div>
         </div>
         <div>
           <h1 className="mb-2 text-xl md:text-2xl text-app-neutral font-tektur">
             Course Contents :
           </h1>
-          <Accordion type="single" collapsible className="w-full">
-            {course.modules.map((module) => (
-              <AccordionItem value={module._id} key={module._id}>
-                <AccordionTrigger className=" md:text-lg font-josefinsans">
-                  {module.title}
-                </AccordionTrigger>
-                {module.lessons.map((lesson) => (
-                  <AccordionContent key={lesson._id} className="">
-                    <div className="flex gap-2 px-2 md:text-lg border-s border-app-accent">
-                      {lesson.type == "video" ? (
-                        <IoVideocam className="text-xl" />
-                      ) : (
-                        <FaFilePdf className="text-xl" />
-                      )}
+          {course.modules.length === 0 ? (
+            <p className="text-app-neutral text-lg font-josefinsans">
+              No modules available for this course.
+            </p>
+          ) : (
+            <Accordion type="single" collapsible className="w-full">
+              {course.modules.map((module) => (
+                <AccordionItem value={module._id} key={module._id}>
+                  <AccordionTrigger className=" md:text-lg font-josefinsans">
+                    {module.title}
+                  </AccordionTrigger>
+                  {module.lessons.map((lesson) => (
+                    <AccordionContent key={lesson._id} className="">
+                      <div className="flex gap-2 px-2 md:text-lg border-s border-app-accent">
+                        {lesson.type == "video" ? (
+                          <IoVideocam className="text-xl" />
+                        ) : (
+                          <FaFilePdf className="text-xl" />
+                        )}
 
-                      <p className="text-app-neutral">{lesson.title}</p>
-                    </div>
-                  </AccordionContent>
-                ))}
-              </AccordionItem>
-            ))}
-          </Accordion>
+                        <p className="text-app-neutral">{lesson.title}</p>
+                      </div>
+                    </AccordionContent>
+                  ))}
+                </AccordionItem>
+              ))}
+            </Accordion>
+          )}
         </div>
 
         <div>
@@ -257,29 +300,28 @@ const CourseDetail: FC = () => {
 
           <Link
             to={`/trainer/${course.trainer._id}`}
-            className="flex flex-col sm:flex-row items-center gap-6 px-4 py-2 border rounded-md border-app-border sm:w-[500px] hover:bg-[#081623] hover:scale-105 transition-all duration-300 ease-in-out"
+            className="bg-gray-900 rounded-2xl p-8 block"
           >
-            <div className="w-[100px] h-[100px] sm:w-[150px] sm:h-[150px]  bg-white rounded-full ">
-              {course.trainer.profileImage ? (
+            <div className="flex flex-col md:flex-row gap-8">
+              {/* Trainer Profile Image */}
+              <div className="flex-shrink-0">
                 <img
                   src={course.trainer.profileImage}
-                  alt=""
-                  className="object-cover rounded-full w-[100px] h-[100px] sm:w-[150px] sm:h-[150px]"
+                  alt={course.trainer.username}
+                  className="w-32 h-32 rounded-full object-cover"
                 />
-              ) : (
-                <div className="flex items-center justify-center text-4xl rounded-full w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] text-app-primary ">
-                  <FaUserTie />
-                </div>
-              )}
-            </div>
+              </div>
 
-            <div className="text-white">
-              <h1 className="md:text-lg font-boldonse text-app-tertiary">
-                {course.trainer.username}
-              </h1>
-              <p className="mt-2 text-sm text-app-neutral sm:text-base">
-                {course.trainer.about}
-              </p>
+              {/* Trainer Info */}
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold mb-2 text-white">
+                  {course.trainer.username}
+                </h3>
+                {/* <p className="text-blue-400 mb-4">{course.trainer.experience}</p> */}
+                <p className="text-gray-300 leading-relaxed text-app-neutral">
+                  {course.trainer.about}
+                </p>
+              </div>
             </div>
           </Link>
         </div>

@@ -18,8 +18,9 @@ const EnrolledCourses = lazy(() => import("./pages/User/EnrolledCourse"));
 const Transactions = lazy(() => import("./pages/User/Transactions"));
 const SendTrainerRequest = lazy(() => import("./pages/User/TrainerRequest"));
 const Course = lazy(() => import("./pages/User/Course"));
-const Chat = lazy(() => import("./pages/User/Chat"));
+const ChatNew = lazy(() => import("./pages/User/ChatNew"));
 const LiveSession = lazy(() => import("./pages/User/LiveSession"));
+const Profile = lazy(() => import("./pages/User/Profile"));
 
 //Trainer Routes
 const TrainerDashboard = lazy(() => import("./pages/Trainer/Dashboard"));
@@ -29,7 +30,6 @@ const TrainerEditCourse = lazy(() => import("./pages/Trainer/EditCourse"));
 const TrainerEditModule = lazy(() => import("./pages/Trainer/EditModule"));
 const TrainerWallet = lazy(() => import("./pages/Trainer/Wallet"));
 const TrainerStudents = lazy(() => import("./pages/Trainer/Students"));
-const TrainerChat = lazy(() => import("./pages/Trainer/TrainerChat"));
 const TrainerLiveStream = lazy(() => import("./pages/Trainer/LiveStream"));
 
 //Admin Routes
@@ -93,6 +93,10 @@ export const UserRoutes: Routes = [
     Component: Dashboard,
   },
   {
+    path: "profile",
+    Component: Profile,
+  },
+  {
     path: "enrolledCourses",
     Component: EnrolledCourses,
   },
@@ -105,19 +109,16 @@ export const UserRoutes: Routes = [
     Component: SendTrainerRequest,
   },
   {
+    path: "chats",
+    Component: ChatNew,
+  },
+  {
     path: "enrolledCourses/:courseId/view",
     Component: Course,
   },
   {
     path: "courses/:courseId/live/:streamId",
     Component: LiveSession,
-  },
-];
-
-export const ChatRouter: Routes = [
-  {
-    path: "",
-    Component: Chat,
   },
 ];
 
@@ -149,10 +150,6 @@ export const TrainerRoutes: Routes = [
   {
     path: "wallet",
     Component: TrainerWallet,
-  },
-  {
-    path: "chat",
-    Component: TrainerChat,
   },
   {
     path: "courses/:courseId/live/new",
