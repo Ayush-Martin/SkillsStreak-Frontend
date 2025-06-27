@@ -8,7 +8,6 @@ interface ILiveSessionCardProps {
   thumbnail: string;
   title: string;
   isLive: boolean;
-  isPublic: boolean;
   courseAccess: boolean;
   courseId: string;
 }
@@ -18,7 +17,6 @@ const LiveSessionCard: FC<ILiveSessionCardProps> = ({
   thumbnail,
   title,
   isLive,
-  isPublic,
   courseAccess,
   courseId,
 }) => {
@@ -47,12 +45,12 @@ const LiveSessionCard: FC<ILiveSessionCardProps> = ({
         </div>
       </Link>
 
-      {!isPublic && !courseAccess && (
-        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center rounded-lg z-10">
-          <div className="text-center">
-            <FaLock className="text-3xl text-white mb-1" />
-            <p className="text-xs text-white">Access Restricted</p>
-          </div>
+      {!courseAccess && (
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <Badge className="text-white bg-red-600 text-xs px-2 py-[2px] rounded-full shadow-md">
+            <FaLock className="inline mr-1" />
+            Restricted
+          </Badge>
         </div>
       )}
     </div>

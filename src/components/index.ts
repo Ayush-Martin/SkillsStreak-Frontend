@@ -29,7 +29,6 @@ export { default as Register } from "./Auth/Register";
 export { default as UserSidebar } from "./User/UserSidebar";
 export { default as CourseCard } from "./User/CourseCard";
 export { default as UserProfile } from "./User/UserProfile";
-export { default as SubscriptionCard } from "./User/SubscriptionCard";
 export { default as Review } from "./User/Review";
 export { default as UserHeader } from "./User/UserHeader";
 export { default as Certificate } from "./User/Certificate";

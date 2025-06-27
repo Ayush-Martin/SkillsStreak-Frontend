@@ -1,6 +1,12 @@
 import { FC, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { CourseCard, Footer, Loading } from "@/components";
+import {
+  CourseCard,
+  Footer,
+  Loading,
+  Profile,
+  ProfileImage,
+} from "@/components";
 import { axiosGetRequest } from "@/config/axios";
 import { UserLayout } from "@/layouts";
 import { ICourseData } from "@/types/courseType";
@@ -12,12 +18,12 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui";
+import { useSubscription } from "@/hooks";
+import { get } from "http";
+import { successPopup } from "@/utils/popup";
+import { IProfile } from "@/types/userType";
 
-interface ITrainer {
-  username: string;
-  email: string;
-  profileImage: string;
-  about: string;
+interface ITrainer extends IProfile {
   courses: Array<ICourseData>;
 }
 
@@ -25,8 +31,11 @@ const Trainer: FC = () => {
   const { trainerId } = useParams();
   const [trainer, setTrainer] = useState<ITrainer | null>(null);
   const navigate = useNavigate();
+  const { getSubscriptionDetail, isSubscribed, getSubscription } =
+    useSubscription();
 
   useEffect(() => {
+    getSubscriptionDetail(async () => {});
     const fetchTrainer = async () => {
       const res = await axiosGetRequest(`/trainers/${trainerId}`);
       if (!res) return;
@@ -36,43 +45,20 @@ const Trainer: FC = () => {
     fetchTrainer();
   }, [trainerId]);
 
+  const handleSubscription = () => {
+    getSubscription((message: string | undefined) => {
+      successPopup(message || "enrolled");
+      getSubscriptionDetail(async () => {});
+    });
+  };
+
   if (!trainer) return <Loading />;
 
   return (
     <UserLayout>
       <section className="mt-5 mb-10">
-        <div className="px-10 sm:px-32">
-          <div className="bg-gray-900 rounded-2xl p-8 block">
-            <div className="flex flex-col md:flex-row gap-8">
-              {/* Trainer Profile Image */}
-              <div className="flex-shrink-0">
-                <img
-                  src={trainer.profileImage}
-                  alt={trainer.username}
-                  className="w-32 h-32 rounded-full object-cover"
-                />
-              </div>
-
-              {/* Trainer Info */}
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold mb-2 text-white">
-                  {trainer.username}
-                </h3>
-                <p className="text-blue-400 mb-4">{trainer.email}</p>
-                {/* <p className="text-blue-400 mb-4">{course.trainer.experience}</p> */}
-                <p className="text-gray-300 leading-relaxed text-app-neutral">
-                  {trainer.about}
-                </p>
-                <button
-                  className=" flex items-center text-green-400"
-                  onClick={() => navigate(`/user/chats?trainerId=${trainerId}`)}
-                >
-                  <IoChatbox className="mr-2" size={20} />
-                  Chat with Trainer
-                </button>
-              </div>
-            </div>
-          </div>
+        <div className="md:px-20">
+          <Profile {...trainer} />
         </div>
         <div className="block px-10 mt-10 md:px-40">
           <h1 className="mb-2 text-xl md:text-2xl text-app-neutral font-tektur">
@@ -85,6 +71,7 @@ const Trainer: FC = () => {
                 {trainer.courses.map((course) => (
                   <div key={course._id} className="w-full max-w-[300px]">
                     <CourseCard
+                      averageRating={course.averageRating || 0}
                       _id={course._id}
                       category={course.category.categoryName}
                       noOfEnrolled={course.noOfEnrolled}

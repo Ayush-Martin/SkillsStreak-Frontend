@@ -46,13 +46,15 @@ const EnrolledCourse: FC = () => {
             </div>
           </div>
 
-          {paginatedData.length != 0 && (
+          {paginatedData.length != 0 ? (
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
               previousPage={previousPage}
               nextPage={nextPage}
             />
+          ) : (
+            <h1 className="mt-3 text-2xl text-center">No Courses</h1>
           )}
         </div>
       </div>

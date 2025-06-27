@@ -1,8 +1,17 @@
 import { axiosGetRequest, axiosPostRequest } from "@/config/axios";
 import usePayment from "@/hooks/usePayment";
+import { useEffect, useState } from "react";
 
 const useSubscription = () => {
+  const [isSubscribed, setIsSubscribed] = useState(false);
   const handlePayment = usePayment();
+
+  const getSubscriptionDetail = async (successHandler: () => Promise<void>) => {
+    const res = await axiosGetRequest("/subscription/detail");
+    if (!res || !res.data) return;
+    setIsSubscribed(true);
+    await successHandler();
+  };
 
   const getSubscription = async (
     successHandler: (message: string | undefined) => void
@@ -19,7 +28,7 @@ const useSubscription = () => {
     });
   };
 
-  return getSubscription;
+  return { getSubscription, isSubscribed, getSubscriptionDetail };
 };
 
 export default useSubscription;

@@ -33,6 +33,7 @@ export interface ICourseData {
   difficulty: "beginner" | "intermediate" | "advance";
   moduleCount: number;
   noOfEnrolled: number;
+  averageRating: number;
 }
 
 export interface ModuleType {

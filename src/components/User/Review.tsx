@@ -73,7 +73,7 @@ const ReviewStats = ({
           <div className="flex items-center justify-center gap-2 mb-3">
             <Star className="w-7 h-7 fill-yellow-400 text-yellow-400" />
             <span className="text-3xl font-bold text-white">
-              {averageRating}
+              {averageRating.toFixed(1)}
             </span>
           </div>
           <div className="flex items-center justify-center gap-1 mb-2">
@@ -394,16 +394,23 @@ const Review: FC<IReviewProps> = ({ courseId, trainerId }) => {
     );
   };
 
+  const totalReviews = reviews.length;
+  const avgRating =
+    reviews.reduce((acc, review) => acc + review.rating, 0) / totalReviews || 0;
+
+  const ratingBreakdown = Array.from({ length: 5 }, (_, i) => {
+    const stars = 5 - i;
+    const count = reviews.filter((review) => review.rating === stars).length;
+    const percentage = (count / totalReviews) * 100 || 0;
+    return { stars, count, percentage };
+  });
+
   return (
     <div className="relative text-white">
       <ReviewStats
-        averageRating={4.5}
-        totalReviews={100}
-        ratingBreakdown={[
-          { stars: 5, count: 60, percentage: 60 },
-          { stars: 4, count: 30, percentage: 30 },
-          { stars: 3, count: 10, percentage: 10 },
-        ]}
+        averageRating={avgRating}
+        totalReviews={totalReviews}
+        ratingBreakdown={ratingBreakdown}
       />
 
       {!!_id && <AddReview addReview={addReview} />}

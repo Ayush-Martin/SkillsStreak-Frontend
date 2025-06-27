@@ -1,4 +1,4 @@
-import { BookOpen, IndianRupee, Tag, Users } from "lucide-react";
+import { bookOpen, IndianRupee, Tag, Users } from "lucide-react";
 import { FC } from "react";
 import { Link } from "react-router-dom";
 
@@ -10,6 +10,7 @@ interface ICourseCardParams {
   category: string;
   noOfEnrolled: number;
   noOfModules: number;
+  averageRating: number;
 }
 
 const CourseCard: FC<ICourseCardParams> = ({
@@ -20,42 +21,9 @@ const CourseCard: FC<ICourseCardParams> = ({
   category,
   noOfModules,
   noOfEnrolled,
+  averageRating,
 }) => {
   return (
-    // <Link
-    //   to={`/courses/${_id}`}
-    //   className="bg-[#06070d] border border-[#0f1423] h-[230px] w-[250px] sm:h-[280px] sm:w-[300px] rounded-md block hover:scale-105 transition-all duration-300 ease-in-out p-2"
-    // >
-    //   <div className="w-full rounded-md border-b border-orange-300 pb-3">
-    //     <img
-    //       src={thumbnail}
-    //       alt=""
-    //       className="object-cover rounded-ss-md rounded-se-md h-[110px] sm:h-[160px] w-full"
-    //     />
-    //   </div>
-    //   <div className="flex flex-col gap-1 px-3 py-2">
-    //     <p className="text-lg font-semibold text-center sm:text-xl text-app-secondary">
-    //       {title}
-    //     </p>
-    //     <div className="flex justify-between">
-    //       {price == 0 ? (
-    //         <p className="px-2 py-1 text-[12px] font-medium text-white rounded-sm bg-app-accent">
-    //           Free
-    //         </p>
-    //       ) : (
-    //         <p className="text-white text">₹ {price}</p>
-    //       )}
-
-    //       <p className="px-2 py-1 text-[12px] font-medium text-white rounded-sm bg-app-tertiary">
-    //         {category}
-    //       </p>
-    //     </div>
-    //     <div className="flex justify-between">
-    //       <p className="text text-app-accent">{noOfEnrolled} enrolled</p>
-    //       <p className="text text-app-accent">{noOfModules} modules</p>
-    //     </div>
-    //   </div>
-    // </Link>
     <Link
       to={`/courses/${_id}`}
       className="  bg-gray-900 rounded-xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 border border-gray-800 group"
@@ -75,7 +43,7 @@ const CourseCard: FC<ICourseCardParams> = ({
         </div>
         <div className="absolute top-3 right-3">
           <div className="bg-black/70 text-yellow-400 px-2 py-1 rounded text-xs font-semibold">
-            ⭐ {10}
+            ⭐ {averageRating.toFixed(1)}
           </div>
         </div>
       </div>
@@ -94,13 +62,20 @@ const CourseCard: FC<ICourseCardParams> = ({
             <span>{noOfEnrolled.toLocaleString()} enrolled</span>
           </div>
           <div className="flex items-center gap-1">
-            <BookOpen size={16} className="text-green-400" />
+            <bookOpen size={16} className="text-green-400" />
             <span>{noOfModules} modules</span>
           </div>
-          <div className="flex items-center gap-1">
-            <IndianRupee size={16} className="text-green-400" />
-            <span>{price}</span>
-          </div>
+
+          {price === 0 ? (
+            <div className="px-3 py-1 text-xs font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full shadow-md hover:shadow-indigo-500/40 transition-all duration-200">
+              Free
+            </div>
+          ) : (
+            <div className="flex items-center gap-1">
+              <IndianRupee size={16} className="text-green-400" />
+              <span>{price}</span>
+            </div>
+          )}
         </div>
       </div>
     </Link>

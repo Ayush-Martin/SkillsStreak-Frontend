@@ -59,8 +59,6 @@ const TrainerRequest: FC = () => {
 
         {loading ? (
           <TableSkeleton widths={[200, 150, 100, 50]} />
-        ) : paginatedData.length === 0 ? (
-          <div className="mt-10 mb-10 text-3xl">No users found</div>
         ) : (
           <TableBody>
             {paginatedData.map((user) => (

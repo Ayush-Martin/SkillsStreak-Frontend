@@ -11,7 +11,6 @@ import ErrorText from "../common/ErrorText";
 const StreamSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters"),
   description: z.string().min(10, "Description must be at least 10 characters"),
-  public: z.boolean().optional(),
 });
 
 type StreamSchemaType = z.infer<typeof StreamSchema>;
@@ -118,14 +117,6 @@ const NewStream: FC<INewStreamProps> = ({ startStream, courseId }) => {
             {errors.description && (
               <ErrorText error={errors.description.message!} />
             )}
-          </div>
-          <div className="px-2 border-s border-app-accent flex items-center gap-4">
-            <h1 className="mb-1 text-lg font-tektur ">Public :</h1>
-            <input
-              type="checkbox"
-              {...register("public")}
-              className="w-5 h-5"
-            />
           </div>
           <Button variant={"v2"} disabled={isLoading}>
             {isLoading ? <ThreeDot color={"#ffffff"} /> : "Start Stream"}

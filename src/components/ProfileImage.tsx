@@ -3,7 +3,7 @@ import { FC } from "react";
 
 interface IProfileImageProps {
   profileImage: string;
-  size: number;
+  size: number | string;
   textSize: string;
 }
 

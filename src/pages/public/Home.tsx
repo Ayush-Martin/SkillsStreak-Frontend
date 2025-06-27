@@ -8,10 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
   Button,
-  Carousel,
-  CarouselContent,
-  CarouselNext,
-  CarouselPrevious,
+
 } from "@/components/ui";
 import {
   HERO_SECTION,
@@ -125,6 +122,7 @@ const Home: FC = () => {
                     )
                   : courses.map((course) => (
                       <CourseCard
+                      averageRating={course.averageRating}
                         _id={course._id}
                         key={course._id}
                         category={course.category.categoryName}
@@ -170,36 +168,40 @@ const Home: FC = () => {
             </div> */}
           </div>
           <div>
-            <h1 className="text-2xl text-center text-white font-tektur">
+            <h1 className="text-2xl  text-center text-white font-tektur mb-10 tracking-wide">
               {SUBSCRIPTION_FEATURES_SECTION.title}
             </h1>
-            <div className="flex flex-col flex-1 w-full gap-5 mt-5">
+
+            <div className="flex flex-col gap-10 sm:mx-10">
               {SUBSCRIPTION_FEATURES_SECTION.features.map((feature, index) => (
                 <div
                   key={feature.title}
-                  className={`flex justify-center w-full ${
-                    index % 2 ? "sm:justify-end" : "sm:justify-start"
+                  className={`flex w-full px-4 ${
+                    index % 2 ? "justify-end" : "justify-start"
                   }`}
                 >
-                  <div className="sm:flex sm:w-3/4 lg:w-3/5 gap-6 rounded-md bg-[#112734] hover:bg-app-border hover:scale-105 transition-all duration-300 ease-in-out">
-                    <img
-                      src={feature.image}
-                      alt=""
-                      className="object-cover w-full h-40 rounded-md md:h-auto md:w-52"
-                    />
-                    <div className="flex flex-col items-center justify-center gap-2 p-2">
-                      <h1 className="text-lg text-center text-white md:text-xl font-josefinsans">
-                        {feature.title}
-                      </h1>
-                      <p className="text-sm text-center md:text-base text-app-neutral font-winkysans">
-                        {feature.description}
-                      </p>
+                  <div className="relative w-full sm:w-2/4 lg:w-3/5 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-lg hover:shadow-cyan-500/20 hover:scale-[1.03] transition-transform duration-300 ease-in-out overflow-hidden group">
+                    <div className="flex flex-col md:flex-row">
+                      <img
+                        src={feature.image}
+                        alt={feature.title}
+                        className="object-cover w-full h-32 md:h-auto md:w-44 rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none"
+                      />
+                      <div className="flex flex-col justify-center p-6 md:p-8 gap-4 text-center md:text-left w-full">
+                        <h2 className="text-white text-xl font-josefinsans font-semibold tracking-wide group-hover:text-cyan-400 transition-colors">
+                          {feature.title}
+                        </h2>
+                        <p className="text-app-neutral font-winkysans leading-relaxed text-white/80">
+                          {feature.description}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+
           <div>
             <h1 className="text-2xl text-center text-white font-tektur">
               {FAQ_SECTION.title}

@@ -19,9 +19,11 @@ import {
   ScrollArea,
 } from "@/components/ui";
 import {
+  axiosDeleteRequest,
   axiosGetRequest,
   axiosPatchRequest,
   axiosPostRequest,
+  axiosPutRequest,
 } from "@/config/axios";
 import { COURSES_API, ENROLLED_COURSES } from "@/constants";
 import { UserLayout } from "@/layouts";
@@ -43,6 +45,8 @@ import {
 } from "@/assets/icons";
 import { successPopup } from "@/utils/popup";
 import { usePayment } from "@/hooks";
+import Notebook from "@/components/User/NoteBook";
+import { INotebook } from "@/types/noteBookType";
 
 const Course: FC = () => {
   const { courseId } = useParams();
@@ -57,6 +61,55 @@ const Course: FC = () => {
     title: string;
     type: string;
   } | null>(null);
+  const [notebooks, setNotebooks] = useState<INotebook[]>([]);
+
+  const getNotebooks = async () => {
+    const res = await axiosGetRequest(`/enrolledCourses/${courseId}/notebooks`);
+    if (!res) return;
+    setNotebooks(res.data);
+  };
+
+  const addNotebook = async (title: string) => {
+    const res = await axiosPostRequest(
+      `/enrolledCourses/${courseId}/notebooks`,
+      {
+        title,
+      }
+    );
+    if (!res) return;
+
+    setNotebooks([...notebooks, res.data]);
+  };
+
+  const deleteNotebook = async (notebookId: string) => {
+    const res = await axiosDeleteRequest(
+      `/enrolledCourses/${courseId}/notebooks/${notebookId}`
+    );
+    if (!res) return;
+
+    setNotebooks(notebooks.filter((notebook) => notebook._id !== notebookId));
+  };
+
+  const updateNotebook = async (
+    notebookId: string,
+    title: string,
+    notes: string[]
+  ) => {
+    const res = await axiosPutRequest(
+      `/enrolledCourses/${courseId}/notebooks/${notebookId}`,
+      {
+        title,
+        notes,
+      }
+    );
+    if (!res) return;
+    console.log(res.data);
+    setNotebooks(
+      notebooks.map((notebook) =>
+        notebook._id !== notebookId ? notebook : res.data
+      )
+    );
+  };
 
   const getPreviousLesson = (lessonId: string) => {
     const lessons = course?.modules.map((module) => module.lessons).flat();
@@ -142,6 +195,7 @@ const Course: FC = () => {
       }
     };
     fetchCourse();
+    getNotebooks();
   }, [courseAccess]);
 
   const handleEnroll = async () => {
@@ -217,7 +271,10 @@ const Course: FC = () => {
             {selectedLesson ? (
               <>
                 {selectedLesson.type == "video" ? (
-                  <VideoPlayer url={selectedLesson?.path} />
+                  <VideoPlayer
+                    url={selectedLesson?.path}
+                    title={selectedLesson?.title}
+                  />
                 ) : (
                   <PdfViewer path={selectedLesson?.path} />
                 )}
@@ -335,6 +392,9 @@ const Course: FC = () => {
                 <TabsTrigger value="description" className="w-full">
                   Description
                 </TabsTrigger>
+                <TabsTrigger value="notebook" className="w-full">
+                  Notebook
+                </TabsTrigger>
                 <TabsTrigger value="certificate" className="w-full">
                   Certificate
                 </TabsTrigger>
@@ -347,6 +407,18 @@ const Course: FC = () => {
                 <p className="text-base leading-relaxed text-gray-200 font-light">
                   {selectedLesson?.description || "No description available."}
                 </p>
+              </TabsContent>
+              <TabsContent
+                value="notebook"
+                className="mt-8 bg-gradient-to-br from-[#1e293b]/60 to-[#0f172a]/60 border border-gray-700 rounded-2xl shadow-inner p-6 backdrop-blur-lg text-white"
+              >
+                <h2 className="text-xl font-bold mb-3">Notebook</h2>
+                <Notebook
+                  notebooks={notebooks}
+                  addNotebook={addNotebook}
+                  deleteNotebook={deleteNotebook}
+                  updateNotebook={updateNotebook}
+                />
               </TabsContent>
               <TabsContent
                 value="certificate"

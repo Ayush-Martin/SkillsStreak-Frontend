@@ -13,6 +13,8 @@ export {
   MdAttachFile,
   MdOutlineScreenShare,
   MdOutlineStopScreenShare,
+  MdEmail,
+  MdPlace,
 } from "react-icons/md";
 export {
   FaUsers,
@@ -29,12 +31,13 @@ export {
   FaChalkboardTeacher,
   FaWallet,
   FaLock,
-  FaLinkedin,
   FaVideo,
   FaVideoSlash,
   FaMicrophoneAlt,
   FaMicrophoneAltSlash,
   FaRegStopCircle,
+  FaLinkedin,
+  FaGlobe,
 } from "react-icons/fa";
 export {
   TbCategoryFilled,
@@ -78,3 +81,4 @@ export {
 } from "react-icons/bi";
 export { CiStreamOn } from "react-icons/ci";
 export { LuImageOff } from "react-icons/lu";
+export { HiBuildingOffice } from "react-icons/hi2";

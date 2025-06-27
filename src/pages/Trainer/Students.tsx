@@ -100,7 +100,6 @@ const Students: FC = () => {
         searchHandler={searchHandler}
       />
       <RefreshData refreshHandler={refreshHandler} />
-
       <Table>
         <TableHeader>
           <TableRow>
@@ -114,34 +113,26 @@ const Students: FC = () => {
           <TrainerStudentsTableSkeleton />
         ) : (
           <TableBody>
-            {!paginatedData.length ? (
-              <h1 className="mt-3 text-2xl">No Courses</h1>
-            ) : (
-              paginatedData.map((student) => (
-                <TableRow key={student._id}>
-                  <TableCell>{student.username}</TableCell>
-                  <TableCell>{student.email}</TableCell>
-                  <TableCell>{student.enrolledCourses.length}</TableCell>
-                  <TableCell>
-                    <EnrolledCourses
-                      enrolledCourses={student.enrolledCourses}
-                    />
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
+            {paginatedData.map((student) => (
+              <TableRow key={student._id}>
+                <TableCell>{student.username}</TableCell>
+                <TableCell>{student.email}</TableCell>
+                <TableCell>{student.enrolledCourses.length}</TableCell>
+                <TableCell>
+                  <EnrolledCourses enrolledCourses={student.enrolledCourses} />
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         )}
       </Table>
 
-      {paginatedData.length != 0 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          previousPage={previousPage}
-          nextPage={nextPage}
-        />
-      )}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        previousPage={previousPage}
+        nextPage={nextPage}
+      />
     </TrainerLayout>
   );
 };

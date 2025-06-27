@@ -61,7 +61,7 @@ const Courses: FC = () => {
   return (
     <AdminLayout>
       <SearchBox
-        placeholder="search ..."
+        placeholder="search by course title"
         search={search}
         searchHandler={searchHandler}
       />
@@ -87,8 +87,6 @@ const Courses: FC = () => {
 
         {loading ? (
           <CourseTableSkeleton />
-        ) : paginatedData.length === 0 ? (
-          <div className="mt-10 mb-10 text-3xl">No categories found</div>
         ) : (
           <TableBody>
             {paginatedData.map((course) => (
@@ -150,14 +148,13 @@ const Courses: FC = () => {
           </TableBody>
         )}
       </Table>
-      {!!paginatedData.length && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          previousPage={previousPage}
-          nextPage={nextPage}
-        />
-      )}
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        previousPage={previousPage}
+        nextPage={nextPage}
+      />
     </AdminLayout>
   );
 };

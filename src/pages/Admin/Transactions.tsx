@@ -53,8 +53,6 @@ const Transactions: FC = () => {
 
         {loading ? (
           <TableSkeleton widths={[200, 100, 100, 100, 100, 100]} />
-        ) : paginatedData.length === 0 ? (
-          <h1 className="mt-3 text-2xl">No Courses</h1>
         ) : (
           <TableBody>
             {paginatedData.map((transaction) => (

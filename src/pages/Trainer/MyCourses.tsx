@@ -50,7 +50,7 @@ const MyCourses: FC = () => {
   return (
     <TrainerLayout>
       <SearchBox
-        placeholder="search by email"
+        placeholder="search by course title"
         search={search}
         searchHandler={searchHandler}
       />
@@ -81,56 +81,50 @@ const MyCourses: FC = () => {
           <CourseTableSkeleton />
         ) : (
           <TableBody>
-            {!paginatedData.length ? (
-              <h1 className="mt-3 text-2xl">No Courses</h1>
-            ) : (
-              paginatedData.map((course) => (
-                <TableRow
-                  key={course._id}
-                  onClick={() => navigate(`/trainer/courses/${course._id}`)}
-                  className="cursor-pointer"
-                >
-                  <TableCell>
-                    <img src={course.thumbnail} width={"200px"} />
-                  </TableCell>
-                  <TableCell>{course.title}</TableCell>
-                  <TableCell>{course.price}</TableCell>
-                  <TableCell>{course.difficulty}</TableCell>
-                  <TableCell>{course.categoryId.categoryName}</TableCell>
-                  <TableCell>{course.status}</TableCell>
-                  <TableCell>
-                    <button
-                      disabled={course.status !== "approved"}
-                      className={`text-3xl ${
-                        course.status !== "approved"
-                          ? "text-gray-500"
-                          : course.isListed
-                          ? "text-red-500"
-                          : "text-app-secondary"
-                      }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        dispatch(trainerCourseListUnListApi(course._id));
-                      }}
-                    >
-                      {course.isListed ? <IoEyeOff /> : <IoEye />}
-                    </button>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
+            {paginatedData.map((course) => (
+              <TableRow
+                key={course._id}
+                onClick={() => navigate(`/trainer/courses/${course._id}`)}
+                className="cursor-pointer"
+              >
+                <TableCell>
+                  <img src={course.thumbnail} width={"200px"} />
+                </TableCell>
+                <TableCell>{course.title}</TableCell>
+                <TableCell>{course.price}</TableCell>
+                <TableCell>{course.difficulty}</TableCell>
+                <TableCell>{course.categoryId.categoryName}</TableCell>
+                <TableCell>{course.status}</TableCell>
+                <TableCell>
+                  <button
+                    disabled={course.status !== "approved"}
+                    className={`text-3xl ${
+                      course.status !== "approved"
+                        ? "text-gray-500"
+                        : course.isListed
+                        ? "text-red-500"
+                        : "text-app-secondary"
+                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      dispatch(trainerCourseListUnListApi(course._id));
+                    }}
+                  >
+                    {course.isListed ? <IoEyeOff /> : <IoEye />}
+                  </button>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         )}
       </Table>
 
-      {paginatedData.length != 0 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          previousPage={previousPage}
-          nextPage={nextPage}
-        />
-      )}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        previousPage={previousPage}
+        nextPage={nextPage}
+      />
     </TrainerLayout>
   );
 };

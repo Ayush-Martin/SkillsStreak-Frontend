@@ -1,6 +1,10 @@
-import { Badge, Input, ScrollArea } from "@/components/ui";
+import { Badge, Button, Input, ScrollArea } from "@/components/ui";
 
-import { BiSolidMessageSquareAdd, IoMdSearch } from "@/assets/icons/icons";
+import {
+  BiSolidMessageSquareAdd,
+  IoMdSearch,
+  FaLock,
+} from "@/assets/icons/icons";
 import { FC, useEffect, useState } from "react";
 import ProfileImage from "../ProfileImage";
 import { IChat } from "@/types/chatType";
@@ -8,6 +12,8 @@ import { axiosGetRequest } from "@/config/axios";
 import { RootReducer } from "@/store";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
+import { useSubscription } from "@/hooks";
+import { successPopup } from "@/utils/popup";
 
 interface IChatSidebarProps {
   isOpen: boolean;
@@ -38,21 +44,30 @@ const SearchTrainers: FC<ISearchTrainersProps> = ({ newChat }) => {
     Array<{ _id: string; username: string }>
   >([]);
   const [search, setSearch] = useState("");
+  const { getSubscriptionDetail, isSubscribed, getSubscription } =
+    useSubscription();
+
+  const fetchTrainers = async () => {
+    const res = await axiosGetRequest(`/trainers`);
+    if (!res) return;
+    const data = res.data as Array<{ _id: string; username: string }>;
+    setTrainers(data.filter((x) => x._id != _id));
+  };
 
   useEffect(() => {
-    const fetchTrainers = async () => {
-      const res = await axiosGetRequest(`/trainers`);
-      if (!res) return;
-      const data = res.data as Array<{ _id: string; username: string }>;
-      setTrainers(data.filter((x) => x._id != _id));
-    };
-
-    fetchTrainers();
+    getSubscriptionDetail(fetchTrainers);
   }, []);
 
   const newIndividualChat = async (trainerId: string) => {
     newChat(trainerId);
     setSearch("");
+  };
+
+  const handleSubscription = () => {
+    getSubscription((message: string | undefined) => {
+      successPopup(message || "enrolled");
+      getSubscriptionDetail(fetchTrainers);
+    });
   };
 
   // const selectTrainers = (id: string, name: string) => {
@@ -61,43 +76,18 @@ const SearchTrainers: FC<ISearchTrainersProps> = ({ newChat }) => {
   // };
 
   return (
-    // <div className="relative mt-3">
-    //   <div className="relative">
-    //     <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
-    //     <Input
-    //       placeholder="Search chats"
-    //       value={search}
-    //       onChange={(e) => setSearch(e.target.value)}
-    //       className="px-3 pl-8 text-white bg-transparent border border-gray-600 "
-    //     />
-    //   </div>
-    //   {search && (
-    //     <div className="absolute z-30 flex flex-col w-full gap-3 px-4 py-5 mt-2 bg-blue-500 rounded-md max-h-52">
-    //       {trainers.length ? (
-    //         trainers
-    //           .filter((trainer) =>
-    //             trainer.username.toLowerCase().includes(search.toLowerCase())
-    //           )
-    //           .map((trainer) => (
-    //             <div className="flex justify-between text-app-neutral">
-    //               <p>{trainer.username}</p>
-    //               <button
-    //                 onClick={() =>
-    //                   selectTrainers(trainer._id, trainer.username)
-    //                 }
-    //               >
-    //                 <BiSolidMessageSquareAdd />
-    //               </button>
-    //             </div>
-    //           ))
-    //       ) : (
-    //         <h1 className="text-black">No trainers found</h1>
-    //       )}
-    //     </div>
-    //   )}
-    // </div>
-
-    <>
+    <div className="relative">
+      {!isSubscribed && (
+        <div className="absolute top-0 bottom-0 left-0 right-0 rounded-md w-full h-full bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
+          <button
+            onClick={handleSubscription}
+            className="flex gap-1 items-center text-app-accent"
+          >
+            <FaLock className="text-2xl mr-2" />
+            Subscribe
+          </button>
+        </div>
+      )}
       <div className="bg-transparent border border-app-border w-full h-full rounded-lg flex p-2 ">
         <input
           type="text"
@@ -133,7 +123,7 @@ const SearchTrainers: FC<ISearchTrainersProps> = ({ newChat }) => {
           )}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

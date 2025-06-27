@@ -15,6 +15,7 @@ interface ICourse {
   difficulty: "beginner" | "intermediate" | "advance";
   moduleCount: number;
   noOfEnrolled: number;
+  averageRating: number;
 }
 
 interface IInitialState {

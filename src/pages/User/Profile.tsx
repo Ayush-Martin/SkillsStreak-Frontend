@@ -54,21 +54,6 @@ const Profile = () => {
 
                 {/* Profile Details */}
                 <div className="space-y-6">
-                  {/* Experience */}
-                  <div className="bg-gray-700/50 rounded-xl p-6 border border-gray-600/30">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="p-2 bg-blue-500/20 rounded-lg">
-                        <Briefcase className="text-blue-400" size={20} />
-                      </div>
-                      <h3 className="text-lg font-semibold text-white">
-                        Experience
-                      </h3>
-                    </div>
-                    <p className="text-gray-300 leading-relaxed">
-                      {"dfdfdfdf"}
-                    </p>
-                  </div>
-
                   {/* About */}
                   <div className="bg-gray-700/50 rounded-xl p-6 border border-gray-600/30">
                     <div className="flex items-center gap-3 mb-3">

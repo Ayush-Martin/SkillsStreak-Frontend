@@ -29,6 +29,11 @@ const UserSidebar: FC = () => {
       link: "/user/profile",
     },
     {
+      name: "ProfileNew",
+      icon: <ImProfile />,
+      link: "/user/profileNew",
+    },
+    {
       name: "Enrolled Courses",
       icon: <RiGraduationCapFill />,
       link: "/user/enrolledCourses",

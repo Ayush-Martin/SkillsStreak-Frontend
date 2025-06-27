@@ -15,6 +15,14 @@ const Pagination: FC<IPaginationProps> = ({
   previousPage,
   nextPage,
 }) => {
+  if (totalPages <= 0) {
+    return (
+      <h1 className="text-3xl md:text-4xl font-bold text-center text-gray-400 mt-20">
+        🚫 No Data Found
+      </h1>
+    );
+  }
+
   return (
     <div className="flex justify-center my-10">
       <div className="flex items-center gap-5 ">

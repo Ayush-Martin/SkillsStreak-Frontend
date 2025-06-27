@@ -14,7 +14,7 @@ const sidebarItems = [
   { name: "Dashboard", icon: <MdDashboard />, link: "/trainer", end: true },
   { name: "My Courses", icon: <MdVideoLibrary />, link: "/trainer/courses" },
   { name: "Students", icon: <PiStudentBold />, link: "/trainer/students" },
-  { name: "Wallet", icon: <FaWallet />, link: "/trainer/wallet" },
+  { name: "Revenue", icon: <FaWallet />, link: "/trainer/revenue" },
   { name: "Home", icon: <MdHome />, link: "/" },
 ];
 

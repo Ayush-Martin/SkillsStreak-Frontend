@@ -9,6 +9,7 @@ import {
   MdVideoLibrary,
   TbCategoryFilled,
   MdPayments,
+  FaWallet,
 } from "@/assets/icons";
 
 const sidebarItems = [
@@ -21,6 +22,7 @@ const sidebarItems = [
   },
   { name: "Courses", icon: <MdVideoLibrary />, link: "/admin/courses" },
   { name: "Categories", icon: <TbCategoryFilled />, link: "/admin/categories" },
+  { name: "Revenue", icon: <FaWallet />, link: "/admin/revenue" },
   { name: "Transactions", icon: <MdPayments />, link: "/admin/transactions" },
 ];
 
@@ -32,7 +34,9 @@ const AdminSidebar: FC = () => {
           to={item.link}
           key={item.name}
           end={item.end}
-          className={"w-full  px-2 py-2 flex items-center gap-2 border rounded-lg border-app-border"}
+          className={
+            "w-full  px-2 py-2 flex items-center gap-2 border rounded-lg border-app-border"
+          }
         >
           {item.icon}
           {item.name}

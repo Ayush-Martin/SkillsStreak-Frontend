@@ -180,8 +180,6 @@ const Categories: FC = () => {
 
         {loading ? (
           <TableSkeleton widths={[200, 100, 100, 100]} />
-        ) : paginatedData.length === 0 ? (
-          <div className="mt-10 mb-10 text-3xl">No categories found</div>
         ) : (
           <TableBody>
             {paginatedData.map((category) => (

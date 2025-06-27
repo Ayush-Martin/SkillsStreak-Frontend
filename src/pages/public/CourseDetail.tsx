@@ -32,6 +32,7 @@ import {
   Footer,
   LiveSessionCard,
   Loading,
+  ProfileImage,
   Review,
 } from "@/components";
 import { errorPopup, successPopup } from "@/utils/popup";
@@ -39,7 +40,7 @@ import { usePayment } from "@/hooks";
 import { useSelector } from "react-redux";
 import { RootReducer } from "@/store";
 import { CourseCardSkeleton } from "@/components/skeletons";
-import { BookOpen, Tag, Users, Video } from "lucide-react";
+import { bookOpen, Tag, Users, Video } from "lucide-react";
 
 const CourseDetail: FC = () => {
   const navigate = useNavigate();
@@ -164,7 +165,7 @@ const CourseDetail: FC = () => {
 
           <div className="bg-gray-900 rounded-xl p-4">
             <div className="flex items-center gap-3">
-              <BookOpen className="w-7 h-7 text-green-400" />
+              <bookOpen className="w-7 h-7 text-green-400" />
               <div>
                 <div className="text-2xl sm:text-3xl font-bold text-white">
                   {course.modules.length}
@@ -192,7 +193,7 @@ const CourseDetail: FC = () => {
           <h1 className="mb-2 text-xl md:text-2xl text-app-neutral font-tektur">
             Live Sessions :
           </h1>
-          <div className=" mt-10 px-5">
+          <div className=" mt-10 px-5 ">
             {course.liveSessions.length === 0 ? (
               <p className="text-app-neutral text-lg font-josefinsans">
                 No live sessions available for this course.
@@ -207,7 +208,6 @@ const CourseDetail: FC = () => {
                     >
                       <LiveSessionCard
                         isLive={session.isLive}
-                        isPublic={session.isPublic}
                         streamId={session._id}
                         thumbnail={session.thumbnail}
                         title={session.title}
@@ -304,13 +304,20 @@ const CourseDetail: FC = () => {
           >
             <div className="flex flex-col md:flex-row gap-8">
               {/* Trainer Profile Image */}
-              <div className="flex-shrink-0">
+              {/* <div className="flex-shrink-0">
+
                 <img
                   src={course.trainer.profileImage}
                   alt={course.trainer.username}
                   className="w-32 h-32 rounded-full object-cover"
                 />
-              </div>
+              </div> */}
+
+              <ProfileImage
+                profileImage={course.trainer.profileImage}
+                size={28}
+                textSize="5xl"
+              />
 
               {/* Trainer Info */}
               <div className="flex-1">

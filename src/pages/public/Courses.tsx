@@ -26,7 +26,7 @@ import { CourseCardSkeleton } from "@/components/skeletons";
 import { ICourseDifficulty, IPrice, ISort } from "@/types/courseType";
 import { TbFilterSearch } from "@/assets/icons";
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 4;
 
 const Courses: FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -74,21 +74,20 @@ const Courses: FC = () => {
     <UserLayout>
       <div className="mt-5 px-7">
         <SearchBox
-          placeholder="search ..."
+          placeholder="search by course title"
           search={search}
           searchHandler={searchHandler}
         />
       </div>
       <div className="flex justify-center gap-2 px-8 mt-5 sm:px-0">
         <Sheet>
-          f
           <SheetTrigger asChild>
             <Button className="hover:bg-app-secondary hover:scale-110 transition-all duration-300 ease-in-out  text-white rounded-full px-4 py-2 flex items-center gap-2">
               <TbFilterSearch />
               Filter & Sort
             </Button>
           </SheetTrigger>
-          <SheetContent className="text-white bg-black border-app-border">
+          <SheetContent className="text-white backdrop-blur-md backdrop-saturate-150 bg-[#0b0819]/10 border-[#031019]/20 shadow-[#031019]/10 border-app-primary">
             <SheetHeader>
               <SheetTitle className="text-2xl text-white">
                 Filter & Sort
@@ -118,6 +117,7 @@ const Courses: FC = () => {
               ))
             : paginatedData.map((course) => (
                 <CourseCard
+                  averageRating={course.averageRating}
                   _id={course._id}
                   key={course._id}
                   category={course.category.categoryName}

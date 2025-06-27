@@ -48,6 +48,15 @@ const Users: FC = () => {
     size: pageSize,
   });
 
+  const blockUnblockUser = (userId: string) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to block/unblock this user?"
+    );
+
+    if (!confirmed) return;
+    dispatch(adminBlockUnblockUserApi(userId));
+  };
+
   return (
     <AdminLayout>
       <SearchBox
@@ -72,8 +81,6 @@ const Users: FC = () => {
 
         {loading ? (
           <TableSkeleton widths={[200, 150, 100, 50]} />
-        ) : paginatedData.length === 0 ? (
-          <div className="mt-10 mb-10 text-3xl">No users found</div>
         ) : (
           <TableBody>
             {paginatedData.map((user) => (
@@ -95,7 +102,7 @@ const Users: FC = () => {
                     className={`text-3xl ${
                       user.isBlocked ? "text-app-secondary" : "text-red-500"
                     }`}
-                    onClick={() => dispatch(adminBlockUnblockUserApi(user._id))}
+                    onClick={() => blockUnblockUser(user._id)}
                   >
                     {user.isBlocked ? <CgUnblock /> : <CgBlock />}
                   </button>

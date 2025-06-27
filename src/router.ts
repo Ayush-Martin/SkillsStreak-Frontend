@@ -21,6 +21,7 @@ const Course = lazy(() => import("./pages/User/Course"));
 const ChatNew = lazy(() => import("./pages/User/ChatNew"));
 const LiveSession = lazy(() => import("./pages/User/LiveSession"));
 const Profile = lazy(() => import("./pages/User/Profile"));
+const ProfileNew = lazy(() => import("./pages/User/ProfileNew"));
 
 //Trainer Routes
 const TrainerDashboard = lazy(() => import("./pages/Trainer/Dashboard"));
@@ -28,7 +29,7 @@ const TrainerCourses = lazy(() => import("./pages/Trainer/MyCourses"));
 const TrainerAddCourse = lazy(() => import("./pages/Trainer/AddCourse"));
 const TrainerEditCourse = lazy(() => import("./pages/Trainer/EditCourse"));
 const TrainerEditModule = lazy(() => import("./pages/Trainer/EditModule"));
-const TrainerWallet = lazy(() => import("./pages/Trainer/Wallet"));
+const TrainerRevenue = lazy(() => import("./pages/Trainer/Revenue"));
 const TrainerStudents = lazy(() => import("./pages/Trainer/Students"));
 const TrainerLiveStream = lazy(() => import("./pages/Trainer/LiveStream"));
 
@@ -41,6 +42,7 @@ const AdminTrainerRequests = lazy(
 const AdminCourses = lazy(() => import("./pages/Admin/Courses"));
 const AdminCategories = lazy(() => import("./pages/Admin/Categories"));
 const AdminTransactions = lazy(() => import("./pages/Admin/Transactions"));
+const AdminRevenue = lazy(() => import("./pages/Admin/AdminRevenue"));
 
 type Route = {
   path: string;
@@ -97,6 +99,10 @@ export const UserRoutes: Routes = [
     Component: Profile,
   },
   {
+    path: "profileNew",
+    Component: ProfileNew,
+  },
+  {
     path: "enrolledCourses",
     Component: EnrolledCourses,
   },
@@ -148,8 +154,8 @@ export const TrainerRoutes: Routes = [
     Component: TrainerStudents,
   },
   {
-    path: "wallet",
-    Component: TrainerWallet,
+    path: "revenue",
+    Component: TrainerRevenue,
   },
   {
     path: "courses/:courseId/live/new",
@@ -181,5 +187,9 @@ export const AdminRoutes: Routes = [
   {
     path: "transactions",
     Component: AdminTransactions,
+  },
+  {
+    path: "revenue",
+    Component: AdminRevenue,
   },
 ];
