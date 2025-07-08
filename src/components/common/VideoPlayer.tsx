@@ -15,20 +15,8 @@ interface IVideoPlayerPrams {
 }
 
 const VideoPlayer: FC<IVideoPlayerPrams> = ({ url, thumbnail, title }) => {
+  console.log(url);
   return (
-    // <ReactPlayer
-    //   url={url}
-    //   controls
-    //   width="100%"
-    //   height="100%"
-    //   config={{
-    //     file: {
-    //       attributes: {
-    //         crossOrigin: "anonymous",
-    //       },
-    //     },
-    //   }}
-    // />
     <MediaPlayer title={title} src={url} className="w-full h-full">
       <MediaProvider />
       <DefaultVideoLayout thumbnails={thumbnail} icons={defaultLayoutIcons} />

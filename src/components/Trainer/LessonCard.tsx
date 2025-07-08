@@ -5,7 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { VideoPlayer, PdfViewer } from "@/components";
 import { BiSave, MdDelete, MdEdit } from "@/assets/icons";
 import { Input, Textarea } from "@/components/ui";
-import { LessonSchema, LessonSchemaType } from "@/pages/Trainer/EditModule";
+import {
+  LessonSchema,
+  LessonSchemaType,
+} from "@/pages/Trainer/TrainerEditModulePage";
 
 interface ILessonCardParams {
   id: string;

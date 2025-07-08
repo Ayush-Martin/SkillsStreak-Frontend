@@ -40,6 +40,7 @@ const useAddCourse = () => {
   } = useForm<addCourseSchemaType>({
     resolver: zodResolver(addCourseSchema),
   });
+
   const navigate = useNavigate();
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [previewThumbnail, setPreviewThumbnail] = useState<string | null>(null);

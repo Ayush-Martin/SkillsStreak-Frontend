@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { IoMdAdd, IoMdTrash, IoMdCreate } from "react-icons/io";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { INotebook } from "@/types/noteBookType";
+import { INotebook } from "@/types/notebookType";
 
 interface INotebookProps {
   notebooks: INotebook[];

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useSelector } from "react-redux";
+import { loadStripe } from "@stripe/stripe-js";
 
 import { RootReducer } from "@/store";
 
@@ -10,6 +11,9 @@ declare global {
 }
 
 const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID!;
+const STRIPE_PUBLISHABLE_kEY = import.meta.env.VITE_STRIPE_PUBLISHABLE_kEY!;
+
+const stripePromise = loadStripe(STRIPE_PUBLISHABLE_kEY);
 
 const usePayment = () => {
   const { username, email } = useSelector((state: RootReducer) => state.user);

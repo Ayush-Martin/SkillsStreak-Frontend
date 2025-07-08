@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { Badge } from "../ui";
-import { FaLock } from "@/assets/icons/icons";
+import { Badge } from "@/components";
+import { FaLock } from "@/assets/icons";
 
 interface ILiveSessionCardProps {
   streamId: string;

@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { RootReducer } from "@/store";
 import { useNavigate } from "react-router-dom";
 import { useClickOutside } from "@/hooks";
+import { successPopup } from "@/utils/popup";
 
 interface INotification {
   _id: string;
@@ -45,6 +46,7 @@ const Notification: FC = () => {
     });
 
     socket.on(SocketEvents.NOTIFICATION_NEW, (data: INotification) => {
+      successPopup(data.message);
       setNotifications(() => [data, ...notifications]);
     });
 

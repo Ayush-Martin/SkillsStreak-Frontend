@@ -1,6 +1,6 @@
 import { FourSquare } from "react-loading-indicators";
 
-import AuthLayout from "@/layouts/AuthLayout";
+import { AuthLayout } from "@/layouts";
 
 const Loading = () => {
   return (

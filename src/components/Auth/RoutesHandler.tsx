@@ -2,8 +2,10 @@ import { FC } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
-import { RootReducer } from "@/store";
+import { AppDispatch, RootReducer } from "@/store";
 import { errorPopup } from "@/utils/popup";
+import { useDispatch } from "react-redux";
+import { logout } from "@/features/Auth/slice/userSlice";
 
 interface IRoutesHandlerProps {
   requiredRole: "admin" | "user" | "public" | "trainer" | "auth";
@@ -14,10 +16,11 @@ const RoutesHandler: FC<IRoutesHandlerProps> = ({ requiredRole }) => {
     (state: RootReducer) => state.user
   );
   const location = useLocation();
+  const dispatch: AppDispatch = useDispatch();
 
   // Check if user is blocked
   if (isBlocked) {
-    errorPopup("Your account is blocked.");
+    dispatch(logout());
     return <Navigate to="/auth" replace />;
   }
 

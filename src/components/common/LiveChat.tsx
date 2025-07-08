@@ -1,7 +1,7 @@
 import { getSocket } from "@/config/socket";
 import { FC, useEffect, useState } from "react";
 import { Button, Input, ScrollArea } from "../ui";
-import ProfileImage from "../ProfileImage";
+import ProfileImage from "./ProfileImage";
 import { Send } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootReducer } from "@/store";

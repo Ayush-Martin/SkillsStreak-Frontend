@@ -28,7 +28,7 @@ const App = () => {
       try {
         if (accessToken) return;
         const res: IResponse = await axios.get(
-          `${BACKEND_BASE_URL}${REFRESH_TOKEN_API}`,
+          `${BACKEND_BASE_URL}/api${REFRESH_TOKEN_API}`,
           {
             withCredentials: true,
           }
@@ -45,7 +45,9 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+    console.log("before connecting socket");
     if (accessToken) {
+      console.log("while connecting socket");
       connectSocket();
       return () => disconnectSocket();
     }

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import {
   Select,
   SelectContent,
@@ -7,10 +7,8 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui";
+} from "@/components";
 import { ICourseDifficulty, IPrice, ISort } from "@/types/courseType";
-import { axiosGetRequest } from "@/config/axios";
-import { CATEGORY_API } from "@/constants";
 import {
   DIFFICULTY_OPTIONS,
   PRICE_OPTIONS,
@@ -26,6 +24,8 @@ interface ICourseFilterProps {
   setCategory: (value: string) => void;
   setPrice: (value: "all" | IPrice) => void;
   setSort: (value: ISort) => void;
+  categories: Array<{ _id: string; categoryName: string }>;
+  fetchCategories: () => void;
 }
 
 const CourseFilter: FC<ICourseFilterProps> = ({
@@ -37,19 +37,10 @@ const CourseFilter: FC<ICourseFilterProps> = ({
   category,
   price,
   sort,
+  categories,
+  fetchCategories,
 }) => {
-  const [categories, SetCategories] = useState<
-    Array<{ _id: string; categoryName: string }>
-  >([]);
-
   useEffect(() => {
-    const fetchCategories = async () => {
-      const res = await axiosGetRequest(CATEGORY_API);
-      if (!res) return;
-
-      SetCategories(res.data);
-    };
-
     fetchCategories();
   }, []);
 

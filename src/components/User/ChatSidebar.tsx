@@ -1,4 +1,4 @@
-import { Badge, Button, Input, ScrollArea } from "@/components/ui";
+import { Badge, ScrollArea } from "@/components/ui";
 
 import {
   BiSolidMessageSquareAdd,
@@ -6,14 +6,13 @@ import {
   FaLock,
 } from "@/assets/icons/icons";
 import { FC, useEffect, useState } from "react";
-import ProfileImage from "../ProfileImage";
 import { IChat } from "@/types/chatType";
 import { axiosGetRequest } from "@/config/axios";
 import { RootReducer } from "@/store";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { useSubscription } from "@/hooks";
-import { successPopup } from "@/utils/popup";
+import { ProfileImage } from "../common";
 
 interface IChatSidebarProps {
   isOpen: boolean;
@@ -29,6 +28,7 @@ interface IChatProps {
   _id: string;
   selected: boolean;
   lastMessage: string;
+  lastMessageTime: string;
   selectChat: (_id: string, icon: string, title: string) => void;
   chatType: "group" | "individual";
 }
@@ -43,9 +43,9 @@ const SearchTrainers: FC<ISearchTrainersProps> = ({ newChat }) => {
   const [trainers, setTrainers] = useState<
     Array<{ _id: string; username: string }>
   >([]);
+
   const [search, setSearch] = useState("");
-  const { getSubscriptionDetail, isSubscribed, getSubscription } =
-    useSubscription();
+  const { getSubscribed, subscriptionDetail } = useSubscription();
 
   const fetchTrainers = async () => {
     const res = await axiosGetRequest(`/trainers`);
@@ -55,19 +55,14 @@ const SearchTrainers: FC<ISearchTrainersProps> = ({ newChat }) => {
   };
 
   useEffect(() => {
-    getSubscriptionDetail(fetchTrainers);
-  }, []);
+    if (subscriptionDetail?.active) {
+      fetchTrainers();
+    }
+  }, [subscriptionDetail]);
 
   const newIndividualChat = async (trainerId: string) => {
     newChat(trainerId);
     setSearch("");
-  };
-
-  const handleSubscription = () => {
-    getSubscription((message: string | undefined) => {
-      successPopup(message || "enrolled");
-      getSubscriptionDetail(fetchTrainers);
-    });
   };
 
   // const selectTrainers = (id: string, name: string) => {
@@ -77,10 +72,10 @@ const SearchTrainers: FC<ISearchTrainersProps> = ({ newChat }) => {
 
   return (
     <div className="relative">
-      {!isSubscribed && (
+      {!subscriptionDetail?.active && (
         <div className="absolute top-0 bottom-0 left-0 right-0 rounded-md w-full h-full bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
           <button
-            onClick={handleSubscription}
+            onClick={getSubscribed}
             className="flex gap-1 items-center text-app-accent"
           >
             <FaLock className="text-2xl mr-2" />
@@ -134,6 +129,7 @@ const Chat: FC<IChatProps> = ({
   selectChat,
   selected,
   lastMessage,
+  lastMessageTime,
   chatType,
 }) => {
   return (
@@ -147,6 +143,18 @@ const Chat: FC<IChatProps> = ({
       <div>
         <h1 className="font-playwritehu text-sm text-start">{title}</h1>
         <p className="text-sm text-app-neutral text-start">{lastMessage}</p>
+        {lastMessageTime && (
+          <p className="text-sm text-app-neutral text-start">
+            <span>
+              {new Date(lastMessageTime).toLocaleTimeString("en-US", {
+                hour: "numeric",
+                minute: "numeric",
+                hour12: true,
+              })}
+            </span>
+          </p>
+        )}
+
         {chatType == "group" && (
           <Badge className="px-2 py-1 absolute bottom-2 right-1 text-[10px]">
             group
@@ -194,7 +202,7 @@ const ChatSidebar: FC<IChatSidebarProps> = ({
 
   return (
     <div
-      className={`w-[270px] flex-shrink-0 h-full border-r border-app-border  flex-col ${
+      className={`w-[270px] flex-shrink-0 h-full border-r  border-app-border  flex-col ${
         isOpen ? "flex" : "hidden"
       }`}
     >
@@ -205,6 +213,7 @@ const ChatSidebar: FC<IChatSidebarProps> = ({
       <ScrollArea className=" px-5 py-3">
         {chats.map((chat) => (
           <Chat
+            lastMessageTime={chat.lastMessageTime}
             key={chat._id}
             _id={chat._id}
             lastMessage={chat.lastMessage}

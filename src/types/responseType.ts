@@ -3,7 +3,7 @@ import { AxiosError, AxiosResponse } from "axios";
 
 export interface IResponse {
   success: boolean;
-  message?: string;
+  message: string;
   data?: any;
   error?: string;
 }

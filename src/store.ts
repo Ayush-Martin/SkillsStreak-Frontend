@@ -13,6 +13,8 @@ import completedEnrolledCourses from "./features/user/slice/completedEnrolledCou
 import trainerStudents from "./features/trainer/slice/StudentsSlice";
 import trainerStream from "./features/trainer/slice/TrainerStreamSlice";
 import userStream from "./features/user/slice/liveStreamSlice";
+import adminRevenue from "./features/admin/slice/adminRevenueSlice";
+import trainerRevenue from "./features/trainer/slice/trainerRevenueSlice";
 
 const store = configureStore({
   reducer: {
@@ -30,6 +32,8 @@ const store = configureStore({
     trainerStudents,
     trainerStream,
     userStream,
+    adminRevenue,
+    trainerRevenue,
   },
 });
 

@@ -1,57 +1,23 @@
 import { Button, Card, CardContent, Input, Textarea } from "@/components/ui";
-import { FC, useEffect, useState } from "react";
-import { Star, Users, Award } from "lucide-react";
+import { FC, useContext, useState } from "react";
+import { Star, Users } from "lucide-react";
 import { Rating } from "@smastrom/react-rating";
-import {
-  axiosDeleteRequest,
-  axiosGetRequest,
-  axiosPostRequest,
-} from "@/config/axios";
-import { COURSES_API } from "@/constants/API";
-import { successPopup } from "@/utils/popup";
+
 import { useSelector } from "react-redux";
 import { RootReducer } from "@/store";
-import ProfileImage from "../ProfileImage";
-import { MdDelete, IoIosSave } from "@/assets/icons";
-
-interface IUser {
-  _id: string;
-  username: string;
-  profileImage: string;
-}
-
-interface IReply {
-  userId: { _id: string; username: string; profileImage: string };
-  content: string;
-  entityId: string;
-  _id: string;
-}
-
-interface IReview {
-  _id: string;
-  courseId: string;
-  rating: number;
-  content: string;
-  userId: IUser;
-  replies?: IReply[];
-}
+import { ProfileImage } from "@/components";
+import { MdDelete } from "@/assets/icons";
+import { ReviewContext } from "@/context";
+import { IReview } from "@/types/reviewType";
 
 interface IReviewProps {
-  courseId: string;
   trainerId: string;
-}
-
-interface IAddReviewProps {
-  addReview: (data: { content: string; rating: number }) => void;
 }
 
 interface IReviewCardProps {
   review: IReview;
   userId: string;
   authorId: string;
-  addReply: (reviewId: string, content: string) => void;
-  fetchReplies: (reviewId: string) => void;
-  deleteReview: (reviewId: string) => void;
 }
 
 interface ReviewStatsProps {
@@ -59,6 +25,46 @@ interface ReviewStatsProps {
   totalReviews: number;
   ratingBreakdown: { stars: number; count: number; percentage: number }[];
 }
+
+const Review: FC<IReviewProps> = ({ trainerId }) => {
+  const { reviews } = useContext(ReviewContext)!;
+
+  const { _id } = useSelector((state: RootReducer) => state.user);
+
+  const totalReviews = reviews.length;
+  const avgRating =
+    reviews.reduce((acc, review) => acc + review.rating, 0) / totalReviews || 0;
+
+  const ratingBreakdown = Array.from({ length: 5 }, (_, i) => {
+    const stars = 5 - i;
+    const count = reviews.filter((review) => review.rating === stars).length;
+    const percentage = (count / totalReviews) * 100 || 0;
+    return { stars, count, percentage };
+  });
+
+  return (
+    <div className="relative text-white">
+      <ReviewStats
+        averageRating={avgRating}
+        totalReviews={totalReviews}
+        ratingBreakdown={ratingBreakdown}
+      />
+
+      {!!_id && <AddReview />}
+
+      <div className="flex flex-col gap-6 ">
+        {reviews.map((review) => (
+          <ReviewCard
+            key={review._id}
+            authorId={trainerId}
+            review={review}
+            userId={_id}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const ReviewStats = ({
   averageRating,
@@ -118,44 +124,18 @@ const ReviewStats = ({
   );
 };
 
-const AddReview: FC<IAddReviewProps> = ({ addReview }) => {
+const AddReview: FC = () => {
+  const { addReview } = useContext(ReviewContext)!;
   const [rating, setRating] = useState(0);
   const [content, setContent] = useState("");
   const save = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    addReview({ content, rating });
+    addReview(content, rating);
     setRating(0);
     setContent("");
   };
 
   return (
-    // <div className="flex w-full gap-5 py-2 pb-5 mb-10 border-b border-app-border">
-    //   <ProfileImage profileImage={profileImage} textSize="2xl" size={10} />
-
-    //   <div className="flex flex-col gap-1">
-    //     <Input
-    //       id="content"
-    //       className="w-full bg-transparent border border-app-border placeholder:text-app"
-    //       placeholder="add a review"
-    //       value={content}
-    //       onChange={(e) => setContent(e.target.value)}
-    //     />
-    //     <div className="flex gap-2">
-    //       <Rating
-    //         id="rating"
-    //         style={{
-    //           maxWidth: 120,
-    //           maxHeight: 50,
-    //         }}
-    //         value={rating}
-    //         onChange={setRating}
-    //       />
-    //       <button className="text-2xl text-app-tertiary" onClick={save}>
-    //         <IoIosSave />
-    //       </button>
-    //     </div>
-    //   </div>
-    // </div>
     <Card className="bg-gray-800 border-gray-700 mb-10">
       <CardContent className="p-4">
         <h3 className="text-white font-medium mb-3">Add a Review</h3>
@@ -195,14 +175,8 @@ const AddReview: FC<IAddReviewProps> = ({ addReview }) => {
   );
 };
 
-const ReviewCard: FC<IReviewCardProps> = ({
-  review,
-  authorId,
-  addReply,
-  fetchReplies,
-  deleteReview,
-  userId,
-}) => {
+const ReviewCard: FC<IReviewCardProps> = ({ review, authorId, userId }) => {
+  const { fetchReplies, addReply, deleteReview } = useContext(ReviewContext)!;
   const [open, setOpen] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
   const [reply, setReply] = useState("");
@@ -319,115 +293,6 @@ const ReviewCard: FC<IReviewCardProps> = ({
           ))}
         </div>
       )}
-    </div>
-  );
-};
-
-const Review: FC<IReviewProps> = ({ courseId, trainerId }) => {
-  const [reviews, setReviews] = useState<Array<IReview>>([]);
-  const { _id, username, profileImage } = useSelector(
-    (state: RootReducer) => state.user
-  );
-  useEffect(() => {
-    const fetchReviews = async () => {
-      const res = await axiosGetRequest(`${COURSES_API}/${courseId}/reviews`);
-      if (!res) return;
-      setReviews(res.data);
-    };
-
-    fetchReviews();
-  }, []);
-  const addReview = async (data: { content: string; rating: number }) => {
-    const res = await axiosPostRequest(
-      `${COURSES_API}/${courseId}/reviews`,
-      data
-    );
-    if (!res) return;
-    setReviews([
-      ...reviews,
-      { ...res.data, userId: { username, profileImage, _id } },
-    ]);
-    successPopup(res.message || "added");
-  };
-
-  const deleteReview = async (reviewId: string) => {
-    const res = await axiosDeleteRequest(
-      `${COURSES_API}/${courseId}/reviews/${reviewId}`
-    );
-    if (!res) return;
-    successPopup(res.message || "deleted");
-    setReviews(reviews.filter((review) => review._id !== reviewId));
-  };
-
-  const addReply = async (reviewId: string, content: string) => {
-    const res = await axiosPostRequest(
-      `${COURSES_API}/${courseId}/reviews/${reviewId}/replies`,
-      { content }
-    );
-    if (!res) return;
-    successPopup(res.message || "added");
-    setReviews(
-      reviews.map((review) =>
-        review._id == reviewId
-          ? {
-              ...review,
-              replies: [
-                ...(review.replies || []),
-                { ...res.data, userId: { username, profileImage, _id } },
-              ],
-            }
-          : review
-      )
-    );
-  };
-
-  const fetchReplies = async (reviewId: string) => {
-    const res = await axiosGetRequest(
-      `${COURSES_API}/${courseId}/reviews/${reviewId}/replies`
-    );
-    if (!res) return;
-
-    setReviews(
-      reviews.map((review) =>
-        review._id == reviewId ? { ...review, replies: res.data } : review
-      )
-    );
-  };
-
-  const totalReviews = reviews.length;
-  const avgRating =
-    reviews.reduce((acc, review) => acc + review.rating, 0) / totalReviews || 0;
-
-  const ratingBreakdown = Array.from({ length: 5 }, (_, i) => {
-    const stars = 5 - i;
-    const count = reviews.filter((review) => review.rating === stars).length;
-    const percentage = (count / totalReviews) * 100 || 0;
-    return { stars, count, percentage };
-  });
-
-  return (
-    <div className="relative text-white">
-      <ReviewStats
-        averageRating={avgRating}
-        totalReviews={totalReviews}
-        ratingBreakdown={ratingBreakdown}
-      />
-
-      {!!_id && <AddReview addReview={addReview} />}
-
-      <div className="flex flex-col gap-6 ">
-        {reviews.map((review) => (
-          <ReviewCard
-            key={review._id}
-            addReply={addReply}
-            authorId={trainerId}
-            fetchReplies={fetchReplies}
-            deleteReview={deleteReview}
-            review={review}
-            userId={_id}
-          />
-        ))}
-      </div>
     </div>
   );
 };

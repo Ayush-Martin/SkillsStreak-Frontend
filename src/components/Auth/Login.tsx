@@ -1,22 +1,16 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
 
 import { Button, Input } from "@/components/ui";
 import { ErrorText, GoogleAuth } from "@/components";
-import { AppDispatch } from "@/store";
-import { login } from "@/features/Auth/slice/userSlice";
 
 import {
   EmailValidationRule,
   PasswordValidationRule,
 } from "@/utils/validationRules";
 import { z } from "zod";
-import { successPopup } from "@/utils/popup";
-import { axiosPostRequest } from "@/config/axios";
-import { LOGIN_API } from "@/constants/API";
+import { LoginRegisterContext } from "@/context";
 
 const LoginSchema = z.object({
   email: EmailValidationRule,
@@ -26,10 +20,7 @@ const LoginSchema = z.object({
 type LoginSchemaType = z.infer<typeof LoginSchema>;
 
 const Login: FC = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const { handleLogin } = useContext(LoginRegisterContext)!;
 
   const {
     register,
@@ -42,11 +33,7 @@ const Login: FC = () => {
   });
 
   const onSubmit = async (data: LoginSchemaType) => {
-    const res = await axiosPostRequest(LOGIN_API, data);
-    if (!res) return;
-    successPopup(res.message || "user logged in");
-    dispatch(login(res.data));
-    navigate(from, { replace: true });
+    handleLogin(data.email, data.password);
   };
 
   return (
@@ -81,7 +68,7 @@ const Login: FC = () => {
 
       <p className="text-center text-app-neutral">Or</p>
 
-      <GoogleAuth from={from} />
+      <GoogleAuth />
     </form>
   );
 };

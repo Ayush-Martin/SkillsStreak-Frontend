@@ -7,7 +7,6 @@ import {
   RiGraduationCapFill,
   FaChalkboardTeacher,
   MdDashboard,
-  ImProfile,
   IoChatbox,
 } from "@/assets/icons";
 import { SideBar } from "@/components";
@@ -24,24 +23,19 @@ const UserSidebar: FC = () => {
       end: true,
     },
     {
-      name: "Profile",
-      icon: <ImProfile />,
-      link: "/user/profile",
-    },
-    {
-      name: "ProfileNew",
-      icon: <ImProfile />,
-      link: "/user/profileNew",
-    },
-    {
       name: "Enrolled Courses",
       icon: <RiGraduationCapFill />,
       link: "/user/enrolledCourses",
     },
+    // {
+    //   name: "Chats",
+    //   icon: <IoChatbox />,
+    //   link: "/user/chats",
+    // },
     {
       name: "Chats",
       icon: <IoChatbox />,
-      link: "/user/chats",
+      link: "/user/chatsNew",
     },
     {
       name: "Transactions",

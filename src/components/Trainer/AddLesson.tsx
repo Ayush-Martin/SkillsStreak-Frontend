@@ -9,7 +9,10 @@ import {
   MdAttachFile,
 } from "@/assets/icons";
 import { Button, Input, Textarea } from "@/components/ui";
-import { LessonSchema, LessonSchemaType } from "@/pages/Trainer/EditModule";
+import {
+  LessonSchema,
+  LessonSchemaType,
+} from "@/pages/Trainer/TrainerEditModulePage";
 
 interface IAddLessonParams {
   close: () => void;

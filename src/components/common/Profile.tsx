@@ -7,7 +7,7 @@ import {
   MdPlace,
 } from "@/assets/icons";
 import { FC, JSX } from "react";
-import ProfileImage from "../ProfileImage";
+import ProfileImage from "./ProfileImage";
 import { IProfile } from "@/types/userType";
 
 const Profile: FC<IProfile> = ({
@@ -28,7 +28,7 @@ const Profile: FC<IProfile> = ({
           <div className="flex flex-col items-center md:items-start gap-3 flex-shrink-0">
             <ProfileImage
               profileImage={profileImage}
-              size="32"
+              size="28"
               textSize="5xl"
             />
             <div className="text-center md:text-left">

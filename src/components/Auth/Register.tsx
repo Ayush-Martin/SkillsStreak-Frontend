@@ -1,19 +1,18 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
+
 import { z } from "zod";
 
 import { Input, Button } from "@/components/ui";
-import { ErrorText,GoogleAuth } from "@/components";
+import { ErrorText, GoogleAuth } from "@/components";
 import {
   EmailValidationRule,
   PasswordValidationRule,
   UsernameValidationRule,
 } from "@/utils/validationRules";
-import { axiosPostRequest } from "@/config/axios";
-import { REGISTER_API } from "@/constants/API";
-import { successPopup } from "@/utils/popup";
+
+import { LoginRegisterContext } from "@/context";
 
 const RegisterSchema = z.object({
   email: EmailValidationRule,
@@ -24,6 +23,8 @@ const RegisterSchema = z.object({
 type RegisterSchemaType = z.infer<typeof RegisterSchema>;
 
 const Register: FC = () => {
+  const { handleRegister } = useContext(LoginRegisterContext)!;
+
   const {
     register,
     handleSubmit,
@@ -37,18 +38,9 @@ const Register: FC = () => {
     },
     resolver: zodResolver(RegisterSchema),
   });
-  const navigate = useNavigate();
 
-  const onSubmit = async (data: RegisterSchemaType) => {
-    const res = await axiosPostRequest(REGISTER_API, data);
-    if (!res) return;
-    successPopup(res.data || "OTP sent");
-    navigate("/auth/verifyOTP", {
-      state: {
-        email: data.email,
-        forAction: "register",
-      },
-    });
+  const onSubmit = (data: RegisterSchemaType) => {
+    handleRegister(data.username, data.email, data.password);
   };
 
   return (

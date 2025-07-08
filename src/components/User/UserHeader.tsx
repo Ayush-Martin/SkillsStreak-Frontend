@@ -8,6 +8,9 @@ import { Button } from "@/components/ui";
 import { CgLogIn } from "@/assets/icons";
 import { RootReducer } from "@/store";
 import { useClickOutside, useLogout } from "@/hooks";
+import Wishlist from "./Wishlist";
+import useWishlist from "@/hooks/useWishlist";
+import useEnrollCourse from "@/hooks/useEnrollCourse";
 
 const LINKS = [
   { to: "/", label: "Home" },
@@ -23,7 +26,9 @@ const UserHeader: FC = () => {
   const navigate = useNavigate();
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { handleEnroll } = useEnrollCourse();
   const { logoutHandler } = useLogout();
+  const { fetchWishlist, removeWishlist, wishlist } = useWishlist();
   const { accessToken, profileImage } = useSelector(
     (state: RootReducer) => state.user
   );
@@ -55,7 +60,14 @@ const UserHeader: FC = () => {
       </ul>
 
       <div className="items-center hidden gap-4 sm:flex">
+        <Wishlist
+          fetchWishlist={fetchWishlist}
+          removeWishlist={removeWishlist}
+          wishlist={wishlist}
+          handleEnroll={handleEnroll}
+        />
         <Notification />
+
         {accessToken ? (
           <div className="relative">
             <button onClick={() => setDropdownOpen(!dropdownOpen)}>
@@ -106,6 +118,11 @@ const UserHeader: FC = () => {
 
       <div className=" sm:hidden">
         <div className="flex items-center gap-1">
+          <Wishlist
+            fetchWishlist={fetchWishlist}
+            removeWishlist={removeWishlist}
+            wishlist={wishlist}
+          />
           <Notification />
           <Hamburger
             toggled={hamburgerOpen}

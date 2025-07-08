@@ -7,7 +7,7 @@ import { BACKEND_BASE_URL, REFRESH_TOKEN_API } from "@/constants/API";
 import { errorPopup } from "@/utils/popup";
 
 export const appApi = axios.create({
-  baseURL: BACKEND_BASE_URL,
+  baseURL: BACKEND_BASE_URL + "/api",
   withCredentials: true,
 });
 
@@ -38,7 +38,7 @@ appApi.interceptors.response.use(
     ) {
       try {
         const res: IResponse = await axios.get(
-          `${BACKEND_BASE_URL}${REFRESH_TOKEN_API}`,
+          `${BACKEND_BASE_URL}/api${REFRESH_TOKEN_API}`,
           {
             withCredentials: true,
           }
@@ -56,15 +56,24 @@ appApi.interceptors.response.use(
       }
     }
 
+    if (
+      error.response.status == 403 &&
+      error.response.data.error == "Blocked"
+    ) {
+      errorPopup("you are blocked by admin");
+      store.dispatch(logout());
+    }
+
     return Promise.reject(error);
   }
 );
 
 export const axiosGetRequest = async (
-  url: string
+  url: string,
+  config?: AxiosRequestConfig
 ): Promise<IResponse | void> => {
   try {
-    const res = await appApi.get(url);
+    const res = await appApi.get(url, config);
     return res.data;
   } catch (err) {
     const apiError = err as IApiResponseError;

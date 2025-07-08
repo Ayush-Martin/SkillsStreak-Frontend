@@ -26,6 +26,7 @@ export {
   FaGithub,
   FaCheck,
   FaRobot,
+  FaIndianRupeeSign,
 } from "react-icons/fa6";
 export {
   FaChalkboardTeacher,
@@ -38,6 +39,8 @@ export {
   FaRegStopCircle,
   FaLinkedin,
   FaGlobe,
+  FaBookOpen,
+  FaTag,
 } from "react-icons/fa";
 export {
   TbCategoryFilled,
@@ -68,7 +71,12 @@ export {
 export { ImProfile } from "react-icons/im";
 export { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
 export { CgMenuGridO, CgUnblock, CgBlock, CgLogIn } from "react-icons/cg";
-export { AiOutlineCheckCircle, AiFillCloseCircle } from "react-icons/ai";
+export {
+  AiOutlineCheckCircle,
+  AiFillCloseCircle,
+  AiFillHeart,
+  AiOutlineHeart,
+} from "react-icons/ai";
 export { PiStudentBold, PiCertificateFill } from "react-icons/pi";
 export { BsFillChatLeftTextFill } from "react-icons/bs";
 export {

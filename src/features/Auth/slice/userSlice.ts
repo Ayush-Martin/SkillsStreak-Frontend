@@ -20,6 +20,7 @@ interface IUser {
   role: "user" | "admin" | "trainer" | "premium" | "";
   accessToken: string;
   _id: string;
+  stripeAccountId: string;
 }
 
 const initialState: IUser = {
@@ -41,6 +42,7 @@ const initialState: IUser = {
   isBlocked: false,
   accessToken: "",
   _id: "",
+  stripeAccountId: "",
 };
 
 const userSlice = createSlice({
@@ -62,6 +64,7 @@ const userSlice = createSlice({
         company,
         socialLinks,
         position,
+        stripeAccountId,
       }: IUser = jwtDecode(action.payload);
 
       state.username = username;
@@ -78,6 +81,7 @@ const userSlice = createSlice({
       state._id = _id;
       state.accessToken = action.payload;
       state.position = position;
+      state.stripeAccountId = stripeAccountId;
     },
     logout: (state) => {
       state.username = "";
@@ -98,6 +102,7 @@ const userSlice = createSlice({
         linkedin: "",
         website: "",
       };
+      state.stripeAccountId = "";
     },
     setAccessToken: (state, action) => {
       state.accessToken = action.payload;
@@ -117,6 +122,10 @@ const userSlice = createSlice({
       state.areaOfInterest = action.payload.areaOfInterest;
       state.position = action.payload.position;
     },
+
+    updateStripeAccountId: (state, action) => {
+      state.stripeAccountId = action.payload;
+    },
   },
 });
 
@@ -126,5 +135,6 @@ export const {
   setAccessToken,
   updateProfileData,
   updateProfileImage,
+  updateStripeAccountId,
 } = userSlice.actions;
 export default userSlice.reducer;

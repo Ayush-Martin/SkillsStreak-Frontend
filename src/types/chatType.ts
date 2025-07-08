@@ -34,6 +34,14 @@ export interface IChat {
     username: string;
   };
   lastMessage: string;
+  lastMessageTime: string;
+}
+
+export type IChatMessageReactionEmoji = "😂" | "❤️" | "👍" | "👎" | "🔥";
+
+export interface IChatMessageReaction {
+  emoji: IChatMessageReactionEmoji;
+  userId: string;
 }
 
 export interface IChatMessage {
@@ -44,6 +52,7 @@ export interface IChatMessage {
     username: string;
     profileImage: string;
   };
+  reactions: IChatMessageReaction[];
   message: string;
   messageType: "text" | "image";
   createdAt: string;

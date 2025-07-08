@@ -1,48 +1,68 @@
 import { lazy } from "react";
 
 //public Routes
-import Home from "./pages/public/Home";
-const Courses = lazy(() => import("./pages/public/Courses"));
-const CourseDetail = lazy(() => import("./pages/public/CourseDetail"));
-const Trainer = lazy(() => import("./pages/public/Trainer"));
+import Home from "./pages/public/HomePage";
+const Courses = lazy(() => import("./pages/public/CoursesPage"));
+const CourseDetail = lazy(() => import("./pages/public/CourseDetailPage"));
+const Trainer = lazy(() => import("./pages/public/TrainerPage"));
+const PaymentSuccess = lazy(() => import("./pages/public/PaymentSuccessPage"));
+const PaymentFailure = lazy(() => import("./pages/public/PaymentFailurePage"));
 
 //Auth Routes
 import LoginRegisterPage from "./pages/Auth/LoginRegisterPage";
-const VerifyOTP = lazy(() => import("./pages/Auth/VerifyOTP"));
-const ForgetPassword = lazy(() => import("./pages/Auth/ForgetPassword"));
-const ResetPassword = lazy(() => import("./pages/Auth/ResetPassword"));
+const VerifyOTP = lazy(() => import("./pages/Auth/VerifyOTPPage"));
+const ForgetPassword = lazy(() => import("./pages/Auth/ForgetPasswordPage"));
+const ResetPassword = lazy(() => import("./pages/Auth/ResetPasswordPage"));
 
 //User Routes
-const Dashboard = lazy(() => import("./pages/User/DashBoard"));
-const EnrolledCourses = lazy(() => import("./pages/User/EnrolledCourse"));
-const Transactions = lazy(() => import("./pages/User/Transactions"));
-const SendTrainerRequest = lazy(() => import("./pages/User/TrainerRequest"));
-const Course = lazy(() => import("./pages/User/Course"));
-const ChatNew = lazy(() => import("./pages/User/ChatNew"));
-const LiveSession = lazy(() => import("./pages/User/LiveSession"));
-const Profile = lazy(() => import("./pages/User/Profile"));
-const ProfileNew = lazy(() => import("./pages/User/ProfileNew"));
+const Dashboard = lazy(() => import("./pages/User/UserDashBoardPage"));
+const EnrolledCourses = lazy(
+  () => import("./pages/User/UserEnrolledCoursePage")
+);
+const Transactions = lazy(() => import("./pages/User/UserTransactionsPage"));
+const SendTrainerRequest = lazy(
+  () => import("./pages/User/UserTrainerRequestPage")
+);
+const Course = lazy(() => import("./pages/User/UserCoursePage"));
+const ChatNew = lazy(() => import("./pages/User/UserChatPage"));
+const LiveSession = lazy(() => import("./pages/User/UserLiveSessionPage"));
+const NewUserChat = lazy(() => import("./pages/User/NewUserChatPage"));
 
 //Trainer Routes
-const TrainerDashboard = lazy(() => import("./pages/Trainer/Dashboard"));
-const TrainerCourses = lazy(() => import("./pages/Trainer/MyCourses"));
-const TrainerAddCourse = lazy(() => import("./pages/Trainer/AddCourse"));
-const TrainerEditCourse = lazy(() => import("./pages/Trainer/EditCourse"));
-const TrainerEditModule = lazy(() => import("./pages/Trainer/EditModule"));
-const TrainerRevenue = lazy(() => import("./pages/Trainer/Revenue"));
-const TrainerStudents = lazy(() => import("./pages/Trainer/Students"));
-const TrainerLiveStream = lazy(() => import("./pages/Trainer/LiveStream"));
+const TrainerDashboard = lazy(
+  () => import("./pages/Trainer/TrainerDashboardPage")
+);
+const TrainerCourses = lazy(() => import("./pages/Trainer/TrainerCoursesPage"));
+const TrainerAddCourse = lazy(
+  () => import("./pages/Trainer/TrainerAddCoursePage")
+);
+const TrainerEditCourse = lazy(
+  () => import("./pages/Trainer/TrainerEditCoursePage")
+);
+const TrainerEditModule = lazy(
+  () => import("./pages/Trainer/TrainerEditModulePage")
+);
+const TrainerRevenue = lazy(() => import("./pages/Trainer/TrainerRevenuePage"));
+const TrainerStudents = lazy(
+  () => import("./pages/Trainer/TrainerStudentsPage")
+);
+const TrainerLiveStream = lazy(
+  () => import("./pages/Trainer/TrainerLiveStreamPage")
+);
+const NewTrainerAddCourse = lazy(
+  () => import("./pages/Trainer/NewTrainerAddCoursePage")
+);
 
 //Admin Routes
-const AdminDashboard = lazy(() => import("./pages/Admin/Dashboard"));
-const AdminUsers = lazy(() => import("./pages/Admin/Users"));
+const AdminDashboard = lazy(() => import("./pages/Admin/AdminDashboardPage"));
+const AdminUsers = lazy(() => import("./pages/Admin/AdminUsers"));
 const AdminTrainerRequests = lazy(
-  () => import("./pages/Admin/TrainerRequests")
+  () => import("./pages/Admin/AdminTrainerRequestsPage")
 );
-const AdminCourses = lazy(() => import("./pages/Admin/Courses"));
-const AdminCategories = lazy(() => import("./pages/Admin/Categories"));
-const AdminTransactions = lazy(() => import("./pages/Admin/Transactions"));
-const AdminRevenue = lazy(() => import("./pages/Admin/AdminRevenue"));
+const AdminCourses = lazy(() => import("./pages/Admin/AdminCoursesPage"));
+const AdminCategories = lazy(() => import("./pages/Admin/AdminCategoriesPage"));
+const AdminTransactions = lazy(() => import("./pages/Admin/AdminTransactions"));
+const AdminRevenue = lazy(() => import("./pages/Admin/AdminRevenuePage"));
 
 type Route = {
   path: string;
@@ -72,6 +92,14 @@ export const PublicRoutes: Routes = [
     path: "trainer/:trainerId",
     Component: Trainer,
   },
+  {
+    path: "payment/success",
+    Component: PaymentSuccess,
+  },
+  {
+    path: "payment/failure",
+    Component: PaymentFailure,
+  },
 ];
 
 export const AuthRoutes: Routes = [
@@ -95,14 +123,6 @@ export const UserRoutes: Routes = [
     Component: Dashboard,
   },
   {
-    path: "profile",
-    Component: Profile,
-  },
-  {
-    path: "profileNew",
-    Component: ProfileNew,
-  },
-  {
     path: "enrolledCourses",
     Component: EnrolledCourses,
   },
@@ -117,6 +137,10 @@ export const UserRoutes: Routes = [
   {
     path: "chats",
     Component: ChatNew,
+  },
+  {
+    path: "chatsNew",
+    Component: NewUserChat,
   },
   {
     path: "enrolledCourses/:courseId/view",
@@ -160,6 +184,10 @@ export const TrainerRoutes: Routes = [
   {
     path: "courses/:courseId/live/new",
     Component: TrainerLiveStream,
+  },
+  {
+    path: "add",
+    Component: NewTrainerAddCourse,
   },
 ];
 

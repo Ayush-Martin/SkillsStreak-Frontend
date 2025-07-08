@@ -1,4 +1,4 @@
-import { bookOpen, IndianRupee, Tag, Users } from "lucide-react";
+import { FaBookOpen, FaTag, FaUsers, FaIndianRupeeSign } from "@/assets/icons";
 import { FC } from "react";
 import { Link } from "react-router-dom";
 
@@ -37,7 +37,7 @@ const CourseCard: FC<ICourseCardParams> = ({
         />
         <div className="absolute top-3 left-3">
           <span className="bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
-            <Tag size={12} />
+            <FaTag size={12} />
             {category}
           </span>
         </div>
@@ -58,11 +58,11 @@ const CourseCard: FC<ICourseCardParams> = ({
         {/* Stats Row */}
         <div className="flex items-center justify-between mb-4 text-sm text-gray-300">
           <div className="flex items-center gap-1">
-            <Users size={16} className="text-blue-400" />
+            <FaUsers size={16} className="text-blue-400" />
             <span>{noOfEnrolled.toLocaleString()} enrolled</span>
           </div>
           <div className="flex items-center gap-1">
-            <bookOpen size={16} className="text-green-400" />
+            <FaBookOpen size={16} className="text-green-400" />
             <span>{noOfModules} modules</span>
           </div>
 
@@ -72,7 +72,7 @@ const CourseCard: FC<ICourseCardParams> = ({
             </div>
           ) : (
             <div className="flex items-center gap-1">
-              <IndianRupee size={16} className="text-green-400" />
+              <FaIndianRupeeSign size={16} className="text-green-400" />
               <span>{price}</span>
             </div>
           )}
