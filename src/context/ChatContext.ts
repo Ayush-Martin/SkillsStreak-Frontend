@@ -30,7 +30,7 @@ interface IChatContext {
     type?: "group" | "individual"
   ) => void;
   fetchMessages: (handler: (messages: Array<IChatMessage>) => void) => void;
-  sendMessage: (message: string) => void;
+  sendMessage: (message: string, type?: "text" | "emoji") => void;
   sendReaction: (messageId: string, emoji: IChatMessageReactionEmoji) => void;
   sendMedia: (file: File) => void;
   newChat: (trainerId: string) => void;

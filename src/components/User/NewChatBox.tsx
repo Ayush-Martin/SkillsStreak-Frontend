@@ -1,8 +1,14 @@
 import { ProfileImage } from "@/components";
-import { BiCategory, BiSolidImageAdd } from "@/assets/icons/icons";
+import {
+  BiCategory,
+  BiSolidImageAdd,
+  IoCloseCircle,
+  FaUsers,
+} from "@/assets/icons";
 import { ScrollArea } from "@/components/ui";
 import { BiSend } from "react-icons/bi";
 import { FC, useContext, useEffect, useMemo, useState } from "react";
+import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
 
 import {
   IChatMessage,
@@ -12,10 +18,11 @@ import {
 import { useSelector } from "react-redux";
 import { RootReducer } from "@/store";
 
-import { useClickOutside, useScrollToBottom } from "@/hooks";
+import { useScrollToBottom } from "@/hooks";
 
 import { FaRegSmile } from "react-icons/fa";
 import chatContext from "@/context/ChatContext";
+import { BsFillEmojiSmileFill } from "react-icons/bs";
 
 interface IChatBoxProps {
   sideBarOpenClose: () => void;
@@ -25,13 +32,17 @@ interface IMessageProps {
   messageId: string;
   message: string;
   reactions: IChatMessageReaction[];
-  messageType: "text" | "image";
+  messageType: "text" | "image" | "emoji";
   createdAt: string;
   isSender: boolean;
   username: string;
   profileImage: string;
   currentUserId: string;
   sendReaction: (messageId: string, emoji: IChatMessageReactionEmoji) => void;
+}
+
+interface IGroupMembersProps {
+  close: () => void;
 }
 
 const ChatBox: FC<IChatBoxProps> = ({ sideBarOpenClose }) => {
@@ -77,20 +88,24 @@ const ChatBox: FC<IChatBoxProps> = ({ sideBarOpenClose }) => {
         <div className="w-full  h-full flex justify-between items-center">
           <div className="w-full h-full  flex gap-4 items-center  bg-opacity-25 p-2 rounded-md">
             {selectedChat ? (
-              <>
-                {" "}
-                <ProfileImage
-                  profileImage={selectedChat.icon}
-                  size={16}
-                  textSize="3xl"
-                />
-                <h1 className="font-playwritehu">{selectedChat.title}</h1>
+              <div className="flex justify-between items-center w-full pr-10">
+                <div className="flex gap-3 items-center">
+                  <ProfileImage
+                    profileImage={selectedChat.icon}
+                    size={16}
+                    textSize="3xl"
+                  />
+                  <h1 className="font-playwritehu">{selectedChat.title}</h1>
+                </div>
                 {selectedChat.type == "group" && (
-                  <button onClick={() => setOpenMembers((p) => !p)}>
-                    View Members
+                  <button
+                    onClick={() => setOpenMembers((p) => !p)}
+                    className="text-3xl"
+                  >
+                    <FaUsers />
                   </button>
                 )}
-              </>
+              </div>
             ) : (
               <h1 className="font-playwritehu">Select A chat</h1>
             )}
@@ -192,17 +207,31 @@ const Message: FC<IMessageProps> = ({
             </p>
           )}
 
-          {messageType === "text" ? (
-            <p className="text-sm leading-snug whitespace-pre-wrap break-words text-white/90">
-              {message}
-            </p>
-          ) : (
-            <img
-              src={message}
-              alt="img"
-              className="rounded-xl mt-2 max-w-[260px] border border-white/10 shadow-md"
-            />
-          )}
+          {(() => {
+            switch (messageType) {
+              case "text":
+                return (
+                  <p className="text-sm leading-snug whitespace-pre-wrap break-words text-white/90">
+                    {message}
+                  </p>
+                );
+
+              case "emoji":
+                return <span style={{ fontSize: "1.5rem" }}>{message}</span>;
+
+              case "image":
+                return (
+                  <img
+                    src={message}
+                    alt="img"
+                    className="rounded-xl mt-2 max-w-[260px] border border-white/10 shadow-md"
+                  />
+                );
+
+              default:
+                return <p className="text-red-500">Unsupported type</p>;
+            }
+          })()}
 
           {/* Timestamp + React button */}
           <div className="flex items-center justify-between mt-2 text-xs text-white/50">
@@ -273,6 +302,7 @@ const Message: FC<IMessageProps> = ({
 
 const SendMessage: FC = () => {
   const [message, setMessage] = useState("");
+  const [emojiPicker, setEmojiPicker] = useState(false);
   const { sendMedia, sendMessage } = useContext(chatContext)!;
 
   const handleSendMedia = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -282,22 +312,40 @@ const SendMessage: FC = () => {
     }
   };
 
+  const sendEmoji = (emoji: EmojiClickData) => {
+    sendMessage(emoji.emoji, "emoji");
+    setEmojiPicker(false);
+  };
+
   return (
     <div className="h-[60px] w-full  border-t border-app-border flex justify-between items-center">
-      <div className="w-[50px] h-full py-2 mx-3  text-3xl flex">
-        <label
-          htmlFor="file-upload"
-          className="inline-flex items-center   font-medium text-white rounded-md cursor-pointer hover:scale-110"
+      {emojiPicker && (
+        <div className="absolute bottom-16 left-3">
+          <EmojiPicker theme={Theme.DARK} onEmojiClick={sendEmoji} />
+        </div>
+      )}
+      <div className="w-[90px] flex gap-4 items-center mx-3">
+        <div className=" h-full py-2   text-3xl flex">
+          <label
+            htmlFor="file-upload"
+            className="inline-flex items-center   font-medium text-white rounded-md cursor-pointer hover:scale-110"
+          >
+            <BiSolidImageAdd />
+            <input
+              id="file-upload"
+              type="file"
+              className="sr-only"
+              onChange={handleSendMedia}
+              accept="image/*"
+            />
+          </label>
+        </div>
+        <button
+          className="text-yellow-400 text-2xl"
+          onClick={() => setEmojiPicker((p) => !p)}
         >
-          <BiSolidImageAdd />
-          <input
-            id="file-upload"
-            type="file"
-            className="sr-only"
-            onChange={handleSendMedia}
-            accept="image/*"
-          />
-        </label>
+          <BsFillEmojiSmileFill />
+        </button>
       </div>
       <form
         className="flex justify-between w-full items-center h-full "
@@ -321,12 +369,7 @@ const SendMessage: FC = () => {
   );
 };
 
-interface IGroupMembersProps {
-  close: () => void;
-}
-
 const GroupMembers: FC<IGroupMembersProps> = ({ close }) => {
-  const handleClickOut = useClickOutside<HTMLDivElement>(() => close());
   const [members, setMembers] = useState<
     Array<{
       _id: string;
@@ -348,11 +391,13 @@ const GroupMembers: FC<IGroupMembersProps> = ({ close }) => {
   }, []);
 
   return (
-    <div
-      className="absolute bg-black/60 backdrop-blur-md border border-white/10 text-white top-20 left-7 w-96 max-h-80 rounded-xl shadow-lg z-50 p-4 overflow-y-auto"
-      ref={handleClickOut}
-    >
-      <h3 className="text-lg font-semibold mb-3">Group Members</h3>
+    <div className="absolute bg-black/60 backdrop-blur-md border border-white/10 text-white top-20 left-7 w-96 max-h-80 rounded-xl shadow-lg z-50 p-4 overflow-y-auto">
+      <div className="flex justify-between items-center mb-3">
+        <h3 className="text-2xl font-bold font-mono ">Group Members</h3>
+        <button onClick={close} className="text-red-400 text-2xl">
+          <IoCloseCircle />
+        </button>
+      </div>
       <ul className="space-y-3">
         {members.map((member) => (
           <li
@@ -365,9 +410,11 @@ const GroupMembers: FC<IGroupMembersProps> = ({ close }) => {
               textSize="3xl"
             />
             <div className="flex flex-col">
-              <span className="text-sm font-medium">{member.username}</span>
+              <span className=" font-medium font-playwritehu">
+                {member.username}
+              </span>
               {member.isAdmin && (
-                <span className="text-xs text-blue-400 font-semibold">
+                <span className="text-sm text-blue-400 font-semibold">
                   Admin
                 </span>
               )}

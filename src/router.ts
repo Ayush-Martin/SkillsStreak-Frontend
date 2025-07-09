@@ -49,9 +49,6 @@ const TrainerStudents = lazy(
 const TrainerLiveStream = lazy(
   () => import("./pages/Trainer/TrainerLiveStreamPage")
 );
-const NewTrainerAddCourse = lazy(
-  () => import("./pages/Trainer/NewTrainerAddCoursePage")
-);
 
 //Admin Routes
 const AdminDashboard = lazy(() => import("./pages/Admin/AdminDashboardPage"));
@@ -184,10 +181,6 @@ export const TrainerRoutes: Routes = [
   {
     path: "courses/:courseId/live/new",
     Component: TrainerLiveStream,
-  },
-  {
-    path: "add",
-    Component: NewTrainerAddCourse,
   },
 ];
 

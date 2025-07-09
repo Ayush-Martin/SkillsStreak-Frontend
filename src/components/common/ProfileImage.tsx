@@ -13,7 +13,11 @@ const ProfileImage: FC<IProfileImageProps> = ({
   textSize,
 }) => {
   return (
-    <div className={`w-${size} h-${size} rounded-full bg-app-neutral `}>
+    <div
+      className={`w-${size} h-${size} rounded-full ${
+        profileImage ? "" : "bg-app-neutral"
+      } `}
+    >
       {profileImage ? (
         <img
           src={profileImage}

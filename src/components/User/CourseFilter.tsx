@@ -44,10 +44,18 @@ const CourseFilter: FC<ICourseFilterProps> = ({
     fetchCategories();
   }, []);
 
+  const clearAll = () => {
+    setCategory("all");
+    setDifficulty("all");
+    setPrice("all");
+    setSort("popularity");
+  };
+
   return (
     <div className="flex flex-col gap-3 px-5 pt-10 md:px-10">
       <div className="flex flex-col gap-1">
         <p>Difficulty </p>
+        <button onClick={clearAll}>Clear all</button>
         <Select
           defaultValue={difficulty}
           onValueChange={(value: "all" | ICourseDifficulty) =>

@@ -45,6 +45,13 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+    import("@/pages/User/UserCoursePage");
+    import("@/pages/User/UserDashBoardPage");
+    import("@/pages/public/CoursesPage");
+    import("@/pages/public/HomePage");
+  }, []);
+
+  useEffect(() => {
     console.log("before connecting socket");
     if (accessToken) {
       console.log("while connecting socket");

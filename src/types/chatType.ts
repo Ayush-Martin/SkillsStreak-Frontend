@@ -54,6 +54,6 @@ export interface IChatMessage {
   };
   reactions: IChatMessageReaction[];
   message: string;
-  messageType: "text" | "image";
+  messageType: "text" | "image" | "emoji";
   createdAt: string;
 }

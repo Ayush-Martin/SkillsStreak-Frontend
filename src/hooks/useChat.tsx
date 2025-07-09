@@ -141,11 +141,12 @@ const useChat = () => {
     handler(res.data);
   };
 
-  const sendMessage = (message: string) => {
+  const sendMessage = (message: string, type?: "text" | "image") => {
     if (!selectedChat || !socket) return;
     socket.emit(SocketEvents.CHAT_MESSAGE_SEND, {
       chatId: selectedChat._id,
       message: message,
+      type,
     });
   };
 

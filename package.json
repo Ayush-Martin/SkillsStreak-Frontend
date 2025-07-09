@@ -37,6 +37,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.5.2",
+    "emoji-picker-react": "^4.12.3",
     "hamburger-react": "^2.5.2",
     "hls.js": "^1.6.5",
     "html2canvas": "^1.4.1",
