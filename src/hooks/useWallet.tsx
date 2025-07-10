@@ -7,8 +7,6 @@ import { useSelector } from "react-redux";
 const useRedeem = () => {
   const [wallet, setWallet] = useState<{
     balance: number;
-    commission?: number;
-    redeemable?: number;
   }>({ balance: 0 });
 
   const { stripeAccountId } = useSelector((state: RootReducer) => state.user);

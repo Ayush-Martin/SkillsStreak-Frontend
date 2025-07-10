@@ -130,9 +130,7 @@ const DashBoard: FC = () => {
             <div className="col-span-1 sm:col-span-2 lg:col-span-1">
               <WalletCard
                 balance={wallet.balance}
-                commissionAmount={wallet.commission}
                 haveStripeId={haveStripeId}
-                redeemableAmount={wallet.redeemable}
                 onRedeem={handleRedeem}
                 onSetupAccount={setupStripeAccount}
               />

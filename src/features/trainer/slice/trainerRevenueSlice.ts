@@ -6,10 +6,14 @@ interface ITransaction {
   payer: string;
   course: string;
   amount: number;
+  status: "completed" | "on_process";
+  adminCommission: number;
 }
 
 interface IRevenue {
   totalRevenue: number;
+  totalCommission: number;
+  onProcessAmount: number;
   transactions: Array<ITransaction>;
 }
 
@@ -22,6 +26,8 @@ interface IInitialState {
 
 const initialState: IInitialState = {
   revenue: {
+    totalCommission: 0,
+    onProcessAmount: 0,
     totalRevenue: 0,
     transactions: [],
   },
@@ -57,6 +63,8 @@ const trainerRevenueSlice = createSlice({
       state.currentPage = data.currentPage;
       state.totalPages = data.totalPages;
       state.loading = false;
+      state.revenue.onProcessAmount = data.revenue.onProcessAmount;
+      state.revenue.totalCommission = data.revenue.totalCommission;
     });
   },
 });

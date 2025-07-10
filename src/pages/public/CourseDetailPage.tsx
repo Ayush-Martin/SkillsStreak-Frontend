@@ -40,6 +40,7 @@ import { RootReducer } from "@/store";
 
 import { useEnrollCourse, useReview, useWishlist } from "@/hooks";
 import { ReviewContext } from "@/context";
+import { X } from "lucide-react";
 
 const CourseDetail: FC = () => {
   const navigate = useNavigate();
@@ -61,6 +62,7 @@ const CourseDetail: FC = () => {
   const [course, setCourse] = useState<ICourseDetails | null>(null);
   const [addedToWishlist, setAddedToWishlist] = useState(false);
   const { accessToken } = useSelector((state: RootReducer) => state.user);
+  const [open, setOpen] = useState(false);
 
   const addRemoveWishlist = async () => {
     if (addedToWishlist) {
@@ -100,10 +102,30 @@ const CourseDetail: FC = () => {
     [course]
   );
 
+  const enroll = () => {
+    if (course?.price) {
+      setOpen(true);
+      return;
+    } else {
+      handleEnroll(course!._id);
+    }
+  };
+
   if (!course) return <Loading />;
 
   return (
     <UserLayout>
+      {open && (
+        <EnrollCourse
+          amount={course.price}
+          thumbnail={course.thumbnail}
+          title={course.title}
+          close={() => setOpen(false)}
+          stripeCheckout={() => handleEnroll(course._id, "stripe")}
+          walletCheckout={() => handleEnroll(course._id, "wallet")}
+        />
+      )}
+
       <section className="w-full h-56 mt-5 px-7 md:h-96">
         <BreadcrumbNav breadcrumbItems={breadcrumbItems} />
 
@@ -136,7 +158,7 @@ const CourseDetail: FC = () => {
               onClick={() =>
                 courseAccess
                   ? navigate(`/user/enrolledCourses/${courseId}/view`)
-                  : handleEnroll(courseId!)
+                  : enroll()
               }
             >
               {courseAccess
@@ -368,6 +390,70 @@ const CourseDetail: FC = () => {
       </section>
       <Footer />
     </UserLayout>
+  );
+};
+
+interface IEnrollCourseProps {
+  title: string;
+  amount: number;
+  thumbnail: string;
+  close: () => void;
+  walletCheckout: () => void;
+  stripeCheckout: () => void;
+}
+
+const EnrollCourse: FC<IEnrollCourseProps> = ({
+  title,
+  amount,
+  thumbnail,
+  close,
+  walletCheckout,
+  stripeCheckout,
+}) => {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-black/50 p-4 ">
+      {/* Modal */}
+      <div className="relative bg-zinc-900 text-white w-full max-w-md rounded-2xl shadow-xl p-6 space-y-6 border border-white/10">
+        {/* Close button */}
+        <button
+          onClick={close}
+          className="absolute top-3 right-3 p-2 rounded-full hover:bg-white/10 transition"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        {/* Thumbnail Image */}
+        <div className="w-full h-48 overflow-hidden rounded-xl">
+          <img
+            src={thumbnail}
+            alt="Course Thumbnail"
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        {/* Course Info */}
+        <div className="space-y-1">
+          <h2 className="text-xl font-semibold">{title}</h2>
+          <p className="text-lg text-zinc-300">Price: ₹{amount}</p>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <Button
+            onClick={walletCheckout}
+            className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:brightness-110"
+          >
+            Pay with Wallet
+          </Button>
+          <Button
+            onClick={stripeCheckout}
+            className="bg-gradient-to-r from-red-600 to-orange-600 hover:brightness-110"
+          >
+            Pay with Card
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 };
 

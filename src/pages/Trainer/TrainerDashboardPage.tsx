@@ -105,8 +105,6 @@ const Dashboard: FC = () => {
             haveStripeId={haveStripeId}
             onRedeem={handleRedeem}
             onSetupAccount={setupStripeAccount}
-            commissionAmount={wallet.commission}
-            redeemableAmount={wallet.redeemable}
           />
         </div>
       </div>

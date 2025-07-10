@@ -29,6 +29,7 @@ const ChatNew = lazy(() => import("./pages/User/UserChatPage"));
 const LiveSession = lazy(() => import("./pages/User/UserLiveSessionPage"));
 const NewUserChat = lazy(() => import("./pages/User/NewUserChatPage"));
 
+
 //Trainer Routes
 const TrainerDashboard = lazy(
   () => import("./pages/Trainer/TrainerDashboardPage")

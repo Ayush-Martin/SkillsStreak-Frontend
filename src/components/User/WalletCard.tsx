@@ -5,8 +5,6 @@ import { FC } from "react";
 interface IWalletCardProp {
   haveStripeId: boolean;
   balance: number;
-  redeemableAmount?: number;
-  commissionAmount?: number;
   onRedeem: () => void;
   onSetupAccount: () => void;
 }
@@ -14,14 +12,10 @@ interface IWalletCardProp {
 const WalletCard: FC<IWalletCardProp> = ({
   balance,
   haveStripeId,
-  redeemableAmount,
-  commissionAmount,
   onRedeem,
   onSetupAccount,
 }) => {
-  const canRedeem =
-    haveStripeId && (redeemableAmount === undefined || redeemableAmount > 0);
-  
+  const canRedeem = haveStripeId && balance > 0;
 
   return (
     <div className="h-auto w-full bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl shadow-lg p-6 text-white flex flex-col justify-between items-center transition duration-300 hover:scale-[1.02] hover:shadow-green-400/20">
@@ -33,24 +27,6 @@ const WalletCard: FC<IWalletCardProp> = ({
       {/* Main Title */}
       <p className="text-sm text-white/60">Wallet Balance</p>
       <h1 className="text-4xl font-bold mt-2 text-green-400">₹ {balance}</h1>
-
-      {/* Breakdown */}
-      {(commissionAmount !== undefined || redeemableAmount !== undefined) && (
-        <div className="mt-4 w-full text-sm space-y-1 text-white/80">
-          <div className="flex justify-between">
-            <span>Redeemable</span>
-            <span className="text-green-300 font-medium">
-              ₹ {redeemableAmount}
-            </span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-white/60">Admin Commission</span>
-            <span className="text-red-300 font-medium">
-              ₹ {commissionAmount}
-            </span>
-          </div>
-        </div>
-      )}
 
       {/* Action Button */}
       {haveStripeId ? (

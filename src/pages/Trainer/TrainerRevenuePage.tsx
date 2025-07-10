@@ -38,6 +38,30 @@ const RevenueCard: FC<IRevenueCard> = ({ amount }) => {
   );
 };
 
+const CommissionCard: FC<IRevenueCard> = ({ amount }) => {
+  return (
+    <StatCard
+      icon={<FaMoneyBillWave className="text-blue-400" />}
+      title="Total Commission"
+      value={`₹ ${amount}`}
+      color="text-blue-400"
+      hoverShadowColor="hover:shadow-blue-500/30"
+    />
+  );
+};
+
+const OnProcessAmountCard: FC<IRevenueCard> = ({ amount }) => {
+  return (
+    <StatCard
+      icon={<FaMoneyBillWave className="text-green-400" />}
+      title="On Process Amount"
+      value={`₹ ${amount}`}
+      color="text-green-400"
+      hoverShadowColor="hover:shadow-green-500/30"
+    />
+  );
+};
+
 const PAGE_SIZE = 4;
 
 const TrainerRevenue = () => {
@@ -113,8 +137,12 @@ const TrainerRevenue = () => {
 
   return (
     <TrainerLayout>
-      <div className="mb-5 px-72">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
         <RevenueCard amount={revenue.totalRevenue} />
+        <CommissionCard amount={revenue.totalCommission} />
+        <div className="col-span-1 sm:col-span-2 lg:col-span-1">
+          <OnProcessAmountCard amount={revenue.onProcessAmount} />
+        </div>
       </div>
 
       <DateFilterWithExport
@@ -135,6 +163,8 @@ const TrainerRevenue = () => {
             <TableHead>Payer</TableHead>
             <TableHead>Amount</TableHead>
             <TableHead>Course</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Admin Commission</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -147,6 +177,8 @@ const TrainerRevenue = () => {
                 <TableCell>{transaction.payer}</TableCell>
                 <TableCell>{transaction.amount}</TableCell>
                 <TableCell>{transaction.course}</TableCell>
+                <TableCell>{transaction.status}</TableCell>
+                <TableCell>{transaction.adminCommission}</TableCell>
               </TableRow>
             ))}
           </TableBody>
