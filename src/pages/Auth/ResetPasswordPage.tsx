@@ -5,7 +5,7 @@ import { z } from "zod";
 
 import AuthLayout from "@/layouts/AuthLayout";
 import resetPasswordImage from "@/assets/images/resetPassword.jpg";
-import { Input,Button } from "@/components/ui";
+import { Input, Button } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorText } from "@/components";
 import { PasswordValidationRule } from "@/utils/validationRules";

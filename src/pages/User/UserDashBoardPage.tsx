@@ -84,18 +84,6 @@ const DashBoard: FC = () => {
   const { wallet, haveStripeId, handleRedeem, setupStripeAccount } =
     useWallet();
 
-  const changePassword = async () => {
-    const res = await axiosPostRequest(FORGET_PASSWORD_API, { email });
-    if (!res) return;
-    successPopup(res.message || "OTP sent to your email");
-    navigate("/auth/verifyOTP", {
-      state: {
-        email,
-        forAction: "resetPassword",
-      },
-    });
-  };
-
   useEffect(() => {
     const fetchOverallCourseProgress = async () => {
       const res = await axiosGetRequest("/enrolledCourses/progress");
@@ -160,7 +148,7 @@ const DashBoard: FC = () => {
             </Button>
             <Button
               className="flex items-center gap-1 bg-transparent border border-app-border"
-              onClick={changePassword}
+              onClick={() => navigate("/user/changePassword")}
             >
               <RiLockPasswordFill />
               Change Password

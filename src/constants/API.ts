@@ -8,6 +8,7 @@ export const COMPLETE_REGISTER_API = "/auth/completeRegister";
 export const LOGIN_WITH_GOOGLE_API = "/auth/google";
 export const FORGET_PASSWORD_API = "/auth/forgetPassword";
 export const RESET_PASSWORD_API = "/auth/resetPassword";
+export const CHANGE_PASSWORD_API = "/auth/changePassword";
 export const VERIFY_OTP_API = "/auth/verifyOTP";
 export const REFRESH_TOKEN_API = "/auth/refresh";
 

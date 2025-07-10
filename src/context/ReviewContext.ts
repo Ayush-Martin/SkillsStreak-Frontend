@@ -7,6 +7,7 @@ interface IReviewContext {
   deleteReview: (reviewId: string) => void;
   addReply: (reviewId: string, content: string) => void;
   fetchReplies: (reviewId: string) => void;
+  editReview: (reviewId: string, rating: number, content: string) => void;
 }
 
 const ReviewContext = createContext<IReviewContext | undefined>(undefined);

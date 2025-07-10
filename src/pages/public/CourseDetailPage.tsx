@@ -49,8 +49,14 @@ const CourseDetail: FC = () => {
     removeCourseFromWishlist,
     checkCourseAddedToWishlist,
   } = useWishlist();
-  const { addReply, addReview, deleteReview, fetchReplies, reviews } =
-    useReview(courseId!);
+  const {
+    addReply,
+    addReview,
+    deleteReview,
+    fetchReplies,
+    reviews,
+    editReview,
+  } = useReview(courseId!);
   const { courseAccess, fetchAccess, handleEnroll } = useEnrollCourse();
   const [course, setCourse] = useState<ICourseDetails | null>(null);
   const [addedToWishlist, setAddedToWishlist] = useState(false);
@@ -344,9 +350,19 @@ const CourseDetail: FC = () => {
           </h1>
 
           <ReviewContext.Provider
-            value={{ addReply, addReview, deleteReview, fetchReplies, reviews }}
+            value={{
+              addReply,
+              addReview,
+              deleteReview,
+              fetchReplies,
+              reviews,
+              editReview,
+            }}
           >
-            <Review trainerId={course.trainer._id} />
+            <Review
+              trainerId={course.trainer._id}
+              courseAccess={courseAccess!}
+            />
           </ReviewContext.Provider>
         </div>
       </section>

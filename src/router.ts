@@ -15,6 +15,7 @@ const ForgetPassword = lazy(() => import("./pages/Auth/ForgetPasswordPage"));
 const ResetPassword = lazy(() => import("./pages/Auth/ResetPasswordPage"));
 
 //User Routes
+const ChangePassword = lazy(() => import("./pages/User/ChangePasswordPage"));
 const Dashboard = lazy(() => import("./pages/User/UserDashBoardPage"));
 const EnrolledCourses = lazy(
   () => import("./pages/User/UserEnrolledCoursePage")
@@ -146,6 +147,10 @@ export const UserRoutes: Routes = [
   {
     path: "courses/:courseId/live/:streamId",
     Component: LiveSession,
+  },
+  {
+    path: "changePassword",
+    Component: ChangePassword,
   },
 ];
 

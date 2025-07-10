@@ -2,6 +2,7 @@ import {
   axiosDeleteRequest,
   axiosGetRequest,
   axiosPostRequest,
+  axiosPutRequest,
 } from "@/config/axios";
 import { COURSES_API } from "@/constants";
 import { RootReducer } from "@/store";
@@ -83,7 +84,36 @@ const useReview = (courseId: string) => {
     );
   };
 
-  return { reviews, addReply, addReview, deleteReview, fetchReplies };
+  const editReview = async (
+    reviewId: string,
+    rating: number,
+    content: string
+  ) => {
+    const res = await axiosPutRequest(
+      `/courses/${courseId}/reviews/${reviewId}`,
+      {
+        rating,
+        content,
+      }
+    );
+
+    if (!res) return;
+    successPopup(res.message);
+    setReviews(
+      reviews.map((review) =>
+        review._id == reviewId ? { ...review, rating, content } : review
+      )
+    );
+  };
+
+  return {
+    reviews,
+    addReply,
+    addReview,
+    deleteReview,
+    fetchReplies,
+    editReview,
+  };
 };
 
 export default useReview;

@@ -1,17 +1,24 @@
-import { Button, Card, CardContent, Input, Textarea } from "@/components/ui";
+import {
+  Button,
+  Card,
+  CardContent,
+  Input,
+  Textarea,
+  ProfileImage,
+} from "@/components";
 import { FC, useContext, useState } from "react";
 import { Star, Users } from "lucide-react";
 import { Rating } from "@smastrom/react-rating";
 
 import { useSelector } from "react-redux";
 import { RootReducer } from "@/store";
-import { ProfileImage } from "@/components";
-import { MdDelete } from "@/assets/icons";
+import { MdDelete, MdEdit } from "@/assets/icons";
 import { ReviewContext } from "@/context";
 import { IReview } from "@/types/reviewType";
 
 interface IReviewProps {
   trainerId: string;
+  courseAccess: boolean;
 }
 
 interface IReviewCardProps {
@@ -26,9 +33,8 @@ interface ReviewStatsProps {
   ratingBreakdown: { stars: number; count: number; percentage: number }[];
 }
 
-const Review: FC<IReviewProps> = ({ trainerId }) => {
+const Review: FC<IReviewProps> = ({ trainerId, courseAccess }) => {
   const { reviews } = useContext(ReviewContext)!;
-
   const { _id } = useSelector((state: RootReducer) => state.user);
 
   const totalReviews = reviews.length;
@@ -50,9 +56,11 @@ const Review: FC<IReviewProps> = ({ trainerId }) => {
         ratingBreakdown={ratingBreakdown}
       />
 
-      {!!_id && <AddReview />}
+      {!!_id &&
+        courseAccess &&
+        !reviews.find((review) => review.userId._id === _id) && <AddReview />}
 
-      <div className="flex flex-col gap-6 ">
+      <div className="flex flex-col gap-6">
         {reviews.map((review) => (
           <ReviewCard
             key={review._id}
@@ -74,7 +82,6 @@ const ReviewStats = ({
   return (
     <div className="bg-gray-800 rounded-xl p-6 mb-6 border border-gray-700">
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Overall Rating */}
         <div className="text-center">
           <div className="flex items-center justify-center gap-2 mb-3">
             <Star className="w-7 h-7 fill-yellow-400 text-yellow-400" />
@@ -100,7 +107,6 @@ const ReviewStats = ({
           </p>
         </div>
 
-        {/* Rating Breakdown */}
         <div className="space-y-2">
           {ratingBreakdown.map((item) => (
             <div key={item.stars} className="flex items-center gap-3">
@@ -128,6 +134,7 @@ const AddReview: FC = () => {
   const { addReview } = useContext(ReviewContext)!;
   const [rating, setRating] = useState(0);
   const [content, setContent] = useState("");
+
   const save = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     addReview(content, rating);
@@ -176,13 +183,18 @@ const AddReview: FC = () => {
 };
 
 const ReviewCard: FC<IReviewCardProps> = ({ review, authorId, userId }) => {
-  const { fetchReplies, addReply, deleteReview } = useContext(ReviewContext)!;
+  const { fetchReplies, addReply, deleteReview, editReview } =
+    useContext(ReviewContext)!;
+
+  const [edit, setEdit] = useState(false);
   const [open, setOpen] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
   const [reply, setReply] = useState("");
+
   const submit = () => {
     addReply(review._id, reply);
     setOpen(false);
+    setReply("");
   };
 
   const getReplies = () => {
@@ -216,12 +228,22 @@ const ReviewCard: FC<IReviewCardProps> = ({ review, authorId, userId }) => {
                 </span>
               )}
             </div>
-            <button
-              className="text-red-500 hover:text-red-400 transition"
-              onClick={removeReply}
-            >
-              <MdDelete size={20} />
-            </button>
+            {review.userId._id === userId && (
+              <div className="flex gap-2">
+                <button
+                  className="text-blue-400 hover:text-blue-300 transition "
+                  onClick={() => setEdit((prev) => !prev)}
+                >
+                  <MdEdit />
+                </button>
+                <button
+                  className="text-red-500 hover:text-red-400 transition"
+                  onClick={removeReply}
+                >
+                  <MdDelete size={20} />
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="flex items-center gap-5 text-sm">
@@ -244,7 +266,19 @@ const ReviewCard: FC<IReviewCardProps> = ({ review, authorId, userId }) => {
             </button>
           </div>
 
-          <p className="text-sm text-[#cbd5e1]">{review.content}</p>
+          {edit ? (
+            <EditReviewForm
+              initialContent={review.content}
+              initialRating={review.rating}
+              onSave={(content, rating) => {
+                editReview(review._id, rating, content);
+                setEdit(false);
+              }}
+              onCancel={() => setEdit(false)}
+            />
+          ) : (
+            <p className="text-sm text-[#cbd5e1]">{review.content}</p>
+          )}
 
           {open && (
             <div className="flex gap-2 mt-2">
@@ -293,6 +327,64 @@ const ReviewCard: FC<IReviewCardProps> = ({ review, authorId, userId }) => {
           ))}
         </div>
       )}
+    </div>
+  );
+};
+
+interface EditReviewFormProps {
+  initialContent: string;
+  initialRating: number;
+  onSave: (content: string, rating: number) => void;
+  onCancel: () => void;
+}
+
+const EditReviewForm: FC<EditReviewFormProps> = ({
+  initialContent,
+  initialRating,
+  onSave,
+  onCancel,
+}) => {
+  const [editedContent, setEditedContent] = useState(initialContent);
+  const [editedRating, setEditedRating] = useState(initialRating);
+
+  return (
+    <div className="mt-2">
+      <div className="flex items-center gap-2 mb-2">
+        <span className="text-gray-300 text-sm">Rating:</span>
+        {[...Array(5)].map((_, i) => (
+          <Star
+            key={i}
+            onClick={() => setEditedRating(i + 1)}
+            className={`w-4 h-4 cursor-pointer ${
+              i < editedRating
+                ? "fill-yellow-400 text-yellow-400"
+                : "text-gray-600"
+            }`}
+          />
+        ))}
+      </div>
+
+      <Textarea
+        value={editedContent}
+        onChange={(e) => setEditedContent(e.target.value)}
+        className="bg-[#181e2a] text-white border border-[#1e2533]"
+        rows={3}
+      />
+
+      <div className="flex gap-2 mt-3">
+        <Button
+          onClick={() => onSave(editedContent, editedRating)}
+          className="bg-green-600 hover:bg-green-700 text-white"
+        >
+          Save
+        </Button>
+        <Button
+          onClick={onCancel}
+          className="bg-gray-600 hover:bg-gray-700 text-white"
+        >
+          Cancel
+        </Button>
+      </div>
     </div>
   );
 };
