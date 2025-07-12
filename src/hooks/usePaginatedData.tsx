@@ -67,7 +67,7 @@ const usePaginatedData = <T,>({
   };
 
   const refreshHandler = () => {
-    dispatch(getDataApi({ page: 1, search, size }));
+    dispatch(getDataApi({ page: 1, search, size, ...extraData }));
   };
 
   return {

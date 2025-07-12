@@ -1,16 +1,11 @@
-import { Profile, UserSidebar } from "@/components";
-import { Button } from "@/components/ui";
-import EditProfile from "@/components/user/EditProfile";
-import { axiosGetRequest, axiosPostRequest } from "@/config/axios";
-import { FORGET_PASSWORD_API } from "@/constants";
+import { UserSidebar } from "@/components";
+
+import { axiosGetRequest } from "@/config/axios";
+
 import UserLayout from "@/layouts/UserLayout";
-import { RootReducer } from "@/store";
-import { successPopup } from "@/utils/popup";
+
 import { FC, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { RiLockPasswordFill } from "react-icons/ri";
-import { ImProfile } from "@/assets/icons";
+
 import { FaBookOpen } from "react-icons/fa";
 import StatCardWithProgress from "@/components/common/StatCardWithProgress";
 import SubscriptionCard from "@/components/user/SubscriptionCard";
@@ -62,19 +57,6 @@ const CourseStatsCard: FC<CourseStatsCardProps> = ({
 };
 
 const DashBoard: FC = () => {
-  const {
-    email,
-    bio,
-    company,
-    place,
-    position,
-    profileImage,
-    socialLinks,
-    username,
-  } = useSelector((state: RootReducer) => state.user);
-
-  const navigate = useNavigate();
-  const [openEditProfile, setOpenEditProfile] = useState(false);
   const { getSubscribed, subscriptionDetail } = useSubscription();
   const [overallCourseProgress, setOverallCourseProgress] = useState<{
     enrolledCourses: number;
@@ -99,20 +81,6 @@ const DashBoard: FC = () => {
       <div className="relative flex">
         <UserSidebar />
         <div className="w-full mt-10 ml-0 text-white md:ml-64 md:mt-0 p-5 relative">
-          {openEditProfile && (
-            <EditProfile
-              close={() => setOpenEditProfile(false)}
-              data={{
-                bio,
-                company,
-                place,
-                position,
-                profileImage,
-                socialLinks,
-                username,
-              }}
-            />
-          )}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
             <SubscriptionCard
               active={!!subscriptionDetail?.active}
@@ -136,34 +104,6 @@ const DashBoard: FC = () => {
               />
             </div>
           </div>
-
-          <div className="flex justify-center items-center gap-3">
-            <Button
-              className="flex items-center gap-1 bg-transparent border border-app-border"
-              onClick={() => setOpenEditProfile(true)}
-            >
-              <ImProfile /> Edit profile
-            </Button>
-            <Button
-              className="flex items-center gap-1 bg-transparent border border-app-border"
-              onClick={() => navigate("/user/changePassword")}
-            >
-              <RiLockPasswordFill />
-              Change Password
-            </Button>
-          </div>
-          <Profile
-            {...{
-              bio,
-              email,
-              company,
-              place,
-              position,
-              profileImage,
-              socialLinks,
-              username,
-            }}
-          />
         </div>
       </div>
     </UserLayout>

@@ -31,7 +31,7 @@ export const AboutValidationRule = z
 
 export const BioValidationRule = z
   .string()
-  .max(20, { message: "Bio must be 20 characters or less" });
+  .max(2000, { message: "Bio must be 2000 characters or less" });
 
 export const PlaceValidationRule = z.string();
 

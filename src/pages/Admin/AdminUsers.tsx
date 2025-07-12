@@ -25,11 +25,13 @@ import {
 import { changePage } from "@/features/admin/slice/adminUserSlice";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import { TableSkeleton } from "@/components/skeletons";
+import { useConfirm } from "@/hooks/useConfirm";
 
 const pageSize = 5;
 
 const Users: FC = () => {
   const dispatch: AppDispatch = useDispatch();
+  const confirm = useConfirm();
   const { users, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.adminUser
   );
@@ -48,13 +50,13 @@ const Users: FC = () => {
     size: pageSize,
   });
 
-  const blockUnblockUser = (userId: string) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to block/unblock this user?"
+  const blockUnblockUser = (userId: string, blocked: boolean) => {
+    confirm(
+      `Are you sure you want to ${blocked ? "block" : "unblock"} this user?`,
+      () => {
+        dispatch(adminBlockUnblockUserApi(userId));
+      }
     );
-
-    if (!confirmed) return;
-    dispatch(adminBlockUnblockUserApi(userId));
   };
 
   return (
@@ -102,7 +104,7 @@ const Users: FC = () => {
                     className={`text-3xl ${
                       user.isBlocked ? "text-app-secondary" : "text-red-500"
                     }`}
-                    onClick={() => blockUnblockUser(user._id)}
+                    onClick={() => blockUnblockUser(user._id, user.isBlocked)}
                   >
                     {user.isBlocked ? <CgUnblock /> : <CgBlock />}
                   </button>

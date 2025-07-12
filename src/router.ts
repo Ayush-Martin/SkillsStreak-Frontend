@@ -28,7 +28,7 @@ const Course = lazy(() => import("./pages/User/UserCoursePage"));
 const ChatNew = lazy(() => import("./pages/User/UserChatPage"));
 const LiveSession = lazy(() => import("./pages/User/UserLiveSessionPage"));
 const NewUserChat = lazy(() => import("./pages/User/NewUserChatPage"));
-
+const Profile = lazy(() => import("./pages/User/ProfilePage"));
 
 //Trainer Routes
 const TrainerDashboard = lazy(
@@ -152,6 +152,10 @@ export const UserRoutes: Routes = [
   {
     path: "changePassword",
     Component: ChangePassword,
+  },
+  {
+    path: "profile",
+    Component: Profile,
   },
 ];
 

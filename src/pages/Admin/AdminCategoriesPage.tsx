@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, use, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { z } from "zod";
@@ -37,6 +37,7 @@ import { AdminLayout } from "@/layouts";
 import { AppDispatch, RootReducer } from "@/store";
 import { CategoryNameValidationRule } from "@/utils/validationRules";
 import { usePaginatedData } from "@/hooks";
+import { useConfirm } from "@/hooks/useConfirm";
 
 const PAGE_SIZE = 5;
 
@@ -58,6 +59,7 @@ interface IAddCategoryProps {
 }
 
 const Categories: FC = () => {
+  const confirm = useConfirm();
   const dispatch: AppDispatch = useDispatch();
   const [selected, setSelected] = useState<string | null>();
   const { categories, currentPage, totalPages, loading } = useSelector(
@@ -87,8 +89,13 @@ const Categories: FC = () => {
     dispatch(adminCategoryEditApi({ categoryId, categoryName }));
   };
 
-  const listUnListCategory = (categoryId: string) => {
-    dispatch(adminCategoryListUnListApi(categoryId));
+  const listUnListCategory = (categoryId: string, listed: boolean) => {
+    confirm(
+      `Are you sure you want to ${listed ? "unlist" : "list"} this category?`,
+      () => {
+        dispatch(adminCategoryListUnListApi(categoryId));
+      }
+    );
   };
 
   return (
@@ -142,7 +149,7 @@ const Categories: FC = () => {
                     className={`text-3xl ${
                       isListed ? "text-red-500" : "text-app-secondary"
                     }`}
-                    onClick={() => listUnListCategory(_id)}
+                    onClick={() => listUnListCategory(_id, isListed)}
                   >
                     {isListed ? <IoEyeOff /> : <IoEye />}
                   </button>

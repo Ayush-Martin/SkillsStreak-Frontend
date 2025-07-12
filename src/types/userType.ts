@@ -6,9 +6,10 @@ export interface IProfile {
   company: string;
   position: string;
   bio: string;
-  socialLinks: {
-    website: string;
-    linkedin: string;
-    github: string;
-  };
+  website: string;
+  linkedin: string;
+  github: string;
+  yearsOfExperience: number;
+  educationalQualification: string;
+  skills: string;
 }

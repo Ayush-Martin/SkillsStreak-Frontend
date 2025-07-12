@@ -8,9 +8,11 @@ import {
   FaChalkboardTeacher,
   MdDashboard,
   IoChatbox,
+  FaUserTie,
 } from "@/assets/icons";
 import { SideBar } from "@/components";
 import { RootReducer } from "@/store";
+import { RiLockPasswordFill } from "react-icons/ri";
 
 const UserSidebar: FC = () => {
   const { role } = useSelector((state: RootReducer) => state.user);
@@ -20,6 +22,12 @@ const UserSidebar: FC = () => {
       name: "Dashboard",
       icon: <MdDashboard />,
       link: "/user",
+      end: true,
+    },
+    {
+      name: "Profile",
+      icon: <FaUserTie />,
+      link: "/user/profile",
       end: true,
     },
     {
@@ -41,6 +49,11 @@ const UserSidebar: FC = () => {
       name: "Transactions",
       icon: <MdPayments />,
       link: "/user/transactions",
+    },
+    {
+      name: "Change Password",
+      icon: <RiLockPasswordFill />,
+      link: "/user/changePassword",
     },
     {
       name: "Trainer Dashboard",

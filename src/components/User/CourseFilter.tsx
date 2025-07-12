@@ -1,5 +1,6 @@
 import { FC, useEffect } from "react";
 import {
+  Button,
   Select,
   SelectContent,
   SelectGroup,
@@ -54,10 +55,15 @@ const CourseFilter: FC<ICourseFilterProps> = ({
   return (
     <div className="flex flex-col gap-3 px-5 pt-10 md:px-10">
       <div className="flex flex-col gap-1">
+        <Button
+          className="bg-transparent border border-app-neutral hover:bg-app-neutral text-white hover:text-black"
+          onClick={clearAll}
+        >
+          Clear all
+        </Button>
         <p>Difficulty </p>
-        <button onClick={clearAll}>Clear all</button>
         <Select
-          defaultValue={difficulty}
+          value={difficulty}
           onValueChange={(value: "all" | ICourseDifficulty) =>
             setDifficulty(value)
           }
@@ -79,10 +85,7 @@ const CourseFilter: FC<ICourseFilterProps> = ({
       </div>
       <div className="flex flex-col gap-1">
         <p>Category </p>
-        <Select
-          defaultValue={category}
-          onValueChange={(value) => setCategory(value)}
-        >
+        <Select value={category} onValueChange={(value) => setCategory(value)}>
           <SelectTrigger className="text-white ">
             <SelectValue placeholder="Category " className="text-white" />
           </SelectTrigger>
@@ -102,7 +105,7 @@ const CourseFilter: FC<ICourseFilterProps> = ({
       <div className="flex flex-col gap-1">
         <p>Price </p>
         <Select
-          defaultValue={price}
+          value={price}
           onValueChange={(value: "all" | IPrice) => setPrice(value)}
         >
           <SelectTrigger className="text-white ">
@@ -122,10 +125,7 @@ const CourseFilter: FC<ICourseFilterProps> = ({
       </div>
       <div className="flex flex-col gap-1">
         <p>Sort by </p>
-        <Select
-          defaultValue={sort}
-          onValueChange={(value: ISort) => setSort(value)}
-        >
+        <Select value={sort} onValueChange={(value: ISort) => setSort(value)}>
           <SelectTrigger className="text-white ">
             <SelectValue placeholder="SORT BY" className="text-white" />
           </SelectTrigger>

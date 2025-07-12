@@ -27,11 +27,13 @@ import {
   TableRow,
 } from "@/components/ui";
 import { CourseTableSkeleton } from "@/components/skeletons";
+import { useConfirm } from "@/hooks/useConfirm";
 
 const PAGE_SIZE = 3;
 
 const Courses: FC = () => {
   const dispatch: AppDispatch = useDispatch();
+  const confirm = useConfirm();
   const { courses, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.adminCourses
   );
@@ -55,7 +57,18 @@ const Courses: FC = () => {
     courseId: string,
     status: "approved" | "rejected"
   ) => {
-    dispatch(adminCourseApproveRejectApi({ courseId, status }));
+    confirm(`Are you sure you want to ${status} this course?`, () => {
+      dispatch(adminCourseApproveRejectApi({ courseId, status }));
+    });
+  };
+
+  const listUnlistCourse = (courseId: string, isListed: boolean) => {
+    confirm(
+      `Are you sure you want to ${isListed ? "unlist" : "list"} this course?`,
+      () => {
+        dispatch(adminCourseListUnListApi(courseId));
+      }
+    );
   };
 
   return (
@@ -137,7 +150,7 @@ const Courses: FC = () => {
                         : "text-app-secondary"
                     }`}
                     onClick={() =>
-                      dispatch(adminCourseListUnListApi(course._id))
+                      listUnlistCourse(course._id, course.isListed)
                     }
                   >
                     {course.isListed ? <IoEyeOff /> : <IoEye />}

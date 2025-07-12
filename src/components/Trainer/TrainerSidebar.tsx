@@ -13,7 +13,6 @@ import {
 const sidebarItems = [
   { name: "Dashboard", icon: <MdDashboard />, link: "/trainer", end: true },
   { name: "My Courses", icon: <MdVideoLibrary />, link: "/trainer/courses" },
-  { name: "Add", icon: <MdVideoLibrary />, link: "/trainer/add" },
   { name: "Students", icon: <PiStudentBold />, link: "/trainer/students" },
   { name: "Revenue", icon: <FaWallet />, link: "/trainer/revenue" },
   { name: "Home", icon: <MdHome />, link: "/" },

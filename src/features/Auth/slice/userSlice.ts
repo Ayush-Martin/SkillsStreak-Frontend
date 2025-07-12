@@ -10,12 +10,12 @@ interface IUser {
   place: string;
   position: string;
   company: string;
-  socialLinks: {
-    github: string;
-    linkedin: string;
-    website: string;
-  };
-  areaOfInterest: string[];
+  skills: string;
+  educationalQualification: string;
+  yearsOfExperience: number;
+  github: string;
+  linkedin: string;
+  website: string;
   isBlocked: boolean;
   role: "user" | "admin" | "trainer" | "premium" | "";
   accessToken: string;
@@ -28,16 +28,17 @@ const initialState: IUser = {
   email: "",
   profileImage: "",
   position: "",
-  areaOfInterest: [],
   about: "",
   bio: "",
   place: "",
   company: "",
-  socialLinks: {
-    github: "",
-    linkedin: "",
-    website: "",
-  },
+  educationalQualification: "",
+  yearsOfExperience: 0,
+  skills: "",
+  github: "",
+  linkedin: "",
+  website: "",
+
   role: "",
   isBlocked: false,
   accessToken: "",
@@ -54,7 +55,6 @@ const userSlice = createSlice({
         username,
         email,
         about,
-        areaOfInterest,
         isBlocked,
         profileImage,
         role,
@@ -62,7 +62,12 @@ const userSlice = createSlice({
         bio,
         place,
         company,
-        socialLinks,
+        github,
+        linkedin,
+        website,
+        yearsOfExperience,
+        educationalQualification,
+        skills,
         position,
         stripeAccountId,
       }: IUser = jwtDecode(action.payload);
@@ -73,8 +78,6 @@ const userSlice = createSlice({
       state.bio = bio;
       state.place = place;
       state.company = company;
-      state.socialLinks = socialLinks;
-      state.areaOfInterest = areaOfInterest;
       state.isBlocked = isBlocked;
       state.role = role;
       state.profileImage = profileImage;
@@ -82,12 +85,18 @@ const userSlice = createSlice({
       state.accessToken = action.payload;
       state.position = position;
       state.stripeAccountId = stripeAccountId;
+      state.github = github;
+      state.linkedin = linkedin;
+      state.website = website;
+      state.yearsOfExperience = yearsOfExperience;
+      state.educationalQualification = educationalQualification;
+      state.skills = skills;
     },
     logout: (state) => {
       state.username = "";
       state.email = "";
       state.about = "";
-      state.areaOfInterest = [];
+
       state.isBlocked = false;
       state.role = "";
       state.profileImage = "";
@@ -97,11 +106,13 @@ const userSlice = createSlice({
       state.place = "";
       state.company = "";
       state.position = "";
-      state.socialLinks = {
-        github: "",
-        linkedin: "",
-        website: "",
-      };
+      state.github = "";
+      state.linkedin = "";
+      state.website = "";
+      state.yearsOfExperience = 0;
+      state.educationalQualification = "";
+      state.skills = "";
+
       state.stripeAccountId = "";
     },
     setAccessToken: (state, action) => {
@@ -117,10 +128,16 @@ const userSlice = createSlice({
       state.bio = action.payload.bio;
       state.company = action.payload.company;
       state.place = action.payload.place;
-      state.socialLinks = action.payload.socialLinks;
+
       state.username = action.payload.username;
-      state.areaOfInterest = action.payload.areaOfInterest;
+
       state.position = action.payload.position;
+      state.github = action.payload.github;
+      state.linkedin = action.payload.linkedin;
+      state.website = action.payload.website;
+      state.yearsOfExperience = action.payload.yearsOfExperience;
+      state.educationalQualification = action.payload.educationalQualification;
+      state.skills = action.payload.skills;
     },
 
     updateStripeAccountId: (state, action) => {
