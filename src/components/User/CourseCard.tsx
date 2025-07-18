@@ -11,6 +11,7 @@ interface ICourseCardParams {
   noOfEnrolled: number;
   noOfModules: number;
   averageRating: number;
+  linkPrefix: string;
 }
 
 const CourseCard: FC<ICourseCardParams> = ({
@@ -22,10 +23,11 @@ const CourseCard: FC<ICourseCardParams> = ({
   noOfModules,
   noOfEnrolled,
   averageRating,
+  linkPrefix = "/courses",
 }) => {
   return (
     <Link
-      to={`/courses/${_id}`}
+      to={`${linkPrefix}/${_id}`}
       className="  bg-gray-900 rounded-xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 border border-gray-800 group"
     >
       {/* Course Image */}

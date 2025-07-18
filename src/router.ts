@@ -28,7 +28,8 @@ const Course = lazy(() => import("./pages/User/UserCoursePage"));
 const ChatNew = lazy(() => import("./pages/User/UserChatPage"));
 const LiveSession = lazy(() => import("./pages/User/UserLiveSessionPage"));
 const NewUserChat = lazy(() => import("./pages/User/NewUserChatPage"));
-const Profile = lazy(() => import("./pages/User/ProfilePage"));
+const Profile = lazy(() => import("./pages/User/UserProfilePage"));
+const NewCourse = lazy(() => import("./pages/User/UserNewCoursePage"));
 
 //Trainer Routes
 const TrainerDashboard = lazy(
@@ -62,6 +63,7 @@ const AdminCourses = lazy(() => import("./pages/Admin/AdminCoursesPage"));
 const AdminCategories = lazy(() => import("./pages/Admin/AdminCategoriesPage"));
 const AdminTransactions = lazy(() => import("./pages/Admin/AdminTransactions"));
 const AdminRevenue = lazy(() => import("./pages/Admin/AdminRevenuePage"));
+const AdminUser = lazy(() => import("./pages/Admin/AdminUserPage"));
 
 type Route = {
   path: string;
@@ -157,6 +159,10 @@ export const UserRoutes: Routes = [
     path: "profile",
     Component: Profile,
   },
+  {
+    path: "course",
+    Component: NewCourse,
+  },
 ];
 
 export const TrainerRoutes: Routes = [
@@ -222,5 +228,9 @@ export const AdminRoutes: Routes = [
   {
     path: "revenue",
     Component: AdminRevenue,
+  },
+  {
+    path: "users/:userId",
+    Component: AdminUser,
   },
 ];

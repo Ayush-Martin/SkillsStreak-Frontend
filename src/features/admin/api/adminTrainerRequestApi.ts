@@ -24,16 +24,23 @@ export const getAdminTrainerRequestsApi = createAsyncThunk<
 
 export const AdminChangeTrainerRequestStatus = createAsyncThunk<
   IResponse,
-  { userId: string; status: "approved" | "rejected" }
->("adminUser/changeStatus", async ({ userId, status }, { rejectWithValue }) => {
-  try {
-    const response = await appApi.patch(
-      `${ADMIN_TRAINER_REQUEST_API}/${userId}?status=${status}`
-    );
-    return response.data;
-  } catch (err) {
-    const resErr = err as IApiResponseError;
-
-    return rejectWithValue(resErr.response.data.error);
+  {
+    trainerRequestId: string;
+    status: "approved" | "rejected";
+    rejectedReason?: string;
   }
-});
+>(
+  "adminUser/changeStatus",
+  async ({ trainerRequestId, status, rejectedReason }, { rejectWithValue }) => {
+    try {
+      const response = await appApi.patch(
+        `${ADMIN_TRAINER_REQUEST_API}/${trainerRequestId}?status=${status}&rejectedReason=${rejectedReason}`
+      );
+      return response.data;
+    } catch (err) {
+      const resErr = err as IApiResponseError;
+
+      return rejectWithValue(resErr.response.data.error);
+    }
+  }
+);

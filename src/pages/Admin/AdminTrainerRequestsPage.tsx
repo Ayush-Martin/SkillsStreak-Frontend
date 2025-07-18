@@ -24,6 +24,7 @@ import {
 } from "@/features/admin/api/adminTrainerRequestApi";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import { TableSkeleton } from "@/components/skeletons";
+import { Link } from "react-router-dom";
 
 const PAGE_SIZE = 10;
 
@@ -54,6 +55,8 @@ const TrainerRequest: FC = () => {
             <TableHead>Username</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Actions</TableHead>
+            <TableHead>Rejected Reason</TableHead>
+            <TableHead>view</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -61,20 +64,32 @@ const TrainerRequest: FC = () => {
           <TableSkeleton widths={[200, 150, 100, 50]} />
         ) : (
           <TableBody>
-            {paginatedData.map((user) => (
-              <TableRow key={user._id}>
-                <TableCell>{user.userId.email}</TableCell>
-                <TableCell>{user.userId.username}</TableCell>
-                <TableCell>{user.status}</TableCell>
+            {paginatedData.map(({ _id, status, userId, rejectedReason }) => (
+              <TableRow key={_id}>
+                <TableCell>{userId.email}</TableCell>
+                <TableCell>{userId.username}</TableCell>
+                <TableCell>
+                  <span
+                    className={`px-2 py-1 rounded text-xs font-medium uppercase tracking-wide ${
+                      status === "approved"
+                        ? "bg-green-800/30 text-green-400"
+                        : status === "rejected"
+                        ? "bg-red-800/30 text-red-400"
+                        : "bg-yellow-800/30 text-yellow-400"
+                    }`}
+                  >
+                    {status}
+                  </span>
+                </TableCell>
                 <TableCell className="flex gap-3">
-                  {user.status == "pending" ? (
+                  {status === "pending" ? (
                     <>
                       <button
                         className="text-3xl text-green-500"
                         onClick={() =>
                           dispatch(
                             AdminChangeTrainerRequestStatus({
-                              userId: user.userId._id,
+                              trainerRequestId: _id,
                               status: "approved",
                             })
                           )
@@ -84,21 +99,35 @@ const TrainerRequest: FC = () => {
                       </button>
                       <button
                         className="text-3xl text-red-500"
-                        onClick={() =>
+                        onClick={() => {
+                          const reason = window.prompt(
+                            "Enter rejection reason:"
+                          );
+                          if (!reason) return;
                           dispatch(
                             AdminChangeTrainerRequestStatus({
-                              userId: user.userId._id,
+                              trainerRequestId: _id,
                               status: "rejected",
+                              rejectedReason: reason,
                             })
-                          )
-                        }
+                          );
+                        }}
                       >
                         <AiFillCloseCircle />
                       </button>
                     </>
                   ) : (
-                    <h1>No action</h1>
+                    <h1 className="text-sm text-muted-foreground">No action</h1>
                   )}
+                </TableCell>
+                <TableCell>{rejectedReason || "-"}</TableCell>
+                <TableCell>
+                  <Link
+                    to={`/admin/users/${userId._id}`}
+                    className="text-sm text-blue-500 underline hover:text-purple-400 transition"
+                  >
+                    View
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}

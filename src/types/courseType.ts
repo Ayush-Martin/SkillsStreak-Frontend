@@ -36,6 +36,17 @@ export interface ICourseData {
   averageRating: number;
 }
 
+export interface ICourseCardData {
+  _id: string;
+  title: string;
+  thumbnail: string;
+  price: number;
+  category: string;
+  noOfEnrolled: number;
+  noOfModules: number;
+  averageRating: number;
+}
+
 export interface ModuleType {
   _id: string;
   title: string;

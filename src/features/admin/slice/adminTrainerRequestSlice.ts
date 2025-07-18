@@ -13,6 +13,7 @@ type TrainerRequestType = Array<{
     _id: string;
   };
   _id: string;
+  rejectedReason: string;
 }>;
 
 type initialStateType = {
@@ -62,10 +63,12 @@ const AdminTrainerRequestSlice = createSlice({
     builder.addCase(
       AdminChangeTrainerRequestStatus.fulfilled,
       (state, action) => {
-        const { userId, status } = action.payload.data;
+        const { status, rejectedReason, _id } = action.payload.data;
+
+        console.log(action.payload.data);
 
         state.users = state.users.map((user) =>
-          user.userId._id == userId ? { ...user, status } : user
+          user._id == _id ? { ...user, status, rejectedReason } : user
         );
 
         successPopup(

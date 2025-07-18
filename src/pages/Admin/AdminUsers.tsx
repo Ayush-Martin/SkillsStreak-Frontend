@@ -26,6 +26,7 @@ import { changePage } from "@/features/admin/slice/adminUserSlice";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import { TableSkeleton } from "@/components/skeletons";
 import { useConfirm } from "@/hooks/useConfirm";
+import { Link } from "react-router-dom";
 
 const pageSize = 5;
 
@@ -78,6 +79,7 @@ const Users: FC = () => {
             <TableHead>Username</TableHead>
             <TableHead>Role</TableHead>
             <TableHead>Actions</TableHead>
+            <TableHead>View</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -108,6 +110,14 @@ const Users: FC = () => {
                   >
                     {user.isBlocked ? <CgUnblock /> : <CgBlock />}
                   </button>
+                </TableCell>
+                <TableCell>
+                  <Link
+                    to={`/admin/users/${user._id}`}
+                    className="text-sm text-blue-500 underline hover:text-purple-400 transition"
+                  >
+                    View
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}

@@ -13,6 +13,7 @@ import {
 import { SideBar } from "@/components";
 import { RootReducer } from "@/store";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { ImVideoCamera } from "react-icons/im";
 
 const UserSidebar: FC = () => {
   const { role } = useSelector((state: RootReducer) => state.user);
@@ -44,6 +45,11 @@ const UserSidebar: FC = () => {
       name: "Chats",
       icon: <IoChatbox />,
       link: "/user/chatsNew",
+    },
+    {
+      name: "Course",
+      icon: <ImVideoCamera />,
+      link: "/user/course",
     },
     {
       name: "Transactions",

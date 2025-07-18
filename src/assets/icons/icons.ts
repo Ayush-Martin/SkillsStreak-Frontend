@@ -27,6 +27,12 @@ export {
   FaCheck,
   FaRobot,
   FaIndianRupeeSign,
+  FaBuilding,
+  FaEnvelope,
+  FaInstagram,
+  FaLocationArrow,
+  FaUserGraduate,
+  FaFacebook,
 } from "react-icons/fa6";
 export {
   FaChalkboardTeacher,
