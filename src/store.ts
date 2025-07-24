@@ -15,6 +15,7 @@ import trainerStream from "./features/trainer/slice/TrainerStreamSlice";
 import userStream from "./features/user/slice/liveStreamSlice";
 import adminRevenue from "./features/admin/slice/adminRevenueSlice";
 import trainerRevenue from "./features/trainer/slice/trainerRevenueSlice";
+import trainerAssignmentSubmissions from "./features/trainer/slice/AssignmentSubmissionsSlice";
 
 const store = configureStore({
   reducer: {
@@ -34,6 +35,7 @@ const store = configureStore({
     userStream,
     adminRevenue,
     trainerRevenue,
+    trainerAssignmentSubmissions,
   },
 });
 

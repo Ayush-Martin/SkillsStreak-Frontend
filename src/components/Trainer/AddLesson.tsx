@@ -39,84 +39,90 @@ const AddLesson: FC<IAddLessonParams> = ({ close, submit, loading }) => {
   };
 
   return (
-    <div className="flex flex-col py-5 mt-2 gap-7">
-      <div className="w-full px-5 py-2 border rounded-md border-app-border">
-        <div className="flex justify-end">
-          <button className="text-3xl text-app-neutral " onClick={close}>
-            <IoCloseCircle />
-          </button>
-        </div>
-        <div className="flex flex-col gap-10 mt-2 lg:flex-row">
-          <div>
-            <div className="relative flex flex-col justify-center items-center gap-2  lg:w-[400px] h-[200px] border border-app-border">
-              {loading ? (
-                <Atom
-                  color="#F2A104"
-                  size="large"
-                  text="Loading ..."
-                  textColor="#F2A104"
-                />
-              ) : (
-                <>
-                  {file && (
-                    <p className="flex items-center gap-2 text-white">
-                      <span className="text-3xl text-blue-500">
-                        <MdAttachFile />
-                      </span>
-                      {file.name}
-                    </p>
-                  )}
-                  <label
-                    htmlFor="file-upload"
-                    className="inline-flex items-center p-2 font-medium rounded-md cursor-pointer text-app-accent backdrop:blur-sm bg-app-primary opacity-70 focus:ring-2 focus:ring-offset-2"
-                  >
-                    <p className="flex items-center gap-2">
-                      <IoMdAddCircleOutline className="text-2xl" />
-                      <span className="text-sm text-white font-boldonse">
-                        {" "}
-                        {file ? "Change" : "Upload"} File
-                      </span>
-                    </p>
-                    <input
-                      id="file-upload"
-                      type="file"
-                      className="sr-only"
-                      onChange={handleFileChange}
-                      accept=""
-                    />
-                  </label>
-                </>
+    <div className="flex flex-col gap-6 p-6 rounded-xl border border-app-border bg-[#0d111c] shadow-xl w-full">
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <h2 className="text-lg font-semibold text-white">Add New Lesson</h2>
+        <button
+          onClick={close}
+          className="text-3xl text-app-neutral hover:text-red-500 transition"
+        >
+          <IoCloseCircle />
+        </button>
+      </div>
+
+      {/* Content Grid */}
+      <div className="grid gap-6 md:grid-cols-2">
+        {/* File Upload Box */}
+        <div className="flex flex-col items-center justify-center gap-4 p-4 rounded-lg border border-app-border bg-[#111827] min-h-[200px]">
+          {loading ? (
+            <Atom
+              color="#F2A104"
+              size="large"
+              text="Uploading..."
+              textColor="#F2A104"
+            />
+          ) : (
+            <>
+              {file && (
+                <div className="flex items-center gap-2 text-sm text-white break-all">
+                  <MdAttachFile className="text-xl text-blue-500" />
+                  {file.name}
+                </div>
               )}
-            </div>
+
+              <label
+                htmlFor="file-upload"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md cursor-pointer bg-app-accent/20 text-app-accent hover:bg-app-accent/30 transition"
+              >
+                <IoMdAddCircleOutline className="text-lg" />
+                {file ? "Change File" : "Upload File"}
+                <input
+                  id="file-upload"
+                  type="file"
+                  className="sr-only"
+                  onChange={handleFileChange}
+                  accept=""
+                />
+              </label>
+            </>
+          )}
+        </div>
+
+        {/* Form Fields */}
+        <div className="flex flex-col gap-4">
+          <div>
+            <label className="block mb-1 text-sm font-medium text-white">
+              Title
+            </label>
+            <Input
+              placeholder="Lesson title"
+              {...register("title")}
+              className="bg-transparent border border-app-border focus:ring-1 focus:ring-app-accent placeholder:text-app-highlight text-white"
+            />
           </div>
-          <div className="flex flex-col w-full h-full gap-4">
-            <div className="px-2 border-s border-app-accent">
-              <h1 className="mb-1 text-lg font-tektur">Title :</h1>
-              <Input
-                placeholder="input"
-                {...register("title")}
-                className="bg-transparent border shadow outline-none border-app-border text-primary-foreground hover:bg-primary/90 placeholder:text-app-highlight"
-              />
-            </div>
-            <div className="px-2 border-s border-app-accent">
-              <h1 className="mb-1 text-lg font-tektur ">Description :</h1>
-              <Textarea
-                {...register("description")}
-                placeholder="description"
-                className="h-full bg-transparent shadow outline-none hover:bg-primary/90 border-app-border placeholder:text-app-highlight"
-              />
-            </div>
+          <div>
+            <label className="block mb-1 text-sm font-medium text-white">
+              Description
+            </label>
+            <Textarea
+              {...register("description")}
+              placeholder="Lesson description"
+              className="min-h-[120px] resize-none bg-transparent border border-app-border focus:ring-1 focus:ring-app-accent placeholder:text-app-highlight text-white"
+            />
           </div>
         </div>
-        <div className="flex justify-center mt-2">
-          <Button
-            variant={"v2"}
-            onClick={handleSubmit(addLesson)}
-            disabled={loading}
-          >
-            Add
-          </Button>
-        </div>
+      </div>
+
+      {/* Footer Button */}
+      <div className="flex justify-end">
+        <Button
+          variant={"v2"}
+          onClick={handleSubmit(addLesson)}
+          disabled={loading || !file}
+        >
+          Add Lesson
+        </Button>
       </div>
     </div>
   );

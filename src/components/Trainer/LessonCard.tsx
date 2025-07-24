@@ -36,8 +36,8 @@ const LessonCard: FC<ILessonCardParams> = ({
     defaultValues: { title, description },
   });
 
-  const changeLessonDetails = async (data: LessonSchemaType) => {
-    await updateLessonDetails(id, data);
+  const changeLessonDetails = (data: LessonSchemaType) => {
+    updateLessonDetails(id, data);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,69 +48,79 @@ const LessonCard: FC<ILessonCardParams> = ({
   };
 
   return (
-    <div className="w-full px-5 py-2 border rounded-md border-app-border">
+    <div className="w-full rounded-xl border border-zinc-700 bg-[#0e1118] p-6 space-y-6 shadow-md">
+      {/* Delete Button */}
       <div className="flex justify-end">
         <button
-          className="text-2xl text-red-500"
           onClick={() => deleteLesson(id)}
+          className="text-red-500 hover:text-red-600 transition"
         >
-          <MdDelete />
+          <MdDelete className="w-6 h-6" />
         </button>
       </div>
-      <div className="flex flex-col gap-10 mt-2 lg:flex-row">
-        <div>
-          <div className="relative flex justify-center md:block">
-            {type == "video" ? (
-              <div className="w-[400px]">
-                <VideoPlayer url={path} />
-              </div>
-            ) : (
-              <div className="h-[200px] w-[400px]">
-                <PdfViewer path={path} />
-              </div>
-            )}
 
-            <div className="absolute flex top-2 left-2 ">
-              <label
-                htmlFor="file-upload"
-                className="inline-flex items-center p-2 text-lg font-medium border rounded-md cursor-pointer text-app-accent backdrop:blur-sm border-app-border bg-app-primary opacity-70 focus:ring-2 focus:ring-offset-2"
-              >
-                <MdEdit />
-                <input
-                  id="file-upload"
-                  type="file"
-                  className="sr-only"
-                  onChange={handleFileChange}
-                  accept="image/*"
-                />
-              </label>
+      <div className="flex flex-col gap-6 lg:flex-row">
+        {/* Media Preview */}
+        <div className="relative w-full max-w-[400px] rounded-lg overflow-hidden border border-zinc-700 bg-[#161b22]">
+          {type === "video" ? (
+            <VideoPlayer title={title} url={path} />
+          ) : (
+            <div className="h-[220px] overflow-hidden">
+              <PdfViewer path={path} />
             </div>
+          )}
+
+          {/* File Upload */}
+          <div className="absolute top-3 left-3">
+            <label
+              htmlFor={`upload-${id}`}
+              className="flex items-center gap-1 px-3 py-1 text-sm rounded-md bg-black/60 hover:bg-black/80 border border-zinc-600 text-white cursor-pointer"
+            >
+              <MdEdit className="w-4 h-4" />
+              Replace
+              <input
+                id={`upload-${id}`}
+                type="file"
+                className="hidden"
+                onChange={handleFileChange}
+                accept="video/*,application/pdf"
+              />
+            </label>
           </div>
         </div>
+
+        {/* Form */}
         <form
           onSubmit={handleSubmit(changeLessonDetails)}
-          className="flex flex-col w-full h-full gap-4"
+          className="flex flex-col justify-between w-full gap-6"
         >
-          <div className="px-2 border-s border-app-accent">
-            <h1 className="mb-1 text-lg font-tektur">Title :</h1>
+          <div className="space-y-2">
+            <label className="text-sm text-zinc-400">Lesson Title</label>
             <Input
-              placeholder="input"
               {...register("title")}
-              className="bg-transparent border shadow outline-none border-app-border text-primary-foreground hover:bg-primary/90 placeholder:text-app-highlight"
+              placeholder="Enter title"
+              className="bg-[#1a1f2e] border border-zinc-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-white"
             />
           </div>
-          <div className="px-2 border-s border-app-accent">
-            <h1 className="mb-1 text-lg font-tektur ">Description :</h1>
+
+          <div className="space-y-2">
+            <label className="text-sm text-zinc-400">Lesson Description</label>
             <Textarea
               {...register("description")}
-              placeholder="description"
-              className="h-full bg-transparent shadow outline-none hover:bg-primary/90 border-app-border placeholder:text-app-highlight"
+              placeholder="Enter description"
+              className="bg-[#1a1f2e] border border-zinc-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-white min-h-[100px]"
             />
           </div>
-          <button className="flex items-center w-20 gap-2 px-3 py-1 border rounded-full border-app-tertiary">
-            <BiSave className="text-3xl" />
-            save
-          </button>
+
+          <div>
+            <button
+              type="submit"
+              className="flex items-center gap-2 px-4 py-2 rounded-full text-sm bg-green-600 hover:bg-green-700 text-white transition"
+            >
+              <BiSave className="w-5 h-5" />
+              Save
+            </button>
+          </div>
         </form>
       </div>
     </div>

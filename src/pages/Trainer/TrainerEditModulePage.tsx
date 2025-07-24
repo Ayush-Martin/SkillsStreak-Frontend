@@ -150,52 +150,70 @@ const EditModule: FC = () => {
   return (
     <TrainerLayout>
       <BackButton />
-      <p className="mt-5 mb-2 text-xl text-white font-tektur">Title :</p>
-      <div className="flex gap-2 w-[300px]">
-        <Input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="bg-transparent border border-app-border"
-        />
-        <button onClick={updateTitle} className="text-2xl text-green-400">
-          <BiSave />
-        </button>
-      </div>
 
-      <p className="pt-5 mt-5 mb-2 text-xl text-white border-t-2 font-tektur border-app-highlight">
-        Lessons :
-      </p>
-      <Button
-        variant={"v1"}
-        className="flex items-center gap-2"
-        onClick={() => setOpen(true)}
-      >
-        <IoMdAddCircleOutline className="text-2xl" />
-        Add Lesson
-      </Button>
+      <div className="p-6 md:p-10 space-y-10 text-white">
+        {/* Module Title Editor */}
+        <div className="space-y-2">
+          <h2 className="text-xl font-semibold text-white">Module Title</h2>
+          <div className="flex items-center gap-3 max-w-xl">
+            <Input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter module title"
+              className="bg-[#1c2130] border border-zinc-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition w-full"
+            />
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={updateTitle}
+              className="border-green-500 text-green-400 hover:bg-green-500/10"
+            >
+              <BiSave className="w-5 h-5" />
+            </Button>
+          </div>
+        </div>
 
-      {open && (
-        <AddLesson
-          close={() => setOpen(false)}
-          submit={submit}
-          loading={loading}
-        />
-      )}
+        {/* Add Lesson Section */}
+        <div className="border-t border-zinc-700 pt-8 space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xl font-semibold text-white">Lessons</h3>
+            <Button
+              variant="v1"
+              className="flex items-center gap-2"
+              onClick={() => setOpen(true)}
+            >
+              <IoMdAddCircleOutline className="text-xl" />
+              Add Lesson
+            </Button>
+          </div>
 
-      <div className="flex flex-col py-5 mt-2 gap-7">
-        {module.lessons.map((lesson) => (
-          <LessonCard
-            key={lesson._id}
-            id={lesson._id}
-            deleteLesson={deleteLesson}
-            path={lesson.path}
-            title={lesson.title}
-            description={lesson.description}
-            type={lesson.type}
-            updateLessonDetails={updateLessonDetails}
-            updateLessonFile={updateLessonFile}
-          />
-        ))}
+          {open && (
+            <div className="mt-4">
+              <AddLesson
+                close={() => setOpen(false)}
+                submit={submit}
+                loading={loading}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Lessons Listing */}
+        <div className="flex flex-col py-5 gap-7">
+          {module.lessons.map((lesson) => (
+            <LessonCard
+              key={lesson._id}
+              id={lesson._id}
+              deleteLesson={deleteLesson}
+              path={lesson.path}
+              title={lesson.title}
+              description={lesson.description}
+              type={lesson.type}
+              updateLessonDetails={updateLessonDetails}
+              updateLessonFile={updateLessonFile}
+            />
+          ))}
+        </div>
       </div>
     </TrainerLayout>
   );

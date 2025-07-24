@@ -9,10 +9,17 @@ import {
   FaWallet,
   PiStudentBold,
 } from "@/assets/icons";
+import { IoDocumentText } from "react-icons/io5";
 
 const sidebarItems = [
   { name: "Dashboard", icon: <MdDashboard />, link: "/trainer", end: true },
   { name: "My Courses", icon: <MdVideoLibrary />, link: "/trainer/courses" },
+  { name: "Add Course", icon: <MdVideoLibrary />, link: "/trainer/newCourse" },
+  {
+    name: "Assignments",
+    icon: <IoDocumentText />,
+    link: "/trainer/assignments",
+  },
   { name: "Students", icon: <PiStudentBold />, link: "/trainer/students" },
   { name: "Revenue", icon: <FaWallet />, link: "/trainer/revenue" },
   { name: "Home", icon: <MdHome />, link: "/" },

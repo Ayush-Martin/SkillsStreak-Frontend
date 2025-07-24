@@ -30,6 +30,15 @@ const LiveSession = lazy(() => import("./pages/User/UserLiveSessionPage"));
 const NewUserChat = lazy(() => import("./pages/User/NewUserChatPage"));
 const Profile = lazy(() => import("./pages/User/UserProfilePage"));
 const NewCourse = lazy(() => import("./pages/User/UserNewCoursePage"));
+const CourseRecorded = lazy(
+  () => import("./pages/User/UserCourseRecordedPage")
+);
+const CourseLiveSession = lazy(
+  () => import("./pages/User/UserCourseLiveSessionPage")
+);
+const CourseAssignments = lazy(
+  () => import("./pages/User/UserCourseAssignmentsPage")
+);
 
 //Trainer Routes
 const TrainerDashboard = lazy(
@@ -52,6 +61,18 @@ const TrainerStudents = lazy(
 const TrainerLiveStream = lazy(
   () => import("./pages/Trainer/TrainerLiveStreamPage")
 );
+const TrainerNewAddCourse = lazy(
+  () => import("./pages/Trainer/TrainerNewAddCoursePage")
+);
+const TrainerNewEditCourse = lazy(
+  () => import("./pages/Trainer/TrainerNewEditCoursePage")
+);
+const TrainerLiveSession = lazy(
+  () => import("./pages/Trainer/TrainerLiveSessionPage")
+);
+const TrainerAssignmentSubmissions = lazy(
+  () => import("./pages/Trainer/TrainerAssignmentSubmissionsPage")
+);
 
 //Admin Routes
 const AdminDashboard = lazy(() => import("./pages/Admin/AdminDashboardPage"));
@@ -64,6 +85,7 @@ const AdminCategories = lazy(() => import("./pages/Admin/AdminCategoriesPage"));
 const AdminTransactions = lazy(() => import("./pages/Admin/AdminTransactions"));
 const AdminRevenue = lazy(() => import("./pages/Admin/AdminRevenuePage"));
 const AdminUser = lazy(() => import("./pages/Admin/AdminUserPage"));
+const AdminCourse = lazy(() => import("./pages/Admin/AdminCoursePage"));
 
 type Route = {
   path: string;
@@ -163,6 +185,18 @@ export const UserRoutes: Routes = [
     path: "course",
     Component: NewCourse,
   },
+  {
+    path: "course/recorded",
+    Component: CourseRecorded,
+  },
+  {
+    path: "course/live",
+    Component: CourseLiveSession,
+  },
+  {
+    path: "course/assignments",
+    Component: CourseAssignments,
+  },
 ];
 
 export const TrainerRoutes: Routes = [
@@ -198,6 +232,22 @@ export const TrainerRoutes: Routes = [
     path: "courses/:courseId/live/new",
     Component: TrainerLiveStream,
   },
+  {
+    path: "newCourse",
+    Component: TrainerNewAddCourse,
+  },
+  {
+    path: "newCourse/:courseId",
+    Component: TrainerNewEditCourse,
+  },
+  {
+    path: "newCourse/:courseId/live/:liveSessionId",
+    Component: TrainerLiveSession,
+  },
+  {
+    path: "assignments",
+    Component: TrainerAssignmentSubmissions,
+  },
 ];
 
 export const AdminRoutes: Routes = [
@@ -216,6 +266,10 @@ export const AdminRoutes: Routes = [
   {
     path: "courses",
     Component: AdminCourses,
+  },
+  {
+    path: "courses/:courseId",
+    Component: AdminCourse,
   },
   {
     path: "categories",

@@ -97,10 +97,11 @@ export const axiosPostRequest = async (
 
 export const axiosPutRequest = async (
   url: string,
-  data: any
+  data: any,
+  config?: AxiosRequestConfig<any>
 ): Promise<IResponse | void> => {
   try {
-    const res = await appApi.put(url, data);
+    const res = await appApi.put(url, data, config);
     return res.data;
   } catch (err) {
     const apiError = err as IApiResponseError;

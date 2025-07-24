@@ -28,6 +28,7 @@ import {
 } from "@/components/ui";
 import { CourseTableSkeleton } from "@/components/skeletons";
 import { useConfirm } from "@/hooks/useConfirm";
+import { Link } from "react-router-dom";
 
 const PAGE_SIZE = 3;
 
@@ -95,6 +96,7 @@ const Courses: FC = () => {
               <span className="block text-center">(approve/reject)</span>{" "}
             </TableHead>
             <TableHead>List/UnList</TableHead>
+            <TableHead>view</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -155,6 +157,14 @@ const Courses: FC = () => {
                   >
                     {course.isListed ? <IoEyeOff /> : <IoEye />}
                   </button>
+                </TableCell>
+                <TableCell>
+                  <Link
+                    to={`/admin/courses/${course._id}`}
+                    className="text-sm text-blue-500 underline hover:text-purple-400 transition"
+                  >
+                    View
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}

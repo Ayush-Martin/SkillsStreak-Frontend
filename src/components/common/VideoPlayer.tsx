@@ -12,12 +12,23 @@ interface IVideoPlayerPrams {
   url: string;
   thumbnail?: string;
   title: string;
+  onEnded?: () => void;
 }
 
-const VideoPlayer: FC<IVideoPlayerPrams> = ({ url, thumbnail, title }) => {
+const VideoPlayer: FC<IVideoPlayerPrams> = ({
+  url,
+  thumbnail,
+  title,
+  onEnded,
+}) => {
   console.log(url);
   return (
-    <MediaPlayer title={title} src={url} className="w-full h-full">
+    <MediaPlayer
+      title={title}
+      src={url}
+      className="w-full h-full"
+      onEnded={onEnded}
+    >
       <MediaProvider />
       <DefaultVideoLayout thumbnails={thumbnail} icons={defaultLayoutIcons} />
     </MediaPlayer>

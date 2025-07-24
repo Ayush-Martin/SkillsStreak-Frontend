@@ -21,3 +21,4 @@ export * from "./carousel";
 export * from "./skeleton";
 export * from "./sheet";
 export * from "./badge";
+export * from "./separator";

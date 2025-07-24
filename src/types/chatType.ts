@@ -57,3 +57,8 @@ export interface IChatMessage {
   messageType: "text" | "image" | "emoji";
   createdAt: string;
 }
+
+export interface IAiChatMessage {
+  role: "user" | "model";
+  parts: { text: string }[];
+}

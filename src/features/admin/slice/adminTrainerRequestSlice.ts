@@ -65,8 +65,6 @@ const AdminTrainerRequestSlice = createSlice({
       (state, action) => {
         const { status, rejectedReason, _id } = action.payload.data;
 
-        console.log(action.payload.data);
-
         state.users = state.users.map((user) =>
           user._id == _id ? { ...user, status, rejectedReason } : user
         );

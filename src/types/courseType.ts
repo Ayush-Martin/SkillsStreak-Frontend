@@ -1,3 +1,4 @@
+import { ILiveSession } from "@/types/courseType";
 export type ICourseDifficulty = "beginner" | "intermediate" | "advance";
 export type IPrice = "free" | "paid";
 export type ISort =
@@ -97,15 +98,78 @@ export interface ICourseDetails {
   noOfEnrolled: null;
 }
 
+// export interface ILiveSession {
+//   _id: string;
+//   title: string;
+//   thumbnail: string;
+//   description: string;
+//   isLive: string;
+//   recordedSrc: string;
+//   liveSrc: string;
+//   isPublic: string;
+//   courseId: string;
+//   roomId: string;
+// }
+
+export interface IAssignment {
+  _id: string;
+  title: string;
+  description: string;
+  task: string;
+}
+
+export interface IViewAssignment extends IAssignment {
+  status: "pending" | "completed" | "verified" | "redo";
+  type?: "pdf" | "text" | "image";
+  path?: string;
+  content?: string;
+  assignmentSubmissionId?: string;
+}
+
 export interface ILiveSession {
   _id: string;
   title: string;
-  thumbnail: string;
   description: string;
-  isLive: string;
-  recordedSrc: string;
-  liveSrc: string;
-  isPublic: string;
-  courseId: string;
-  roomId: string;
+  date: string;
+  time: string;
+  status: "upcoming" | "completed" | "live";
+}
+
+export interface IViewLiveSession extends ILiveSession {
+  liveSrc?: string;
+  recordedSrc?: string;
+}
+
+export interface ICourseRecordedSession {
+  title: string;
+  trainerId: string;
+  modules: Array<{
+    _id: string;
+    title: string;
+    lessons: Array<{
+      _id: string;
+      title: string;
+      type: "video" | "pdf";
+    }>;
+  }>;
+}
+
+export interface IReply {
+  _id: string;
+  userId: {
+    _id: string;
+    username: string;
+    profileImage: string;
+  };
+  content: string;
+}
+
+export interface IDiscussion {
+  _id: string;
+  userId: {
+    _id: string;
+    username: string;
+    profileImage: string;
+  };
+  content: string;
 }
