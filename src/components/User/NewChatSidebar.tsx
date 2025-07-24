@@ -6,7 +6,7 @@ import {
   FaLock,
 } from "@/assets/icons/icons";
 import { FC, useContext, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSubscription } from "@/hooks";
 import { ProfileImage } from "../common";
 import chatContext from "@/context/ChatContext";
@@ -73,9 +73,10 @@ const ChatSidebar: FC<IChatSidebarProps> = ({ isOpen }) => {
 };
 
 const SearchTrainers: FC = () => {
+  const navigate = useNavigate();
   const { newChat, trainers } = useContext(chatContext)!;
   const [search, setSearch] = useState("");
-  const { getSubscribed, subscriptionDetail } = useSubscription();
+  const { subscriptionDetail } = useSubscription();
 
   const newIndividualChat = async (trainerId: string) => {
     newChat(trainerId);
@@ -87,7 +88,7 @@ const SearchTrainers: FC = () => {
       {!subscriptionDetail?.active && (
         <div className="absolute top-0 bottom-0 left-0 right-0 rounded-md w-full h-full bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
           <button
-            onClick={getSubscribed}
+            onClick={() => navigate("/subscriptionPlans")}
             className="flex gap-1 items-center text-app-accent"
           >
             <FaLock className="text-2xl mr-2" />

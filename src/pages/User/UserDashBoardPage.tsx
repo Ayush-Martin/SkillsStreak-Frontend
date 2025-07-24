@@ -12,6 +12,7 @@ import SubscriptionCard from "@/components/user/SubscriptionCard";
 import { useSubscription } from "@/hooks";
 import WalletCard from "@/components/user/WalletCard";
 import useWallet from "@/hooks/useWallet";
+import { useNavigate } from "react-router-dom";
 
 interface CourseStatsCardProps {
   totalEnrolled: number;
@@ -57,7 +58,8 @@ const CourseStatsCard: FC<CourseStatsCardProps> = ({
 };
 
 const DashBoard: FC = () => {
-  const { getSubscribed, subscriptionDetail } = useSubscription();
+  const { subscriptionDetail } = useSubscription();
+  const navigate = useNavigate();
   const [overallCourseProgress, setOverallCourseProgress] = useState<{
     enrolledCourses: number;
     coursesCompleted: number;
@@ -83,10 +85,9 @@ const DashBoard: FC = () => {
         <div className="w-full mt-10 ml-0 text-white md:ml-64 md:mt-0 p-5 relative">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
             <SubscriptionCard
-              active={!!subscriptionDetail?.active}
               startDate={subscriptionDetail?.startDate}
               endDate={subscriptionDetail?.endDate}
-              onSubscribe={getSubscribed}
+              onSubscribe={() => {}}
             />
 
             <CourseStatsCard
@@ -100,7 +101,7 @@ const DashBoard: FC = () => {
                 balance={wallet.balance}
                 haveStripeId={haveStripeId}
                 onRedeem={handleRedeem}
-                onSetupAccount={setupStripeAccount}
+                onSetupAccount={() => navigate("/subscriptionPlans")}
               />
             </div>
           </div>

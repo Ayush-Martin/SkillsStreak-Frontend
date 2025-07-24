@@ -1,13 +1,12 @@
 import { FaRegClock } from "react-icons/fa";
 import StatCardWithProgress from "@/components/common/StatCardWithProgress";
-import { isBefore, differenceInDays, format } from "date-fns";
+import { isAfter, isBefore, differenceInDays, format } from "date-fns";
 import { FC } from "react";
 import { Button } from "../ui";
 
 interface SubscriptionCardProps {
   startDate?: string;
   endDate?: string;
-  active: boolean;
   onSubscribe?: () => void;
 }
 
@@ -15,26 +14,27 @@ const SubscriptionCard: FC<SubscriptionCardProps> = ({
   startDate,
   endDate,
   onSubscribe,
-  active,
 }) => {
   const today = new Date();
+  const start = startDate ? new Date(startDate) : null;
+  const end = endDate ? new Date(endDate) : null;
 
-  const formattedStart = startDate
-    ? format(new Date(startDate), "MMM dd, yyyy")
-    : "-";
-  const formattedEnd = endDate
-    ? format(new Date(endDate), "MMM dd, yyyy")
-    : "-";
+  const formattedStart = start ? format(start, "MMM dd, yyyy") : "-";
+  const formattedEnd = end ? format(end, "MMM dd, yyyy") : "-";
 
-  const daysLeft =
-    active && endDate ? differenceInDays(new Date(endDate), today) : 0;
+  const isActive =
+    start && end && isBefore(start, today) && isAfter(end, today);
+
+  const totalDuration = start && end ? differenceInDays(end, start) || 1 : 1;
+
+  const daysLeft = end ? Math.max(0, differenceInDays(end, today)) : 0;
 
   const progressPercent =
-    startDate && endDate
-      ? 100 -
-        (differenceInDays(new Date(endDate), today) /
-          differenceInDays(new Date(endDate), new Date(startDate))) *
-          100
+    start && end
+      ? Math.min(
+          100,
+          Math.max(0, ((totalDuration - daysLeft) / totalDuration) * 100)
+        )
       : 0;
 
   const infoItems = [
@@ -42,10 +42,10 @@ const SubscriptionCard: FC<SubscriptionCardProps> = ({
     { label: "Expires:", value: formattedEnd },
     {
       label: "Days Left:",
-      value: active
+      value: isActive
         ? `${daysLeft} day${daysLeft !== 1 ? "s" : ""}`
         : "Not active",
-      className: active
+      className: isActive
         ? daysLeft <= 3
           ? "text-red-400"
           : "text-green-400"
@@ -56,10 +56,10 @@ const SubscriptionCard: FC<SubscriptionCardProps> = ({
   return (
     <StatCardWithProgress
       icon={<FaRegClock />}
-      title={active ? "Premium Active" : "No Active Subscription"}
+      title={isActive ? "Premium Active" : "No Active Subscription"}
       items={infoItems}
       progressPercent={progressPercent}
-      showProgress={active}
+      showProgress={!!isActive}
       fallback={
         <div className="flex justify-center pt-2">
           <Button

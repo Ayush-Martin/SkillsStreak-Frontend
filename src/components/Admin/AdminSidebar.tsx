@@ -11,6 +11,7 @@ import {
   MdPayments,
   FaWallet,
 } from "@/assets/icons";
+import { TbReportMoney } from "react-icons/tb";
 
 const sidebarItems = [
   { name: "Dashboard", icon: <MdDashboard />, link: "/admin", end: true },
@@ -22,6 +23,11 @@ const sidebarItems = [
   },
   { name: "Courses", icon: <MdVideoLibrary />, link: "/admin/courses" },
   { name: "Categories", icon: <TbCategoryFilled />, link: "/admin/categories" },
+  {
+    name: "Subscription Plans",
+    icon: <TbReportMoney />,
+    link: "/admin/subscriptionPlans",
+  },
   { name: "Revenue", icon: <FaWallet />, link: "/admin/revenue" },
   { name: "Transactions", icon: <MdPayments />, link: "/admin/transactions" },
 ];

@@ -39,6 +39,7 @@ const CourseLiveSession = lazy(
 const CourseAssignments = lazy(
   () => import("./pages/User/UserCourseAssignmentsPage")
 );
+const Subscription = lazy(() => import("./pages/User/UserSubscriptionPage"));
 
 //Trainer Routes
 const TrainerDashboard = lazy(
@@ -86,6 +87,9 @@ const AdminTransactions = lazy(() => import("./pages/Admin/AdminTransactions"));
 const AdminRevenue = lazy(() => import("./pages/Admin/AdminRevenuePage"));
 const AdminUser = lazy(() => import("./pages/Admin/AdminUserPage"));
 const AdminCourse = lazy(() => import("./pages/Admin/AdminCoursePage"));
+const AdminSubscriptionPlans = lazy(
+  () => import("./pages/Admin/AdminSubscriptionPlansPage")
+);
 
 type Route = {
   path: string;
@@ -122,6 +126,10 @@ export const PublicRoutes: Routes = [
   {
     path: "payment/failure",
     Component: PaymentFailure,
+  },
+  {
+    path: "subscriptions",
+    Component: Subscription,
   },
 ];
 
@@ -286,5 +294,9 @@ export const AdminRoutes: Routes = [
   {
     path: "users/:userId",
     Component: AdminUser,
+  },
+  {
+    path: "subscriptionPlans",
+    Component: AdminSubscriptionPlans,
   },
 ];
