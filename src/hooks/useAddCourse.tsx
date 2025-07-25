@@ -1,35 +1,25 @@
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-
+import { axiosGetRequest, axiosPostRequest } from "@/config/axios";
+import { TRAINER_COURSES_API } from "@/constants";
 import { errorPopup, successPopup } from "@/utils/popup";
-import { axiosPostRequest } from "@/config/axios";
-import { TRAINER_COURSES_API } from "@/constants/API";
-import { useNavigate } from "react-router-dom";
 import {
-  CourseCategoryIdValidationRule,
-  CourseDescriptionValidationRule,
-  CourseDifficultyValidationRule,
-  CoursePriceValidationRule,
-  CourseRequirementsValidationRule,
-  CourseSkillsCoveredValidationRule,
-  CourseTitleValidationRule,
-} from "@/utils/validationRules";
+  CourseBasicDetailsSchema,
+  ICourseBasicDetailsSchema,
+} from "@/validation/course.validation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
-const addCourseSchema = z.object({
-  title: CourseTitleValidationRule,
-  price: CoursePriceValidationRule,
-  difficulty: CourseDifficultyValidationRule,
-  description: CourseDescriptionValidationRule,
-  categoryId: CourseCategoryIdValidationRule,
-  requirements: CourseRequirementsValidationRule,
-  skillsCovered: CourseSkillsCoveredValidationRule,
-});
+const useNewAddCourse = () => {
+  const [categories, setCategories] = useState<
+    {
+      categoryName: string;
+      _id: string;
+    }[]
+  >([]);
 
-export type addCourseSchemaType = z.infer<typeof addCourseSchema>;
+  const navigate = useNavigate();
 
-const useAddCourse = () => {
   const {
     formState: { errors },
     setValue,
@@ -37,13 +27,23 @@ const useAddCourse = () => {
     watch,
     trigger,
     handleSubmit,
-  } = useForm<addCourseSchemaType>({
-    resolver: zodResolver(addCourseSchema),
+  } = useForm<ICourseBasicDetailsSchema>({
+    resolver: zodResolver(CourseBasicDetailsSchema),
+    mode: "onChange",
   });
 
-  const navigate = useNavigate();
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [previewThumbnail, setPreviewThumbnail] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const res = await axiosGetRequest("/categories");
+      if (!res) return;
+      setCategories(res.data);
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -53,7 +53,7 @@ const useAddCourse = () => {
     }
   };
 
-  const publishCourse = handleSubmit(async (data) => {
+  const onSave = handleSubmit(async (data) => {
     if (!thumbnail || !previewThumbnail) {
       errorPopup("please upload thumbnail");
       return;
@@ -91,17 +91,16 @@ const useAddCourse = () => {
   });
 
   return {
-    addCourseSchema,
+    categories,
+    onSave,
     errors,
     register,
-    setValue,
-    trigger,
     watch,
-    publishCourse,
-    thumbnail,
+    trigger,
+    setValue,
     previewThumbnail,
     handleThumbnailChange,
   };
 };
 
-export default useAddCourse;
+export default useNewAddCourse;

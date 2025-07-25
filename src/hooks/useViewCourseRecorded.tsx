@@ -2,6 +2,7 @@ import { axiosGetRequest, axiosPatchRequest } from "@/config/axios";
 import { COURSES_API } from "@/constants";
 import { ICourseRecordedSession } from "@/types/courseType";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const useViewCourseRecorded = () => {
   const [courseAccess, setCourseAccess] = useState<boolean>(false);
@@ -20,7 +21,7 @@ const useViewCourseRecorded = () => {
       modules: [],
     });
 
-  const { courseId } = { courseId: "685435d5450268cd9abe5450" };
+  const { courseId } = useParams();
 
   useEffect(() => {
     const fetchRecordedSessions = async () => {
@@ -30,7 +31,9 @@ const useViewCourseRecorded = () => {
     };
 
     const fetchCompletedLessons = async () => {
-      const res = await axiosGetRequest(`/enrolledCourses/${courseId}`);
+      const res = await axiosGetRequest(
+        `/enrolledCourses/${courseId}/recorded`
+      );
       if (!res) return;
       setCompletedLessons(res.data.completedLessons);
     };

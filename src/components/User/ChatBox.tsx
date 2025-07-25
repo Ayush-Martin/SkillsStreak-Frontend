@@ -1,9 +1,15 @@
 import { ProfileImage } from "@/components";
-import { BiCategory, BiSolidImageAdd } from "@/assets/icons/icons";
+import {
+  BiCategory,
+  BiSolidImageAdd,
+  IoCloseCircle,
+  FaUsers,
+} from "@/assets/icons";
 import { ScrollArea } from "@/components/ui";
 import { BiSend } from "react-icons/bi";
-import { FC, useEffect, useMemo, useState } from "react";
-import { getSocket } from "@/config/socket";
+import { FC, useContext, useEffect, useMemo, useState } from "react";
+import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
+
 import {
   IChatMessage,
   IChatMessageReaction,
@@ -11,22 +17,22 @@ import {
 } from "@/types/chatType";
 import { useSelector } from "react-redux";
 import { RootReducer } from "@/store";
-import { axiosGetRequest, axiosPostRequest } from "@/config/axios";
+
 import { useScrollToBottom } from "@/hooks";
-import { SocketEvents } from "@/constants";
+
 import { FaRegSmile } from "react-icons/fa";
+import chatContext from "@/context/ChatContext";
+import { BsFillEmojiSmileFill } from "react-icons/bs";
 
 interface IChatBoxProps {
   sideBarOpenClose: () => void;
-  selectedChat: { _id: string; icon: string; title: string } | null;
-  updateLastMessage: (lastMessage: string, chatId: string) => void;
 }
 
 interface IMessageProps {
   messageId: string;
   message: string;
   reactions: IChatMessageReaction[];
-  messageType: "text" | "image";
+  messageType: "text" | "image" | "emoji";
   createdAt: string;
   isSender: boolean;
   username: string;
@@ -34,6 +40,105 @@ interface IMessageProps {
   currentUserId: string;
   sendReaction: (messageId: string, emoji: IChatMessageReactionEmoji) => void;
 }
+
+interface IGroupMembersProps {
+  close: () => void;
+}
+
+const ChatBox: FC<IChatBoxProps> = ({ sideBarOpenClose }) => {
+  const { fetchMessages, registerMessageHandlers, sendReaction, selectedChat } =
+    useContext(chatContext)!;
+  const [messages, setMessages] = useState<Array<IChatMessage>>([]);
+  const [openMembers, setOpenMembers] = useState(false);
+  const divRef = useScrollToBottom([messages]);
+
+  const { _id } = useSelector((state: RootReducer) => state.user);
+
+  useEffect(() => {
+    if (!selectedChat?._id) return;
+
+    fetchMessages((messages) => {
+      setMessages(messages);
+    });
+
+    registerMessageHandlers({
+      newMessageHandler(message) {
+        setMessages((p) => [...p, message]);
+      },
+      newReactionHandler(messageId, reactions) {
+        setMessages((p) =>
+          p.map((message) =>
+            message._id === messageId ? { ...message, reactions } : message
+          )
+        );
+      },
+    });
+  }, [selectedChat]);
+
+  return (
+    <div className="w-full flex flex-col overflow-hidden relative">
+      {openMembers && <GroupMembers close={() => setOpenMembers(false)} />}
+
+      <div className="w-full h-[70px] border-b border-app-border flex ">
+        <div className="w-1/12  h-full flex justify-center items-center mx-3">
+          <button className="text-3xl" onClick={sideBarOpenClose}>
+            <BiCategory />
+          </button>
+        </div>
+        <div className="w-full  h-full flex justify-between items-center">
+          <div className="w-full h-full  flex gap-4 items-center  bg-opacity-25 p-2 rounded-md">
+            {selectedChat ? (
+              <div className="flex justify-between items-center w-full pr-10">
+                <div className="flex gap-3 items-center">
+                  <ProfileImage
+                    profileImage={selectedChat.icon}
+                    size={16}
+                    textSize="3xl"
+                  />
+                  <h1 className="font-playwritehu">{selectedChat.title}</h1>
+                </div>
+                {selectedChat.type == "group" && (
+                  <button
+                    onClick={() => setOpenMembers((p) => !p)}
+                    className="text-3xl"
+                  >
+                    <FaUsers />
+                  </button>
+                )}
+              </div>
+            ) : (
+              <h1 className="font-playwritehu">Select A chat</h1>
+            )}
+          </div>
+          <div className="h-full"></div>
+        </div>
+      </div>
+      {selectedChat && (
+        <div className="w-full">
+          <ScrollArea className=" px-5 py-3 h-[470px] w-full">
+            {messages.map((message) => (
+              <Message
+                messageId={message._id}
+                reactions={message.reactions}
+                sendReaction={sendReaction}
+                currentUserId={_id}
+                createdAt={message.createdAt}
+                key={message._id}
+                messageType={message.messageType}
+                message={message.message}
+                profileImage={message.sender.profileImage}
+                isSender={message.sender._id === _id}
+                username={message.sender.username}
+              />
+            ))}
+            <div ref={divRef}></div>
+          </ScrollArea>
+          <SendMessage />
+        </div>
+      )}
+    </div>
+  );
+};
 
 const emojiList: IChatMessageReactionEmoji[] = ["❤️", "👍", "😂", "🔥", "👎"];
 
@@ -102,17 +207,31 @@ const Message: FC<IMessageProps> = ({
             </p>
           )}
 
-          {messageType === "text" ? (
-            <p className="text-sm leading-snug whitespace-pre-wrap break-words text-white/90">
-              {message}
-            </p>
-          ) : (
-            <img
-              src={message}
-              alt="img"
-              className="rounded-xl mt-2 max-w-[260px] border border-white/10 shadow-md"
-            />
-          )}
+          {(() => {
+            switch (messageType) {
+              case "text":
+                return (
+                  <p className="text-sm leading-snug whitespace-pre-wrap break-words text-white/90">
+                    {message}
+                  </p>
+                );
+
+              case "emoji":
+                return <span style={{ fontSize: "1.5rem" }}>{message}</span>;
+
+              case "image":
+                return (
+                  <img
+                    src={message}
+                    alt="img"
+                    className="rounded-xl mt-2 max-w-[260px] border border-white/10 shadow-md"
+                  />
+                );
+
+              default:
+                return <p className="text-red-500">Unsupported type</p>;
+            }
+          })()}
 
           {/* Timestamp + React button */}
           <div className="flex items-center justify-between mt-2 text-xs text-white/50">
@@ -181,30 +300,52 @@ const Message: FC<IMessageProps> = ({
   );
 };
 
-interface ISendMessage {
-  sendMessage: (message: string) => void;
-  sendMedia: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-const SendMessage: FC<ISendMessage> = ({ sendMessage, sendMedia }) => {
+const SendMessage: FC = () => {
   const [message, setMessage] = useState("");
+  const [emojiPicker, setEmojiPicker] = useState(false);
+  const { sendMedia, sendMessage } = useContext(chatContext)!;
+
+  const handleSendMedia = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      sendMedia(selectedFile);
+    }
+  };
+
+  const sendEmoji = (emoji: EmojiClickData) => {
+    sendMessage(emoji.emoji, "emoji");
+    setEmojiPicker(false);
+  };
 
   return (
     <div className="h-[60px] w-full  border-t border-app-border flex justify-between items-center">
-      <div className="w-[50px] h-full py-2 mx-3  text-3xl flex">
-        <label
-          htmlFor="file-upload"
-          className="inline-flex items-center   font-medium text-white rounded-md cursor-pointer hover:scale-110"
+      {emojiPicker && (
+        <div className="absolute bottom-16 left-3">
+          <EmojiPicker theme={Theme.DARK} onEmojiClick={sendEmoji} />
+        </div>
+      )}
+      <div className="w-[90px] flex gap-4 items-center mx-3">
+        <div className=" h-full py-2   text-3xl flex">
+          <label
+            htmlFor="file-upload"
+            className="inline-flex items-center   font-medium text-white rounded-md cursor-pointer hover:scale-110"
+          >
+            <BiSolidImageAdd />
+            <input
+              id="file-upload"
+              type="file"
+              className="sr-only"
+              onChange={handleSendMedia}
+              accept="image/*"
+            />
+          </label>
+        </div>
+        <button
+          className="text-yellow-400 text-2xl"
+          onClick={() => setEmojiPicker((p) => !p)}
         >
-          <BiSolidImageAdd />
-          <input
-            id="file-upload"
-            type="file"
-            className="sr-only"
-            onChange={sendMedia}
-            accept="image/*"
-          />
-        </label>
+          <BsFillEmojiSmileFill />
+        </button>
       </div>
       <form
         className="flex justify-between w-full items-center h-full "
@@ -228,152 +369,59 @@ const SendMessage: FC<ISendMessage> = ({ sendMessage, sendMedia }) => {
   );
 };
 
-const ChatBox: FC<IChatBoxProps> = ({
-  sideBarOpenClose,
-  selectedChat,
-}) => {
-  const [messages, setMessages] = useState<Array<IChatMessage>>([]);
-  const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
-  const divRef = useScrollToBottom([messages]);
-  const { _id } = useSelector((state: RootReducer) => state.user);
+const GroupMembers: FC<IGroupMembersProps> = ({ close }) => {
+  const [members, setMembers] = useState<
+    Array<{
+      _id: string;
+      username: string;
+      profileImage: string;
+      isAdmin: boolean;
+    }>
+  >([]);
+  const { getChatMembers } = useContext(chatContext)!;
 
   useEffect(() => {
-    const socket = getSocket();
-    setSocket(socket);
-    setMessages([]);
-    if (!selectedChat) return;
-
-    const fetchMessages = async () => {
-      const res = await axiosGetRequest(`/chats/${selectedChat._id}`);
-      if (!res) return;
-
-      setMessages(res.data);
+    const getMembers = async () => {
+      const chatMembers = await getChatMembers();
+      console.log(chatMembers);
+      setMembers(chatMembers);
     };
 
-    fetchMessages();
-
-    socket.on(SocketEvents.CHAT_MESSAGE_BROADCAST, (message: IChatMessage) => {
-      console.log(message);
-      if (message.chatId != selectedChat._id) return;
-      setMessages((p) => [...p, message]);
-      // updateLastMessage(
-      //   message.messageType == "text" ? message.message : "image",
-      //   message.chatId
-      // );
-    });
-
-    socket.on(
-      SocketEvents.CHAT_MESSAGE_REACTION_BROADCAST,
-      ({
-        chatId,
-        messageId,
-        reactions,
-      }: {
-        chatId: string;
-        messageId: string;
-        reactions: IChatMessageReaction[];
-      }) => {
-        if (chatId != selectedChat._id) return;
-        setMessages((messages) =>
-          messages.map((message) =>
-            message._id !== messageId ? message : { ...message, reactions }
-          )
-        );
-        // updateLastMessage(
-        //   message.messageType == "text" ? message.message : "image",
-        //   message.chatId
-        // );
-      }
-    );
-
-    return () => {
-      socket?.off(SocketEvents.CHAT_MESSAGE_BROADCAST);
-    };
-  }, [selectedChat]);
-
-  const sendMessage = (message: string) => {
-    if (!selectedChat || !socket) return;
-    socket.emit(SocketEvents.CHAT_MESSAGE_SEND, {
-      chatId: selectedChat._id,
-      message: message,
-    });
-  };
-
-  const sendReaction = (
-    messageId: string,
-    emoji: IChatMessageReactionEmoji
-  ) => {
-    if (!selectedChat || !socket) return;
-    socket.emit(SocketEvents.CHAT_MESSAGE_REACTION_SEND, {
-      chatId: selectedChat._id,
-      messageId,
-      emoji,
-    });
-  };
-
-  const sendMedia = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-      await axiosPostRequest(`/chats/${selectedChat?._id}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-    }
-  };
+    getMembers();
+  }, []);
 
   return (
-    <div className="w-full flex flex-col overflow-hidden">
-      <div className="w-full h-[70px] border-b border-app-border flex ">
-        <div className="w-1/12  h-full flex justify-center items-center mx-3">
-          <button className="text-3xl" onClick={sideBarOpenClose}>
-            <BiCategory />
-          </button>
-        </div>
-        <div className="w-full  h-full flex justify-between items-center">
-          <div className="w-full h-full  flex gap-4 items-center  bg-opacity-25 p-2 rounded-md">
-            {selectedChat ? (
-              <>
-                {" "}
-                <ProfileImage
-                  profileImage={selectedChat.icon}
-                  size={16}
-                  textSize="3xl"
-                />
-                <h1 className="font-playwritehu">{selectedChat.title}</h1>
-              </>
-            ) : (
-              <h1 className="font-playwritehu">Select A chat</h1>
-            )}
-          </div>
-          <div className="h-full"></div>
-        </div>
+    <div className="absolute bg-black/60 backdrop-blur-md border border-white/10 text-white top-20 left-7 w-96 max-h-80 rounded-xl shadow-lg z-50 p-4 overflow-y-auto">
+      <div className="flex justify-between items-center mb-3">
+        <h3 className="text-2xl font-bold font-mono ">Group Members</h3>
+        <button onClick={close} className="text-red-400 text-2xl">
+          <IoCloseCircle />
+        </button>
       </div>
-      {selectedChat && (
-        <div className="w-full">
-          <ScrollArea className=" px-5 py-3 h-[470px] w-full">
-            {messages.map((message) => (
-              <Message
-                messageId={message._id}
-                reactions={message.reactions}
-                sendReaction={sendReaction}
-                currentUserId={_id}
-                createdAt={message.createdAt}
-                key={message._id}
-                messageType={message.messageType}
-                message={message.message}
-                profileImage={message.sender.profileImage}
-                isSender={message.sender._id === _id}
-                username={message.sender.username}
-              />
-            ))}
-            <div ref={divRef}></div>
-          </ScrollArea>
-          <SendMessage sendMessage={sendMessage} sendMedia={sendMedia} />
-        </div>
-      )}
+      <ul className="space-y-3">
+        {members.map((member) => (
+          <li
+            key={member._id}
+            className="flex items-center gap-3 hover:bg-white/10 transition p-2 rounded-md"
+          >
+            <ProfileImage
+              profileImage={member.profileImage}
+              size={16}
+              textSize="3xl"
+            />
+            <div className="flex flex-col">
+              <span className=" font-medium font-playwritehu">
+                {member.username}
+              </span>
+              {member.isAdmin && (
+                <span className="text-sm text-blue-400 font-semibold">
+                  Admin
+                </span>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

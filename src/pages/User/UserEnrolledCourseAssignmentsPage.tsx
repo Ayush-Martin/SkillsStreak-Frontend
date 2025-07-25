@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import useCourseAssignments from "@/hooks/useCourseAssignments";
+import useCourseAssignments from "@/hooks/useViewCourseAssignments";
 import { IViewAssignment } from "@/types/courseType";
 import AssignmentModal from "@/components/user/AssignmentModal";
 

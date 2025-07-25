@@ -80,8 +80,7 @@ interface IAiChatProps {
 
 const AiChat: FC<IAiChatProps> = ({ onClose }) => {
   const [message, setMessage] = useState("");
-  const { aiChats, sendAiChatMessage, fetchNotebooks } =
-    useContext(ViewCourseContext)!;
+  const { aiChats, sendAiChatMessage } = useContext(ViewCourseContext)!;
   const chatEndRef = useScrollToBottom([aiChats]);
 
   useEffect(() => {

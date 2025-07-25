@@ -23,8 +23,8 @@ import { UserLayout } from "@/layouts";
 import { AppDispatch, RootReducer } from "@/store";
 import { ICourseDifficulty, IPrice, ISort } from "@/types/courseType";
 import { TbFilterSearch } from "@/assets/icons";
-import { axiosGetRequest } from "@/config/axios";
-import { CATEGORY_API } from "@/constants";
+import { getCategories } from "@/api/category.api";
+import { ICategory } from "@/types/categoryType";
 
 const PAGE_SIZE = 4;
 
@@ -34,9 +34,7 @@ const Courses: FC = () => {
     (state: RootReducer) => state.courses
   );
 
-  const [categories, SetCategories] = useState<
-    Array<{ _id: string; categoryName: string }>
-  >([]);
+  const [categories, SetCategories] = useState<Array<ICategory>>([]);
   const [category, setCategory] = useState("all");
   const [difficulty, setDifficulty] = useState<"all" | ICourseDifficulty>(
     "all"
@@ -74,10 +72,9 @@ const Courses: FC = () => {
   }, [category, difficulty, price, sort]);
 
   const fetchCategories = async () => {
-    const res = await axiosGetRequest(CATEGORY_API);
-    if (!res) return;
-
-    SetCategories(res.data);
+    const data = await getCategories();
+    if (!data) return;
+    SetCategories(data);
   };
 
   return (
@@ -129,6 +126,7 @@ const Courses: FC = () => {
               ))
             : paginatedData.map((course) => (
                 <CourseCard
+                  linkPrefix="/courses"
                   averageRating={course.averageRating}
                   _id={course._id}
                   key={course._id}

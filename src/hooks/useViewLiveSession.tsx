@@ -2,6 +2,7 @@ import { axiosGetRequest } from "@/config/axios";
 import { COURSES_API } from "@/constants";
 import { IViewLiveSession } from "@/types/courseType";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const useViewLiveSession = () => {
   const [courseAccess, setCourseAccess] = useState<boolean>(false);
@@ -9,7 +10,7 @@ const useViewLiveSession = () => {
   const [currentSelectedSession, setCurrentSelectedSession] =
     useState<IViewLiveSession | null>(null);
 
-  const { courseId } = { courseId: "687b7e0564c45909816a28d6" };
+  const { courseId } = useParams();
 
   useEffect(() => {
     const fetchRecordedSessions = async () => {

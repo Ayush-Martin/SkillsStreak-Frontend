@@ -1,8 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  cancelEnrolledCourseApi,
-  getEnrolledCoursesApi,
-} from "../api/enrolledCourseApi";
+import { getEnrolledCoursesApi } from "../api/enrolledCourseApi";
 import { errorPopup, successPopup } from "@/utils/popup";
 
 interface IEnrolledCourse {
@@ -49,18 +46,6 @@ const enrolledCoursesSlice = createSlice({
       }
       state.currentPage = data.currentPage;
       state.totalPages = data.totalPages;
-    });
-
-    builder.addCase(cancelEnrolledCourseApi.fulfilled, (state, action) => {
-      state.enrolledCourses = state.enrolledCourses.filter(
-        (course) => course.course._id !== action.payload.data
-      );
-      successPopup(action.payload.message || "course cancelled");
-    });
-
-    builder.addCase(cancelEnrolledCourseApi.rejected, (_, action) => {
-      const err = action.payload as string;
-      errorPopup(err);
     });
   },
 });

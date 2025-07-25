@@ -36,20 +36,10 @@ const UserSidebar: FC = () => {
       icon: <RiGraduationCapFill />,
       link: "/user/enrolledCourses",
     },
-    // {
-    //   name: "Chats",
-    //   icon: <IoChatbox />,
-    //   link: "/user/chats",
-    // },
     {
       name: "Chats",
       icon: <IoChatbox />,
-      link: "/user/chatsNew",
-    },
-    {
-      name: "Course",
-      icon: <ImVideoCamera />,
-      link: "/user/course",
+      link: "/user/chats",
     },
     {
       name: "Transactions",
@@ -62,7 +52,7 @@ const UserSidebar: FC = () => {
       link: "/user/changePassword",
     },
     {
-      name: "Trainer Dashboard",
+      name: role == "trainer" ? "Trainer Dashboard" : "Become Trainer",
       icon: <FaChalkboardTeacher />,
       link: role == "trainer" ? "/trainer" : "/user/trainerRequest",
     },

@@ -15,6 +15,7 @@ import { RootReducer } from "@/store";
 import { MdDelete, MdEdit } from "@/assets/icons";
 import { ReviewContext } from "@/context";
 import { IReview } from "@/types/reviewType";
+import { MdReply, MdVisibilityOff, MdVisibility } from "react-icons/md";
 
 interface IReviewProps {
   trainerId: string;
@@ -80,20 +81,20 @@ const ReviewStats = ({
   ratingBreakdown,
 }: ReviewStatsProps) => {
   return (
-    <div className="bg-gray-800 rounded-xl p-6 mb-6 border border-gray-700">
-      <div className="grid md:grid-cols-2 gap-6">
+    <div className="bg-[#10141f] rounded-2xl p-6 mb-6 border border-[#1e2533] shadow-sm">
+      <div className="grid md:grid-cols-2 gap-6 items-center">
         <div className="text-center">
-          <div className="flex items-center justify-center gap-2 mb-3">
+          <div className="flex items-center justify-center gap-2 mb-2">
             <Star className="w-7 h-7 fill-yellow-400 text-yellow-400" />
-            <span className="text-3xl font-bold text-white">
+            <span className="text-3xl font-semibold text-white tracking-tight">
               {averageRating.toFixed(1)}
             </span>
           </div>
-          <div className="flex items-center justify-center gap-1 mb-2">
+          <div className="flex items-center justify-center gap-1 mb-3">
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                className={`w-4 h-4 ${
+                className={`w-4 h-4 transition ${
                   i < Math.floor(averageRating)
                     ? "fill-yellow-400 text-yellow-400"
                     : "text-gray-600"
@@ -101,26 +102,24 @@ const ReviewStats = ({
               />
             ))}
           </div>
-          <p className="text-gray-400 flex items-center justify-center gap-2">
+          <p className="text-gray-400 text-sm flex items-center justify-center gap-1">
             <Users className="w-4 h-4" />
-            Based on {totalReviews.toLocaleString()} reviews
+            {totalReviews.toLocaleString()} reviews total
           </p>
         </div>
 
-        <div className="space-y-2">
-          {ratingBreakdown.map((item) => (
-            <div key={item.stars} className="flex items-center gap-3">
-              <span className="text-sm font-medium text-gray-300 w-6">
-                {item.stars}★
-              </span>
-              <div className="flex-1 bg-gray-700 rounded-full h-2 overflow-hidden">
+        <div className="space-y-3">
+          {ratingBreakdown.map(({ stars, count, percentage }) => (
+            <div key={stars} className="flex items-center gap-3">
+              <span className="text-sm text-gray-400 w-6">{stars}★</span>
+              <div className="flex-1 h-2 bg-[#1e2533] rounded-full overflow-hidden">
                 <div
-                  className="bg-gradient-to-r from-yellow-400 to-orange-500 h-full transition-all duration-700 ease-out"
-                  style={{ width: `${item.percentage}%` }}
+                  className="h-full bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full"
+                  style={{ width: `${percentage}%` }}
                 />
               </div>
-              <span className="text-sm text-gray-400 w-12 text-right">
-                {item.count}
+              <span className="text-sm text-gray-500 w-10 text-right">
+                {count}
               </span>
             </div>
           ))}
@@ -143,16 +142,16 @@ const AddReview: FC = () => {
   };
 
   return (
-    <Card className="bg-gray-800 border-gray-700 mb-10">
-      <CardContent className="p-4">
-        <h3 className="text-white font-medium mb-3">Add a Review</h3>
-        <form onSubmit={save} className="space-y-3">
+    <Card className="bg-[#10141f] border border-[#1e2533] mb-10 shadow-sm rounded-2xl">
+      <CardContent className="p-5">
+        <h3 className="text-white font-medium text-lg mb-4">Write a Review</h3>
+        <form onSubmit={save} className="space-y-4">
           <div className="flex items-center gap-2">
-            <span className="text-gray-300 text-sm">Rating:</span>
+            <span className="text-gray-400 text-sm">Your Rating:</span>
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                className={`w-4 h-4 cursor-pointer ${
+                className={`w-5 h-5 cursor-pointer transition ${
                   i < rating
                     ? "fill-yellow-400 text-yellow-400"
                     : "text-gray-600"
@@ -166,15 +165,15 @@ const AddReview: FC = () => {
             placeholder="Write your review..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="bg-gray-700 text-white border-gray-600 focus:border-blue-500"
-            rows={3}
+            className="bg-[#181e2a] text-white border border-[#1e2533] focus:ring-1 focus:ring-blue-500"
+            rows={4}
           />
 
           <Button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+            className="bg-blue-600 hover:bg-blue-700 text-white w-full rounded-xl shadow-sm"
           >
-            Add Review
+            Submit Review
           </Button>
         </form>
       </CardContent>
@@ -209,128 +208,209 @@ const ReviewCard: FC<IReviewCardProps> = ({ review, authorId, userId }) => {
   };
 
   return (
-    <div className="w-full p-5 bg-[#10141f] text-[#e0e6ed] rounded-2xl shadow-md border border-[#1e2533]">
-      <div className="flex gap-4">
-        <ProfileImage
-          profileImage={review.userId.profileImage}
-          size={12}
-          textSize="2xl"
-        />
-        <div className="flex flex-col gap-3 w-full">
+    <div className="bg-[#1a1f2e] border border-[#2a3441] rounded-xl p-6 mb-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+      <div className="flex items-start gap-4">
+        <div className="flex-shrink-0">
+          <ProfileImage
+            profileImage={review.userId.profileImage}
+            size={12}
+            textSize="2xl"
+          />
+        </div>
+
+        <div className="flex-1 min-w-0 space-y-4">
+          {/* Header */}
           <div className="flex justify-between items-start">
-            <div className="flex gap-2 items-center">
-              <p className="text-[#7dd3fc] font-semibold">
-                {review.userId._id === userId ? "You" : review.userId.username}
-              </p>
-              {review.userId._id === authorId && (
-                <span className="text-xs px-2 py-0.5 bg-[#1a1f2d] text-[#f472b6] rounded-full">
-                  Author
-                </span>
-              )}
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <h3 className="text-lg font-semibold text-white">
+                  {review.userId._id === userId
+                    ? "You"
+                    : review.userId.username}
+                </h3>
+                {review.userId._id === authorId && (
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-900/30 text-blue-300 border border-blue-800">
+                    Trainer
+                  </span>
+                )}
+              </div>
+              <p className="text-sm text-gray-400">2 hours ago</p>
             </div>
+
             {review.userId._id === userId && (
-              <div className="flex gap-2">
+              <div className="flex items-center gap-1">
                 <button
-                  className="text-blue-400 hover:text-blue-300 transition "
                   onClick={() => setEdit((prev) => !prev)}
+                  className="p-2 rounded-lg text-gray-400 hover:text-blue-400 hover:bg-gray-800 transition-colors duration-200"
+                  title="Edit Review"
                 >
-                  <MdEdit />
+                  <MdEdit size={18} />
                 </button>
                 <button
-                  className="text-red-500 hover:text-red-400 transition"
                   onClick={removeReply}
+                  className="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-gray-800 transition-colors duration-200"
+                  title="Delete Review"
                 >
-                  <MdDelete size={20} />
+                  <MdDelete size={18} />
                 </button>
               </div>
             )}
           </div>
 
-          <div className="flex items-center gap-5 text-sm">
-            <Rating
-              style={{ maxWidth: 100, maxHeight: 50 }}
-              readOnly
-              value={review.rating}
-            />
+          {/* Rating */}
+          <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+            <Rating style={{ maxWidth: 100 }} value={review.rating} readOnly />
+            <span className="text-sm font-medium text-gray-300">
+              {review.rating} out of 5
+            </span>
+          </div>
+
+          {/* Content */}
+          <div className="text-gray-200 leading-relaxed">
+            {edit ? (
+              <div className="p-4 bg-gray-800/50 rounded-lg border border-gray-700">
+                <EditReviewForm
+                  initialContent={review.content}
+                  initialRating={review.rating}
+                  onSave={(content, rating) => {
+                    editReview(review._id, rating, content);
+                    setEdit(false);
+                  }}
+                  onCancel={() => setEdit(false)}
+                />
+              </div>
+            ) : (
+              <p className="text-base">{review.content}</p>
+            )}
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center gap-4 pt-2 border-t border-gray-700">
             <button
-              onClick={() => setOpen((p) => !p)}
-              className="text-[#38bdf8] hover:text-[#0ea5e9] transition"
+              onClick={() => setOpen(!open)}
+              className="inline-flex items-center gap-2 text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors duration-200"
             >
-              Reply
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                />
+              </svg>
+              {open ? "Cancel" : "Reply"}
             </button>
+
             <button
               onClick={getReplies}
-              className="text-[#22c55e] hover:text-[#16a34a] transition"
+              className="inline-flex items-center gap-2 text-sm font-medium text-green-400 hover:text-green-300 transition-colors duration-200"
             >
-              Replies
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+              {showReplies
+                ? "Hide Replies"
+                : `View Replies (${review.replies?.length || 0})`}
             </button>
           </div>
 
-          {edit ? (
-            <EditReviewForm
-              initialContent={review.content}
-              initialRating={review.rating}
-              onSave={(content, rating) => {
-                editReview(review._id, rating, content);
-                setEdit(false);
-              }}
-              onCancel={() => setEdit(false)}
-            />
-          ) : (
-            <p className="text-sm text-[#cbd5e1]">{review.content}</p>
+          {/* Reply Form */}
+          {open && (
+            <div className="mt-4 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
+              <div className="space-y-3">
+                <Input
+                  value={reply}
+                  onChange={(e) => setReply(e.target.value)}
+                  placeholder="Write your reply..."
+                  className="w-full bg-gray-800 text-white border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+                <div className="flex justify-end gap-2">
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors duration-200"
+                  >
+                    Cancel
+                  </button>
+                  <Button
+                    onClick={submit}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200"
+                    disabled={!reply.trim()}
+                  >
+                    Post Reply
+                  </Button>
+                </div>
+              </div>
+            </div>
           )}
 
-          {open && (
-            <div className="flex gap-2 mt-2">
-              <Input
-                placeholder="Write your reply..."
-                className="bg-[#181e2a] text-white border border-[#1e2533]"
-                value={reply}
-                onChange={(e) => setReply(e.target.value)}
-              />
-              <Button
-                onClick={submit}
-                className="bg-[#38bdf8] hover:bg-[#0ea5e9] text-white"
-              >
-                Add
-              </Button>
+          {/* Replies */}
+          {showReplies && (
+            <div className="mt-6 space-y-4 border-l-2 border-gray-700 pl-6">
+              <h4 className="text-sm font-semibold text-white uppercase tracking-wide">
+                Replies ({review.replies?.length || 0})
+              </h4>
+
+              {review.replies?.map((reply) => (
+                <div
+                  key={reply._id}
+                  className="flex items-start gap-3 p-4 bg-gray-800/30 rounded-lg"
+                >
+                  <div className="flex-shrink-0">
+                    <ProfileImage
+                      profileImage={reply.userId.profileImage}
+                      size={10}
+                      textSize="lg"
+                    />
+                  </div>
+
+                  <div className="flex-1 min-w-0 space-y-1">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-semibold text-white">
+                        {reply.userId._id === userId
+                          ? "You"
+                          : reply.userId.username}
+                      </p>
+                      {reply.userId._id === authorId && (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-900/30 text-blue-300">
+                          Trainer
+                        </span>
+                      )}
+                      <span className="text-xs text-gray-400">1 hour ago</span>
+                    </div>
+                    <p className="text-sm text-gray-300 leading-relaxed">
+                      {reply.content}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
       </div>
-
-      {showReplies && (
-        <div className="flex flex-col gap-6 pt-4 mt-5 ml-10 border-t border-[#1e2533]">
-          {review.replies?.map((reply) => (
-            <div key={reply._id} className="flex gap-4">
-              <ProfileImage
-                profileImage={reply.userId.profileImage}
-                size={12}
-                textSize="2xl"
-              />
-              <div className="flex flex-col gap-1">
-                <div className="flex gap-2 items-center">
-                  <p className="text-[#7dd3fc] font-semibold">
-                    {reply.userId._id === userId
-                      ? "You"
-                      : reply.userId.username}
-                  </p>
-                  {reply.userId._id === authorId && (
-                    <span className="text-xs px-2 py-0.5 bg-[#1a1f2d] text-[#f472b6] rounded-full">
-                      Author
-                    </span>
-                  )}
-                </div>
-                <p className="text-sm text-[#cbd5e1]">{reply.content}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 };
-
 interface EditReviewFormProps {
   initialContent: string;
   initialRating: number;

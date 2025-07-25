@@ -1,65 +1,133 @@
-import { FC } from "react";
-
 import {
   BackButton,
-  CourseModules,
-  EditCourseBasicDetails,
-  EditCourseRequirements,
-  EditCourseSkillsCovered,
-  LiveSession,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
 } from "@/components";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
-import useEditCourse from "@/hooks/useEditCourse";
-import TrainerLayout from "@/layouts/TrainerLayout";
+import CourseAssignments from "@/components/trainer/CourseAssignments";
+import CourseBasicDetails from "@/components/trainer/CourseBasicDetails";
+import CourseLiveSession from "@/components/trainer/CourseLiveSession";
+import CourseNewModules from "@/components/trainer/CourseNewModules";
+import useNewEditCourse from "@/hooks/useEditCourse";
+import { TrainerLayout } from "@/layouts";
+import { AlertCircle } from "lucide-react";
 
-const EditCourse: FC = () => {
-  const { course, setCourse } = useEditCourse();
+const TrainerNewEditCoursePage = () => {
+  const {
+    categories,
+    errors,
+    handleThumbnailChange,
+    EditBasicDetails,
+    register,
+    setValue,
+    trigger,
+    previewThumbnail,
+    watch,
+    fetchModules,
+    modules,
+    addModule,
+    deleteModule,
+    editModule,
+    addAssignment,
+    assignments,
+    deleteAssignment,
+    editAssignment,
+    fetchAssignments,
+    fetchLiveSessions,
+    liveSessions,
+    editLiveSession,
+    scheduleLiveSession,
+    deleteLiveSession,
+    courseStatus,
+    viewLiveSession,
+  } = useNewEditCourse();
 
   return (
     <TrainerLayout>
-      <BackButton />
+      <div className="flex gap-2">
+        <BackButton />
+        {courseStatus !== "approved" && (
+          <div
+            className={`flex items-center gap-3  rounded-lg px-4 py-3 text-sm font-medium ${
+              courseStatus === "rejected"
+                ? "text-red-400 bg-red-500/10 border border-red-500/30"
+                : "text-yellow-400 bg-yellow-500/10 border border-yellow-500/30"
+            }`}
+          >
+            <AlertCircle className="w-5 h-5 shrink-0" />
+            <span>
+              {courseStatus === "rejected"
+                ? "Course has been rejected by the admin"
+                : "Course is under review "}
+            </span>
+          </div>
+        )}
+      </div>
+
       <Tabs defaultValue="basic_details" className="w-full my-5">
         <TabsList className="w-full overflow-x-auto min-w-48">
           <TabsTrigger value="basic_details" className="w-full">
             Basic Details
           </TabsTrigger>
-          <TabsTrigger value="requirements" className="w-full">
-            requirements
+          <TabsTrigger value="recorded" className="w-full">
+            Recorded Sessions
           </TabsTrigger>
-          <TabsTrigger value="skills_covered" className="w-full">
-            skills_covered
+          <TabsTrigger value="assignments" className="w-full">
+            Assignments
           </TabsTrigger>
-          <TabsTrigger value="modules" className="w-full">
-            Modules
-          </TabsTrigger>
-          <TabsTrigger value="live" className="w-full">
+          <TabsTrigger
+            value="live"
+            className="w-full"
+            disabled={courseStatus !== "approved"}
+          >
             Live Sessions
           </TabsTrigger>
         </TabsList>
         <TabsContent value="basic_details">
-          {course && (
-            <EditCourseBasicDetails course={course} setCourse={setCourse} />
-          )}
+          <CourseBasicDetails
+            categories={categories}
+            errors={errors}
+            handleThumbnailChange={handleThumbnailChange}
+            previewThumbnail={previewThumbnail}
+            register={register}
+            setValue={setValue}
+            trigger={trigger}
+            watch={watch}
+            submit={EditBasicDetails}
+          />
         </TabsContent>
-        <TabsContent value="requirements">
-          {course && (
-            <EditCourseRequirements course={course} setCourse={setCourse} />
-          )}
+        <TabsContent value="recorded" className="mt-10">
+          <CourseNewModules
+            addModule={addModule}
+            deleteModule={deleteModule}
+            fetchModules={fetchModules}
+            modules={modules}
+            editModule={editModule}
+          />
         </TabsContent>
-        <TabsContent value="skills_covered">
-          {course && (
-            <EditCourseSkillsCovered course={course} setCourse={setCourse} />
-          )}
+        <TabsContent value="assignments" className="mt-10">
+          <CourseAssignments
+            addAssignment={addAssignment}
+            assignments={assignments}
+            deleteAssignment={deleteAssignment}
+            editAssignment={editAssignment}
+            fetchAssignments={fetchAssignments}
+          />
         </TabsContent>
-        <TabsContent value="modules">
-          {course && <CourseModules course={course} />}
-        </TabsContent>
-        <TabsContent value="live">
-          {course && <LiveSession course={course} />}
+        <TabsContent value="live" className="mt-10">
+          <CourseLiveSession
+            editSession={editLiveSession}
+            scheduleSession={scheduleLiveSession}
+            fetchSessions={fetchLiveSessions}
+            sessions={liveSessions}
+            deleteSession={deleteLiveSession}
+            viewSession={viewLiveSession}
+          />
         </TabsContent>
       </Tabs>
     </TrainerLayout>
   );
 };
 
-export default EditCourse;
+export default TrainerNewEditCoursePage;

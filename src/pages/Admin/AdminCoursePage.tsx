@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -8,9 +9,27 @@ import {
 } from "@/components";
 import { axiosGetRequest } from "@/config/axios";
 import { AdminLayout } from "@/layouts";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import {
+  Play,
+  FileText,
+  Clock,
+  Users,
+  Star,
+  Calendar,
+  Video,
+  BookOpen,
+  CheckCircle,
+  Tag,
+  Globe,
+  TrendingUp,
+  Award,
+  Target,
+  User,
+  Mail,
+} from "lucide-react";
 
+// Interface definitions
 export interface CourseDocument {
   _id: string;
   title: string;
@@ -22,7 +41,6 @@ export interface CourseDocument {
   description: string;
   isListed: boolean;
   status: "pending" | "approved" | "rejected";
-
   modules: ModuleWithLessons[];
   liveSessions: LiveSession[];
   assignments: Assignment[];
@@ -74,53 +92,95 @@ export interface Trainer {
 }
 
 const StatusBadge = ({ status }: { status: string }) => {
-  const getStatusColor = () => {
+  const getStatusConfig = () => {
     switch (status) {
       case "approved":
-        return "bg-green-100 text-green-800 border-green-200";
+        return {
+          color: "bg-green-900/30 text-green-400 border-green-700",
+          text: "Approved",
+        };
       case "pending":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200";
+        return {
+          color: "bg-yellow-900/30 text-yellow-400 border-yellow-700",
+          text: "Pending",
+        };
       case "rejected":
-        return "bg-red-100 text-red-800 border-red-200";
+        return {
+          color: "bg-red-900/30 text-red-400 border-red-700",
+          text: "Rejected",
+        };
       case "live":
-        return "bg-red-100 text-red-800 border-red-200";
+        return {
+          color: "bg-red-900/30 text-red-400 border-red-700",
+          text: "Live",
+        };
       case "upcoming":
-        return "bg-blue-100 text-blue-800 border-blue-200";
+        return {
+          color: "bg-blue-900/30 text-blue-400 border-blue-700",
+          text: "Upcoming",
+        };
       case "completed":
-        return "bg-gray-100 text-gray-800 border-gray-200";
+        return {
+          color: "bg-white/5  text-gray-300 border-white/10",
+          text: "Completed",
+        };
       default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
+        return {
+          color: "bg-white/5  text-gray-300 border-white/10",
+          text: status,
+        };
     }
   };
 
+  const config = getStatusConfig();
+
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor()}`}
+      className={`inline-flex items-center px-3 py-1 rounded-md text-sm font-medium border ${config.color}`}
     >
-      {status}
+      {config.text}
     </span>
   );
 };
 
 const DifficultyBadge = ({ difficulty }: { difficulty: string }) => {
-  const getDifficultyColor = () => {
+  const getDifficultyConfig = () => {
     switch (difficulty) {
       case "beginner":
-        return "bg-green-50 text-green-700 ring-green-600/20";
+        return {
+          color: "bg-emerald-900/30 text-emerald-400 border-emerald-700",
+          icon: <Star className="w-4 h-4" />,
+          text: "Beginner",
+        };
       case "intermediate":
-        return "bg-yellow-50 text-yellow-700 ring-yellow-600/20";
+        return {
+          color: "bg-orange-900/30 text-orange-400 border-orange-700",
+          icon: <Award className="w-4 h-4" />,
+          text: "Intermediate",
+        };
       case "advanced":
-        return "bg-red-50 text-red-700 ring-red-600/20";
+        return {
+          color: "bg-red-900/30 text-red-400 border-red-700",
+          icon: <Target className="w-4 h-4" />,
+          text: "Advanced",
+        };
       default:
-        return "bg-gray-50 text-gray-700 ring-gray-600/20";
+        return {
+          color: "bg-white/5  text-gray-300 border-white/10",
+          icon: <BookOpen className="w-4 h-4" />,
+          text: difficulty,
+        };
     }
   };
 
+  const config = getDifficultyConfig();
+
   return (
     <span
-      className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${getDifficultyColor()}`}
+      className={`inline-flex items-center gap-2 px-3 py-1 rounded-md text-sm font-medium border ${config.color}`}
     >
-      {difficulty}
+      {config.icon}
+      {config.text}
     </span>
   );
 };
@@ -142,344 +202,433 @@ const AdminCoursePage = () => {
   if (!course) {
     return (
       <AdminLayout>
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
+            <p className="text-gray-400 font-medium">
+              Loading course details...
+            </p>
+          </div>
         </div>
       </AdminLayout>
     );
   }
 
+  const totalLessons = course.modules.reduce(
+    (total, module) => total + module.lessons.length,
+    0
+  );
+
   return (
     <AdminLayout>
-      <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
-        {/* Header Section */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="md:flex">
-            {/* Course Thumbnail */}
-            <div className="md:w-1/3">
+      <div className="min-h-screen text-gray-100">
+        <div className="max-w-7xl mx-auto px-6 pb-5 space-y-8">
+          {/* Header Section */}
+          <div className="bg-white/5 rounded-lg border border-white/10 overflow-hidden">
+            <div className="relative">
               <img
                 src={course.thumbnail}
                 alt={course.title}
-                className="w-full h-64 md:h-full object-cover"
+                className="w-full h-80 object-cover"
               />
-            </div>
+              <div className="absolute inset-0 bg-black bg-opacity-50" />
 
-            {/* Course Info */}
-            <div className="md:w-2/3 p-8">
-              <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
-                <h1 className="text-3xl font-bold text-gray-900 leading-tight">
-                  {course.title}
-                </h1>
-                <StatusBadge status={course.status} />
-              </div>
+              {/* Course Info Overlay */}
+              <div className="absolute bottom-6 left-6 right-6">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <StatusBadge status={course.status} />
+                    <span className="bg-gray-900/70 text-gray-300 px-3 py-1 rounded-md text-sm font-medium border border-white/10 flex items-center gap-2">
+                      <Tag className="w-4 h-4" />
+                      {course.category.categoryName}
+                    </span>
+                    <DifficultyBadge difficulty={course.difficulty} />
+                    <span className="bg-gray-900/70 text-gray-300 px-3 py-1 rounded-md text-sm font-medium border border-white/10 flex items-center gap-2">
+                      <Globe className="w-4 h-4" />
+                      {course.isListed ? "Public" : "Private"}
+                    </span>
+                  </div>
 
-              <div className="text-sm text-gray-600 mb-4">
-                <span className="font-medium">Category:</span>{" "}
-                {course.category.categoryName}
-              </div>
+                  <h1 className="text-4xl font-bold text-white leading-tight">
+                    {course.title}
+                  </h1>
 
-              {/* Stats Row */}
-              <div className="flex flex-wrap gap-6 mb-6">
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl font-bold text-green-600">
+                  <div className="text-3xl font-bold text-green-400">
                     ₹{course.price.toLocaleString()}
-                  </span>
-                </div>
-                <DifficultyBadge difficulty={course.difficulty} />
-                <div className="flex items-center gap-2 text-sm">
-                  <span className="font-medium text-gray-700">Listed:</span>
-                  <span
-                    className={`px-2 py-1 rounded text-xs font-medium ${
-                      course.isListed
-                        ? "bg-green-100 text-green-700"
-                        : "bg-gray-100 text-gray-700"
-                    }`}
-                  >
-                    {course.isListed ? "Yes" : "No"}
-                  </span>
-                </div>
-              </div>
-
-              <p className="text-gray-700 mb-6 leading-relaxed">
-                {course.description}
-              </p>
-
-              {/* Skills and Requirements */}
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-3">
-                    Skills Covered
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {course.skillsCovered.map((skill, i) => (
-                      <span
-                        key={i}
-                        className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium"
-                      >
-                        {skill}
-                      </span>
-                    ))}
                   </div>
                 </div>
-
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-3">
-                    Requirements
-                  </h3>
-                  <ul className="space-y-1">
-                    {course.requirements.map((req, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-2 text-sm text-gray-600"
-                      >
-                        <span className="text-gray-400 mt-1">•</span>
-                        <span>{req}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
               </div>
+            </div>
+          </div>
 
-              <Separator className="my-6" />
-
-              {/* Course Stats */}
-              <div className="grid grid-cols-3 gap-6 text-center">
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-white/5 rounded-lg p-6 border border-white/10">
+              <div className="flex items-center gap-4">
+                <div className="bg-blue-900/50 p-3 rounded-lg">
+                  <BookOpen className="w-6 h-6 text-blue-400" />
+                </div>
                 <div>
-                  <div className="text-2xl font-bold text-gray-900">
+                  <div className="text-2xl font-bold text-white">
                     {course.modules.length}
                   </div>
-                  <div className="text-sm text-gray-600">Modules</div>
+                  <div className="text-gray-400 text-sm">Modules</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white/5 rounded-lg p-6 border border-white/10">
+              <div className="flex items-center gap-4">
+                <div className="bg-purple-900/50 p-3 rounded-lg">
+                  <Play className="w-6 h-6 text-purple-400" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-gray-900">
+                  <div className="text-2xl font-bold text-white">
+                    {totalLessons}
+                  </div>
+                  <div className="text-gray-400 text-sm">Total Lessons</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white/5 rounded-lg p-6 border border-white/10">
+              <div className="flex items-center gap-4">
+                <div className="bg-red-900/50 p-3 rounded-lg">
+                  <Video className="w-6 h-6 text-red-400" />
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-white">
                     {course.liveSessions.length}
                   </div>
-                  <div className="text-sm text-gray-600">Live Sessions</div>
+                  <div className="text-gray-400 text-sm">Live Sessions</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white/5 rounded-lg p-6 border border-white/10">
+              <div className="flex items-center gap-4">
+                <div className="bg-amber-900/50 p-3 rounded-lg">
+                  <FileText className="w-6 h-6 text-amber-400" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-gray-900">
+                  <div className="text-2xl font-bold text-white">
                     {course.assignments.length}
                   </div>
-                  <div className="text-sm text-gray-600">Assignments</div>
+                  <div className="text-gray-400 text-sm">Assignments</div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Trainer Info */}
-        <Card className="p-6 bg-white shadow-sm border border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
-            Course Trainer
-          </h2>
-          <div className="flex items-center gap-4">
-            <img
-              src={course.trainer.profileImage}
-              alt={course.trainer.username}
-              className="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
-            />
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">
-                {course.trainer.username}
+          {/* Course Description */}
+          <div className="bg-white/5 rounded-lg p-8 border border-white/10">
+            <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-3">
+              <FileText className="w-5 h-5 text-blue-400" />
+              Course Description
+            </h2>
+            <p className="text-gray-300 leading-relaxed">
+              {course.description}
+            </p>
+          </div>
+
+          {/* Skills and Requirements */}
+          <div className="grid lg:grid-cols-2 gap-8">
+            <div className="bg-white/5 rounded-lg p-8 border border-white/10">
+              <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-3">
+                <TrendingUp className="w-5 h-5 text-blue-400" />
+                Skills Covered
               </h3>
-              <p className="text-gray-600">{course.trainer.email}</p>
+              <div className="flex flex-wrap gap-2">
+                {course.skillsCovered.map((skill, i) => (
+                  <span
+                    key={i}
+                    className="bg-blue-900/30 text-blue-400 px-3 py-2 rounded-md text-sm font-medium border border-blue-700"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-white/5 rounded-lg p-8 border border-white/10">
+              <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-3">
+                <CheckCircle className="w-5 h-5 text-green-400" />
+                Requirements
+              </h3>
+              <ul className="space-y-3">
+                {course.requirements.map((req, i) => (
+                  <li key={i} className="flex items-start gap-3 text-gray-300">
+                    <div className="w-2 h-2 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <span>{req}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
-        </Card>
 
-        {/* Course Content */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-          <Accordion type="multiple" className="divide-y divide-gray-200">
-            {/* Recorded Sessions */}
-            <AccordionItem value="recorded" className="border-0">
-              <AccordionTrigger className="px-6 py-4 text-xl font-semibold text-gray-900 hover:bg-gray-50">
-                📚 Recorded Sessions (
-                {course.modules.reduce(
-                  (total, module) => total + module.lessons.length,
-                  0
-                )}{" "}
-                lessons)
-              </AccordionTrigger>
-              <AccordionContent className="px-6 pb-6">
-                <div className="space-y-4">
-                  {course.modules.map((module) => (
-                    <Card key={module._id} className="border border-gray-200">
-                      <Accordion type="multiple">
-                        <AccordionItem value={module._id} className="border-0">
-                          <AccordionTrigger className="px-4 py-3 text-lg font-medium text-gray-800 hover:bg-gray-50">
-                            📁 {module.title} ({module.lessons.length} lessons)
-                          </AccordionTrigger>
-                          <AccordionContent className="px-4 pb-4">
-                            <div className="space-y-3">
-                              {module.lessons.map((lesson) => (
-                                <Card
-                                  key={lesson._id}
-                                  className="border border-gray-100 bg-gray-50"
-                                >
-                                  <Accordion type="single" collapsible>
-                                    <AccordionItem
-                                      value={lesson._id}
-                                      className="border-0"
-                                    >
-                                      <AccordionTrigger className="px-4 py-3 text-gray-700 hover:bg-white">
-                                        <div className="flex items-center gap-3">
-                                          <span className="text-lg">
-                                            {lesson.type === "video"
-                                              ? "🎥"
-                                              : "📄"}
-                                          </span>
-                                          <span>{lesson.title}</span>
-                                          <span className="text-xs bg-gray-200 text-gray-600 px-2 py-1 rounded">
-                                            {lesson.type}
-                                          </span>
-                                        </div>
-                                      </AccordionTrigger>
-                                      <AccordionContent className="px-4 pb-4">
-                                        <div className="bg-white rounded-lg p-4 border border-gray-200">
-                                          <div className="grid md:grid-cols-2 gap-6">
-                                            <div>
-                                              {lesson.type === "video" ? (
-                                                <video
-                                                  src={lesson.path}
-                                                  controls
-                                                  className="w-full rounded-lg shadow-sm"
-                                                />
-                                              ) : (
-                                                <iframe
-                                                  src={lesson.path}
-                                                  className="w-full h-64 rounded-lg shadow-sm"
-                                                />
-                                              )}
-                                            </div>
-                                            <div className="space-y-3">
-                                              <h4 className="font-semibold text-gray-900">
-                                                {lesson.title}
-                                              </h4>
-                                              <div className="text-sm text-gray-600">
-                                                <span className="font-medium">
-                                                  Type:
-                                                </span>{" "}
-                                                {lesson.type.toUpperCase()}
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </AccordionContent>
-                                    </AccordionItem>
-                                  </Accordion>
-                                </Card>
-                              ))}
-                            </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      </Accordion>
-                    </Card>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
+          {/* Trainer Info */}
+          <div className="bg-white/5 rounded-lg p-8 border border-white/10">
+            <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-3">
+              <User className="w-5 h-5 text-purple-400" />
+              Course Trainer
+            </h2>
+            <div className="flex items-center gap-6 bg-white/5  rounded-lg p-6">
+              <img
+                src={course.trainer.profileImage}
+                alt={course.trainer.username}
+                className="w-16 h-16 rounded-full object-cover border-2 border-white/10"
+              />
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-white">
+                  {course.trainer.username}
+                </h3>
+                <p className="text-gray-400 flex items-center gap-2">
+                  <Mail className="w-4 h-4" />
+                  {course.trainer.email}
+                </p>
+                <Link to={`/admin/users/${course.trainer._id}`}>
+                  View Trainer
+                </Link>
+              </div>
+            </div>
+          </div>
 
-            {/* Live Sessions */}
-            <AccordionItem value="live" className="border-0">
-              <AccordionTrigger className="px-6 py-4 text-xl font-semibold text-gray-900 hover:bg-gray-50">
-                🎯 Live Sessions ({course.liveSessions.length})
-              </AccordionTrigger>
-              <AccordionContent className="px-6 pb-6">
-                <div className="space-y-4">
-                  {course.liveSessions.map((session) => (
-                    <Card key={session._id} className="border border-gray-200">
-                      <Accordion type="single" collapsible>
-                        <AccordionItem value={session._id} className="border-0">
-                          <AccordionTrigger className="px-4 py-3 text-gray-800 hover:bg-gray-50">
-                            <div className="flex items-center gap-3">
-                              <span className="text-lg">🎥</span>
-                              <span>{session.title}</span>
-                              <StatusBadge status={session.status} />
-                            </div>
-                          </AccordionTrigger>
-                          <AccordionContent className="px-4 pb-4">
-                            <div className="bg-gray-50 rounded-lg p-4">
-                              <div className="grid md:grid-cols-2 gap-6">
-                                <div>
-                                  <video
-                                    src={
-                                      session.status === "completed"
-                                        ? session.recordedSrc
-                                        : session.liveSrc
-                                    }
-                                    controls
-                                    className="w-full rounded-lg shadow-sm"
-                                  />
-                                </div>
-                                <div className="space-y-3">
-                                  <h4 className="font-semibold text-gray-900">
-                                    {session.title}
+          {/* Course Content */}
+          <div className="bg-white/5 rounded-lg border border-white/10 overflow-hidden">
+            <Accordion type="multiple" className="divide-y divide-gray-700">
+              {/* Recorded Sessions */}
+              <AccordionItem value="recorded" className="border-0">
+                <AccordionTrigger className="px-8 py-6 text-lg font-semibold text-white hover:bg-gray-700">
+                  <div className="flex items-center gap-4">
+                    <div className="bg-blue-900/50 p-2 rounded-lg">
+                      <BookOpen className="w-5 h-5 text-blue-400" />
+                    </div>
+                    <span>Recorded Sessions</span>
+                    <span className="text-sm text-gray-400 font-normal bg-gray-700 px-3 py-1 rounded-md">
+                      {totalLessons} lessons
+                    </span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-8 pb-8">
+                  <div className="space-y-6">
+                    {course.modules.map((module, moduleIndex) => (
+                      <div
+                        key={module._id}
+                        className="bg-white/5  border border-white/10 rounded-lg p-6"
+                      >
+                        <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-3">
+                          <div className="bg-amber-900/50 p-2 rounded-lg">
+                            <BookOpen className="w-4 h-4 text-amber-400" />
+                          </div>
+                          <span>{module.title}</span>
+                          <span className="text-sm text-gray-400 font-normal bg-gray-600 px-3 py-1 rounded-md">
+                            {module.lessons.length} lessons
+                          </span>
+                        </h3>
+
+                        <div className="grid gap-4">
+                          {module.lessons.map((lesson, lessonIndex) => (
+                            <div
+                              key={lesson._id}
+                              className="bg-white/5 border border-white/10 rounded-lg p-6"
+                            >
+                              <div className="flex items-center justify-between mb-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="bg-purple-900/50 p-2 rounded-lg">
+                                    {lesson.type === "video" ? (
+                                      <Play className="w-4 h-4 text-purple-400" />
+                                    ) : (
+                                      <FileText className="w-4 h-4 text-purple-400" />
+                                    )}
+                                  </div>
+                                  <h4 className="font-medium text-white">
+                                    {lesson.title}
                                   </h4>
-                                  <p className="text-gray-600 text-sm leading-relaxed">
-                                    {session.description}
-                                  </p>
-                                  <div className="space-y-2 text-sm">
-                                    <div className="flex items-center gap-2">
-                                      <span className="font-medium text-gray-700">
-                                        Status:
-                                      </span>
-                                      <StatusBadge status={session.status} />
-                                    </div>
-                                    <div className="text-gray-600">
-                                      <span className="font-medium">Date:</span>{" "}
-                                      {session.date}
-                                    </div>
-                                    <div className="text-gray-600">
-                                      <span className="font-medium">Time:</span>{" "}
-                                      {session.time}
-                                    </div>
+                                  <span className="text-xs bg-purple-900/30 text-purple-400 px-2 py-1 rounded border border-purple-700">
+                                    {lesson.type.toUpperCase()}
+                                  </span>
+                                </div>
+                                <span className="text-gray-400 text-sm">
+                                  {moduleIndex + 1}.{lessonIndex + 1}
+                                </span>
+                              </div>
+
+                              <div className="grid lg:grid-cols-2 gap-6">
+                                <div className="bg-gray-900 rounded-lg overflow-hidden">
+                                  {lesson.type === "video" ? (
+                                    <video
+                                      src={lesson.path}
+                                      controls
+                                      className="w-full aspect-video"
+                                    />
+                                  ) : (
+                                    <iframe
+                                      src={lesson.path}
+                                      className="w-full h-64"
+                                    />
+                                  )}
+                                </div>
+                                <div className="space-y-4">
+                                  <div className="flex items-center gap-3 text-sm">
+                                    <span className="font-medium text-gray-300">
+                                      Type:
+                                    </span>
+                                    <span className="bg-gray-700 px-2 py-1 rounded text-gray-400">
+                                      {lesson.type.toUpperCase()}
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center gap-3 text-sm">
+                                    <span className="font-medium text-gray-300">
+                                      Module:
+                                    </span>
+                                    <span className="text-gray-400">
+                                      {module.title}
+                                    </span>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      </Accordion>
-                    </Card>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-
-            {/* Assignments */}
-            <AccordionItem value="assignments" className="border-0">
-              <AccordionTrigger className="px-6 py-4 text-xl font-semibold text-gray-900 hover:bg-gray-50">
-                📝 Assignments ({course.assignments.length})
-              </AccordionTrigger>
-              <AccordionContent className="px-6 pb-6">
-                <div className="grid gap-4">
-                  {course.assignments.map((assignment) => (
-                    <Card
-                      key={assignment._id}
-                      className="p-6 border border-gray-200 hover:shadow-md transition-shadow"
-                    >
-                      <div className="space-y-3">
-                        <h4 className="text-lg font-semibold text-gray-900">
-                          📋 {assignment.title}
-                        </h4>
-                        <p className="text-gray-600 leading-relaxed">
-                          {assignment.description}
-                        </p>
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                          <h5 className="font-medium text-blue-900 mb-2">
-                            Task:
-                          </h5>
-                          <p className="text-blue-800 text-sm">
-                            {assignment.task}
-                          </p>
+                          ))}
                         </div>
                       </div>
-                    </Card>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              {/* Live Sessions */}
+              <AccordionItem value="live" className="border-0">
+                <AccordionTrigger className="px-8 py-6 text-lg font-semibold text-white hover:bg-gray-700">
+                  <div className="flex items-center gap-4">
+                    <div className="bg-red-900/50 p-2 rounded-lg">
+                      <Video className="w-5 h-5 text-red-400" />
+                    </div>
+                    <span>Live Sessions</span>
+                    <span className="text-sm text-gray-400 font-normal bg-gray-700 px-3 py-1 rounded-md">
+                      {course.liveSessions.length} sessions
+                    </span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-8 pb-8">
+                  <div className="space-y-6">
+                    {course.liveSessions.map((session) => (
+                      <div
+                        key={session._id}
+                        className="bg-white/5  border border-white/10 rounded-lg overflow-hidden"
+                      >
+                        <Accordion type="single" collapsible>
+                          <AccordionItem
+                            value={session._id}
+                            className="border-0"
+                          >
+                            <AccordionTrigger className="px-6 py-4 text-white hover:bg-gray-700">
+                              <div className="flex items-center gap-4 w-full">
+                                <div className="bg-red-900/50 p-2 rounded-lg">
+                                  <Video className="w-4 h-4 text-red-400" />
+                                </div>
+                                <span className="flex-1 text-left font-medium">
+                                  {session.title}
+                                </span>
+                                <StatusBadge status={session.status} />
+                              </div>
+                            </AccordionTrigger>
+                            <AccordionContent className="px-6 pb-6">
+                              <div className="bg-white/5 rounded-lg p-6 border border-white/10">
+                                <div className="grid lg:grid-cols-2 gap-8">
+                                  <div className="bg-gray-900 rounded-lg overflow-hidden">
+                                    <video
+                                      src={
+                                        session.status === "completed"
+                                          ? session.recordedSrc
+                                          : session.liveSrc
+                                      }
+                                      controls
+                                      className="w-full aspect-video"
+                                    />
+                                  </div>
+                                  <div className="space-y-6">
+                                    <h4 className="font-semibold text-white text-lg">
+                                      {session.title}
+                                    </h4>
+                                    <p className="text-gray-300 leading-relaxed">
+                                      {session.description}
+                                    </p>
+                                    <div className="space-y-4">
+                                      <div className="flex items-center gap-3">
+                                        <span className="font-medium text-gray-300 flex items-center gap-2">
+                                          <CheckCircle className="w-4 h-4" />
+                                          Status:
+                                        </span>
+                                        <StatusBadge status={session.status} />
+                                      </div>
+                                      <div className="flex items-center gap-3 text-gray-300">
+                                        <span className="font-medium flex items-center gap-2">
+                                          <Calendar className="w-4 h-4" />
+                                          Date:
+                                        </span>
+                                        <span className="bg-gray-700 px-3 py-1 rounded">
+                                          {session.date}
+                                        </span>
+                                      </div>
+                                      <div className="flex items-center gap-3 text-gray-300">
+                                        <span className="font-medium flex items-center gap-2">
+                                          <Clock className="w-4 h-4" />
+                                          Time:
+                                        </span>
+                                        <span className="bg-gray-700 px-3 py-1 rounded">
+                                          {session.time}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </AccordionContent>
+                          </AccordionItem>
+                        </Accordion>
+                      </div>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              {/* Assignments */}
+              <AccordionItem value="assignments" className="border-0">
+                <AccordionTrigger className="px-8 py-6 text-lg font-semibold text-white hover:bg-gray-700">
+                  <div className="flex items-center gap-4">
+                    <div className="bg-green-900/50 p-2 rounded-lg">
+                      <FileText className="w-5 h-5 text-green-400" />
+                    </div>
+                    <span>Assignments</span>
+                    <span className="text-sm text-gray-400 font-normal bg-gray-700 px-3 py-1 rounded-md">
+                      {course.assignments.length} assignments
+                    </span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-8 pb-8">
+                  <div className="space-y-6">
+                    {course.assignments.map((assignment) => (
+                      <div
+                        key={assignment._id}
+                        className="bg-white/5  border border-white/10 rounded-lg p-6"
+                      >
+                        <h4 className="font-semibold text-white text-lg mb-3">
+                          {assignment.title}
+                        </h4>
+                        <p className="text-gray-300 mb-4">
+                          {assignment.description}
+                        </p>
+                        <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                          <h5 className="font-medium text-white mb-2">Task:</h5>
+                          <p className="text-gray-300">{assignment.task}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
         </div>
       </div>
     </AdminLayout>

@@ -1,17 +1,10 @@
-export { default as AiChat } from "./AiChat";
-export { default as Certificate } from "./Certificate";
-export { default as ChatBox } from "./ChatBox";
-export { default as ChatSidebar } from "./ChatSidebar";
 export { default as CourseCard } from "./CourseCard";
 export { default as CourseFilter } from "./CourseFilter";
 export { default as EditProfile } from "./EditProfile";
 export { default as EnrolledCourseCard } from "./EnrolledCourseCard";
-export { default as LiveSessionCard } from "./LiveSessionCard";
-export { default as Notebook } from "./Notebook";
 export { default as Review } from "./Review";
 export { default as SubscriptionCard } from "./SubscriptionCard";
 export { default as UserHeader } from "./UserHeader";
-export { default as UserProfile } from "./UserProfile";
 export { default as UserSidebar } from "./UserSidebar";
 export { default as WalletCard } from "./WalletCard";
 export { default as Wishlist } from "./Wishlist";

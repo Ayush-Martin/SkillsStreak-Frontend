@@ -22,7 +22,7 @@ import useViewCourseRecorded from "@/hooks/useViewCourseRecorded";
 import { EnrolledCourseLayout } from "@/layouts";
 import { ICourseRecordedSession } from "@/types/courseType";
 import { PlayCircle, FileText, CheckCircle2 } from "lucide-react";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const UserCourseRecordedPage = () => {
@@ -203,6 +203,8 @@ const CourseContentsAccordion: FC<ICourseContentsAccordionProps> = ({
     0
   );
 
+  console.log(completedLessons, "completedLessons");
+
   const completionPercentage = (completedLessons.length / totalLessons) * 100;
 
   return (
@@ -287,9 +289,11 @@ interface ILessonProps {
   completeLesson: () => void;
 }
 const Lesson: FC<ILessonProps> = ({ type, title, path, completeLesson }) => {
-  if (type === "pdf") {
-    completeLesson();
-  }
+  useEffect(() => {
+    if (type === "pdf") {
+      completeLesson();
+    }
+  }, []);
 
   return (
     <div

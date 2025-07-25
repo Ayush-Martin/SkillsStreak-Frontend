@@ -15,29 +15,30 @@ const ForgetPassword = lazy(() => import("./pages/Auth/ForgetPasswordPage"));
 const ResetPassword = lazy(() => import("./pages/Auth/ResetPasswordPage"));
 
 //User Routes
-const ChangePassword = lazy(() => import("./pages/User/ChangePasswordPage"));
+const ChangePassword = lazy(
+  () => import("./pages/User/UserChangePasswordPage")
+);
 const Dashboard = lazy(() => import("./pages/User/UserDashBoardPage"));
 const EnrolledCourses = lazy(
-  () => import("./pages/User/UserEnrolledCoursePage")
+  () => import("./pages/User/UserEnrolledCoursesPage")
 );
 const Transactions = lazy(() => import("./pages/User/UserTransactionsPage"));
 const SendTrainerRequest = lazy(
   () => import("./pages/User/UserTrainerRequestPage")
 );
-const Course = lazy(() => import("./pages/User/UserCoursePage"));
-const ChatNew = lazy(() => import("./pages/User/UserChatPage"));
-const LiveSession = lazy(() => import("./pages/User/UserLiveSessionPage"));
-const NewUserChat = lazy(() => import("./pages/User/NewUserChatPage"));
+const NewUserChat = lazy(() => import("./pages/User/UserChatPage"));
 const Profile = lazy(() => import("./pages/User/UserProfilePage"));
-const NewCourse = lazy(() => import("./pages/User/UserNewCoursePage"));
+const EnrolledCourse = lazy(
+  () => import("./pages/User/UserEnrolledCoursePage")
+);
 const CourseRecorded = lazy(
-  () => import("./pages/User/UserCourseRecordedPage")
+  () => import("./pages/User/UserEnrolledCourseRecordedPage")
 );
 const CourseLiveSession = lazy(
-  () => import("./pages/User/UserCourseLiveSessionPage")
+  () => import("./pages/User/UserEnrolledCourseLiveSessionPage")
 );
 const CourseAssignments = lazy(
-  () => import("./pages/User/UserCourseAssignmentsPage")
+  () => import("./pages/User/UserEnrolledCourseAssignmentsPage")
 );
 const Subscription = lazy(() => import("./pages/User/UserSubscriptionPage"));
 
@@ -46,12 +47,6 @@ const TrainerDashboard = lazy(
   () => import("./pages/Trainer/TrainerDashboardPage")
 );
 const TrainerCourses = lazy(() => import("./pages/Trainer/TrainerCoursesPage"));
-const TrainerAddCourse = lazy(
-  () => import("./pages/Trainer/TrainerAddCoursePage")
-);
-const TrainerEditCourse = lazy(
-  () => import("./pages/Trainer/TrainerEditCoursePage")
-);
 const TrainerEditModule = lazy(
   () => import("./pages/Trainer/TrainerEditModulePage")
 );
@@ -59,14 +54,11 @@ const TrainerRevenue = lazy(() => import("./pages/Trainer/TrainerRevenuePage"));
 const TrainerStudents = lazy(
   () => import("./pages/Trainer/TrainerStudentsPage")
 );
-const TrainerLiveStream = lazy(
-  () => import("./pages/Trainer/TrainerLiveStreamPage")
-);
 const TrainerNewAddCourse = lazy(
-  () => import("./pages/Trainer/TrainerNewAddCoursePage")
+  () => import("./pages/Trainer/TrainerAddCoursePage")
 );
 const TrainerNewEditCourse = lazy(
-  () => import("./pages/Trainer/TrainerNewEditCoursePage")
+  () => import("./pages/Trainer/TrainerEditCoursePage")
 );
 const TrainerLiveSession = lazy(
   () => import("./pages/Trainer/TrainerLiveSessionPage")
@@ -167,19 +159,7 @@ export const UserRoutes: Routes = [
   },
   {
     path: "chats",
-    Component: ChatNew,
-  },
-  {
-    path: "chatsNew",
     Component: NewUserChat,
-  },
-  {
-    path: "enrolledCourses/:courseId/view",
-    Component: Course,
-  },
-  {
-    path: "courses/:courseId/live/:streamId",
-    Component: LiveSession,
   },
   {
     path: "changePassword",
@@ -190,19 +170,19 @@ export const UserRoutes: Routes = [
     Component: Profile,
   },
   {
-    path: "course",
-    Component: NewCourse,
+    path: "enrolledCourses/:courseId",
+    Component: EnrolledCourse,
   },
   {
-    path: "course/recorded",
+    path: "enrolledCourses/:courseId/recorded",
     Component: CourseRecorded,
   },
   {
-    path: "course/live",
+    path: "enrolledCourses/:courseId/live",
     Component: CourseLiveSession,
   },
   {
-    path: "course/assignments",
+    path: "enrolledCourses/:courseId/assignments",
     Component: CourseAssignments,
   },
 ];
@@ -217,14 +197,6 @@ export const TrainerRoutes: Routes = [
     Component: TrainerCourses,
   },
   {
-    path: "courses/add",
-    Component: TrainerAddCourse,
-  },
-  {
-    path: "courses/:courseId",
-    Component: TrainerEditCourse,
-  },
-  {
     path: "courses/:courseId/:moduleId",
     Component: TrainerEditModule,
   },
@@ -237,19 +209,15 @@ export const TrainerRoutes: Routes = [
     Component: TrainerRevenue,
   },
   {
-    path: "courses/:courseId/live/new",
-    Component: TrainerLiveStream,
-  },
-  {
-    path: "newCourse",
+    path: "courses/new",
     Component: TrainerNewAddCourse,
   },
   {
-    path: "newCourse/:courseId",
+    path: "courses/:courseId",
     Component: TrainerNewEditCourse,
   },
   {
-    path: "newCourse/:courseId/live/:liveSessionId",
+    path: "course/:courseId/live/:liveSessionId",
     Component: TrainerLiveSession,
   },
   {

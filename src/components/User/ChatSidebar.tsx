@@ -5,21 +5,14 @@ import {
   IoMdSearch,
   FaLock,
 } from "@/assets/icons/icons";
-import { FC, useEffect, useState } from "react";
-import { IChat } from "@/types/chatType";
-import { axiosGetRequest } from "@/config/axios";
-import { RootReducer } from "@/store";
-import { useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
+import { FC, useContext, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSubscription } from "@/hooks";
 import { ProfileImage } from "../common";
+import chatContext from "@/context/ChatContext";
 
 interface IChatSidebarProps {
   isOpen: boolean;
-  chats: Array<IChat>;
-  selectChat: (_id: string, icon: string, title: string) => void;
-  selectedChat: { _id: string; icon: string; title: string } | null;
-  setChats: (chats: Array<IChat>) => void;
 }
 
 interface IChatProps {
@@ -29,53 +22,73 @@ interface IChatProps {
   selected: boolean;
   lastMessage: string;
   lastMessageTime: string;
-  selectChat: (_id: string, icon: string, title: string) => void;
   chatType: "group" | "individual";
 }
 
-interface ISearchTrainersProps {
-  // messageTrainer: (trainerId: string, trainerName: string) => void;
-  newChat: (trainerId: string) => void;
-}
-
-const SearchTrainers: FC<ISearchTrainersProps> = ({ newChat }) => {
-  const { _id } = useSelector((state: RootReducer) => state.user);
-  const [trainers, setTrainers] = useState<
-    Array<{ _id: string; username: string }>
-  >([]);
-
-  const [search, setSearch] = useState("");
-  const { getSubscribed, subscriptionDetail } = useSubscription();
-
-  const fetchTrainers = async () => {
-    const res = await axiosGetRequest(`/trainers`);
-    if (!res) return;
-    const data = res.data as Array<{ _id: string; username: string }>;
-    setTrainers(data.filter((x) => x._id != _id));
-  };
+const ChatSidebar: FC<IChatSidebarProps> = ({ isOpen }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { newChat, chats, selectedChat } = useContext(chatContext)!;
 
   useEffect(() => {
-    if (subscriptionDetail?.active) {
-      fetchTrainers();
+    if (chats.length && searchParams.has("trainerId")) {
+      newChat(searchParams.get("trainerId")!);
+      setSearchParams();
     }
-  }, [subscriptionDetail]);
+  }, [searchParams, chats]);
+
+  return (
+    <div
+      className={`w-[270px] flex-shrink-0 h-full border-r  border-app-border  flex-col ${
+        isOpen ? "flex" : "hidden"
+      }`}
+    >
+      <div className="w-full h-[70px] border-b border-app-border flex items-center justify-center px-3 py-3 relative">
+        <SearchTrainers />
+      </div>
+
+      <ScrollArea className=" px-5 py-3">
+        {chats.map((chat) => (
+          <Chat
+            lastMessageTime={chat.lastMessageTime}
+            key={chat._id}
+            _id={chat._id}
+            lastMessage={chat.lastMessage}
+            icon={
+              chat.chatType == "group"
+                ? chat.course.icon
+                : chat.otherMember.icon
+            }
+            title={
+              chat.chatType == "group"
+                ? chat.course.title
+                : chat.otherMember.username
+            }
+            selected={!!selectedChat && selectedChat._id === chat._id}
+            chatType={chat.chatType}
+          />
+        ))}
+      </ScrollArea>
+    </div>
+  );
+};
+
+const SearchTrainers: FC = () => {
+  const navigate = useNavigate();
+  const { newChat, trainers } = useContext(chatContext)!;
+  const [search, setSearch] = useState("");
+  const { subscriptionDetail } = useSubscription();
 
   const newIndividualChat = async (trainerId: string) => {
     newChat(trainerId);
     setSearch("");
   };
 
-  // const selectTrainers = (id: string, name: string) => {
-  //   messageTrainer(id, name);
-  //   setSearch("");
-  // };
-
   return (
     <div className="relative">
       {!subscriptionDetail?.active && (
         <div className="absolute top-0 bottom-0 left-0 right-0 rounded-md w-full h-full bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
           <button
-            onClick={getSubscribed}
+            onClick={() => navigate("/subscriptionPlans")}
             className="flex gap-1 items-center text-app-accent"
           >
             <FaLock className="text-2xl mr-2" />
@@ -126,15 +139,16 @@ const Chat: FC<IChatProps> = ({
   _id,
   icon,
   title,
-  selectChat,
   selected,
   lastMessage,
   lastMessageTime,
   chatType,
 }) => {
+  const { selectChat } = useContext(chatContext)!;
+
   return (
     <button
-      onClick={() => selectChat(_id, icon, title)}
+      onClick={() => selectChat(_id, icon, title, chatType)}
       className={`w-full relative  flex gap-4 items-center mb-4 hover:bg-app-primary  bg-opacity-25 p-2 rounded-md ${
         selected ? "bg-slate-400" : "border border-app-border"
       }`}
@@ -162,78 +176,6 @@ const Chat: FC<IChatProps> = ({
         )}
       </div>
     </button>
-  );
-};
-
-const ChatSidebar: FC<IChatSidebarProps> = ({
-  isOpen,
-  chats,
-  selectChat,
-  selectedChat,
-  setChats,
-}) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  useEffect(() => {
-    if (chats.length && searchParams.has("trainerId")) {
-      newChat(searchParams.get("trainerId")!);
-      setSearchParams();
-    }
-  }, [searchParams, chats]);
-
-  const newChat = async (trainerId: string) => {
-    const chat = chats.find(
-      (chat) =>
-        chat.otherMember._id == trainerId && chat.chatType == "individual"
-    );
-    if (chat) {
-      selectChat(chat._id, chat.otherMember.icon, chat.otherMember.username);
-      return;
-    }
-    const res = await axiosGetRequest(`/chats/new/${trainerId}`);
-    if (!res) return;
-    setChats([...chats, res.data]);
-    selectChat(
-      res.data._id,
-      res.data.otherMember.icon,
-      res.data.otherMember.username
-    );
-  };
-
-  return (
-    <div
-      className={`w-[270px] flex-shrink-0 h-full border-r  border-app-border  flex-col ${
-        isOpen ? "flex" : "hidden"
-      }`}
-    >
-      <div className="w-full h-[70px] border-b border-app-border flex items-center justify-center px-3 py-3 relative">
-        <SearchTrainers newChat={newChat} />
-      </div>
-
-      <ScrollArea className=" px-5 py-3">
-        {chats.map((chat) => (
-          <Chat
-            lastMessageTime={chat.lastMessageTime}
-            key={chat._id}
-            _id={chat._id}
-            lastMessage={chat.lastMessage}
-            icon={
-              chat.chatType == "group"
-                ? chat.course.icon
-                : chat.otherMember.icon
-            }
-            title={
-              chat.chatType == "group"
-                ? chat.course.title
-                : chat.otherMember.username
-            }
-            selected={!!selectedChat && selectedChat._id === chat._id}
-            selectChat={selectChat}
-            chatType={chat.chatType}
-          />
-        ))}
-      </ScrollArea>
-    </div>
   );
 };
 

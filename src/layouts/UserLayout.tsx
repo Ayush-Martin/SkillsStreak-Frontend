@@ -7,8 +7,8 @@ interface IUserLayoutProps {
 
 const UserLayout: FC<IUserLayoutProps> = ({ children }) => {
   useEffect(() => {
-    import("@/pages/User/NewUserChatPage");
-    import("@/pages/User/UserEnrolledCoursePage");
+    import("@/pages/User/UserChatPage");
+    import("@/pages/User/UserEnrolledCoursesPage");
     import("@/pages/User/UserTransactionsPage");
   }, []);
   return (

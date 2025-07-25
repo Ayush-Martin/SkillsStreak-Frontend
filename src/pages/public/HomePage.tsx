@@ -20,8 +20,7 @@ import {
   FAQ_SECTION,
 } from "@/constants/sections";
 import { ICourseData } from "@/types/courseType";
-import { COURSES_API } from "@/constants";
-import { axiosGetRequest } from "@/config/axios";
+import { getUserCourses } from "@/api/course.api";
 
 const PAGE_RECORD_LIMIT = 3;
 
@@ -33,19 +32,17 @@ const Home: FC = () => {
   useEffect(() => {
     setLoading(true);
     const fetchCourses = async () => {
-      const params = new URLSearchParams({
-        page: "1",
+      const data = await getUserCourses({
+        page: 1,
         search: "",
         category: "all",
         difficulty: "all",
         price: "all",
-        size: PAGE_RECORD_LIMIT.toString(),
+        size: PAGE_RECORD_LIMIT,
         sort: "popularity",
       });
-
-      const res = await axiosGetRequest(`${COURSES_API}?${params.toString()}`);
-      if (!res) return;
-      setCourses(res.data.courses);
+      if (!data) return;
+      setCourses(data);
       setLoading(false);
     };
     fetchCourses();
@@ -123,6 +120,7 @@ const Home: FC = () => {
                     )
                   : courses.map((course) => (
                       <CourseCard
+                        linkPrefix="/courses"
                         averageRating={course.averageRating}
                         _id={course._id}
                         key={course._id}
@@ -136,37 +134,6 @@ const Home: FC = () => {
                     ))}
               </div>
             </div>
-
-            {/* <div className="px-5 mt-5">
-              <Carousel className="">
-                <CarouselContent className="w-full gap-2 sm:gap-4 lg:gap-6">
-                  {loading
-                    ? Array.from(
-                        { length: PAGE_RECORD_LIMIT },
-                        (_, i) => i
-                      ).map((index) => (
-                        <div key={index} className="w-[320px]">
-                          <CourseCardSkeleton />
-                        </div>
-                      ))
-                    : courses.map((course) => (
-                        <div key={course._id} className="w-[320px]">
-                          <CourseCard
-                            _id={course._id}
-                            category={course.category.categoryName}
-                            noOfEnrolled={course.noOfEnrolled}
-                            noOfModules={course.moduleCount}
-                            price={course.price}
-                            thumbnail={course.thumbnail}
-                            title={course.title}
-                          />
-                        </div>
-                      ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
-            </div> */}
           </div>
           <div>
             <h1 className="text-2xl  text-center text-white font-tektur mb-10 tracking-wide">

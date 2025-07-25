@@ -88,14 +88,7 @@ export interface ICourseDetails {
     _id: string;
     categoryName: string;
   };
-  liveSessions: Array<{
-    _id: string;
-    title: string;
-    thumbnail: string;
-    isLive: boolean;
-    isPublic: boolean;
-  }>;
-  noOfEnrolled: null;
+  noOfEnrolled: number;
 }
 
 // export interface ILiveSession {

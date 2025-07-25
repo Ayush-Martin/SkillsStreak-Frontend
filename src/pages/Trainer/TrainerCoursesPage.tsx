@@ -57,7 +57,7 @@ const MyCourses: FC = () => {
       />
 
       <div className="flex justify-center w-full my-5">
-        <Button variant={"v1"} onClick={() => navigate("/trainer/courses/add")}>
+        <Button variant={"v1"} onClick={() => navigate("/trainer/courses/new")}>
           Add Course
         </Button>
       </div>

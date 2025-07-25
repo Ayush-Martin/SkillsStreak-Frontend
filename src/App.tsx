@@ -45,10 +45,11 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    import("@/pages/User/UserCoursePage");
-    import("@/pages/User/UserDashBoardPage");
+    import("@/pages/public/CourseDetailPage");
     import("@/pages/public/CoursesPage");
-    import("@/pages/public/HomePage");
+    import("@/pages/public/TrainerPage");
+    import("@/pages/public/PaymentSuccessPage");
+    import("@/pages/public/PaymentFailurePage");
   }, []);
 
   useEffect(() => {

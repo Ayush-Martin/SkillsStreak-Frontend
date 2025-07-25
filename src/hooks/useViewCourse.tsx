@@ -7,9 +7,10 @@ import {
 import { IAiChatMessage } from "@/types/chatType";
 import { INotebook } from "@/types/notebookType";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const useViewCourse = () => {
-  const courseId = "685435d5450268cd9abe5450";
+  const { courseId } = useParams();
 
   const [aiChats, setAiChats] = useState<{
     chats: IAiChatMessage[];
@@ -114,7 +115,7 @@ const useViewCourse = () => {
   };
 
   useEffect(() => {
-    // fetchWelcomeAiChat();
+    fetchWelcomeAiChat();
   }, []);
 
   return {

@@ -172,6 +172,7 @@ const AdminRevenue = () => {
         <TableHeader>
           <TableRow>
             <TableHead>Payer</TableHead>
+            <TableHead>Role</TableHead>
             <TableHead>Amount</TableHead>
             <TableHead>Type</TableHead>
           </TableRow>
@@ -184,6 +185,9 @@ const AdminRevenue = () => {
             {paginatedData.map((transaction) => (
               <TableRow key={transaction._id}>
                 <TableCell>{transaction.payer}</TableCell>
+                <TableCell>
+                  {transaction.type === "subscription" ? "User" : "Trainer"}
+                </TableCell>
                 <TableCell>{transaction.amount}</TableCell>
                 <TableCell>{transaction.type}</TableCell>
               </TableRow>

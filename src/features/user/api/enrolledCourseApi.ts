@@ -25,15 +25,3 @@ export const getEnrolledCoursesApi = createAsyncThunk<
   }
 );
 
-export const cancelEnrolledCourseApi = createAsyncThunk<IResponse, string>(
-  "userEnrolledCourses/cancelEnrolledCourse",
-  async (courseId, { rejectWithValue }) => {
-    try {
-      const response = await appApi.delete(`${ENROLLED_COURSES}/${courseId}`);
-      return response.data;
-    } catch (err) {
-      const resErr = err as IApiResponseError;
-      return rejectWithValue(resErr.response.data.error);
-    }
-  }
-);

@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { ModuleType } from "@/types/courseType";
 import { FileText, Pencil, PlaySquare, Trash2 } from "lucide-react";
 import { FC, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 interface IModuleCardProps {
   id: string;

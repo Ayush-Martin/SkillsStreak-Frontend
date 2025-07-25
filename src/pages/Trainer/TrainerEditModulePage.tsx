@@ -20,6 +20,7 @@ import {
 } from "@/utils/validationRules";
 import { ModuleType } from "@/types/courseType";
 import { BiSave, IoMdAddCircleOutline } from "@/assets/icons";
+import { getVideoDuration } from "@/utils/video";
 
 export const LessonSchema = z.object({
   title: LessonTitleValidationRule,
@@ -69,12 +70,21 @@ const EditModule: FC = () => {
     setLoading(true);
     const { description, file, title } = data;
     const type = file.type.startsWith("video") ? "video" : "pdf";
+    let duration: number;
+
+    if (type === "video") {
+      duration = await getVideoDuration(file);
+      console.log(duration);
+    } else {
+      duration = 60;
+    }
 
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
     formData.append("file", file);
     formData.append("type", type);
+    formData.append("duration", Math.round(duration).toString());
     const res = await axiosPostRequest(
       `${TRAINER_COURSES_API}/${courseId}/modules/${moduleId}`,
       formData,
