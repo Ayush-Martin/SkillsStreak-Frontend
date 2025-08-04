@@ -17,16 +17,18 @@ import {
   getAdminCoursesApi,
 } from "@/features/admin/api/adminCourseApi";
 import { changePage } from "@/features/admin/slice/adminCourseSlice";
-import { HighlightText, Pagination, SearchBox } from "@/components";
 import {
+  HighlightText,
+  Pagination,
+  SearchBox,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui";
-import { CourseTableSkeleton } from "@/components/skeletons";
+  CourseTableSkeleton,
+} from "@/components";
 import { useConfirm } from "@/hooks";
 import { Link } from "react-router-dom";
 

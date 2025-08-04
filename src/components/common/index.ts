@@ -21,3 +21,4 @@ export { default as StatCardWithProgress } from "./StatCardWithProgress";
 export { default as TopItemsChart } from "./TopItemsChart";
 export { default as VideoPlayer } from "./VideoPlayer";
 export { default as ProfileImage } from "./ProfileImage";
+export { default as TransactionDetailsModal } from "./TransactionDetailsModal";

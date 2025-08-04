@@ -23,6 +23,7 @@ import {
   Loading,
   ProfileImage,
   Review,
+  EnrollCourseModal
 } from "@/components";
 
 import { useSelector } from "react-redux";
@@ -39,7 +40,6 @@ import {
   Users,
 } from "lucide-react";
 import { getUserCourse } from "@/api/course.api";
-import { EnrollCourseModal } from "@/components/user/course";
 
 const CourseDetail: FC = () => {
   const navigate = useNavigate();

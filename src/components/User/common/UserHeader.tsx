@@ -9,8 +9,8 @@ import {
   Notification,
   ProfileImage,
   Wishlist,
+  Button,
 } from "@/components";
-import { Button } from "@/components/ui";
 import { CgLogIn } from "@/assets/icons";
 import { RootReducer } from "@/store";
 import { useClickOutside, useLogout } from "@/hooks";

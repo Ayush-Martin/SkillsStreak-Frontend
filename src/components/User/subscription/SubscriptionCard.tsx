@@ -1,8 +1,7 @@
 import { FaRegClock } from "react-icons/fa";
-import StatCardWithProgress from "@/components/common/StatCardWithProgress";
 import { isAfter, isBefore, differenceInDays, format } from "date-fns";
 import { FC } from "react";
-import { Button } from "@/components";
+import { Button,StatCardWithProgress } from "@/components";
 
 interface SubscriptionCardProps {
   startDate?: string;

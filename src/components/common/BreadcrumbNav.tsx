@@ -4,7 +4,7 @@ import {
   BreadcrumbItem,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from "@/components/ui";
+} from "@/components";
 import { FC, Fragment } from "react";
 
 interface IBreadcrumbNavProps {

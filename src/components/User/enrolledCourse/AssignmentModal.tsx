@@ -4,10 +4,10 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+  Button,
+  Input,
+  Textarea
+} from "@/components";
 import { FileText, Image as ImageIcon, Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { IAssignmentSubmission } from "@/types/courseType";

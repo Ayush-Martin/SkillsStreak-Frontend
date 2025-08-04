@@ -1,8 +1,7 @@
 import { FC } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { Pagination } from "@/components";
-import AdminLayout from "@/layouts/AdminLayout";
+import {AdminLayout} from "@/layouts";
 import {
   AiOutlineCheckCircle,
   AiFillCloseCircle,
@@ -15,7 +14,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui";
+  Pagination,
+  TableSkeleton
+} from "@/components";
 import { AppDispatch, RootReducer } from "@/store";
 import { changePage } from "@/features/admin/slice/adminTrainerRequestSlice";
 import {
@@ -23,7 +24,6 @@ import {
   getAdminTrainerRequestsApi,
 } from "@/features/admin/api/adminTrainerRequestApi";
 import usePaginatedData from "@/hooks/usePaginatedData";
-import { TableSkeleton } from "@/components/skeletons";
 import { Link } from "react-router-dom";
 
 const PAGE_SIZE = 10;

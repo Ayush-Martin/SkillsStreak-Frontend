@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button, Input } from "@/components";
 import { ITrainerModule } from "@/types/courseType";
 import { FileText, Pencil, PlaySquare, Trash2 } from "lucide-react";
 import { FC, useEffect, useState } from "react";

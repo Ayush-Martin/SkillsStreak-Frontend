@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 
 import { IoCloseCircle } from "@/assets/icons";
-import { Button, Input } from "@/components/ui";
+import { Button, Input } from "@/components";
 
 interface IAddModuleParams {
   close: () => void;

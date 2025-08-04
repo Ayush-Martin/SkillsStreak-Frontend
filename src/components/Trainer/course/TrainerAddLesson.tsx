@@ -8,9 +8,8 @@ import {
   IoMdAddCircleOutline,
   MdAttachFile,
 } from "@/assets/icons";
-import { Button, Input, Textarea } from "@/components/ui";
+import { Button, Input, Textarea } from "@/components";
 import { ILessonSchema, LessonSchema } from "@/validation/lesson.validation";
-
 
 interface IAddLessonParams {
   close: () => void;

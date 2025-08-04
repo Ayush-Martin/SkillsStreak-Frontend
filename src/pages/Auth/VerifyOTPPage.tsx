@@ -9,7 +9,7 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
   Button,
-} from "@/components/ui";
+} from "@/components";
 import { axiosGetRequest } from "@/config/axios";
 import { successPopup } from "@/utils/popup";
 import { useDispatch } from "react-redux";

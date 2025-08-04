@@ -4,17 +4,16 @@ import {
   Pagination,
   RevenueCard,
   SubscriptionRevenueCard,
-} from "@/components";
-import DateFilterWithExport from "@/components/common/DateFilterWithExport";
-import { CourseTableSkeleton } from "@/components/skeletons";
-import {
+  CourseTableSkeleton,
+  DateFilterWithExport,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui";
+} from "@/components";
+
 import { getAdminRevenueApi } from "@/features/admin/api/adminRevenueApi";
 import { changePage } from "@/features/admin/slice/adminRevenueSlice";
 import { usePaginatedData } from "@/hooks";

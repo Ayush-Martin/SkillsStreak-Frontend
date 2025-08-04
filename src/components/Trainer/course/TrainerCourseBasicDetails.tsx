@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
 import {
+  Button,
   Input,
   Select,
   SelectContent,
@@ -8,7 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
   Textarea,
-} from "../../ui";
+  ErrorText
+} from "@/components";
 import {
   ImageIcon,
   UploadCloud,
@@ -33,7 +34,7 @@ import {
   UseFormTrigger,
   UseFormWatch,
 } from "react-hook-form";
-import { ErrorText } from "@/components";
+
 
 const labelClass = "text-sm font-medium text-zinc-300 flex items-center gap-2";
 

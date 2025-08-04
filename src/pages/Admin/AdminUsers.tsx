@@ -6,16 +6,15 @@ import {
   Pagination,
   ProfileImage,
   SearchBox,
-} from "@/components";
-import AdminLayout from "@/layouts/AdminLayout";
-import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui";
+  TableSkeleton,
+} from "@/components";
+import { AdminLayout } from "@/layouts";
 import { CgUnblock, CgBlock, MdOutlineRefresh } from "@/assets/icons";
 import { AppDispatch, RootReducer } from "@/store";
 import {
@@ -24,7 +23,6 @@ import {
 } from "@/features/admin/api/adminUserApi";
 import { changePage } from "@/features/admin/slice/adminUserSlice";
 import { usePaginatedData, useConfirm } from "@/hooks";
-import { TableSkeleton } from "@/components/skeletons";
 import { Link } from "react-router-dom";
 
 const pageSize = 5;

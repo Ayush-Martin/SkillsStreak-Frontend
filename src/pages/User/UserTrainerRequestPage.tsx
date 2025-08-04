@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Button } from "@/components/ui";
+import { Button } from "@/components";
 import { axiosGetRequest, axiosPostRequest } from "@/config/axios";
 import AuthLayout from "@/layouts/AuthLayout";
 import { successPopup } from "@/utils/popup";

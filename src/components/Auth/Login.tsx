@@ -2,8 +2,7 @@ import { FC, useContext } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { Button, Input } from "@/components/ui";
-import { ErrorText, GoogleAuth } from "@/components";
+import { ErrorText, GoogleAuth, Button, Input } from "@/components";
 
 import {
   EmailValidationRule,

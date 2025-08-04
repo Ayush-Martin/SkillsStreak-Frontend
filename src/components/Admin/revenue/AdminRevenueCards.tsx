@@ -1,4 +1,4 @@
-import { StatCard } from "@/components/common";
+import { StatCard } from "@/components";
 import { FC } from "react";
 import { FaMoneyBillWave, FaCrown } from "react-icons/fa6";
 import { HiOutlineCurrencyRupee } from "react-icons/hi2";

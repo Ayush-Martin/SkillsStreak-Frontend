@@ -1,11 +1,10 @@
-import { ProfileImage } from "@/components";
+import { ProfileImage,ScrollArea } from "@/components";
 import {
   BiCategory,
   BiSolidImageAdd,
   IoCloseCircle,
   FaUsers,
 } from "@/assets/icons";
-import { ScrollArea } from "@/components/ui";
 import { BiSend } from "react-icons/bi";
 import { FC, useContext, useEffect, useMemo, useState } from "react";
 import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";

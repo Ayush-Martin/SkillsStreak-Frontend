@@ -1,5 +1,4 @@
-import { ErrorText } from "@/components/common";
-import { Input } from "@/components/ui";
+import { ErrorText,Input } from "@/components";
 import {
   AdminCategorySchema,
   IAdminCategorySchema,

@@ -5,7 +5,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+  AdminAssignmentSubmissionModal,
+  Pagination,
+} from "@/components";
 import { TrainerLayout } from "@/layouts";
 import { IEnrolledCourseAssignmentSubmission } from "@/types/courseType";
 import { useState } from "react";
@@ -19,7 +21,6 @@ import {
   TrainerChangeAssignmentSubmissionStatus,
 } from "@/features/trainer/api/AssignmentSubmissionsApi";
 import { MdOutlineRefresh } from "react-icons/md";
-import { AdminAssignmentSubmissionModal, Pagination } from "@/components";
 import { AiFillCloseCircle, AiOutlineCheckCircle } from "react-icons/ai";
 
 const getStatusBadgeClass = (status: string) => {
@@ -38,8 +39,9 @@ const getStatusBadgeClass = (status: string) => {
 
 const TrainerAssignmentSubmissions = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { assignmentSubmissions, currentPage, totalPages } =
-    useSelector((state: RootReducer) => state.trainerAssignmentSubmissions);
+  const { assignmentSubmissions, currentPage, totalPages } = useSelector(
+    (state: RootReducer) => state.trainerAssignmentSubmissions
+  );
 
   const { nextPage, paginatedData, previousPage, refreshHandler } =
     usePaginatedData({

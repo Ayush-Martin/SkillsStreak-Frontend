@@ -1,4 +1,4 @@
-import { Skeleton, TableBody, TableCell, TableRow } from "@/components/ui";
+import { Skeleton, TableBody, TableCell, TableRow } from "@/components";
 import { RECORDS_PER_PAGE } from "@/constants";
 
 const TableSkeleton = () => {

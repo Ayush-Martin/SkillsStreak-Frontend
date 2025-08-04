@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import { FC, useState } from "react";
 
-import { Pagination, UserSidebar } from "@/components";
 import {
   Table,
   TableBody,
@@ -9,7 +8,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui";
+  Pagination,
+  UserSidebar,
+  TransactionDetailsModal,
+  TableSkeleton,
+} from "@/components";
 import { getUserTransactionsApi } from "@/features/user/api/transactionApi";
 import {
   changePage,
@@ -19,10 +22,8 @@ import usePaginatedData from "@/hooks/usePaginatedData";
 import UserLayout from "@/layouts/UserLayout";
 import { RootReducer } from "@/store";
 import { MdOutlineRefresh } from "@/assets/icons";
-import { TableSkeleton } from "@/components/skeletons";
 import { axiosPatchRequest } from "@/config/axios";
 import { successPopup } from "@/utils/popup";
-import TransactionDetailsModal from "@/components/common/TransactionDetailsModal";
 import { useConfirm } from "@/hooks";
 
 const pageSize = 10;

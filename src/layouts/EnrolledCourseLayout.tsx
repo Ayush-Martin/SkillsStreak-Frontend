@@ -1,9 +1,8 @@
-import { UserSidebar } from "@/components";
+import { UserSidebar ,CourseUtils} from "@/components";
 import ViewCourseContext from "@/context/ViewCourseContext";
 import  { FC, ReactNode, useState } from "react";
-import UserLayout from "./UserLayout";
+import {UserLayout} from "@/layouts";
 import useViewCourse from "@/hooks/useViewCourse";
-import CourseUtility from "@/components/user/course/CourseUtils";
 
 interface IEnrolledCourseLayoutProps {
   children: ReactNode;
@@ -41,7 +40,7 @@ const EnrolledCourseLayout: FC<IEnrolledCourseLayoutProps> = ({ children }) => {
           <div className="w-full mt-10 ml-0 text-white md:ml-64 md:mt-0 p-6 space-y-8 h-full">
             {children}
           </div>
-          <CourseUtility
+          <CourseUtils
             isCourseUtilsOpen={isUtilityOpen}
             toggleCourseUtilsOpen={() => setIsUtilityOpen((p) => !p)}
           />

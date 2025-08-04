@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { useSelector } from "react-redux";
 
-import { Pagination } from "@/components";
 import {
   Table,
   TableBody,
@@ -9,14 +8,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui";
+  Pagination,
+  TableSkeleton
+} from "@/components";
 import { getAdminTransactionsApi } from "@/features/admin/api/adminTransactionApi";
 import { changePage } from "@/features/admin/slice/adminTransactionSlice";
 import usePaginatedData from "@/hooks/usePaginatedData";
 import AdminLayout from "@/layouts/AdminLayout";
 import { RootReducer } from "@/store";
 import { MdOutlineRefresh } from "@/assets/icons";
-import { TableSkeleton } from "@/components/skeletons";
 
 const pageSize = 10;
 

@@ -1,9 +1,8 @@
-import { Button } from "@/components/ui";
-import { Header, Logo, Notification } from "@/components";
+import { Header, Logo, Notification, Button } from "@/components";
 import useLogout from "@/hooks/useLogout";
 import { FC } from "react";
 
-const TrainerHeader:FC = () => {
+const TrainerHeader: FC = () => {
   const { logoutHandler } = useLogout();
   return (
     <Header>

@@ -8,9 +8,9 @@ import {
   TabsList,
   TabsTrigger,
   VideoPlayer,
+  Discussion,
   LiveSessionsAccordion,
 } from "@/components";
-import Discussions from "@/components/user/enrolledCourse/Discussion";
 import useDiscussion from "@/hooks/useDiscussion";
 import useViewLiveSession from "@/hooks/useViewLiveSession";
 import { EnrolledCourseLayout } from "@/layouts";
@@ -104,7 +104,7 @@ const UserCourseLiveSessionPage = () => {
                   </TabsContent>
 
                   <TabsContent value="discussions" className="mt-10">
-                    <Discussions
+                    <Discussion
                       discussions={discussions}
                       addDiscussion={addDiscussion}
                       deleteDiscussion={deleteDiscussion}

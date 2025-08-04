@@ -1,7 +1,6 @@
-import  { FC, useState } from "react";
+import { FC, useState } from "react";
 import { IDiscussion, IReply } from "@/types/courseType";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { Button, Textarea } from "@/components";
 import { Trash, Edit3, Send, MessageCircleReply } from "lucide-react";
 import { ProfileImage } from "../../common";
 import { useSelector } from "react-redux";

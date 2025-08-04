@@ -4,8 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { z } from "zod";
 
-import { Input, Button } from "@/components/ui";
-import { ErrorText, GoogleAuth } from "@/components";
+import { ErrorText, GoogleAuth,Input, Button } from "@/components";
 import {
   EmailValidationRule,
   PasswordValidationRule,

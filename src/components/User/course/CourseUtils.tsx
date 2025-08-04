@@ -4,12 +4,11 @@ import { FaRobot } from "react-icons/fa6";
 import { LuPanelLeftOpen, LuPanelRightOpen } from "react-icons/lu";
 import { IoClose } from "react-icons/io5";
 import { Input } from "../../ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea,Button } from "@/components";
 import { useScrollToBottom } from "@/hooks";
 import { Mosaic } from "react-loading-indicators";
 import ViewCourseContext from "@/context/ViewCourseContext";
 import { INotebook } from "@/types/notebookType";
-import { Button } from "../../ui";
 import { IoMdAdd, IoMdCreate, IoMdTrash } from "react-icons/io";
 
 interface ICourseUtilityProps {

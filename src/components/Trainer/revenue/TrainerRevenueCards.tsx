@@ -1,4 +1,4 @@
-import { StatCard } from "@/components/common";
+import { StatCard } from "@/components";
 import { FC } from "react";
 import { FaMoneyBillWave } from "react-icons/fa6";
 
@@ -41,5 +41,3 @@ export const TrainerOnProcessAmountCard: FC<IRevenueCard> = ({ amount }) => {
     />
   );
 };
-
-

@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui";
+import { Button } from "@/components";
 import { X, Wallet, CreditCard } from "lucide-react";
 import { FC } from "react";
 

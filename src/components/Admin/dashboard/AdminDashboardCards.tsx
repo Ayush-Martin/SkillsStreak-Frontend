@@ -1,4 +1,4 @@
-import { StatCard } from "@/components/common";
+import { StatCard } from "@/components";
 import { FC } from "react";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa6";

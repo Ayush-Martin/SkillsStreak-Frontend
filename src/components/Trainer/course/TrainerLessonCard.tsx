@@ -2,9 +2,8 @@ import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { VideoPlayer, PdfViewer } from "@/components";
+import { VideoPlayer, PdfViewer ,Input, Textarea} from "@/components";
 import { BiSave, MdDelete, MdEdit } from "@/assets/icons";
-import { Input, Textarea } from "@/components/ui";
 import { ILessonSchema, LessonSchema } from "@/validation/lesson.validation";
 
 

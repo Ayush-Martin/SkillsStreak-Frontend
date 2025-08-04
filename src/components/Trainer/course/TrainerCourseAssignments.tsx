@@ -7,12 +7,10 @@ import {
   BookOpen,
   X,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, ErrorText, Input, Textarea } from "@/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { ErrorText } from "../../common";
-import { Input, Textarea } from "../../ui";
 import { ITrainerAssignment } from "@/types/courseType";
 
 interface ICourseAssignmentsProps {
