@@ -1,5 +1,0 @@
-export {default as CourseCard} from "./CourseCard"
-export {default as CourseFilter} from "./CourseFilter"
-export {default as EnrollCourseModal} from "./EnrollCourseModal"
-export {default as CourseUtils} from "./CourseUtils"
-export {default as Review} from "./Review"
