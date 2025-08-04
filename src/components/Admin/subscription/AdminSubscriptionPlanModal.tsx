@@ -23,6 +23,8 @@ interface IAdminSubscriptionPlanModalProps {
   isEdit?: boolean;
 }
 
+
+
 const AdminSubscriptionPlanModal: FC<IAdminSubscriptionPlanModalProps> = ({
   open,
   onClose,
