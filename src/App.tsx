@@ -23,6 +23,8 @@ const App = () => {
   const { accessToken } = useSelector((state: RootReducer) => state.user);
   const [loading, setLoading] = useState(true);
 
+  console.log("dfdf");
+
   useEffect(() => {
     const fetchApi = async () => {
       try {
