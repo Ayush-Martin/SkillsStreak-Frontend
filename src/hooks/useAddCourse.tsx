@@ -47,7 +47,13 @@ const useNewAddCourse = () => {
 
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
+
     if (selectedFile) {
+      const validTypes = ["image/jpeg", "image/png"];
+      if (!validTypes.includes(selectedFile.type)) {
+        errorPopup(" JPG and , PNG files are allowed");
+        return;
+      }
       setThumbnail(selectedFile);
       setPreviewThumbnail(URL.createObjectURL(selectedFile));
     }

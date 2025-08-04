@@ -141,7 +141,7 @@ const useChat = () => {
     handler(res.data);
   };
 
-  const sendMessage = (message: string, type?: "text" | "image") => {
+  const sendMessage = (message: string, type?: "text" | "image" | "emoji") => {
     if (!selectedChat || !socket) return;
     socket.emit(SocketEvents.CHAT_MESSAGE_SEND, {
       chatId: selectedChat._id,

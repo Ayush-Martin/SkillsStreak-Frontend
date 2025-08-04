@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import { FaExclamationTriangle } from "react-icons/fa";
 
-export const useConfirm = () => {
+const useConfirm = () => {
   function confirmDelete(message: string, handler: () => void) {
     toast(
       ({ closeToast }) => (
@@ -45,3 +45,5 @@ export const useConfirm = () => {
 
   return confirmDelete;
 };
+
+export default useConfirm;

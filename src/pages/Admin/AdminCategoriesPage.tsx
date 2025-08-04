@@ -1,11 +1,8 @@
-import { FC, use, useState } from "react";
-import { useForm } from "react-hook-form";
+import { FC, useState } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
-  ErrorText,
   Pagination,
   SearchBox,
   TableSkeleton,
@@ -15,17 +12,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  Input,
+  AdminEditCategory,
+  AdminAddCategory,
 } from "@/components";
-import {
-  IoIosSave,
-  RiFolderCloseFill,
-  IoEye,
-  IoEyeOff,
-  MdEdit,
-  MdOutlineRefresh,
-  IoMdAddCircleOutline,
-} from "@/assets/icons";
+import { IoEye, IoEyeOff, MdEdit, MdOutlineRefresh } from "@/assets/icons";
 import {
   adminCategoryAddApi,
   adminCategoryEditApi,
@@ -35,28 +25,9 @@ import {
 import { changePage } from "@/features/admin/slice/adminCategorySlice";
 import { AdminLayout } from "@/layouts";
 import { AppDispatch, RootReducer } from "@/store";
-import { CategoryNameValidationRule } from "@/utils/validationRules";
-import { usePaginatedData } from "@/hooks";
-import { useConfirm } from "@/hooks/useConfirm";
+import { usePaginatedData, useConfirm } from "@/hooks";
 
 const PAGE_SIZE = 5;
-
-const CategorySchema = z.object({
-  categoryName: CategoryNameValidationRule,
-});
-
-type CategorySchemaType = z.infer<typeof CategorySchema>;
-
-interface ICategoryEditProps {
-  categoryId: string;
-  categoryName: string;
-  close: () => void;
-  editCategory: (categoryId: string, categoryName: string) => void;
-}
-
-interface IAddCategoryProps {
-  addCategory: (categoryName: string) => void;
-}
 
 const Categories: FC = () => {
   const confirm = useConfirm();
@@ -109,7 +80,7 @@ const Categories: FC = () => {
       <button className="mt-10 text-3xl text-blue-600" onClick={refreshHandler}>
         <MdOutlineRefresh />
       </button>
-      <AddCategory addCategory={addCategory} />
+      <AdminAddCategory addCategory={addCategory} />
       <Table>
         <TableHeader>
           <TableRow>
@@ -128,7 +99,7 @@ const Categories: FC = () => {
               <TableRow key={_id}>
                 <TableCell>
                   {selected == _id ? (
-                    <CategoryEdit
+                    <AdminEditCategory
                       categoryId={_id}
                       categoryName={categoryName}
                       close={() => setSelected(null)}
@@ -167,87 +138,6 @@ const Categories: FC = () => {
         nextPage={nextPage}
       />
     </AdminLayout>
-  );
-};
-
-const CategoryEdit: FC<ICategoryEditProps> = ({
-  categoryId,
-  categoryName,
-  close,
-  editCategory,
-}) => {
-  const {
-    handleSubmit,
-    formState: { errors },
-    register,
-    trigger,
-  } = useForm<CategorySchemaType>({
-    resolver: zodResolver(CategorySchema),
-    defaultValues: {
-      categoryName,
-    },
-  });
-
-  const handleEditCategory = (data: CategorySchemaType) => {
-    editCategory(categoryId, data.categoryName);
-  };
-
-  return (
-    <form className="flex-col" onSubmit={handleSubmit(handleEditCategory)}>
-      <div className="flex gap-2">
-        <Input
-          placeholder="Enter category name"
-          {...register("categoryName")}
-          className="w-30 bg-app-border"
-          onBlur={() => trigger("categoryName")}
-        />
-        <button type="submit" className="text-xl text-app-secondary">
-          <IoIosSave />
-        </button>
-        <button onClick={close} className="text-xl text-app-tertiary">
-          <RiFolderCloseFill />
-        </button>
-      </div>
-      {errors.categoryName && (
-        <ErrorText error={errors.categoryName.message!} />
-      )}
-    </form>
-  );
-};
-
-const AddCategory: FC<IAddCategoryProps> = ({ addCategory }) => {
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm<CategorySchemaType>({
-    resolver: zodResolver(CategorySchema),
-    mode: "onBlur",
-  });
-
-  const handleAddCategory = (data: CategorySchemaType) => {
-    addCategory(data.categoryName);
-  };
-
-  return (
-    <div className="flex flex-col gap-0 my-3">
-      <form className="flex gap-4" onSubmit={handleSubmit(handleAddCategory)}>
-        <Input
-          className="bg-transparent border w-60 border-app-border placeholder:text-muted-foreground"
-          placeholder="enter text here"
-          {...register("categoryName")}
-        />
-        <button
-          disabled={!!errors.categoryName}
-          className="text-3xl text-white disabled:text-app-border"
-        >
-          <IoMdAddCircleOutline />
-        </button>
-      </form>
-      {errors.categoryName && (
-        <ErrorText error={errors.categoryName.message!} />
-      )}
-    </div>
   );
 };
 

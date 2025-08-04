@@ -5,3 +5,14 @@ export type IFilterType =
   | "yearly"
   | "all"
   | "custom";
+
+export interface IGraphData {
+  label: string;
+  value: number;
+}
+
+export interface IRevenueGraph {
+  daily: IGraphData[];
+  monthly: IGraphData[];
+  yearly: IGraphData[];
+}

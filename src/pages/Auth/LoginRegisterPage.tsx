@@ -7,10 +7,12 @@ import AuthLayout from "@/layouts/AuthLayout";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store";
 import { login } from "@/features/Auth/slice/userSlice";
-import { axiosPostRequest } from "@/config/axios";
-import { LOGIN_API, LOGIN_WITH_GOOGLE_API, REGISTER_API } from "@/constants";
-import { successPopup } from "@/utils/popup";
 import { LoginRegisterContext } from "@/context";
+import {
+  loginWithGoogle,
+  loginWithPassword,
+  registerUser,
+} from "@/api/auth.api";
 
 const LoginRegisterPage: FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -20,18 +22,17 @@ const LoginRegisterPage: FC = () => {
   const from = location.state?.from?.pathname || "/";
 
   const handleLogin = async (email: string, password: string) => {
-    const res = await axiosPostRequest(LOGIN_API, { email, password });
-    if (!res) return;
-    successPopup(res.message);
-    dispatch(login(res.data));
+    const data = await loginWithPassword(email, password);
+    if (!data) return;
+    dispatch(login(data));
     navigate(from, { replace: true });
     dispatch(login({ email, password }));
   };
 
   const handleGoogleLogin = async (token: string) => {
-    const res = await axiosPostRequest(LOGIN_WITH_GOOGLE_API, { token });
-    if (!res) return;
-    dispatch(login(res.data));
+    const data = await loginWithGoogle(token);
+    if (!data) return;
+    dispatch(login(data));
     navigate(from, { replace: true });
   };
 
@@ -40,13 +41,7 @@ const LoginRegisterPage: FC = () => {
     email: string,
     password: string
   ) => {
-    const res = await axiosPostRequest(REGISTER_API, {
-      username,
-      email,
-      password,
-    });
-    if (!res) return;
-    successPopup(res.data || "OTP sent");
+    await registerUser(username, email, password);
     navigate("/auth/verifyOTP", {
       state: {
         email,

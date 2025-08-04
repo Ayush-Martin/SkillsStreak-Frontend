@@ -27,7 +27,7 @@ import {
   TableRow,
 } from "@/components/ui";
 import { CourseTableSkeleton } from "@/components/skeletons";
-import { useConfirm } from "@/hooks/useConfirm";
+import { useConfirm } from "@/hooks";
 import { Link } from "react-router-dom";
 
 const PAGE_SIZE = 3;

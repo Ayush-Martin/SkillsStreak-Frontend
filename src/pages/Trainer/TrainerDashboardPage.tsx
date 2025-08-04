@@ -1,88 +1,56 @@
 import { FC, useEffect, useState } from "react";
 
 import TrainerLayout from "@/layouts/TrainerLayout";
-import { FaChalkboardTeacher, FaUserGraduate } from "react-icons/fa";
 import {
-  StatCard,
   TopItemsChart,
   AnalyticsAreaChart,
   WalletCard,
+  TrainerStudentsCard,
+  TrainerTotalCoursesCard,
 } from "@/components";
 import { useWallet } from "@/hooks";
-import { axiosGetRequest } from "@/config/axios";
-
-interface IStudentsCardProps {
-  totalStudents: number;
-}
-
-const StudentsCard: FC<IStudentsCardProps> = ({ totalStudents }) => {
-  return (
-    <StatCard
-      icon={<FaUserGraduate className="text-purple-400" />}
-      title="Total Students"
-      value={totalStudents}
-      color="text-purple-400"
-      hoverShadowColor="hover:shadow-purple-500/30"
-    />
-  );
-};
-
-interface ICoursesCardProps {
-  totalCourses: number;
-}
-
-const TotalCoursesCard: FC<ICoursesCardProps> = ({ totalCourses }) => {
-  return (
-    <StatCard
-      icon={<FaChalkboardTeacher className="text-indigo-500" />}
-      title="Total Course"
-      value={totalCourses}
-      color="text-indigo-500"
-      hoverShadowColor="hover:shadow-indigo-500"
-    />
-  );
-};
-
-interface graphData {
-  label: string;
-  value: number;
-}
+import {
+  getTrainerCoursesCount,
+  getTrainerRevenueGraphData,
+  getTrainerStudentsCount,
+  getTrainerTop5Courses,
+} from "@/api";
+import { IRevenueGraph } from "@/types/revenueType";
+import { ITop5Courses } from "@/types/courseType";
 
 const Dashboard: FC = () => {
   const [studentsCount, setStudentsCount] = useState(0);
   const [coursesCount, setCoursesCount] = useState(0);
-  const [top5Courses, setTop5Courses] = useState<
-    Array<{ title: string; enrolledCount: number; _id: string }>
-  >([]);
-  const [revenueGraphData, setRevenueGraphData] = useState<{
-    daily: graphData[];
-    monthly: graphData[];
-    yearly: graphData[];
-  }>({ daily: [], monthly: [], yearly: [] });
+  const [top5Courses, setTop5Courses] = useState<ITop5Courses>([]);
+  const [revenueGraphData, setRevenueGraphData] = useState<IRevenueGraph>({
+    daily: [],
+    monthly: [],
+    yearly: [],
+  });
 
   useEffect(() => {
     const getStudentsCount = async () => {
-      const res = await axiosGetRequest("/trainer/students/count");
-      if (!res) return;
-      setStudentsCount(res.data);
+      const data = await getTrainerStudentsCount();
+      if (!data) return;
+      setStudentsCount(data);
     };
 
     const getCoursesCount = async () => {
-      const res = await axiosGetRequest("/trainer/courses/count");
-      if (!res) return;
-      setCoursesCount(res.data);
+      const data = await getTrainerCoursesCount();
+      if (!data) return;
+      setCoursesCount(data);
     };
 
     const getTop5Courses = async () => {
-      const res = await axiosGetRequest("trainer/courses/top5");
-      if (!res) return;
-      setTop5Courses(res.data);
+      const data = await getTrainerTop5Courses();
+      if (!data) return;
+      setTop5Courses(data);
     };
 
     const getRevenueGraphData = async () => {
-      const res = await axiosGetRequest("trainer/revenue/graph");
-      if (!res) return;
-      setRevenueGraphData(res.data);
+      const data = await getTrainerRevenueGraphData();
+      if (!data) return;
+      setRevenueGraphData(data);
     };
 
     getStudentsCount();
@@ -97,8 +65,8 @@ const Dashboard: FC = () => {
   return (
     <TrainerLayout>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
-        <StudentsCard totalStudents={studentsCount} />
-        <TotalCoursesCard totalCourses={coursesCount} />
+        <TrainerStudentsCard totalStudents={studentsCount} />
+        <TrainerTotalCoursesCard totalCourses={coursesCount} />
         <div className="col-span-1 sm:col-span-2 lg:col-span-1">
           <WalletCard
             balance={wallet.balance}

@@ -23,6 +23,7 @@ import { TableSkeleton } from "@/components/skeletons";
 import { axiosPatchRequest } from "@/config/axios";
 import { successPopup } from "@/utils/popup";
 import TransactionDetailsModal from "@/components/common/TransactionDetailsModal";
+import { useConfirm } from "@/hooks";
 
 const pageSize = 10;
 
@@ -31,6 +32,7 @@ const Transactions: FC = () => {
   const { transactions, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.userTransactions
   );
+  const confirm = useConfirm();
   const [selectedTransaction, setSelectedTransaction] =
     useState<ITransaction | null>(null);
   const { nextPage, previousPage, paginatedData, refreshHandler } =
@@ -43,9 +45,11 @@ const Transactions: FC = () => {
     });
 
   const cancelPurchase = async (transactionId: string) => {
-    const res = await axiosPatchRequest(`/transactions/${transactionId}`);
-    if (!res) return;
-    successPopup(res.message);
+    confirm("Are you sure you want to cancel this transaction?", async () => {
+      const res = await axiosPatchRequest(`/transactions/${transactionId}`);
+      if (!res) return;
+      successPopup(res.message);
+    });
   };
 
   return (

@@ -23,9 +23,8 @@ import {
   getAdminUsersApi,
 } from "@/features/admin/api/adminUserApi";
 import { changePage } from "@/features/admin/slice/adminUserSlice";
-import usePaginatedData from "@/hooks/usePaginatedData";
+import { usePaginatedData, useConfirm } from "@/hooks";
 import { TableSkeleton } from "@/components/skeletons";
-import { useConfirm } from "@/hooks/useConfirm";
 import { Link } from "react-router-dom";
 
 const pageSize = 5;

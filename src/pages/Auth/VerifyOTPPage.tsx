@@ -10,12 +10,12 @@ import {
   InputOTPSlot,
   Button,
 } from "@/components/ui";
-import { axiosGetRequest, axiosPostRequest } from "@/config/axios";
-import { REGISTER_API, VERIFY_OTP_API } from "@/constants/API";
+import { axiosGetRequest } from "@/config/axios";
 import { successPopup } from "@/utils/popup";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store";
 import { logout } from "@/features/Auth/slice/userSlice";
+import { completeRegister, verifyOTP } from "@/api/auth.api";
 
 const VerifyOTP: FC = () => {
   const location = useLocation();
@@ -44,21 +44,14 @@ const VerifyOTP: FC = () => {
       setTimer((prev) => prev - 1);
     }, 1000);
 
-    return () => clearInterval(interval); // cleanup on re-run
+    return () => clearInterval(interval);
   }, [timer]);
 
   const submit = async () => {
-    const res = await axiosPostRequest(VERIFY_OTP_API, {
-      email,
-      OTP: value,
-    });
-
-    if (!res) return;
+    await verifyOTP(email, value);
 
     if (forAction == "register") {
-      const res = await axiosGetRequest(`${REGISTER_API}?email=${email}`);
-      if (!res) return;
-      successPopup(res.message || "user registered");
+      await completeRegister(email);
       navigate("/auth");
     } else {
       navigate("/auth/resetPassword", {

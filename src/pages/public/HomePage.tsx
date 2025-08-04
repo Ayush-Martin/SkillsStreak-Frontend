@@ -19,14 +19,14 @@ import {
   SUBSCRIPTION_FEATURES_SECTION,
   FAQ_SECTION,
 } from "@/constants/sections";
-import { ICourseData } from "@/types/courseType";
+import { IUserCourseData } from "@/types/courseType";
 import { getUserCourses } from "@/api/course.api";
 
 const PAGE_RECORD_LIMIT = 3;
 
 const Home: FC = () => {
   const navigate = useNavigate();
-  const [courses, setCourses] = useState<Array<ICourseData>>([]);
+  const [courses, setCourses] = useState<Array<IUserCourseData>>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

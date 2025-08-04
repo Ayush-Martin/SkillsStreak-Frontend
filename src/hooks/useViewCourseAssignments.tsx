@@ -4,13 +4,13 @@ import {
   axiosPutRequest,
 } from "@/config/axios";
 import { COURSES_API } from "@/constants";
-import { IViewAssignment } from "@/types/courseType";
+import { IAssignmentSubmission } from "@/types/courseType";
 import { successPopup } from "@/utils/popup";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const useCourseAssignments = () => {
-  const [assignments, setAssignments] = useState<IViewAssignment[]>([]);
+  const [assignments, setAssignments] = useState<IAssignmentSubmission[]>([]);
   const { courseId } = useParams();
 
   useEffect(() => {

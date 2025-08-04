@@ -1,8 +1,7 @@
-import CourseBasicDetails from "@/components/trainer/CourseBasicDetails";
-import useNewAddCourse from "@/hooks/useAddCourse";
+import { TrainerCourseBasicDetails } from "@/components";
+import { useAddCourse } from "@/hooks";
 import { TrainerLayout } from "@/layouts";
 import { AlertCircle } from "lucide-react";
-import React from "react";
 
 const TrainerNewAddCoursePage = () => {
   const {
@@ -15,7 +14,7 @@ const TrainerNewAddCoursePage = () => {
     watch,
     handleThumbnailChange,
     previewThumbnail,
-  } = useNewAddCourse();
+  } = useAddCourse();
 
   return (
     <TrainerLayout>
@@ -28,7 +27,7 @@ const TrainerNewAddCoursePage = () => {
 
         {/* Course Form */}
         <div className="w-full max-w-screen-xl mx-auto">
-          <CourseBasicDetails
+          <TrainerCourseBasicDetails
             errors={errors}
             register={register}
             setValue={setValue}

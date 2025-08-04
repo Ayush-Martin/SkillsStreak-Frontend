@@ -1,15 +1,7 @@
-import { VideoPlayer } from "@/components";
+import { TrainerLiveSessionControls, VideoPlayer } from "@/components";
 import useTrainerLiveSession from "@/hooks/useTrainerLiveSession";
 import { TrainerLayout } from "@/layouts";
-import {
-  FaRegStopCircle,
-  FaMicrophoneAltSlash,
-  FaMicrophoneAlt,
-} from "react-icons/fa";
-import { FaVideoSlash, FaVideo } from "react-icons/fa6";
-import { MdOutlineStopScreenShare, MdOutlineScreenShare } from "react-icons/md";
 import { PiChatsCircleLight } from "react-icons/pi";
-import { FC, ReactNode } from "react";
 
 const TrainerLiveSessionPage = () => {
   const {
@@ -67,7 +59,7 @@ const TrainerLiveSessionPage = () => {
           {/* Controls */}
           {isStreaming && (
             <div className="w-full px-6 py-4 border-t border-slate-700 bg-slate-800 flex justify-center">
-              <ControlPanel
+              <TrainerLiveSessionControls
                 {...{
                   stopStreaming,
                   toggleVideo,
@@ -104,95 +96,6 @@ const TrainerLiveSessionPage = () => {
         )}
       </div>
     </TrainerLayout>
-  );
-};
-
-const ControlPanel: FC<{
-  stopStreaming: () => void;
-  toggleVideo: () => void;
-  toggleAudio: () => void;
-  toggleScreenShare: () => void;
-  isVideoEnabled: boolean;
-  isAudioEnabled: boolean;
-  isScreenSharing: boolean;
-}> = ({
-  stopStreaming,
-  toggleVideo,
-  toggleAudio,
-  toggleScreenShare,
-  isVideoEnabled,
-  isAudioEnabled,
-  isScreenSharing,
-}) => (
-  <div className="flex justify-center flex-wrap gap-4">
-    <ControlButton
-      onClick={stopStreaming}
-      icon={<FaRegStopCircle className="text-lg" />}
-      label="End"
-      variant="danger"
-    />
-    <ControlButton
-      onClick={toggleVideo}
-      icon={
-        isVideoEnabled ? (
-          <FaVideoSlash className="text-lg" />
-        ) : (
-          <FaVideo className="text-lg" />
-        )
-      }
-      label={isVideoEnabled ? "Video Off" : "Video On"}
-      variant={isVideoEnabled ? "danger" : "success"}
-    />
-    <ControlButton
-      onClick={toggleAudio}
-      icon={
-        isAudioEnabled ? (
-          <FaMicrophoneAltSlash className="text-lg" />
-        ) : (
-          <FaMicrophoneAlt className="text-lg" />
-        )
-      }
-      label={isAudioEnabled ? "Mute" : "Unmute"}
-      variant={isAudioEnabled ? "danger" : "success"}
-    />
-    <ControlButton
-      onClick={toggleScreenShare}
-      icon={
-        isScreenSharing ? (
-          <MdOutlineStopScreenShare className="text-lg" />
-        ) : (
-          <MdOutlineScreenShare className="text-lg" />
-        )
-      }
-      label={isScreenSharing ? "Stop Share" : "Share Screen"}
-      variant={isScreenSharing ? "danger" : "success"}
-    />
-  </div>
-);
-
-const ControlButton: FC<{
-  onClick: () => void;
-  icon: ReactNode;
-  label: string;
-  variant?: "default" | "danger" | "success";
-}> = ({ onClick, icon, label, variant = "default" }) => {
-  const styles = {
-    default:
-      "bg-slate-700 border border-slate-600 text-slate-300 hover:bg-slate-600 hover:text-slate-100",
-    danger:
-      "bg-red-900/50 border border-red-700 text-red-400 hover:bg-red-800/60 hover:text-red-300",
-    success:
-      "bg-green-900/50 border border-green-700 text-green-400 hover:bg-green-800/60 hover:text-green-300",
-  };
-
-  return (
-    <button
-      onClick={onClick}
-      className={`flex flex-col items-center px-4 py-3 rounded-xl font-medium transition-colors text-sm ${styles[variant]}`}
-    >
-      {icon}
-      <span className="mt-1">{label}</span>
-    </button>
   );
 };
 

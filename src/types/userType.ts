@@ -1,3 +1,5 @@
+import { IUserCourseCardData } from "./courseType";
+
 export interface IUserProfileExperience {
   id: string;
   position: string;
@@ -27,4 +29,8 @@ export interface IUserProfile {
   skills: string[];
   experiences: IUserProfileExperience[];
   socialLinks: IUserProfileSocialLinks;
+}
+
+export interface IUserProfileDetails extends IUserProfile {
+  courses: Array<IUserCourseCardData>;
 }

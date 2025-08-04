@@ -1,7 +1,6 @@
 import {
   Pagination,
   DateFilterWithExport,
-  StatCard,
   CourseTableSkeleton,
   TableHeader,
   TableRow,
@@ -9,6 +8,9 @@ import {
   TableBody,
   TableCell,
   Table,
+  TrainerRevenueCard,
+  TrainerCommissionCard,
+  TrainerOnProcessAmountCard,
 } from "@/components";
 import { changePage } from "@/features/trainer/slice/trainerRevenueSlice";
 import { getTrainerRevenueApi } from "@/features/trainer/api/trainerRevenueApi";
@@ -16,51 +18,10 @@ import { usePaginatedData } from "@/hooks";
 import TrainerLayout from "@/layouts/TrainerLayout";
 import { AppDispatch, RootReducer } from "@/store";
 import { IFilterType } from "@/types/revenueType";
-import { FC, useEffect, useState } from "react";
-import { FaMoneyBillWave } from "react-icons/fa6";
+import { useEffect, useState } from "react";
 import { MdOutlineRefresh } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import appApi from "@/config/axios";
-
-interface IRevenueCard {
-  amount: number;
-}
-
-const RevenueCard: FC<IRevenueCard> = ({ amount }) => {
-  return (
-    <StatCard
-      icon={<FaMoneyBillWave className="text-yellow-400" />}
-      title="Total Revenue"
-      value={`₹ ${amount}`}
-      color="text-yellow-400"
-      hoverShadowColor="hover:shadow-yellow-500/30"
-    />
-  );
-};
-
-const CommissionCard: FC<IRevenueCard> = ({ amount }) => {
-  return (
-    <StatCard
-      icon={<FaMoneyBillWave className="text-blue-400" />}
-      title="Total Commission"
-      value={`₹ ${amount}`}
-      color="text-blue-400"
-      hoverShadowColor="hover:shadow-blue-500/30"
-    />
-  );
-};
-
-const OnProcessAmountCard: FC<IRevenueCard> = ({ amount }) => {
-  return (
-    <StatCard
-      icon={<FaMoneyBillWave className="text-green-400" />}
-      title="On Process Amount"
-      value={`₹ ${amount}`}
-      color="text-green-400"
-      hoverShadowColor="hover:shadow-green-500/30"
-    />
-  );
-};
+import { exportTrainerRevenue } from "@/api";
 
 const PAGE_SIZE = 4;
 
@@ -104,44 +65,16 @@ const TrainerRevenue = () => {
     );
   }, [filterType, startDate, endDate]);
 
-  const handleExport = async (exportType: "pdf" | "excel") => {
-    try {
-      const res = await appApi.get(
-        `/trainer/revenue/export?filterType=${filterType}&startDate=${startDate}&endDate=${endDate}&exportType=${exportType}`,
-        {
-          responseType: "blob",
-        }
-      );
-      const blob = new Blob([res.data], {
-        type:
-          exportType === "pdf"
-            ? "application/pdf"
-            : "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `admin-revenue-report.${
-        exportType === "pdf" ? ".pdf" : "xlsx"
-      }`;
-      document.body.appendChild(link);
-      link.click();
-
-      // Clean up
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error("Failed to download PDF:", err);
-    }
-  };
+  const handleExport = async (exportType: "pdf" | "excel") =>
+    await exportTrainerRevenue(exportType, filterType, startDate, endDate);
 
   return (
     <TrainerLayout>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
-        <RevenueCard amount={revenue.totalRevenue} />
-        <CommissionCard amount={revenue.totalCommission} />
+        <TrainerRevenueCard amount={revenue.totalRevenue} />
+        <TrainerCommissionCard amount={revenue.totalCommission} />
         <div className="col-span-1 sm:col-span-2 lg:col-span-1">
-          <OnProcessAmountCard amount={revenue.onProcessAmount} />
+          <TrainerOnProcessAmountCard amount={revenue.onProcessAmount} />
         </div>
       </div>
 

@@ -1,10 +1,7 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { MdEdit, MdOutlineRefresh } from "react-icons/md";
 import { IoEye, IoEyeOff } from "react-icons/io5";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 
 import {
   Pagination,
@@ -16,18 +13,10 @@ import {
   TableHeader,
   TableRow,
   TableSkeleton,
-  ErrorText,
+  AdminSubscriptionPlanModal,
 } from "@/components";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 
-import { usePaginatedData } from "@/hooks";
-import { useConfirm } from "@/hooks/useConfirm";
+import { usePaginatedData, useConfirm } from "@/hooks";
 import { AppDispatch, RootReducer } from "@/store";
 import { AdminLayout } from "@/layouts";
 import {
@@ -38,17 +27,9 @@ import {
 } from "@/features/admin/api/adminSubscriptionPlanApi";
 import { changePage } from "@/features/admin/slice/adminSubscriptionPlanSlice";
 import { IoMdAddCircleOutline } from "react-icons/io";
+import { ISubscriptionPlanSchema } from "@/validation/subscription.validation";
 
 const pageSize = 10;
-
-const PlanSchema = z.object({
-  title: z.string().min(1),
-  description: z.string().min(1),
-  price: z.number().min(0),
-  duration: z.number().min(1),
-});
-
-type PlanSchemaType = z.infer<typeof PlanSchema>;
 
 const AdminSubscriptionPlansPage: FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -61,7 +42,7 @@ const AdminSubscriptionPlansPage: FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editData, setEditData] = useState<{
     _id: string;
-    plan: PlanSchemaType;
+    plan: ISubscriptionPlanSchema;
   } | null>(null);
 
   const {
@@ -84,12 +65,12 @@ const AdminSubscriptionPlansPage: FC = () => {
     setModalOpen(true);
   };
 
-  const handleEdit = (_id: string, plan: PlanSchemaType) => {
+  const handleEdit = (_id: string, plan: ISubscriptionPlanSchema) => {
     setEditData({ _id, plan });
     setModalOpen(true);
   };
 
-  const handleSubmitPlan = (data: PlanSchemaType, _id?: string) => {
+  const handleSubmitPlan = (data: ISubscriptionPlanSchema, _id?: string) => {
     if (_id) {
       dispatch(
         adminSubscriptionPlanEditApi({ subscriptionPlanId: _id, ...data })
@@ -182,7 +163,7 @@ const AdminSubscriptionPlansPage: FC = () => {
         nextPage={nextPage}
       />
 
-      <PlanModal
+      <AdminSubscriptionPlanModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         onSubmit={handleSubmitPlan}
@@ -191,110 +172,6 @@ const AdminSubscriptionPlansPage: FC = () => {
         isEdit={!!editData}
       />
     </AdminLayout>
-  );
-};
-
-interface PlanModalProps {
-  open: boolean;
-  onClose: () => void;
-  onSubmit: (data: PlanSchemaType, _id?: string) => void;
-  _id?: string;
-  initialData?: Partial<PlanSchemaType>;
-  isEdit?: boolean;
-}
-
-const PlanModal: FC<PlanModalProps> = ({
-  open,
-  onClose,
-  onSubmit,
-  initialData,
-  isEdit,
-  _id,
-}) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<PlanSchemaType>({
-    resolver: zodResolver(PlanSchema),
-    defaultValues: {
-      title: initialData?.title || "",
-      description: initialData?.description || "",
-      price: initialData?.price ?? 0,
-      duration: initialData?.duration ?? 30,
-    },
-  });
-
-  useEffect(() => {
-    reset({
-      title: initialData?.title || "",
-      description: initialData?.description || "",
-      price: initialData?.price ?? 0,
-      duration: initialData?.duration ?? 30,
-    });
-  }, [initialData, reset]);
-
-  const handleFormSubmit = (data: PlanSchemaType) => {
-    onSubmit(data, _id);
-    onClose();
-  };
-
-  return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="bg-[#0a0d17] border border-app-border text-white max-w-md">
-        <DialogHeader>
-          <DialogTitle className="text-lg font-semibold">
-            {isEdit ? "Edit Subscription Plan" : "Add Subscription Plan"}
-          </DialogTitle>
-        </DialogHeader>
-
-        <form
-          onSubmit={handleSubmit(handleFormSubmit)}
-          className="flex flex-col gap-4 mt-4"
-        >
-          <Input
-            placeholder="Title"
-            {...register("title")}
-            className="bg-transparent border border-app-border"
-          />
-          {errors.title && <ErrorText error={errors.title.message!} />}
-
-          <Input
-            placeholder="Description"
-            {...register("description")}
-            className="bg-transparent border border-app-border"
-          />
-          {errors.description && (
-            <ErrorText error={errors.description.message!} />
-          )}
-
-          <Input
-            type="number"
-            step="0.01"
-            placeholder="Price"
-            {...register("price", { valueAsNumber: true })}
-            className="bg-transparent border border-app-border"
-          />
-          {errors.price && <ErrorText error={errors.price.message!} />}
-
-          <Input
-            type="number"
-            placeholder="Duration (in days)"
-            {...register("duration", { valueAsNumber: true })}
-            className="bg-transparent border border-app-border"
-          />
-          {errors.duration && <ErrorText error={errors.duration.message!} />}
-
-          <button
-            type="submit"
-            className="w-full py-2 mt-2 bg-app-secondary text-white"
-          >
-            {isEdit ? "Update Plan" : "Add Plan"}
-          </button>
-        </form>
-      </DialogContent>
-    </Dialog>
   );
 };
 

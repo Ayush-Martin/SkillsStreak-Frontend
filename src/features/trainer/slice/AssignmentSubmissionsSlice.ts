@@ -1,4 +1,4 @@
-import { IViewAssignment } from "@/types/courseType";
+import { IEnrolledCourseAssignmentSubmission } from "@/types/courseType";
 import { createSlice } from "@reduxjs/toolkit";
 import {
   getTrainerAssignmentSubmissionsApi,
@@ -6,13 +6,8 @@ import {
 } from "../api/AssignmentSubmissionsApi";
 import { errorPopup, successPopup } from "@/utils/popup";
 
-interface IAssignmentSubmission extends IViewAssignment {
-  user: { _id: string; email: string };
-  course: { _id: string; title: string };
-}
-
 type initialStateType = {
-  assignmentSubmissions: IAssignmentSubmission[];
+  assignmentSubmissions: IEnrolledCourseAssignmentSubmission[];
   currentPage: number;
   totalPages: number;
   loading: boolean;

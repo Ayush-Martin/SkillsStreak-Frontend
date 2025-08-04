@@ -1,9 +1,9 @@
 import { UserSidebar } from "@/components";
 import ViewCourseContext from "@/context/ViewCourseContext";
-import React, { FC, ReactNode, useState } from "react";
+import  { FC, ReactNode, useState } from "react";
 import UserLayout from "./UserLayout";
 import useViewCourse from "@/hooks/useViewCourse";
-import CourseUtility from "@/components/user/CourseUtils";
+import CourseUtility from "@/components/user/course/CourseUtils";
 
 interface IEnrolledCourseLayoutProps {
   children: ReactNode;

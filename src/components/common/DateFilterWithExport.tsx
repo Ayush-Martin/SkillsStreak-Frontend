@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import  { FC } from "react";
 
 type FilterType = "all" | "daily" | "weekly" | "monthly" | "custom" | "yearly";
 type ExportType = "pdf" | "excel";

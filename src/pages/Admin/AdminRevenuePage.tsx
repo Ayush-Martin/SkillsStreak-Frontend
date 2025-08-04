@@ -1,7 +1,11 @@
-import { Pagination } from "@/components";
-import DateFilter from "@/components/common/DateFilter";
+import { exportAdminRevenue } from "@/api/revenue.api";
+import {
+  CommissionRevenueCard,
+  Pagination,
+  RevenueCard,
+  SubscriptionRevenueCard,
+} from "@/components";
 import DateFilterWithExport from "@/components/common/DateFilterWithExport";
-import StatCard from "@/components/common/StatCard";
 import { CourseTableSkeleton } from "@/components/skeletons";
 import {
   Table,
@@ -11,67 +15,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui";
-import appApi, { axiosGetRequest } from "@/config/axios";
 import { getAdminRevenueApi } from "@/features/admin/api/adminRevenueApi";
 import { changePage } from "@/features/admin/slice/adminRevenueSlice";
-import { useEditCourse, usePaginatedData } from "@/hooks";
+import { usePaginatedData } from "@/hooks";
 import { AdminLayout } from "@/layouts";
 import { AppDispatch, RootReducer } from "@/store";
 import { IFilterType } from "@/types/revenueType";
-import { FC, useEffect, useState } from "react";
-import { FaCrown, FaMoneyBillWave } from "react-icons/fa6";
-import { HiOutlineCurrencyRupee } from "react-icons/hi2";
+import { useEffect, useState } from "react";
 import { MdOutlineRefresh } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-
-interface IRevenueCard {
-  amount: number;
-}
-
-const RevenueCard: FC<IRevenueCard> = ({ amount }) => {
-  return (
-    <StatCard
-      icon={<FaMoneyBillWave className="text-yellow-400" />}
-      title="Total Revenue"
-      value={`₹ ${amount}`}
-      color="text-yellow-400"
-      hoverShadowColor="hover:shadow-yellow-500/30"
-    />
-  );
-};
-
-interface ICommissionRevenueCard {
-  amount: number;
-}
-
-const CommissionRevenueCard: FC<ICommissionRevenueCard> = ({ amount }) => {
-  return (
-    <StatCard
-      icon={<HiOutlineCurrencyRupee className="text-emerald-400" />}
-      title="Commission Revenue"
-      value={`₹ ${amount}`}
-      color="text-emerald-400"
-      hoverShadowColor="hover:shadow-emerald-500/30"
-    />
-  );
-};
-
-interface ISubscriptionRevenueCard {
-  amount: number;
-}
-
-const SubscriptionRevenueCard: FC<ISubscriptionRevenueCard> = ({ amount }) => {
-  return (
-    <StatCard
-      icon={<FaCrown className="text-purple-400" />}
-      title="Subscription Revenue"
-      value={`₹ ${amount}`}
-      color="text-purple-400"
-      hoverShadowColor="hover:shadow-purple-500/30"
-    />
-  );
-};
 
 const PAGE_SIZE = 3;
 
@@ -115,36 +68,8 @@ const AdminRevenue = () => {
     );
   }, [filterType, startDate, endDate]);
 
-  const handleExport = async (exportType: "pdf" | "excel") => {
-    try {
-      const res = await appApi.get(
-        `/admin/revenue/export?filterType=${filterType}&startDate=${startDate}&endDate=${endDate}&exportType=${exportType}`,
-        {
-          responseType: "blob",
-        }
-      );
-      const blob = new Blob([res.data], {
-        type:
-          exportType === "pdf"
-            ? "application/pdf"
-            : "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `admin-revenue-report.${
-        exportType === "pdf" ? ".pdf" : "xlsx"
-      }`;
-      document.body.appendChild(link);
-      link.click();
-
-      // Clean up
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error("Failed to download PDF:", err);
-    }
-  };
+  const handleExport = async (exportType: "pdf" | "excel") =>
+    exportAdminRevenue(exportType, filterType, startDate, endDate);
 
   return (
     <AdminLayout>

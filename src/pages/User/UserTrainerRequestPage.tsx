@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui";
 import { axiosGetRequest, axiosPostRequest } from "@/config/axios";
 import AuthLayout from "@/layouts/AuthLayout";
-import { successPopup, errorPopup } from "@/utils/popup";
+import { successPopup } from "@/utils/popup";
 import { TRAINER_REQUEST_API } from "@/constants/API";
+import { checkProfileCompleted } from "@/api";
 
 type TrainerRequestStatus = "pending" | "approved" | "rejected";
 
@@ -23,12 +24,12 @@ const TrainerRequest: FC = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
-    const [profileRes, requestRes] = await Promise.all([
-      axiosGetRequest("/profile/check"),
+    const [completed, requestRes] = await Promise.all([
+      await checkProfileCompleted(),
       axiosGetRequest(TRAINER_REQUEST_API),
     ]);
 
-    setIsCompletedProfile(profileRes?.data || false);
+    setIsCompletedProfile(completed);
     if (requestRes?.data) setRequestStatus(requestRes.data);
 
     setLoading(false);

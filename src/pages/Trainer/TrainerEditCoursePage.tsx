@@ -5,11 +5,13 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components";
-import CourseAssignments from "@/components/trainer/CourseAssignments";
-import CourseBasicDetails from "@/components/trainer/CourseBasicDetails";
-import CourseLiveSession from "@/components/trainer/CourseLiveSession";
-import CourseNewModules from "@/components/trainer/CourseNewModules";
-import useNewEditCourse from "@/hooks/useEditCourse";
+import {
+  TrainerCourseAssignments,
+  TrainerCourseBasicDetails,
+  TrainerCourseLiveSession,
+  TrainerCourseNewModules,
+} from "@/components";
+import { useEditCourse } from "@/hooks";
 import { TrainerLayout } from "@/layouts";
 import { AlertCircle } from "lucide-react";
 
@@ -41,7 +43,7 @@ const TrainerNewEditCoursePage = () => {
     deleteLiveSession,
     courseStatus,
     viewLiveSession,
-  } = useNewEditCourse();
+  } = useEditCourse();
 
   return (
     <TrainerLayout>
@@ -85,7 +87,7 @@ const TrainerNewEditCoursePage = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="basic_details">
-          <CourseBasicDetails
+          <TrainerCourseBasicDetails
             categories={categories}
             errors={errors}
             handleThumbnailChange={handleThumbnailChange}
@@ -98,7 +100,7 @@ const TrainerNewEditCoursePage = () => {
           />
         </TabsContent>
         <TabsContent value="recorded" className="mt-10">
-          <CourseNewModules
+          <TrainerCourseNewModules
             addModule={addModule}
             deleteModule={deleteModule}
             fetchModules={fetchModules}
@@ -107,7 +109,7 @@ const TrainerNewEditCoursePage = () => {
           />
         </TabsContent>
         <TabsContent value="assignments" className="mt-10">
-          <CourseAssignments
+          <TrainerCourseAssignments
             addAssignment={addAssignment}
             assignments={assignments}
             deleteAssignment={deleteAssignment}
@@ -116,7 +118,7 @@ const TrainerNewEditCoursePage = () => {
           />
         </TabsContent>
         <TabsContent value="live" className="mt-10">
-          <CourseLiveSession
+          <TrainerCourseLiveSession
             editSession={editLiveSession}
             scheduleSession={scheduleLiveSession}
             fetchSessions={fetchLiveSessions}

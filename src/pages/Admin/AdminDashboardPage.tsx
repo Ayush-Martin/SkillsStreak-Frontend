@@ -1,84 +1,55 @@
 import { FC, useEffect, useState } from "react";
 
-import { FaChalkboardTeacher } from "react-icons/fa";
 import { AdminLayout } from "@/layouts";
-import { FaUsers } from "react-icons/fa6";
-import useWallet from "@/hooks/useWallet";
-import WalletCard from "@/components/user/WalletCard";
-import { axiosGetRequest } from "@/config/axios";
-import { AnalyticsAreaChart, StatCard, TopItemsChart } from "@/components";
-
-interface IUsersCardProps {
-  totalUsers: number;
-}
-
-const UsersCard: FC<IUsersCardProps> = ({ totalUsers }) => {
-  return (
-    <StatCard
-      icon={<FaUsers className="text-purple-400" />}
-      title="Total Users"
-      value={totalUsers}
-      color="text-purple-400"
-      hoverShadowColor="hover:shadow-purple-500/30"
-    />
-  );
-};
-
-interface ITotalCoursesCard {
-  totalCourses: number;
-}
-
-const TotalCoursesCard: FC<ITotalCoursesCard> = ({ totalCourses }) => {
-  return (
-    <StatCard
-      icon={<FaChalkboardTeacher className="text-indigo-500" />}
-      title="Total Course"
-      value={totalCourses}
-      color="text-indigo-500"
-      hoverShadowColor="hover:shadow-indigo-500"
-    />
-  );
-};
-
-interface graphData {
-  label: string;
-  value: number;
-}
+import { useWallet } from "@/hooks";
+import {
+  AnalyticsAreaChart,
+  TopItemsChart,
+  TotalCoursesCard,
+  UsersCard,
+  WalletCard,
+} from "@/components";
+import { ITop5Courses } from "@/types/courseType";
+import { IRevenueGraph } from "@/types/revenueType";
+import {
+  getAdminCoursesCount,
+  getAdminRevenueGraphData,
+  getAdminTop5Courses,
+  getAdminUsersCount,
+} from "@/api";
 
 const Dashboard: FC = () => {
   const [usersCount, setUsersCount] = useState(0);
   const [coursesCount, setCoursesCount] = useState(0);
-  const [top5Courses, setTop5Courses] = useState<
-    Array<{ title: string; enrolledCount: number; _id: string }>
-  >([]);
-  const [revenueGraphData, setRevenueGraphData] = useState<{
-    daily: graphData[];
-    monthly: graphData[];
-    yearly: graphData[];
-  }>({ daily: [], monthly: [], yearly: [] });
+  const [top5Courses, setTop5Courses] = useState<ITop5Courses>([]);
+  const [revenueGraphData, setRevenueGraphData] = useState<IRevenueGraph>({
+    daily: [],
+    monthly: [],
+    yearly: [],
+  });
 
   useEffect(() => {
     const getUsersCount = async () => {
-      const res = await axiosGetRequest("/admin/users/count");
-      if (!res) return;
-      setUsersCount(res.data);
+      const data = await getAdminUsersCount();
+      if (!data) return;
+      setUsersCount(data);
     };
 
     const getCoursesCount = async () => {
-      const res = await axiosGetRequest("/admin/courses/count");
-      if (!res) return;
-      setCoursesCount(res.data);
+      const data = await getAdminCoursesCount();
+      if (!data) return;
+      setCoursesCount(data);
     };
     const getTop5Courses = async () => {
-      const res = await axiosGetRequest("/admin/courses/top5");
-      if (!res) return;
-      setTop5Courses(res.data);
+      const data = await getAdminTop5Courses();
+      if (!data) return;
+      setTop5Courses(data);
     };
 
     const getRevenueGraphData = async () => {
-      const res = await axiosGetRequest("admin/revenue/graph");
-      if (!res) return;
-      setRevenueGraphData(res.data);
+      const data = await getAdminRevenueGraphData();
+      if (!data) return;
+      setRevenueGraphData(data);
     };
 
     getUsersCount();
@@ -101,8 +72,6 @@ const Dashboard: FC = () => {
             haveStripeId={haveStripeId}
             onRedeem={handleRedeem}
             onSetupAccount={setupStripeAccount}
-            commissionAmount={wallet.commission}
-            redeemableAmount={wallet.redeemable}
           />
         </div>
       </div>

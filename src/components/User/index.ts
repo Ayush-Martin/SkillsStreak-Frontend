@@ -1,10 +1,8 @@
-export { default as CourseCard } from "./CourseCard";
-export { default as CourseFilter } from "./CourseFilter";
-export { default as EditProfile } from "./EditProfile";
-export { default as EnrolledCourseCard } from "./EnrolledCourseCard";
-export { default as Review } from "./Review";
-export { default as SubscriptionCard } from "./SubscriptionCard";
-export { default as UserHeader } from "./UserHeader";
-export { default as UserSidebar } from "./UserSidebar";
-export { default as WalletCard } from "./WalletCard";
-export { default as Wishlist } from "./Wishlist";
+export * from "./chat";
+export * from "./common";
+export * from "./enrolledCourse";
+export * from "./subscription";
+export * from "./wallet";
+export * from "./wishlist";
+export * from "./dashboard";
+export * from "./course";

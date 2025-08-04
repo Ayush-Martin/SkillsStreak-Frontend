@@ -2,9 +2,6 @@ import { getSocket } from "@/config/socket";
 import { FC, useEffect, useState } from "react";
 import { Button, Input, ScrollArea } from "../ui";
 import ProfileImage from "./ProfileImage";
-import { Send } from "lucide-react";
-import { useSelector } from "react-redux";
-import { RootReducer } from "@/store";
 import { useScrollToBottom } from "@/hooks";
 import { SocketEvents } from "@/constants";
 
@@ -31,7 +28,6 @@ const LiveChat: FC<ILiveChatProps> = ({
   const socket = getSocket();
   const [message, setMessage] = useState("");
   const [comments, setComments] = useState<ILiveComment[]>([]);
-  const { _id } = useSelector((state: RootReducer) => state.user);
   const chatEndRef = useScrollToBottom([comments]);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { UserProfileSchemaType } from "@/components/user/EditProfile";
+
 import {
   axiosGetRequest,
   axiosPatchRequest,
@@ -7,12 +7,11 @@ import {
 import { PROFILE_API } from "@/constants";
 import {
   updateProfileImage,
-  updateProfileData,
 } from "@/features/Auth/slice/userSlice";
 import { AppDispatch } from "@/store";
 import { successPopup } from "@/utils/popup";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { z } from "zod";

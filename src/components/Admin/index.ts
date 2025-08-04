@@ -1,2 +1,6 @@
-export { default as AdminHeader } from "./AdminHeader";
-export { default as AdminSidebar } from "./AdminSidebar";
+export * from "./common";
+export * from "./categories";
+export * from "./course";
+export * from "./dashboard";
+export * from "./revenue";
+export * from "./subscription";

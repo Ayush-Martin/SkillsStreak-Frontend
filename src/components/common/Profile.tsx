@@ -15,14 +15,12 @@ import {
   Users,
   BookOpen,
   Award,
-  Star,
 } from "lucide-react";
 import { CgWebsite } from "react-icons/cg";
 import { FC, JSX } from "react";
 import { CourseCard } from "../user";
-import { FaBookOpen } from "@/assets/icons";
 import { IUserProfile } from "@/types/userType";
-import { ICourseCardData } from "@/types/courseType";
+import { IUserCourseCardData } from "@/types/courseType";
 
 const iconMap: Record<string, JSX.Element> = {
   github: <FaGithub className="text-gray-300" />,
@@ -41,7 +39,7 @@ const infoIconMap: Record<string, JSX.Element> = {
 };
 
 interface ProfileViewProps extends IUserProfile {
-  courses: Array<ICourseCardData>;
+  courses: Array<IUserCourseCardData>;
 }
 
 const UserProfileView: FC<ProfileViewProps> = ({

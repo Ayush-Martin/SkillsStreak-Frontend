@@ -1,61 +1,15 @@
-import { UserSidebar } from "@/components";
+import {
+  UserSidebar,
+  SubscriptionCard,
+  WalletCard,
+  UserCourseStatsCard,
+} from "@/components";
 
-import { axiosGetRequest } from "@/config/axios";
-
-import UserLayout from "@/layouts/UserLayout";
-
+import { UserLayout } from "@/layouts";
 import { FC, useEffect, useState } from "react";
-
-import { FaBookOpen } from "react-icons/fa";
-import StatCardWithProgress from "@/components/common/StatCardWithProgress";
-import SubscriptionCard from "@/components/user/SubscriptionCard";
-import { useSubscription } from "@/hooks";
-import WalletCard from "@/components/user/WalletCard";
-import useWallet from "@/hooks/useWallet";
+import { useSubscription, useWallet } from "@/hooks";
 import { useNavigate } from "react-router-dom";
-
-interface CourseStatsCardProps {
-  totalEnrolled: number;
-  totalCompleted: number;
-}
-
-const CourseStatsCard: FC<CourseStatsCardProps> = ({
-  totalEnrolled,
-  totalCompleted,
-}) => {
-  const progressPercent =
-    totalEnrolled > 0 ? Math.round((totalCompleted / totalEnrolled) * 100) : 0;
-
-  const infoItems = [
-    { label: "Courses Enrolled:", value: totalEnrolled.toString() },
-    {
-      label: "Courses Completed:",
-      value: totalCompleted.toString(),
-      className: "text-green-400",
-    },
-    {
-      label: "Completion:",
-      value: `${progressPercent}%`,
-      className:
-        progressPercent < 40
-          ? "text-red-400"
-          : progressPercent < 80
-          ? "text-yellow-400"
-          : "text-green-400",
-    },
-  ];
-
-  return (
-    <StatCardWithProgress
-      icon={<FaBookOpen />}
-      title="Course Progress"
-      items={infoItems}
-      progressPercent={progressPercent}
-      progressColor="from-blue-500 via-indigo-500 to-teal-400"
-      shadowColor="hover:shadow-blue-500/30"
-    />
-  );
-};
+import { getOverallCourseProgress } from "@/api";
 
 const DashBoard: FC = () => {
   const { subscriptionDetail } = useSubscription();
@@ -70,9 +24,9 @@ const DashBoard: FC = () => {
 
   useEffect(() => {
     const fetchOverallCourseProgress = async () => {
-      const res = await axiosGetRequest("/enrolledCourses/progress");
-      if (!res) return;
-      setOverallCourseProgress(res.data);
+      const data = await getOverallCourseProgress();
+      if (!data) return;
+      setOverallCourseProgress(data);
     };
 
     fetchOverallCourseProgress();
@@ -87,10 +41,10 @@ const DashBoard: FC = () => {
             <SubscriptionCard
               startDate={subscriptionDetail?.startDate}
               endDate={subscriptionDetail?.endDate}
-              onSubscribe={() => {}}
+              onSubscribe={() => navigate("/subscriptions")}
             />
 
-            <CourseStatsCard
+            <UserCourseStatsCard
               totalCompleted={overallCourseProgress?.coursesCompleted || 0}
               totalEnrolled={overallCourseProgress?.enrolledCourses || 0}
             />
@@ -101,7 +55,7 @@ const DashBoard: FC = () => {
                 balance={wallet.balance}
                 haveStripeId={haveStripeId}
                 onRedeem={handleRedeem}
-                onSetupAccount={() => navigate("/subscriptionPlans")}
+                onSetupAccount={setupStripeAccount}
               />
             </div>
           </div>

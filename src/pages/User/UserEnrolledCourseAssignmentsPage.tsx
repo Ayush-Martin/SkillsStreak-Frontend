@@ -6,14 +6,12 @@ import {
   RefreshCcw,
   ShieldCheck,
   Eye,
-  Calendar,
-  BookOpen,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import useCourseAssignments from "@/hooks/useViewCourseAssignments";
-import { IViewAssignment } from "@/types/courseType";
-import AssignmentModal from "@/components/user/AssignmentModal";
+import { useCourseAssignments } from "@/hooks";
+import { IAssignmentSubmission } from "@/types/courseType";
+import { AssignmentModal } from "@/components";
 
 const statusConfig = {
   pending: {
@@ -58,10 +56,10 @@ const UserCourseAssignmentsPage = () => {
   const { assignments, completeAssignment, redoAssignment } =
     useCourseAssignments();
   const [selectedAssignment, setSelectedAssignment] =
-    useState<IViewAssignment | null>(null);
+    useState<IAssignmentSubmission | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = (assignment: IViewAssignment) => {
+  const openModal = (assignment: IAssignmentSubmission) => {
     setSelectedAssignment(assignment);
     setIsModalOpen(true);
   };

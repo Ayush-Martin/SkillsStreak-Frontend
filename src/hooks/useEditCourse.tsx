@@ -6,8 +6,12 @@ import {
   axiosPutRequest,
 } from "@/config/axios";
 import { TRAINER_COURSES_API } from "@/constants";
-import { IAssignment, ILiveSession, ModuleType } from "@/types/courseType";
-import { successPopup } from "@/utils/popup";
+import {
+  ITrainerAssignment,
+  ILiveSession,
+  ITrainerModule,
+} from "@/types/courseType";
+import { errorPopup, successPopup } from "@/utils/popup";
 import {
   ICourseBasicDetailsSchema,
   CourseBasicDetailsSchema,
@@ -55,8 +59,8 @@ const useNewEditCourse = () => {
     "pending" | "approved" | "rejected"
   >("pending");
   const [previewThumbnail, setPreviewThumbnail] = useState<string | null>(null);
-  const [modules, setModules] = useState<Array<ModuleType>>([]);
-  const [assignments, setAssignments] = useState<Array<IAssignment>>([]);
+  const [modules, setModules] = useState<Array<ITrainerModule>>([]);
+  const [assignments, setAssignments] = useState<Array<ITrainerAssignment>>([]);
   const [liveSessions, setLiveSessions] = useState<Array<ILiveSession>>([]);
 
   useEffect(() => {
@@ -83,6 +87,11 @@ const useNewEditCourse = () => {
   ) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
+      const validTypes = ["image/jpeg", "image/png"];
+      if (!validTypes.includes(selectedFile.type)) {
+        errorPopup("Only JPG and PNG files are allowed");
+        return;
+      }
       const formData = new FormData();
 
       formData.append("image", selectedFile);
@@ -267,7 +276,7 @@ const useNewEditCourse = () => {
 
   const viewLiveSession = (liveSessionId: string) => {
     console.log(liveSessionId);
-    navigate(`/trainer/newCourse/${courseId}/live/${liveSessionId}`);
+    navigate(`/trainer/courses/${courseId}/live/${liveSessionId}`);
   };
 
   return {

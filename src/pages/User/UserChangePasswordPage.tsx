@@ -1,33 +1,17 @@
 import { useForm } from "react-hook-form";
 import { FC } from "react";
-import { z } from "zod";
 
 import AuthLayout from "@/layouts/AuthLayout";
 import resetPasswordImage from "@/assets/images/resetPassword.jpg";
 import { Input, Button } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorText } from "@/components";
-import { PasswordValidationRule } from "@/utils/validationRules";
-import { axiosPatchRequest } from "@/config/axios";
-import { CHANGE_PASSWORD_API } from "@/constants/API";
-import { successPopup } from "@/utils/popup";
 import { useNavigate } from "react-router-dom";
-
-const ChangePasswordSchema = z
-  .object({
-    currentPassword: PasswordValidationRule,
-    newPassword: PasswordValidationRule,
-    confirmNewPassword: z.string(),
-  })
-  .refine(
-    ({ newPassword, confirmNewPassword }) => newPassword == confirmNewPassword,
-    {
-      message: "Password does not match",
-      path: ["confirmNewPassword"],
-    }
-  );
-
-type ChangePasswordSchemaType = z.infer<typeof ChangePasswordSchema>;
+import {
+  ChangePasswordSchema,
+  IChangePasswordSchema,
+} from "@/validation/auth.validation";
+import { changePassword } from "@/api";
 
 const ChangePassword: FC = () => {
   const {
@@ -35,7 +19,7 @@ const ChangePassword: FC = () => {
     formState: { isSubmitting, isValid, errors },
     trigger,
     handleSubmit,
-  } = useForm<ChangePasswordSchemaType>({
+  } = useForm<IChangePasswordSchema>({
     defaultValues: {
       currentPassword: "",
       newPassword: "",
@@ -46,13 +30,9 @@ const ChangePassword: FC = () => {
 
   const navigate = useNavigate();
 
-  const submit = async (data: ChangePasswordSchemaType) => {
-    const res = await axiosPatchRequest(CHANGE_PASSWORD_API, {
-      currentPassword: data.currentPassword,
-      newPassword: data.newPassword,
-    });
+  const submit = async (data: IChangePasswordSchema) => {
+    const res = await changePassword(data);
     if (!res) return;
-    successPopup(res.message || "Password is changed");
     navigate(-1);
   };
 

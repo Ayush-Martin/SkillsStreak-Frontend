@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getEnrolledCoursesApi } from "../api/enrolledCourseApi";
-import { errorPopup, successPopup } from "@/utils/popup";
 
 interface IEnrolledCourse {
   _id: string;

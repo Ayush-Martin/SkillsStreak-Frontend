@@ -9,9 +9,7 @@ import { Input, Button } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorText } from "@/components";
 import { PasswordValidationRule } from "@/utils/validationRules";
-import { axiosPostRequest } from "@/config/axios";
-import { RESET_PASSWORD_API } from "@/constants/API";
-import { successPopup } from "@/utils/popup";
+import { resetPassword } from "@/api/auth.api";
 
 const ResetPasswordSchema = z
   .object({
@@ -51,12 +49,7 @@ const ResetPassword: FC = () => {
   });
 
   const submit = async (data: ResetPasswordSchemaType) => {
-    const res = await axiosPostRequest(RESET_PASSWORD_API, {
-      password: data.password,
-      email,
-    });
-    if (!res) return;
-    successPopup(res.message || "Password is changed");
+    await resetPassword(email, data.password);
     navigate("/auth");
   };
 

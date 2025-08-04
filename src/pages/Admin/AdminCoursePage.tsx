@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Card,
-  Separator,
+  AdminCourseDifficultyBadge,
+  AdminCourseStatusBadge,
 } from "@/components";
-import { axiosGetRequest } from "@/config/axios";
 import { AdminLayout } from "@/layouts";
 import { Link, useParams } from "react-router-dom";
 import {
   Play,
   FileText,
   Clock,
-  Users,
-  Star,
   Calendar,
   Video,
   BookOpen,
@@ -23,177 +20,21 @@ import {
   Tag,
   Globe,
   TrendingUp,
-  Award,
-  Target,
   User,
   Mail,
 } from "lucide-react";
-
-// Interface definitions
-export interface CourseDocument {
-  _id: string;
-  title: string;
-  price: number;
-  skillsCovered: string[];
-  requirements: string[];
-  difficulty: "beginner" | "intermediate" | "advanced";
-  thumbnail: string;
-  description: string;
-  isListed: boolean;
-  status: "pending" | "approved" | "rejected";
-  modules: ModuleWithLessons[];
-  liveSessions: LiveSession[];
-  assignments: Assignment[];
-  category: Category;
-  trainer: Trainer;
-}
-
-export interface ModuleWithLessons {
-  _id: string;
-  title: string;
-  lessons: Lesson[];
-}
-
-export interface Lesson {
-  _id: string;
-  title: string;
-  type: "video" | "pdf";
-  path: string;
-}
-
-export interface LiveSession {
-  _id: string;
-  title: string;
-  description: string;
-  date: string;
-  time: string;
-  status: "live" | "upcoming" | "completed";
-  liveSrc: string;
-  recordedSrc: string;
-}
-
-export interface Assignment {
-  _id: string;
-  title: string;
-  description: string;
-  task: string;
-}
-
-export interface Category {
-  _id: string;
-  categoryName: string;
-}
-
-export interface Trainer {
-  _id: string;
-  username: string;
-  email: string;
-  profileImage: string;
-}
-
-const StatusBadge = ({ status }: { status: string }) => {
-  const getStatusConfig = () => {
-    switch (status) {
-      case "approved":
-        return {
-          color: "bg-green-900/30 text-green-400 border-green-700",
-          text: "Approved",
-        };
-      case "pending":
-        return {
-          color: "bg-yellow-900/30 text-yellow-400 border-yellow-700",
-          text: "Pending",
-        };
-      case "rejected":
-        return {
-          color: "bg-red-900/30 text-red-400 border-red-700",
-          text: "Rejected",
-        };
-      case "live":
-        return {
-          color: "bg-red-900/30 text-red-400 border-red-700",
-          text: "Live",
-        };
-      case "upcoming":
-        return {
-          color: "bg-blue-900/30 text-blue-400 border-blue-700",
-          text: "Upcoming",
-        };
-      case "completed":
-        return {
-          color: "bg-white/5  text-gray-300 border-white/10",
-          text: "Completed",
-        };
-      default:
-        return {
-          color: "bg-white/5  text-gray-300 border-white/10",
-          text: status,
-        };
-    }
-  };
-
-  const config = getStatusConfig();
-
-  return (
-    <span
-      className={`inline-flex items-center px-3 py-1 rounded-md text-sm font-medium border ${config.color}`}
-    >
-      {config.text}
-    </span>
-  );
-};
-
-const DifficultyBadge = ({ difficulty }: { difficulty: string }) => {
-  const getDifficultyConfig = () => {
-    switch (difficulty) {
-      case "beginner":
-        return {
-          color: "bg-emerald-900/30 text-emerald-400 border-emerald-700",
-          icon: <Star className="w-4 h-4" />,
-          text: "Beginner",
-        };
-      case "intermediate":
-        return {
-          color: "bg-orange-900/30 text-orange-400 border-orange-700",
-          icon: <Award className="w-4 h-4" />,
-          text: "Intermediate",
-        };
-      case "advanced":
-        return {
-          color: "bg-red-900/30 text-red-400 border-red-700",
-          icon: <Target className="w-4 h-4" />,
-          text: "Advanced",
-        };
-      default:
-        return {
-          color: "bg-white/5  text-gray-300 border-white/10",
-          icon: <BookOpen className="w-4 h-4" />,
-          text: difficulty,
-        };
-    }
-  };
-
-  const config = getDifficultyConfig();
-
-  return (
-    <span
-      className={`inline-flex items-center gap-2 px-3 py-1 rounded-md text-sm font-medium border ${config.color}`}
-    >
-      {config.icon}
-      {config.text}
-    </span>
-  );
-};
+import { IAdminCourseDetail } from "@/types/courseType";
+import { getAdminCourse } from "@/api/course.api";
 
 const AdminCoursePage = () => {
   const { courseId } = useParams();
-  const [course, setCourse] = useState<CourseDocument | null>(null);
+  const [course, setCourse] = useState<IAdminCourseDetail | null>(null);
 
   useEffect(() => {
     const fetchCourse = async () => {
-      const res = await axiosGetRequest(`/admin/courses/${courseId}`);
-      if (!res) return;
-      setCourse(res.data);
+      const data = await getAdminCourse(courseId!);
+      if (!data) return;
+      setCourse(data);
     };
 
     fetchCourse();
@@ -237,12 +78,14 @@ const AdminCoursePage = () => {
               <div className="absolute bottom-6 left-6 right-6">
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 flex-wrap">
-                    <StatusBadge status={course.status} />
+                    <AdminCourseStatusBadge status={course.status} />
                     <span className="bg-gray-900/70 text-gray-300 px-3 py-1 rounded-md text-sm font-medium border border-white/10 flex items-center gap-2">
                       <Tag className="w-4 h-4" />
                       {course.category.categoryName}
                     </span>
-                    <DifficultyBadge difficulty={course.difficulty} />
+                    <AdminCourseDifficultyBadge
+                      difficulty={course.difficulty}
+                    />
                     <span className="bg-gray-900/70 text-gray-300 px-3 py-1 rounded-md text-sm font-medium border border-white/10 flex items-center gap-2">
                       <Globe className="w-4 h-4" />
                       {course.isListed ? "Public" : "Private"}
@@ -529,7 +372,9 @@ const AdminCoursePage = () => {
                                 <span className="flex-1 text-left font-medium">
                                   {session.title}
                                 </span>
-                                <StatusBadge status={session.status} />
+                                <AdminCourseStatusBadge
+                                  status={session.status}
+                                />
                               </div>
                             </AccordionTrigger>
                             <AccordionContent className="px-6 pb-6">
@@ -559,7 +404,9 @@ const AdminCoursePage = () => {
                                           <CheckCircle className="w-4 h-4" />
                                           Status:
                                         </span>
-                                        <StatusBadge status={session.status} />
+                                        <AdminCourseStatusBadge
+                                          status={session.status}
+                                        />
                                       </div>
                                       <div className="flex items-center gap-3 text-gray-300">
                                         <span className="font-medium flex items-center gap-2">

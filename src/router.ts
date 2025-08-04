@@ -41,6 +41,7 @@ const CourseAssignments = lazy(
   () => import("./pages/User/UserEnrolledCourseAssignmentsPage")
 );
 const Subscription = lazy(() => import("./pages/User/UserSubscriptionPage"));
+const UserWallet = lazy(() => import("./pages/User/UserWalletPage"));
 
 //Trainer Routes
 const TrainerDashboard = lazy(
@@ -185,6 +186,10 @@ export const UserRoutes: Routes = [
     path: "enrolledCourses/:courseId/assignments",
     Component: CourseAssignments,
   },
+  {
+    path: "wallet",
+    Component: UserWallet,
+  },
 ];
 
 export const TrainerRoutes: Routes = [
@@ -217,7 +222,7 @@ export const TrainerRoutes: Routes = [
     Component: TrainerNewEditCourse,
   },
   {
-    path: "course/:courseId/live/:liveSessionId",
+    path: "courses/:courseId/live/:liveSessionId",
     Component: TrainerLiveSession,
   },
   {

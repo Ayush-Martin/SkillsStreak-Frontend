@@ -1,11 +1,9 @@
-import { UserSidebar } from "@/components";
+import { UserSidebar, ChatSidebar, ChatBox } from "@/components";
 import { UserLayout } from "@/layouts";
 import { ChatContext } from "@/context";
 
 import { useChat } from "@/hooks";
 import { useState } from "react";
-import ChatSidebar from "@/components/user/ChatSidebar";
-import ChatBox from "@/components/user/ChatBox";
 
 const ChatNew = () => {
   const [isOpen, setIsOpen] = useState(true);

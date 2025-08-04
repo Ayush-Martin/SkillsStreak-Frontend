@@ -7,9 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthLayout } from "@/layouts";
 import { ErrorText, Button, Input } from "@/components";
 import { EmailValidationRule } from "@/utils/validationRules";
-import { axiosPostRequest } from "@/config/axios";
-import { FORGET_PASSWORD_API } from "@/constants/API";
-import { successPopup } from "@/utils/popup";
+import { forgetPassword } from "@/api/auth.api";
 
 const ForgetPasswordSchema = z.object({
   email: EmailValidationRule,
@@ -33,9 +31,7 @@ const ForgetPassword: FC = () => {
   const navigate = useNavigate();
 
   const submit = async (data: ForgetPasswordSchemaType) => {
-    const res = await axiosPostRequest(FORGET_PASSWORD_API, data);
-    if (!res) return;
-    successPopup(res.message || "OTP sent to your email");
+    await forgetPassword(data.email);
     navigate("/auth/verifyOTP", {
       state: {
         forAction: "resetPassword",

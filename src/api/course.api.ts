@@ -1,5 +1,10 @@
 import { axiosGetRequest } from "@/config/axios";
-import { ICourseData, ICourseDetails } from "@/types/courseType";
+import {
+  IAdminCourseDetail,
+  ITop5Courses,
+  IUserCourseData,
+  IUserCourseDetails,
+} from "@/types/courseType";
 
 interface IGetUserCourseParams {
   page: number;
@@ -19,7 +24,7 @@ export const getUserCourses = async ({
   price,
   size,
   sort,
-}: IGetUserCourseParams): Promise<Array<ICourseData> | null> => {
+}: IGetUserCourseParams): Promise<Array<IUserCourseData> | null> => {
   const params = new URLSearchParams({
     page: page.toString(),
     search,
@@ -36,7 +41,42 @@ export const getUserCourses = async ({
 
 export const getUserCourse = async (
   courseId: string
-): Promise<ICourseDetails | null> => {
+): Promise<IUserCourseDetails | null> => {
   const res = await axiosGetRequest(`/courses/${courseId}`);
+  return res?.data;
+};
+
+export const getAdminCourse = async (
+  courseId: string
+): Promise<IAdminCourseDetail | null> => {
+  const res = await axiosGetRequest(`/admin/courses/${courseId}`);
+  return res?.data;
+};
+
+export const getAdminCoursesCount = async (): Promise<number | null> => {
+  const res = await axiosGetRequest("/admin/courses/count");
+  return res?.data;
+};
+
+export const getAdminTop5Courses = async (): Promise<ITop5Courses | null> => {
+  const res = await axiosGetRequest("/admin/courses/top5");
+  return res?.data;
+};
+
+export const getTrainerCoursesCount = async (): Promise<number | null> => {
+  const res = await axiosGetRequest("/trainer/courses/count");
+  return res?.data;
+};
+
+export const getTrainerTop5Courses = async (): Promise<ITop5Courses | null> => {
+  const res = await axiosGetRequest("/trainer/courses/top5");
+  return res?.data;
+};
+
+export const getOverallCourseProgress = async (): Promise<{
+  enrolledCourses: number;
+  coursesCompleted: number;
+} | null> => {
+  const res = await axiosGetRequest("/enrolledCourses/progress");
   return res?.data;
 };
