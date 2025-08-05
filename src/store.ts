@@ -17,6 +17,7 @@ import adminRevenue from "./features/admin/slice/adminRevenueSlice";
 import trainerRevenue from "./features/trainer/slice/trainerRevenueSlice";
 import trainerAssignmentSubmissions from "./features/trainer/slice/AssignmentSubmissionsSlice";
 import adminSubscriptionPlans from "./features/admin/slice/adminSubscriptionPlanSlice";
+import adminSubscribedUsers from "./features/admin/slice/adminSubscribedUsersSlice";
 
 const store = configureStore({
   reducer: {
@@ -38,6 +39,7 @@ const store = configureStore({
     trainerRevenue,
     trainerAssignmentSubmissions,
     adminSubscriptionPlans,
+    adminSubscribedUsers,
   },
 });
 

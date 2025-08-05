@@ -83,6 +83,9 @@ const AdminCourse = lazy(() => import("./pages/Admin/AdminCoursePage"));
 const AdminSubscriptionPlans = lazy(
   () => import("./pages/Admin/AdminSubscriptionPlansPage")
 );
+const AdminSubscribedUsers = lazy(
+  () => import("./pages/Admin/AdminSubscribedUsersPage")
+);
 
 type Route = {
   path: string;
@@ -271,5 +274,9 @@ export const AdminRoutes: Routes = [
   {
     path: "subscriptionPlans",
     Component: AdminSubscriptionPlans,
+  },
+  {
+    path: "subscribedUsers",
+    Component: AdminSubscribedUsers,
   },
 ];

@@ -28,6 +28,11 @@ const sidebarItems = [
     icon: <TbReportMoney />,
     link: "/admin/subscriptionPlans",
   },
+  {
+    name: "Subscribed Users",
+    icon: <TbReportMoney />,
+    link: "/admin/subscribedUsers",
+  },
   { name: "Revenue", icon: <FaWallet />, link: "/admin/revenue" },
   { name: "Transactions", icon: <MdPayments />, link: "/admin/transactions" },
 ];
