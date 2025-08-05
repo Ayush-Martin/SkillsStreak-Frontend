@@ -115,7 +115,7 @@ const useViewCourse = () => {
   };
 
   useEffect(() => {
-    // fetchWelcomeAiChat();
+    fetchWelcomeAiChat();
   }, []);
 
   return {
