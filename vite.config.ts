@@ -18,4 +18,9 @@ export default defineConfig({
       "integral-teaching-foxhound.ngrok-free.app",
     ],
   },
+  base: "/",
+  build: {
+    outDir: "dist",
+    assetsDir: "assets",
+  },
 });
