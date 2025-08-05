@@ -26,7 +26,9 @@ const WalletCard: FC<IWalletCardProp> = ({
 
       {/* Main Title */}
       <p className="text-sm text-white/60">Wallet Balance</p>
-      <h1 className="text-4xl font-bold mt-2 text-green-400">₹ {balance}</h1>
+      <h1 className="text-4xl font-bold mt-2 text-green-400">
+        ₹ {balance.toFixed(2)}
+      </h1>
 
       {/* Action Button */}
       {haveStripeId ? (
