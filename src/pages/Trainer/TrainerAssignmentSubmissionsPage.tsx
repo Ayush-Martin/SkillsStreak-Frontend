@@ -134,10 +134,12 @@ const TrainerAssignmentSubmissions = () => {
         </TableBody>
       </Table>
 
-      <AdminAssignmentSubmissionModal
-        submission={selectedSubmission!}
-        onClose={() => setSelectedSubmission(null)}
-      />
+      {selectedSubmission && (
+        <AdminAssignmentSubmissionModal
+          submission={selectedSubmission}
+          onClose={() => setSelectedSubmission(null)}
+        />
+      )}
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
