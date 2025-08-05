@@ -7,7 +7,7 @@ export const getTrainerModule = async (
   moduleId: string
 ): Promise<ITrainerModule | null> => {
   const res = await axiosGetRequest(
-    `"/trainer/courses"/${courseId}/modules/${moduleId}`
+    `/trainer/courses/${courseId}/modules/${moduleId}`
   );
   return res?.data;
 };
@@ -18,7 +18,7 @@ export const updateTrainerModuleTitle = async (
   title: string
 ): Promise<ITrainerModule | undefined> => {
   const res = await axiosPatchRequest(
-    `"/trainer/courses"/${courseId}/modules/${moduleId}`,
+    `/trainer/courses/${courseId}/modules/${moduleId}`,
     {
       title,
     }
