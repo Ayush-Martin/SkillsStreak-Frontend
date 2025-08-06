@@ -125,7 +125,7 @@ const TrainerRequest: FC = () => {
         );
       }
     } 
-
+ 
     return (
       <>
         <p className="text-sm text-app-neutral">
