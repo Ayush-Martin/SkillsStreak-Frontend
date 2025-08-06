@@ -33,8 +33,17 @@ export const AdminChangeTrainerRequestStatus = createAsyncThunk<
   "adminUser/changeStatus",
   async ({ trainerRequestId, status, rejectedReason }, { rejectWithValue }) => {
     try {
+      const params = new URLSearchParams({
+        status,
+        trainerRequestId,
+      });
+
+      if (rejectedReason) {
+        params.append("rejectedReason", rejectedReason);
+      }
+
       const response = await appApi.patch(
-        `${ADMIN_TRAINER_REQUEST_API}/${trainerRequestId}?status=${status}&rejectedReason=${rejectedReason}`
+        `${ADMIN_TRAINER_REQUEST_API}/${trainerRequestId}?${params.toString()}`
       );
       return response.data;
     } catch (err) {

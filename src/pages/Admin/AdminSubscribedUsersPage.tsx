@@ -1,7 +1,15 @@
+import { getSubscriptionPlanTitles } from "@/api";
 import {
   HighlightText,
   Pagination,
   SearchBox,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
   Table,
   TableBody,
   TableCell,
@@ -14,8 +22,11 @@ import { getAdminSubscribedUsersApi } from "@/features/admin/api/adminSubscribed
 import { changePage } from "@/features/admin/slice/adminSubscribedUsersSlice";
 import { usePaginatedData } from "@/hooks";
 import { AdminLayout } from "@/layouts";
-import { RootReducer } from "@/store";
+import { AppDispatch, RootReducer } from "@/store";
+import { ICourseDifficulty } from "@/types/courseType";
+import { useEffect, useState } from "react";
 import { MdOutlineRefresh } from "react-icons/md";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -24,6 +35,13 @@ const AdminSubscribedUsersPage = () => {
   const { subscribedUsers, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.adminSubscribedUsers
   );
+  const [subscriptionPlans, setSubscriptionPlans] = useState<
+    { _id: string; title: string }[]
+  >([]);
+  const [subscriptionPlanId, setSubscriptionPlanId] = useState<"all" | string>(
+    "all"
+  );
+  const dispatch: AppDispatch = useDispatch();
 
   const {
     nextPage,
@@ -38,7 +56,29 @@ const AdminSubscribedUsersPage = () => {
     getDataApi: getAdminSubscribedUsersApi,
     changePageApi: changePage,
     size: pageSize,
+    extraData: { subscriptionPlanId },
   });
+
+  useEffect(() => {
+    const getSubscriptionPlans = async () => {
+      const data = await getSubscriptionPlanTitles();
+      if (!data) return;
+      setSubscriptionPlans(data);
+    };
+
+    getSubscriptionPlans();
+  }, []);
+
+  useEffect(() => {
+    dispatch(
+      getAdminSubscribedUsersApi({
+        page: currentPage,
+        size: pageSize,
+        search,
+        subscriptionPlanId,
+      })
+    );
+  }, [subscriptionPlanId]);
 
   return (
     <AdminLayout>
@@ -47,6 +87,29 @@ const AdminSubscribedUsersPage = () => {
         search={search}
         searchHandler={searchHandler}
       />
+      <div className="w-52 mt-5">
+        <Select
+          value={subscriptionPlanId}
+          onValueChange={(value: "all" | ICourseDifficulty) =>
+            setSubscriptionPlanId(value)
+          }
+        >
+          <SelectTrigger className="text-white ">
+            <SelectValue placeholder="Difficulty " className="text-white" />
+          </SelectTrigger>
+          <SelectContent className="bg-app-neutral ">
+            <SelectGroup>
+              <SelectLabel>Difficulty</SelectLabel>
+              <SelectItem value={"all"}>all</SelectItem>
+              {subscriptionPlans.map((plan) => (
+                <SelectItem value={plan._id} key={plan._id}>
+                  {plan.title}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
 
       <button className="mt-10 text-3xl text-blue-600" onClick={refreshHandler}>
         <MdOutlineRefresh />

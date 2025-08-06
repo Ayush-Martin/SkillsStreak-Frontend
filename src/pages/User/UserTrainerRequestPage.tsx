@@ -2,7 +2,11 @@ import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/components";
-import { axiosGetRequest, axiosPostRequest } from "@/config/axios";
+import {
+  axiosGetRequest,
+  axiosPostRequest,
+  axiosPutRequest,
+} from "@/config/axios";
 import AuthLayout from "@/layouts/AuthLayout";
 import { successPopup } from "@/utils/popup";
 import { TRAINER_REQUEST_API } from "@/constants/API";
@@ -37,6 +41,12 @@ const TrainerRequest: FC = () => {
 
   const sendTrainerRequest = async () => {
     const res = await axiosPostRequest(TRAINER_REQUEST_API, {});
+    if (!res) return;
+    successPopup(res.message || "Trainer request sent");
+  };
+
+  const resendTrainerRequest = async () => {
+    const res = await axiosPutRequest(TRAINER_REQUEST_API, {});
     if (!res) return;
     successPopup(res.message || "Trainer request sent");
   };
@@ -107,7 +117,7 @@ const TrainerRequest: FC = () => {
               </p>
             </div>
             <div className="mt-6 px-28">
-              <Button variant="v1" size="full" onClick={sendTrainerRequest}>
+              <Button variant="v1" size="full" onClick={resendTrainerRequest}>
                 Reapply for Trainer
               </Button>
             </div>

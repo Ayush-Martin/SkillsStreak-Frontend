@@ -5,3 +5,8 @@ export interface ISubscriptionPlans {
   price: number;
   duration: number;
 }
+
+export interface ISubscriptionPlanTitles {
+  _id: string;
+  title: string;
+}

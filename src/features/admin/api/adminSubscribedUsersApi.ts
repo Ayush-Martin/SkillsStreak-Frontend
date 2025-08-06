@@ -4,15 +4,33 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getAdminSubscribedUsersApi = createAsyncThunk<
   IResponse,
-  { page: number; search: string; size: number }
->("adminSubscribedUser/getSubscribedUsers", async ({ page, search, size }, { rejectWithValue }) => {
-  try {
-    const response = await appApi.get(
-      `/admin/subscriptions?search=${search}&page=${page}&size=${size}`
-    );
-    return response.data;
-  } catch (err) {
-    const resErr = err as IApiResponseError;
-    return rejectWithValue(resErr.response.data.error);
+  {
+    page: number;
+    search: string;
+    size: number;
+    subscriptionPlanId: string | "all";
   }
-});
+>(
+  "adminSubscribedUser/getSubscribedUsers",
+  async ({ page, search, size, subscriptionPlanId }, { rejectWithValue }) => {
+    try {
+      const params = new URLSearchParams({
+        page: page.toString(),
+        search,
+        size: size.toString(),
+      });
+
+      if (subscriptionPlanId !== "all") {
+        params.append("subscriptionPlanId", subscriptionPlanId);
+      }
+
+      const response = await appApi.get(
+        `/admin/subscriptions?${params.toString()}`
+      );
+      return response.data;
+    } catch (err) {
+      const resErr = err as IApiResponseError;
+      return rejectWithValue(resErr.response.data.error);
+    }
+  }
+);
