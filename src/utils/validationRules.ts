@@ -55,6 +55,11 @@ export const CategoryNameValidationRule = z
   .min(3, "category name must have at least 3 characters")
   .max(20, "category name must be within 20 characters");
 
+export const TopicNameValidationRule = z
+  .string()
+  .min(3, "category name must have at least 3 characters")
+  .max(20, "category name must be within 20 characters");
+
 export const CourseTitleValidationRule = z
   .string()
   .min(3, "course title must have minimum 3 characters")
@@ -92,3 +97,22 @@ export const LessonTitleValidationRule = z.string();
 export const LessonDescriptionValidationRule = z.string();
 
 export const LessonTypeValidationRule = z.enum(["video", "pdf"]);
+
+export const QuizTitleValidationRule = z
+  .string()
+  .min(3, "course title must have minimum 3 characters")
+  .max(20, "course title must be below 20 characters");
+
+export const QuizTopicDescriptionValidationRule = z
+  .string()
+  .min(10, "description must have 10 or more character")
+  .max(2000, "description must be within 2000 characters");
+
+export const QuizDifficultyValidationRule = z.enum(
+  ["beginner", "intermediate", "advance"],
+  { message: "invalid difficulty" }
+);
+
+export const QuizTopicsValidationRule = z
+  .array(z.string())
+  .min(1, "quiz must have at least one topic");

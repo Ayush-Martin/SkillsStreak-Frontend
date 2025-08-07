@@ -86,6 +86,9 @@ const AdminSubscriptionPlans = lazy(
 const AdminSubscribedUsers = lazy(
   () => import("./pages/Admin/AdminSubscribedUsersPage")
 );
+const AdminAddQuiz = lazy(() => import("./pages/Admin/AdminAddQuizPage"));
+const AdminTopics = lazy(() => import("./pages/Admin/AdminTopicsPage"));
+const AdminQuizzes = lazy(() => import("./pages/Admin/AdminQuizzesPage"));
 
 type Route = {
   path: string;
@@ -260,6 +263,10 @@ export const AdminRoutes: Routes = [
     Component: AdminCategories,
   },
   {
+    path: "topics",
+    Component: AdminTopics,
+  },
+  {
     path: "transactions",
     Component: AdminTransactions,
   },
@@ -278,5 +285,13 @@ export const AdminRoutes: Routes = [
   {
     path: "subscribedUsers",
     Component: AdminSubscribedUsers,
+  },
+  {
+    path: "quizzes",
+    Component: AdminQuizzes,
+  },
+  {
+    path: "quizzes/new",
+    Component: AdminAddQuiz,
   },
 ];

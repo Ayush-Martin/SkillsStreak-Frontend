@@ -13,6 +13,9 @@ import {
 } from "@/assets/icons";
 import { TbReportMoney } from "react-icons/tb";
 
+import { HiMiniTag } from "react-icons/hi2";
+import { MdQuiz } from "react-icons/md";
+
 const sidebarItems = [
   { name: "Dashboard", icon: <MdDashboard />, link: "/admin", end: true },
   { name: "Users", icon: <FaUsers />, link: "/admin/users" },
@@ -22,7 +25,9 @@ const sidebarItems = [
     link: "/admin/trainerRequests",
   },
   { name: "Courses", icon: <MdVideoLibrary />, link: "/admin/courses" },
+  { name: "Quizzes", icon: <MdQuiz />, link: "/admin/quizzes" },
   { name: "Categories", icon: <TbCategoryFilled />, link: "/admin/categories" },
+  { name: "Topics", icon: <HiMiniTag />, link: "/admin/topics" },
   {
     name: "Subscription Plans",
     icon: <TbReportMoney />,

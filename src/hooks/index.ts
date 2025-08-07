@@ -16,3 +16,4 @@ export { default as useEditCourse } from "./useEditCourse";
 export { default as useCourseAssignments } from "./useViewCourseAssignments";
 export { default as useDiscussion } from "./useDiscussion";
 export { default as useViewCourseRecorded } from "./useViewCourseRecorded";
+export { default as useAddQuiz } from "./useAddQuiz";
