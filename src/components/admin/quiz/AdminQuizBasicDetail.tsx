@@ -11,7 +11,7 @@ import {
 } from "@/components";
 import { COURSE_DIFFICULTY } from "@/constants";
 import { ITopic } from "@/types/topicType";
-import { AlertCircle, BarChart, Book, FileText, Tags, X } from "lucide-react";
+import { BarChart, Book, FileText, Tags, X } from "lucide-react";
 import { FC, useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -65,12 +65,6 @@ const QuizBasicDetail: FC<IQuizBasicDetailProps> = ({
 
   return (
     <div className="w-full p-6 md:p-10 text-white space-y-12">
-      {/* Alert */}
-      <div className="flex items-center gap-3 text-yellow-400 bg-yellow-500/10 border border-yellow-500/30 rounded-lg px-4 py-3 text-sm font-medium">
-        <AlertCircle className="w-5 h-5 shrink-0" />
-        <span>You must add a quiz before adding questions.</span>
-      </div>
-
       {/* Title and Difficulty */}
       <div className="flex flex-col md:flex-row gap-10">
         <div className="space-y-1.5 w-full md:w-2/4">
@@ -100,7 +94,7 @@ const QuizBasicDetail: FC<IQuizBasicDetailProps> = ({
               );
               trigger("difficulty");
             }}
-            defaultValue={watch("difficulty")}
+            value={watch("difficulty")}
           >
             <SelectTrigger className="bg-[#1c2130] border border-zinc-700 text-white">
               <SelectValue placeholder="Select difficulty" />

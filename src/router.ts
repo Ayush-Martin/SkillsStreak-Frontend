@@ -89,6 +89,7 @@ const AdminSubscribedUsers = lazy(
 const AdminAddQuiz = lazy(() => import("./pages/Admin/AdminAddQuizPage"));
 const AdminTopics = lazy(() => import("./pages/Admin/AdminTopicsPage"));
 const AdminQuizzes = lazy(() => import("./pages/Admin/AdminQuizzesPage"));
+const AdminEditQuiz = lazy(() => import("./pages/Admin/AdminEditQuizPage"));
 
 type Route = {
   path: string;
@@ -293,5 +294,9 @@ export const AdminRoutes: Routes = [
   {
     path: "quizzes/new",
     Component: AdminAddQuiz,
+  },
+  {
+    path: "quizzes/:quizId",
+    Component: AdminEditQuiz,
   },
 ];
