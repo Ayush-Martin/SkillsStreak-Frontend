@@ -1,4 +1,5 @@
 import { axiosGetRequest, axiosPostRequest } from "@/config/axios";
+import { ISubscriptionFeatureId } from "@/types/subscriptionType";
 import { loadStripe } from "@stripe/stripe-js";
 import { isBefore, isAfter } from "date-fns";
 import { useEffect, useState } from "react";
@@ -41,6 +42,7 @@ const useSubscription = () => {
     endDate: string;
     active: boolean;
     amount: number;
+    features: Array<ISubscriptionFeatureId>;
   } | null>();
 
   useEffect(() => {
@@ -48,7 +50,6 @@ const useSubscription = () => {
       const res = await axiosGetRequest("/subscription");
       if (!res || !res.data) return;
       const { startDate, endDate, subscriptionPlanId, amount } = res.data;
-      console.log(res.data);
       const active =
         startDate &&
         endDate &&
@@ -60,6 +61,7 @@ const useSubscription = () => {
         active,
         subscriptionPlanId,
         amount,
+        features: res.data.features || [],
       });
     };
 

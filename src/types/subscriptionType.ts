@@ -17,3 +17,5 @@ export interface ISubscriptionFeature {
   id: string;
   title: string;
 }
+
+export type ISubscriptionFeatureId = "trainer_chat" | "live_session";

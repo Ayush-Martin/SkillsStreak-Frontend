@@ -83,16 +83,19 @@ const SearchTrainers: FC = () => {
     setSearch("");
   };
 
+  
+
   return (
     <div className="relative">
-      {!subscriptionDetail?.active && (
+      {(!subscriptionDetail?.active ||
+        !subscriptionDetail.features.includes("trainer_chat")) && (
         <div className="absolute top-0 bottom-0 left-0 right-0 rounded-md w-full h-full bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
           <button
             onClick={() => navigate("/subscriptions")}
             className="flex gap-1 items-center text-app-accent"
           >
             <FaLock className="text-2xl mr-2" />
-            Subscribe
+            {subscriptionDetail?.active ? "Upgrade" : "Subscribe"}
           </button>
         </div>
       )}

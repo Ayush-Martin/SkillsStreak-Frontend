@@ -10,15 +10,20 @@ import {
   VideoPlayer,
   Discussion,
   LiveSessionsAccordion,
+  Button,
 } from "@/components";
+import { useSubscription } from "@/hooks";
 import useDiscussion from "@/hooks/useDiscussion";
 import useViewLiveSession from "@/hooks/useViewLiveSession";
 import { EnrolledCourseLayout } from "@/layouts";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const UserCourseLiveSessionPage = () => {
   const { courseAccess, liveSessions, viewSession, currentSelectedSession } =
     useViewLiveSession();
+  const navigate = useNavigate();
+
+  const { subscriptionDetail } = useSubscription();
 
   const {
     addDiscussion,
@@ -28,6 +33,10 @@ const UserCourseLiveSessionPage = () => {
     editDiscussion,
     fetchReplies,
   } = useDiscussion(currentSelectedSession?._id || "", "liveSession");
+
+  const hasLiveAccess =
+    subscriptionDetail?.active &&
+    subscriptionDetail?.features.includes("live_session");
 
   return (
     <EnrolledCourseLayout>
@@ -49,7 +58,20 @@ const UserCourseLiveSessionPage = () => {
               </BreadcrumbList>
             </Breadcrumb>
 
-            {!courseAccess ? (
+            {!hasLiveAccess ? (
+              <div className="w-full aspect-video rounded-xl border border-white/10 bg-black/40 text-white flex flex-col items-center justify-center mb-10 p-5">
+                <p className="mb-4 text-center">
+                  You need an active subscription with Live Session access to
+                  view this stream.
+                </p>
+                <Button
+                  variant="default"
+                  onClick={() => navigate("/subscriptions")}
+                >
+                  Subscribe or Upgrade
+                </Button>
+              </div>
+            ) : !courseAccess ? (
               <div className="w-full aspect-video rounded-xl border border-white/10 bg-black/40 text-white flex items-center justify-center mb-10">
                 You don't have access to this course.
               </div>
