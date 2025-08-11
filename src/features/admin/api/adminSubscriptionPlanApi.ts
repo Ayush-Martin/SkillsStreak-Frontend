@@ -51,11 +51,12 @@ export const adminSubscriptionPlanEditApi = createAsyncThunk<
     description: string;
     price: number;
     duration: number;
+    features: Array<string>;
   }
 >(
   "adminSubscriptionPlans/editSubscriptionPlan",
   async (
-    { subscriptionPlanId, title, description, price, duration },
+    { subscriptionPlanId, title, description, price, duration, features },
     { rejectWithValue }
   ) => {
     try {
@@ -66,6 +67,7 @@ export const adminSubscriptionPlanEditApi = createAsyncThunk<
           description,
           price,
           duration,
+          features,
         }
       );
       return response.data;
@@ -83,16 +85,21 @@ export const adminSubscriptionPlanAddApi = createAsyncThunk<
     description: string;
     price: number;
     duration: number;
+    features: Array<string>;
   }
 >(
   "adminSubscriptionPlans/addSubscriptionPlan",
-  async ({ title, description, price, duration }, { rejectWithValue }) => {
+  async (
+    { title, description, price, duration, features },
+    { rejectWithValue }
+  ) => {
     try {
       const response = await appApi.post("/admin/subscriptionPlans", {
         title,
         description,
         price,
         duration,
+        features,
       });
       return response.data;
     } catch (err) {

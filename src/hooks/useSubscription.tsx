@@ -1,4 +1,5 @@
 import { axiosGetRequest, axiosPostRequest } from "@/config/axios";
+import { ISubscriptionFeatureId } from "@/types/subscriptionType";
 import { loadStripe } from "@stripe/stripe-js";
 import { isBefore, isAfter } from "date-fns";
 import { useEffect, useState } from "react";
@@ -36,22 +37,32 @@ const STRIPE_PUBLISHABLE_kEY = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!;
 
 const useSubscription = () => {
   const [subscriptionDetail, setSubscriptionDetail] = useState<{
+    subscriptionPlanId: string;
     startDate: string;
     endDate: string;
     active: boolean;
+    amount: number;
+    features: Array<ISubscriptionFeatureId>;
   } | null>();
 
   useEffect(() => {
     const getSubscriptionDetail = async () => {
       const res = await axiosGetRequest("/subscription");
       if (!res || !res.data) return;
-      const { startDate, endDate } = res.data;
+      const { startDate, endDate, subscriptionPlanId, amount } = res.data;
       const active =
         startDate &&
         endDate &&
         isBefore(startDate, new Date()) &&
         isAfter(endDate, new Date());
-      setSubscriptionDetail({ startDate, endDate, active });
+      setSubscriptionDetail({
+        startDate,
+        endDate,
+        active,
+        subscriptionPlanId,
+        amount,
+        features: res.data.features || [],
+      });
     };
 
     getSubscriptionDetail();

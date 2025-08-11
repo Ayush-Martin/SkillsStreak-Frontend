@@ -14,6 +14,7 @@ interface ISubscriptionPlan {
   price: number;
   duration: number;
   isListed: boolean;
+  features: Array<string>;
 }
 
 interface IInitialState {

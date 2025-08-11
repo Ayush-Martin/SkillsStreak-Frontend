@@ -7,7 +7,6 @@ import {
   TotalQuizzesTakenCard,
   AverageScoreCard,
   Pagination,
-  Loading,
 } from "@/components";
 import QuizCard from "@/components/user/quiz/QuizCard";
 import { getQuizzesApi } from "@/features/user/api/quizzesApi";
@@ -24,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 const PAGE_SIZE = 4;
 
 const UserQuizzesPage = () => {
-  const { currentPage, loading, quizzes, totalPages } = useSelector(
+  const { currentPage, quizzes, totalPages } = useSelector(
     (state: RootReducer) => state.quizzes
   );
   const dispatch: AppDispatch = useDispatch();
@@ -78,8 +77,6 @@ const UserQuizzesPage = () => {
       })
     );
   }, [selectedTopics, selectedDifficulty]);
-
-  if (loading) return <Loading />;
 
   return (
     <UserLayout>
