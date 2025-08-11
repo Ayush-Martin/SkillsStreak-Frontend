@@ -5,6 +5,7 @@ export const SubscriptionPlanSchema = z.object({
   description: z.string().min(1),
   price: z.number().min(0),
   duration: z.number().min(1),
+  features: z.array(z.string()).min(1),
 });
 
 export type ISubscriptionPlanSchema = z.infer<typeof SubscriptionPlanSchema>;

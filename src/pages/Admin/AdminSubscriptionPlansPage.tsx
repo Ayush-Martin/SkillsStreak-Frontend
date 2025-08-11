@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { MdEdit, MdOutlineRefresh } from "react-icons/md";
 import { IoEye, IoEyeOff } from "react-icons/io5";
@@ -28,6 +28,8 @@ import {
 import { changePage } from "@/features/admin/slice/adminSubscriptionPlanSlice";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { ISubscriptionPlanSchema } from "@/validation/subscription.validation";
+import { ISubscriptionFeature } from "@/types/subscriptionType";
+import { getSubscriptionFeatures } from "@/api/subscriptionFeature.api";
 
 const pageSize = 10;
 
@@ -44,6 +46,18 @@ const AdminSubscriptionPlansPage: FC = () => {
     _id: string;
     plan: ISubscriptionPlanSchema;
   } | null>(null);
+  const [subscriptionFeatures, setSubscriptionFeatures] = useState<
+    Array<ISubscriptionFeature>
+  >([]);
+
+  useEffect(() => {
+    const fetchFeatures = async () => {
+      const features = await getSubscriptionFeatures();
+      if (!features) return;
+      setSubscriptionFeatures(features);
+    };
+    fetchFeatures();
+  }, []);
 
   const {
     nextPage,
@@ -134,6 +148,7 @@ const AdminSubscriptionPlansPage: FC = () => {
                         description: plan.description,
                         price: plan.price,
                         duration: plan.duration,
+                        features: plan.features,
                       })
                     }
                   >
@@ -170,6 +185,7 @@ const AdminSubscriptionPlansPage: FC = () => {
         initialData={editData ? editData.plan : undefined}
         _id={editData ? editData._id : undefined}
         isEdit={!!editData}
+        allFeatures={subscriptionFeatures}
       />
     </AdminLayout>
   );
