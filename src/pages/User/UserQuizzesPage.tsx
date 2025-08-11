@@ -4,10 +4,10 @@ import {
   Footer,
   SearchBox,
   QuizFilter,
-  SubmissionRankCard,
   TotalQuizzesTakenCard,
   AverageScoreCard,
   Pagination,
+  Loading,
 } from "@/components";
 import QuizCard from "@/components/user/quiz/QuizCard";
 import { getQuizzesApi } from "@/features/user/api/quizzesApi";
@@ -79,7 +79,7 @@ const UserQuizzesPage = () => {
     );
   }, [selectedTopics, selectedDifficulty]);
 
-  console.log(selectedTopics, selectedDifficulty);
+  if (loading) return <Loading />;
 
   return (
     <UserLayout>
