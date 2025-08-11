@@ -1,3 +1,4 @@
+import { getQuizSubmissionsProgress } from "@/api/quizSubmission.api";
 import { getTopics } from "@/api/topic.api";
 import {
   Footer,
@@ -14,7 +15,7 @@ import { changePage } from "@/features/user/slice/quizzesSlice";
 import { usePaginatedData } from "@/hooks";
 import { UserLayout } from "@/layouts";
 import { AppDispatch, RootReducer } from "@/store";
-import { IQuizDifficulty } from "@/types/quizType";
+import { IQuizDifficulty, IQuizSubmissionProgress } from "@/types/quizType";
 import { ITopic } from "@/types/topicType";
 
 import { useEffect, useState } from "react";
@@ -27,6 +28,12 @@ const UserQuizzesPage = () => {
     (state: RootReducer) => state.quizzes
   );
   const dispatch: AppDispatch = useDispatch();
+  const [quizSubmissionProgress, setQuizSubmissionProgress] =
+    useState<IQuizSubmissionProgress>({
+      quizzesTaken: 0,
+      totalQuestions: 0,
+      totalScore: 0,
+    });
   const [topics, setTopics] = useState<ITopic[]>([]);
   const [selectedTopics, setSelectedTopics] = useState<"all" | string[]>("all");
   const [selectedDifficulty, setSelectedDifficulty] = useState<
@@ -50,7 +57,14 @@ const UserQuizzesPage = () => {
       setTopics(data);
     };
 
+    const fetchProgress = async () => {
+      const data = await getQuizSubmissionsProgress();
+      if (!data) return;
+      setQuizSubmissionProgress(data);
+    };
+
     fetchTopics();
+    fetchProgress();
   }, []);
 
   useEffect(() => {
@@ -71,14 +85,19 @@ const UserQuizzesPage = () => {
     <UserLayout>
       <section className="flex gap-2 w-full flex-col  lg:flex-row px-3 py-5">
         <div className="flex flex-col  sm:flex-row w-full lg:w-1/4  lg:flex-col gap-2 px-3 py-5">
-          <div className="w-full sm:w-1/3 lg:w-full">
-            <TotalQuizzesTakenCard totalQuizzes={10} />
+          <div className="w-full sm:w-1/2 lg:w-full">
+            <TotalQuizzesTakenCard
+              totalQuizzes={quizSubmissionProgress?.quizzesTaken}
+            />
           </div>
-          <div className="w-full sm:w-1/3 lg:w-full">
-            <SubmissionRankCard rank={1} />
-          </div>
-          <div className="w-full sm:w-1/3 lg:w-full">
-            <AverageScoreCard averageScore={90} />
+          <div className="w-full sm:w-1/2 lg:w-full">
+            <AverageScoreCard
+              averageScore={
+                (quizSubmissionProgress?.totalScore /
+                  quizSubmissionProgress?.totalQuestions) *
+                  100 || 0
+              }
+            />
           </div>
         </div>
         <div className="lg:w-3/4 pb-5">

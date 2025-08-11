@@ -54,9 +54,11 @@ const AverageScoreCard: FC<IAverageScoreCardProps> = ({ averageScore }) => {
         <FaChartLine className="text-green-400 text-3xl" />
       </div>
       <div className="flex flex-col justify-center">
-        <h3 className="text-base text-gray-300 font-medium">Average Score</h3>
+        <h3 className="text-base text-gray-300 font-medium">
+          Average Quiz Score
+        </h3>
         <p className="text-4xl font-bold text-white leading-tight">
-          {averageScore}%
+          {averageScore.toFixed(2)}%
         </p>
       </div>
     </div>

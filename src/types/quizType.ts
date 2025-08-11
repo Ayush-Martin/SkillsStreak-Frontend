@@ -43,3 +43,9 @@ export interface IPreviousQuizSubmission {
   timeTaken: number;
   answers: Array<{ questionId: string; answer: string }>;
 }
+
+export interface IQuizSubmissionProgress {
+  quizzesTaken: number;
+  totalQuestions: number;
+  totalScore: number;
+}

@@ -3,6 +3,8 @@ import {
   SubscriptionCard,
   WalletCard,
   UserCourseStatsCard,
+  AverageScoreCard,
+  TotalQuizzesTakenCard,
 } from "@/components";
 
 import { UserLayout } from "@/layouts";
@@ -10,6 +12,8 @@ import { FC, useEffect, useState } from "react";
 import { useSubscription, useWallet } from "@/hooks";
 import { useNavigate } from "react-router-dom";
 import { getOverallCourseProgress } from "@/api";
+import { IQuizSubmissionProgress } from "@/types/quizType";
+import { getQuizSubmissionsProgress } from "@/api/quizSubmission.api";
 
 const DashBoard: FC = () => {
   const { subscriptionDetail } = useSubscription();
@@ -18,6 +22,12 @@ const DashBoard: FC = () => {
     enrolledCourses: number;
     coursesCompleted: number;
   }>();
+  const [quizSubmissionProgress, setQuizSubmissionProgress] =
+    useState<IQuizSubmissionProgress>({
+      quizzesTaken: 0,
+      totalQuestions: 0,
+      totalScore: 0,
+    });
 
   const { wallet, haveStripeId, handleRedeem, setupStripeAccount } =
     useWallet();
@@ -29,7 +39,14 @@ const DashBoard: FC = () => {
       setOverallCourseProgress(data);
     };
 
+    const fetchQuizProgress = async () => {
+      const data = await getQuizSubmissionsProgress();
+      if (!data) return;
+      setQuizSubmissionProgress(data);
+    };
+
     fetchOverallCourseProgress();
+    fetchQuizProgress();
   }, []);
 
   return (
@@ -58,6 +75,19 @@ const DashBoard: FC = () => {
                 onSetupAccount={setupStripeAccount}
               />
             </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mb-10">
+            <TotalQuizzesTakenCard
+              totalQuizzes={quizSubmissionProgress?.quizzesTaken}
+            />
+
+            <AverageScoreCard
+              averageScore={
+                (quizSubmissionProgress?.totalScore /
+                  quizSubmissionProgress?.totalQuestions) *
+                  100 || 0
+              }
+            />
           </div>
         </div>
       </div>

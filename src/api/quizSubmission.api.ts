@@ -3,7 +3,10 @@ import {
   axiosPostRequest,
   axiosPutRequest,
 } from "@/config/axios";
-import { IPreviousQuizSubmission } from "@/types/quizType";
+import {
+  IPreviousQuizSubmission,
+  IQuizSubmissionProgress,
+} from "@/types/quizType";
 import { successPopup } from "@/utils/popup";
 
 export const getQuizSubmission = async (
@@ -44,3 +47,9 @@ export const resubmitQuizSubmission = async (
   successPopup(res.message);
   return res.data;
 };
+
+export const getQuizSubmissionsProgress =
+  async (): Promise<IQuizSubmissionProgress | null> => {
+    const res = await axiosGetRequest(`/quizzes/progress`);
+    return res?.data;
+  };
