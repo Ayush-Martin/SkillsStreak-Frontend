@@ -3,6 +3,7 @@ import {
   axiosPostRequest,
   axiosPutRequest,
 } from "@/config/axios";
+import { IViewQuiz } from "@/types/quizType";
 
 import { successPopup } from "@/utils/popup";
 import { IQuizSchema } from "@/validation/quiz.validation";
@@ -44,5 +45,12 @@ export const getQuizBasicDetails = async (
   quizId: string
 ): Promise<IQuizSchema | null> => {
   const res = await axiosGetRequest(`/admin/quizzes/${quizId}`);
+  return res?.data;
+};
+
+export const getUserQuiz = async (
+  quizId: string
+): Promise<IViewQuiz | null> => {
+  const res = await axiosGetRequest(`/quizzes/${quizId}`);
   return res?.data;
 };

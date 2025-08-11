@@ -20,7 +20,7 @@ import useEnrollCourse from "@/hooks/useEnrollCourse";
 const LINKS = [
   { to: "/", label: "Home" },
   { to: "/courses", label: "Courses" },
-  { to: "/user", label: "DashBoard" },
+  { to: "/user/quizzes", label: "Quizzes" },
 ];
 
 const DROPDOWN_LINKS = [

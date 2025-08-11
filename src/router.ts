@@ -42,6 +42,9 @@ const CourseAssignments = lazy(
 );
 const Subscription = lazy(() => import("./pages/User/UserSubscriptionPage"));
 const UserWallet = lazy(() => import("./pages/User/UserWalletPage"));
+const UserQuizzes = lazy(() => import("./pages/User/UserQuizzesPage"));
+const UserQuiz = lazy(() => import("./pages/User/UserQuizPage"));
+const UserQuizAttempt = lazy(() => import("./pages/User/UserQuizAttemptPage"));
 
 //Trainer Routes
 const TrainerDashboard = lazy(
@@ -196,6 +199,14 @@ export const UserRoutes: Routes = [
   {
     path: "wallet",
     Component: UserWallet,
+  },
+  {
+    path: "quizzes",
+    Component: UserQuizzes,
+  },
+  {
+    path: "quizzes/:quizId",
+    Component: UserQuiz,
   },
 ];
 

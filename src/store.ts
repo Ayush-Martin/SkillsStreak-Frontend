@@ -20,6 +20,7 @@ import adminSubscriptionPlans from "./features/admin/slice/adminSubscriptionPlan
 import adminSubscribedUsers from "./features/admin/slice/adminSubscribedUsersSlice";
 import adminTopic from "./features/admin/slice/adminTopicSlice";
 import adminQuiz from "./features/admin/slice/adminQuizSlice";
+import quizzes from "./features/user/slice/quizzesSlice";
 
 const store = configureStore({
   reducer: {
@@ -44,6 +45,7 @@ const store = configureStore({
     adminSubscribedUsers,
     adminTopic,
     adminQuiz,
+    quizzes,
   },
 });
 
