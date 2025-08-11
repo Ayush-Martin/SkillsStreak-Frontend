@@ -42,6 +42,8 @@ const CourseAssignments = lazy(
 );
 const Subscription = lazy(() => import("./pages/User/UserSubscriptionPage"));
 const UserWallet = lazy(() => import("./pages/User/UserWalletPage"));
+const UserQuizzes = lazy(() => import("./pages/User/UserQuizzesPage"));
+const UserQuiz = lazy(() => import("./pages/User/UserQuizPage"));
 
 //Trainer Routes
 const TrainerDashboard = lazy(
@@ -86,6 +88,10 @@ const AdminSubscriptionPlans = lazy(
 const AdminSubscribedUsers = lazy(
   () => import("./pages/Admin/AdminSubscribedUsersPage")
 );
+const AdminAddQuiz = lazy(() => import("./pages/Admin/AdminAddQuizPage"));
+const AdminTopics = lazy(() => import("./pages/Admin/AdminTopicsPage"));
+const AdminQuizzes = lazy(() => import("./pages/Admin/AdminQuizzesPage"));
+const AdminEditQuiz = lazy(() => import("./pages/Admin/AdminEditQuizPage"));
 
 type Route = {
   path: string;
@@ -193,6 +199,14 @@ export const UserRoutes: Routes = [
     path: "wallet",
     Component: UserWallet,
   },
+  {
+    path: "quizzes",
+    Component: UserQuizzes,
+  },
+  {
+    path: "quizzes/:quizId",
+    Component: UserQuiz,
+  },
 ];
 
 export const TrainerRoutes: Routes = [
@@ -260,6 +274,10 @@ export const AdminRoutes: Routes = [
     Component: AdminCategories,
   },
   {
+    path: "topics",
+    Component: AdminTopics,
+  },
+  {
     path: "transactions",
     Component: AdminTransactions,
   },
@@ -278,5 +296,17 @@ export const AdminRoutes: Routes = [
   {
     path: "subscribedUsers",
     Component: AdminSubscribedUsers,
+  },
+  {
+    path: "quizzes",
+    Component: AdminQuizzes,
+  },
+  {
+    path: "quizzes/new",
+    Component: AdminAddQuiz,
+  },
+  {
+    path: "quizzes/:quizId",
+    Component: AdminEditQuiz,
   },
 ];

@@ -1,4 +1,5 @@
 export type ICourseDifficulty = "beginner" | "intermediate" | "advance";
+
 export type IPrice = "free" | "paid";
 export type ISort =
   | "popularity"

@@ -12,8 +12,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  AdminEditCategory,
-  AdminAddCategory,
+  EditStringField,
+  EntryListInput,
 } from "@/components";
 import { IoEye, IoEyeOff, MdEdit, MdOutlineRefresh } from "@/assets/icons";
 import {
@@ -26,6 +26,7 @@ import { changePage } from "@/features/admin/slice/adminCategorySlice";
 import { AdminLayout } from "@/layouts";
 import { AppDispatch, RootReducer } from "@/store";
 import { usePaginatedData, useConfirm } from "@/hooks";
+import { CategoryNameValidationRule } from "@/utils/validationRules";
 
 const PAGE_SIZE = 5;
 
@@ -80,7 +81,11 @@ const Categories: FC = () => {
       <button className="mt-10 text-3xl text-blue-600" onClick={refreshHandler}>
         <MdOutlineRefresh />
       </button>
-      <AdminAddCategory addCategory={addCategory} />
+      {/* <AdminAddCategory addCategory={addCategory} /> */}
+      <EntryListInput
+        addEntry={addCategory}
+        entryValidationRule={CategoryNameValidationRule}
+      />
       <Table>
         <TableHeader>
           <TableRow>
@@ -99,11 +104,12 @@ const Categories: FC = () => {
               <TableRow key={_id}>
                 <TableCell>
                   {selected == _id ? (
-                    <AdminEditCategory
-                      categoryId={_id}
-                      categoryName={categoryName}
+                    <EditStringField
+                      defaultValue={categoryName}
+                      placeholder="Enter Category Name"
+                      entryValidationRule={CategoryNameValidationRule}
+                      save={(categoryName) => editCategory(_id, categoryName)}
                       close={() => setSelected(null)}
-                      editCategory={editCategory}
                     />
                   ) : (
                     categoryName

@@ -6,3 +6,4 @@ export * from "./wallet";
 export * from "./wishlist";
 export * from "./dashboard";
 export * from "./course";
+export * from "./quiz";
