@@ -9,6 +9,7 @@ import {
   MdDashboard,
   IoChatbox,
   FaUserTie,
+  FaWallet,
 } from "@/assets/icons";
 import { SideBar } from "@/components";
 import { RootReducer } from "@/store";
@@ -44,6 +45,11 @@ const UserSidebar: FC = () => {
       name: "Transactions",
       icon: <MdPayments />,
       link: "/user/transactions",
+    },
+    {
+      name: "Wallet History",
+      icon: <FaWallet />,
+      link: "/user/wallet/history",
     },
     // {
     //   name: "Wallet",
