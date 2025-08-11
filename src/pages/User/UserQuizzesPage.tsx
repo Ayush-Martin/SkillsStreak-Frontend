@@ -7,7 +7,6 @@ import {
   TotalQuizzesTakenCard,
   AverageScoreCard,
   Pagination,
-  Loading,
 } from "@/components";
 import QuizCard from "@/components/user/quiz/QuizCard";
 import { getQuizzesApi } from "@/features/user/api/quizzesApi";
