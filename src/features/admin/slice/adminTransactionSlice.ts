@@ -1,25 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getAdminTransactionsApi } from "../api/adminTransactionApi";
-
-interface ITransaction {
-  _id: string;
-  payerId?: {
-    _id: string;
-    email: string;
-    role: string;
-  };
-  receiverId?: {
-    _id: string;
-    email: string;
-    role: string;
-  };
-  courseId?: {
-    _id: string;
-    title: string;
-  };
-  amount: number;
-  type: "payment" | "commission" | "subscription" | "refund";
-}
+import { ITransaction } from "@/types/transactionType";
 
 interface IInitialState {
   transactions: Array<ITransaction>;

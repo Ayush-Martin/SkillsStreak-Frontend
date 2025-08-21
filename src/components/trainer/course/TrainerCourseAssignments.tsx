@@ -1,17 +1,11 @@
 import { FC, useEffect, useState } from "react";
-import {
-  ClipboardList,
-  Pencil,
-  Trash2,
-  FileText,
-  BookOpen,
-  X,
-} from "lucide-react";
+import { ClipboardList, Pencil, Trash2, FileText } from "lucide-react";
 import { Button, ErrorText, Input, Textarea } from "@/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ITrainerAssignment } from "@/types/courseType";
+import Modal from "@/components/common/Modal";
 
 interface ICourseAssignmentsProps {
   assignments: ITrainerAssignment[];
@@ -164,60 +158,106 @@ const AssignmentModal: FC<IAssignmentModalProps> = ({
     reset(defaultValues ?? { title: "", description: "", task: "" });
   }, [defaultValues]);
 
+  // return (
+  //   <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center px-4">
+  //     <div className="w-full max-w-lg bg-[#0c0f1a] border border-white/10 rounded-xl shadow-lg p-6 space-y-6">
+  //       <div className="flex justify-between items-center mb-2">
+  //         <h2 className="text-lg font-semibold flex items-center gap-2">
+  //           <BookOpen className="w-5 h-5 text-violet-500" />
+  //           {defaultValues ? "Edit Assignment" : "Create Assignment"}
+  //         </h2>
+  //         <Button size="icon" variant="ghost" onClick={onClose}>
+  //           <X className="w-5 h-5 text-white" />
+  //         </Button>
+  //       </div>
+
+  //       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+  //         <div>
+  //           <label className="text-sm text-zinc-400 mb-1 block">Title</label>
+  //           <Input
+  //             {...register("title")}
+  //             className="bg-[#141926] border-white/10 text-white"
+  //           />
+  //           {errors.title?.message && (
+  //             <ErrorText error={errors.title.message} />
+  //           )}
+  //         </div>
+  //         <div>
+  //           <label className="text-sm text-zinc-400 mb-1 block">
+  //             Description
+  //           </label>
+  //           <Input
+  //             {...register("description")}
+  //             className="bg-[#141926] border-white/10 text-white"
+  //           />
+  //           {errors.description?.message && (
+  //             <ErrorText error={errors.description.message} />
+  //           )}
+  //         </div>
+  //         <div>
+  //           <label className="text-sm text-zinc-400 mb-1 block">Task</label>
+  //           <Textarea
+  //             {...register("task")}
+  //             className="bg-[#141926] border-white/10 text-white"
+  //           />
+  //           {errors.task?.message && <ErrorText error={errors.task.message} />}
+  //         </div>
+
+  //         <Button
+  //           type="submit"
+  //           className="w-full mt-4 bg-violet-600 hover:bg-violet-700 text-white"
+  //         >
+  //           {defaultValues ? "Save Changes" : "Create Assignment"}
+  //         </Button>
+  //       </form>
+  //     </div>
+  //   </div>
+  // );
+
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center px-4">
-      <div className="w-full max-w-lg bg-[#0c0f1a] border border-white/10 rounded-xl shadow-lg p-6 space-y-6">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="text-lg font-semibold flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-violet-500" />
-            {defaultValues ? "Edit Assignment" : "Create Assignment"}
-          </h2>
-          <Button size="icon" variant="ghost" onClick={onClose}>
-            <X className="w-5 h-5 text-white" />
-          </Button>
+    <Modal
+      onClose={onClose}
+      title={defaultValues ? "Edit Assignment" : "Create Assignment"}
+    >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div>
+          <label className="text-sm text-zinc-400 mb-1 block">Title</label>
+          <Input
+            {...register("title")}
+            className="bg-[#141926] border-white/10 text-white"
+          />
+          {errors.title?.message && <ErrorText error={errors.title.message} />}
+        </div>
+        <div>
+          <label className="text-sm text-zinc-400 mb-1 block">
+            Description
+          </label>
+          <Input
+            {...register("description")}
+            className="bg-[#141926] border-white/10 text-white"
+          />
+          {errors.description?.message && (
+            <ErrorText error={errors.description.message} />
+          )}
+        </div>
+        <div>
+          <label className="text-sm text-zinc-400 mb-1 block">Task</label>
+          <Textarea
+            {...register("task")}
+            className="bg-[#141926] resize-none border-white/10 text-white"
+            rows={5}
+          />
+          {errors.task?.message && <ErrorText error={errors.task.message} />}
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
-            <label className="text-sm text-zinc-400 mb-1 block">Title</label>
-            <Input
-              {...register("title")}
-              className="bg-[#141926] border-white/10 text-white"
-            />
-            {errors.title?.message && (
-              <ErrorText error={errors.title.message} />
-            )}
-          </div>
-          <div>
-            <label className="text-sm text-zinc-400 mb-1 block">
-              Description
-            </label>
-            <Input
-              {...register("description")}
-              className="bg-[#141926] border-white/10 text-white"
-            />
-            {errors.description?.message && (
-              <ErrorText error={errors.description.message} />
-            )}
-          </div>
-          <div>
-            <label className="text-sm text-zinc-400 mb-1 block">Task</label>
-            <Textarea
-              {...register("task")}
-              className="bg-[#141926] border-white/10 text-white"
-            />
-            {errors.task?.message && <ErrorText error={errors.task.message} />}
-          </div>
-
-          <Button
-            type="submit"
-            className="w-full mt-4 bg-violet-600 hover:bg-violet-700 text-white"
-          >
-            {defaultValues ? "Save Changes" : "Create Assignment"}
-          </Button>
-        </form>
-      </div>
-    </div>
+        <Button
+          type="submit"
+          className="w-full mt-4 bg-violet-600 hover:bg-violet-700 text-white"
+        >
+          {defaultValues ? "Save Changes" : "Create Assignment"}
+        </Button>
+      </form>
+    </Modal>
   );
 };
 

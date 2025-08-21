@@ -3,13 +3,6 @@ import {
   HighlightText,
   Pagination,
   SearchBox,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
   Table,
   TableBody,
   TableCell,
@@ -18,12 +11,12 @@ import {
   TableRow,
   TableSkeleton,
 } from "@/components";
+import Filter from "@/components/common/Filter";
 import { getAdminSubscribedUsersApi } from "@/features/admin/api/adminSubscribedUsersApi";
 import { changePage } from "@/features/admin/slice/adminSubscribedUsersSlice";
 import { usePaginatedData } from "@/hooks";
 import { AdminLayout } from "@/layouts";
 import { AppDispatch, RootReducer } from "@/store";
-import { ICourseDifficulty } from "@/types/courseType";
 import { useEffect, useState } from "react";
 import { MdOutlineRefresh } from "react-icons/md";
 import { useDispatch } from "react-redux";
@@ -87,28 +80,21 @@ const AdminSubscribedUsersPage = () => {
         search={search}
         searchHandler={searchHandler}
       />
-      <div className="w-52 mt-5">
-        <Select
-          value={subscriptionPlanId}
-          onValueChange={(value: "all" | ICourseDifficulty) =>
-            setSubscriptionPlanId(value)
-          }
-        >
-          <SelectTrigger className="text-white ">
-            <SelectValue placeholder="Difficulty " className="text-white" />
-          </SelectTrigger>
-          <SelectContent className="bg-app-neutral ">
-            <SelectGroup>
-              <SelectLabel>Difficulty</SelectLabel>
-              <SelectItem value={"all"}>all</SelectItem>
-              {subscriptionPlans.map((plan) => (
-                <SelectItem value={plan._id} key={plan._id}>
-                  {plan.title}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+      <div className="mt-4">
+        <Filter
+          filters={[
+            {
+              label: "Subscription Plan",
+              default: { value: "all", placeholder: "All" },
+              values: subscriptionPlans.map((plan) => ({
+                value: plan._id,
+                placeholder: plan.title,
+              })),
+              selectedValue: subscriptionPlanId,
+              changeSelectedValue: setSubscriptionPlanId,
+            },
+          ]}
+        />
       </div>
 
       <button className="mt-10 text-3xl text-blue-600" onClick={refreshHandler}>

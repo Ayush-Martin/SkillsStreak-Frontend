@@ -1,34 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getUserTransactionsApi } from "../api/transactionApi";
-
-export interface ITransaction {
-  _id: string;
-  payer: {
-    _id: string;
-    email: string;
-    role: string;
-  };
-  receiver?: {
-    _id: string;
-    email: string;
-    role: string;
-  };
-  course?: {
-    _id: string;
-    thumbnail: string;
-    title: string;
-  };
-  amount: number;
-  type:
-    | "course_purchase"
-    | "commission"
-    | "subscription"
-    | "wallet_redeem"
-    | "wallet_add";
-  status: "pending" | "completed" | "canceled" | "failed" | "on_process";
-  method: "stripe" | "wallet";
-  adminCommission?: number;
-}
+import { ITransaction } from "@/types/transactionType";
 
 interface IInitialState {
   transactions: Array<ITransaction>;
