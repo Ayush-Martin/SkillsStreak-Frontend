@@ -76,7 +76,7 @@ const Notification: FC = () => {
       </button>
       {open && (
         <div
-          className="absolute  w-full  left-0 right-0  sm:left-auto max-h-[500px] backdrop-blur-md backdrop-saturate-150 bg-blue-500/10 border-blue-500/20 shadow-blue-500/10 rounded-md sm:w-[500px] top-14  px-7 py-5 "
+          className="absolute  w-full  left-0 right-0  sm:left-auto max-h-[500px] backdrop-blur-xl backdrop-saturate-200 bg-blue-700/20 border-blue-500/20 shadow-blue-500/10 rounded-md sm:w-[500px] top-14  px-7 py-5 "
           ref={dropdownRef}
         >
           <h1 className="text-2xl text-center text-white">Notifications</h1>
