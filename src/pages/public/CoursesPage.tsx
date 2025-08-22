@@ -4,17 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   CourseCardSkeleton,
   CourseCard,
-  CourseFilter,
   Footer,
   Pagination,
   SearchBox,
-  Button,
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
 } from "@/components";
 import { getCoursesApi } from "@/features/user/api/coursesApi";
 import { changePage } from "@/features/user/slice/coursesSlice";
@@ -22,9 +14,9 @@ import { usePaginatedData } from "@/hooks";
 import { UserLayout } from "@/layouts";
 import { AppDispatch, RootReducer } from "@/store";
 import { ICourseDifficulty, IPrice, ISort } from "@/types/courseType";
-import { TbFilterSearch } from "@/assets/icons";
 import { getCategories } from "@/api/category.api";
 import { ICategory } from "@/types/categoryType";
+import Filter from "@/components/common/Filter";
 
 const PAGE_SIZE = 4;
 
@@ -71,11 +63,14 @@ const Courses: FC = () => {
     );
   }, [category, difficulty, price, sort]);
 
-  const fetchCategories = async () => {
-    const data = await getCategories();
-    if (!data) return;
-    SetCategories(data);
-  };
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const data = await getCategories();
+      if (!data) return;
+      SetCategories(data);
+    };
+    fetchCategories();
+  }, []);
 
   return (
     <UserLayout>
@@ -86,38 +81,64 @@ const Courses: FC = () => {
           searchHandler={searchHandler}
         />
       </div>
-      <div className="flex justify-center gap-2 px-8 mt-5 sm:px-0">
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button className="hover:bg-app-secondary hover:scale-110 transition-all duration-300 ease-in-out  text-white rounded-full px-4 py-2 flex items-center gap-2">
-              <TbFilterSearch />
-              Filter & Sort
-            </Button>
-          </SheetTrigger>
-          <SheetContent className="text-white backdrop-blur-md backdrop-saturate-150 bg-[#0b0819]/10 border-[#031019]/20 shadow-[#031019]/10 border-app-primary">
-            <SheetHeader>
-              <SheetTitle className="text-2xl text-white">
-                Filter & Sort
-              </SheetTitle>
-              <SheetDescription>
-                Apply filters and sorting options to refine the courses list.
-              </SheetDescription>
-              <CourseFilter
-                setCategory={setCategory}
-                setDifficulty={setDifficulty}
-                setPrice={setPrice}
-                setSort={setSort}
-                category={category}
-                difficulty={difficulty}
-                price={price}
-                sort={sort}
-                categories={categories}
-                fetchCategories={fetchCategories}
-              />
-            </SheetHeader>
-          </SheetContent>
-        </Sheet>
+
+      <div className="px-10 md:px-20 my-4">
+        <Filter
+          filters={[
+            {
+              label: "Category",
+              default: { value: "all", placeholder: "All Categories" },
+              values: categories.map((c) => ({
+                value: c._id,
+                placeholder: c.categoryName,
+              })),
+              selectedValue: category,
+              changeSelectedValue: setCategory,
+            },
+            {
+              label: "Difficulty",
+              default: { value: "all", placeholder: "All Levels" },
+              values: [
+                { value: "beginner", placeholder: "Beginner" },
+                { value: "intermediate", placeholder: "Intermediate" },
+                { value: "advance", placeholder: "Advance" },
+              ],
+              selectedValue: difficulty,
+              changeSelectedValue: setDifficulty,
+            },
+            {
+              label: "Price",
+              default: { value: "all", placeholder: "All Prices" },
+              values: [
+                { value: "free", placeholder: "Free" },
+                { value: "paid", placeholder: "Paid" },
+              ],
+              selectedValue: price,
+              changeSelectedValue: setPrice,
+            },
+            {
+              label: "Sort",
+              default: { value: "popularity" },
+              values: [
+                { value: "popularity", placeholder: "Popularity" },
+                { value: "priceLowToHigh", placeholder: "Price: Low to High" },
+                { value: "priceHighToLow", placeholder: "Price: High to Low" },
+                { value: "aA-zZ", placeholder: "A → Z" },
+                { value: "zZ-aA", placeholder: "Z → A" },
+              ],
+              selectedValue: sort,
+              changeSelectedValue: setSort,
+            },
+          ]}
+          clearFilters={() => {
+            setCategory("all");
+            setDifficulty("all");
+            setPrice("all");
+            setSort("popularity");
+          }}
+        />
       </div>
+
       <div className="flex justify-center mt-10 lg:block sm:px-14 lg:px-24">
         <div className="grid grid-cols-1 gap-x-2 gap-y-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {loading

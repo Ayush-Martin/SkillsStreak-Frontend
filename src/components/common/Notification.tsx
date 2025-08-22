@@ -1,11 +1,7 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import { getSocket } from "@/config/socket";
 import { SocketEvents } from "@/constants/socketEvents";
-import {
-  IoIosNotifications,
-  IoIosNotificationsOutline,
-  MdClear,
-} from "@/assets/icons";
+import { IoIosNotifications, IoIosNotificationsOutline } from "@/assets/icons";
 import { useSelector } from "react-redux";
 import { RootReducer } from "@/store";
 import { useNavigate } from "react-router-dom";
@@ -23,17 +19,14 @@ const Notification: FC = () => {
   const { accessToken } = useSelector((state: RootReducer) => state.user);
   const dropdownRef = useClickOutside<HTMLDivElement>(() => setOpen(false));
   const navigate = useNavigate();
-
   const socket = getSocket();
 
   const markAsRead = useCallback(
     (id: string) => {
       socket.emit(SocketEvents.NOTIFICATION_MARK_READ, id);
-      setNotifications((prevNotifications) =>
-        prevNotifications.filter((n) => n._id !== id)
-      );
+      setNotifications((prev) => prev.filter((n) => n._id !== id));
     },
-    [socket, setNotifications]
+    [socket]
   );
 
   useEffect(() => {
@@ -47,7 +40,7 @@ const Notification: FC = () => {
 
     socket.on(SocketEvents.NOTIFICATION_NEW, (data: INotification) => {
       successPopup(data.message);
-      setNotifications(() => [data, ...notifications]);
+      setNotifications((prev) => [data, ...prev]);
     });
 
     return () => {
@@ -60,7 +53,7 @@ const Notification: FC = () => {
     return (
       <button
         onClick={() => navigate("/auth")}
-        className="mt-1 text-2xl text-white sm:text-3xl hover:text-app-accent"
+        className="mt-1 text-2xl text-white sm:text-3xl hover:text-app-accent transition-colors duration-200"
       >
         {open ? <IoIosNotifications /> : <IoIosNotificationsOutline />}
       </button>
@@ -70,39 +63,47 @@ const Notification: FC = () => {
     <div className="sm:relative">
       <button
         onClick={() => setOpen((p) => !p)}
-        className="mt-1 text-2xl text-white sm:text-3xl hover:text-app-accent"
+        className="relative mt-1 text-2xl text-white sm:text-3xl hover:text-app-accent transition-colors duration-200"
       >
         {open ? <IoIosNotifications /> : <IoIosNotificationsOutline />}
+        {notifications.length > 0 && (
+          <span className="absolute -top-1 -right-1 inline-flex items-center justify-center px-2 py-0.5 text-xs font-semibold text-white bg-red-600 rounded-full">
+            {notifications.length}
+          </span>
+        )}
       </button>
+
       {open && (
         <div
-          className="absolute  w-full  left-0 right-0  sm:left-auto max-h-[500px] backdrop-blur-xl backdrop-saturate-200 bg-blue-700/20 border-blue-500/20 shadow-blue-500/10 rounded-md sm:w-[500px] top-14  px-7 py-5 "
           ref={dropdownRef}
+          className="absolute right-0 top-14 w-full sm:w-[500px] bg-blue-500/50 backdrop-blur-md rounded-lg shadow-lg p-6 flex flex-col gap-4 max-h-[500px] overflow-y-auto"
         >
-          <h1 className="text-2xl text-center text-white">Notifications</h1>
+          <h2 className="text-xl text-center text-white font-semibold mb-4">
+            Notifications
+          </h2>
 
-          <div className="flex flex-col gap-2 overflow-y-auto h-[400px] mt-7 ">
-            {notifications.length > 0 ? (
-              notifications.map((notification) => (
-                <div
-                  className="flex px-10 py-5 rounded bg-app-primary bg-opacity-60 full backdrop-blur-md backdrop-saturate-150"
-                  key={notification._id}
+          {notifications.length > 0 ? (
+            notifications.map((notification) => (
+              <div
+                key={notification._id}
+                className="flex justify-between items-start p-5 bg-app-primary bg-opacity-90 rounded-xl hover:bg-opacity-95 transition duration-200"
+              >
+                <p className="text-white text-base leading-relaxed">
+                  {notification.message}
+                </p>
+                <span
+                  onClick={() => markAsRead(notification._id)}
+                  className="text-green-400 text-sm cursor-pointer hover:text-green-300 select-none ml-4"
                 >
-                  <div className="w-11/12">{notification.message}</div>
-                  <button
-                    className="w-1/12 text-xl text-green-500"
-                    onClick={() => markAsRead(notification._id)}
-                  >
-                    <MdClear />
-                  </button>
-                </div>
-              ))
-            ) : (
-              <p className="text-center text-white">
-                No notifications available
-              </p>
-            )}
-          </div>
+                  Mark as read
+                </span>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-white/70 text-base py-20">
+              No notifications available
+            </p>
+          )}
         </div>
       )}
     </div>

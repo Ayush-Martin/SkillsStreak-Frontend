@@ -24,13 +24,11 @@ const Wishlist: FC<IWishListProps> = ({
   const dropdownRef = useClickOutside<HTMLDivElement>(() => setOpen(false));
 
   useEffect(() => {
-    if (open) {
-      fetchWishlist();
-    }
+    if (open) fetchWishlist();
   }, [open]);
 
   const deleteFromWishlist = (id: string) => {
-    confirm("Are you shure you want to delete", () => {
+    confirm("Are you sure you want to delete?", () => {
       removeWishlist(id);
     });
   };
@@ -39,54 +37,58 @@ const Wishlist: FC<IWishListProps> = ({
     <div className="sm:relative">
       <button
         onClick={() => setOpen((p) => !p)}
-        className="mt-1 text-xl text-white sm:text-2xl hover:text-app-accent"
+        className="mt-1 text-xl text-white sm:text-2xl hover:text-app-accent transition-colors duration-200"
       >
         {open ? <AiFillHeart /> : <AiOutlineHeart />}
       </button>
+
       {open && (
         <div
-          className="absolute  w-full  left-0 right-0  sm:left-auto max-h-[500px] backdrop-blur-md backdrop-saturate-150 bg-green-500/10 border-green-500/20 shadow-green-500/10
- rounded-md sm:w-[500px] top-14  px-7 py-5 "
           ref={dropdownRef}
+          className="absolute right-0 top-14 w-full sm:w-[500px] bg-green-500/50 backdrop-blur-md rounded-lg shadow-lg p-6 flex flex-col gap-5 max-h-[500px] overflow-y-auto"
         >
-          <h1 className="text-2xl text-center text-white">Wishlist</h1>
+          <h2 className="text-xl text-center text-white font-semibold mb-4">
+            Wishlist
+          </h2>
 
-          <div className="flex flex-col gap-2 overflow-y-auto h-[400px] mt-7 ">
-            {wishlist.length > 0 ? (
-              wishlist.map(({ _id, course }) => (
-                <div
-                  className="flex px-10 py-5 rounded bg-app-primary bg-opacity-60 full backdrop-blur-md backdrop-saturate-150"
-                  key={_id}
-                >
-                  <div className="w-11/12 flex gap-7">
-                    <img src={course.thumbnail} alt="" className="w-1/3" />
-                    <div className="">
-                      <h1 className="text-lg mb-2">{course.title}</h1>
-                      <Button
-                        variant={"v1"}
-                        size={"sm"}
-                        className="w-44"
-                        onClick={() => handleEnroll(course._id)}
-                      >
-                        Enroll course for ₹
-                        {course.price ? course.price.toString() : "free"}
-                      </Button>
-                    </div>
-                  </div>
-                  <button
-                    className="w-1/12 text-2xl text-red-500"
-                    onClick={() => deleteFromWishlist(_id)}
+          {wishlist.length > 0 ? (
+            wishlist.map(({ _id, course }) => (
+              <div
+                key={_id}
+                className="flex flex-col sm:flex-row justify-between items-start p-5 bg-app-primary bg-opacity-90 rounded-xl hover:bg-opacity-95 transition duration-200 gap-4"
+              >
+                <img
+                  src={course.thumbnail}
+                  alt={course.title}
+                  className="w-full sm:w-1/3 h-24 sm:h-28 rounded-lg object-cover flex-shrink-0"
+                />
+                <div className="flex flex-col justify-between flex-1">
+                  <h3 className="text-white text-lg font-medium mb-2">
+                    {course.title}
+                  </h3>
+                  <Button
+                    variant="v1"
+                    size="sm"
+                    className="w-44 mt-2 sm:mt-auto"
+                    onClick={() => handleEnroll(course._id)}
                   >
-                    <MdDelete />
-                  </button>
+                    Enroll for ₹
+                    {course.price ? course.price.toString() : "Free"}
+                  </Button>
                 </div>
-              ))
-            ) : (
-              <p className="text-center text-white">
-                No course added to wishlist
-              </p>
-            )}
-          </div>
+                <span
+                  onClick={() => deleteFromWishlist(_id)}
+                  className="text-red-500 text-2xl cursor-pointer hover:text-red-400 select-none mt-2 sm:mt-0"
+                >
+                  <MdDelete />
+                </span>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-white/70 text-base py-20">
+              No courses added to wishlist
+            </p>
+          )}
         </div>
       )}
     </div>

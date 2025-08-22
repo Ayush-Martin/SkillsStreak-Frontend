@@ -49,3 +49,32 @@ export interface IQuizSubmissionProgress {
   totalQuestions: number;
   totalScore: number;
 }
+
+export interface IQuizSubmission {
+  _id: string;
+  score: number;
+  timeTaken: number;
+  user: {
+    _id: string;
+    email: string;
+  };
+  quiz: {
+    _id: string;
+    title: string;
+    difficulty: IQuizDifficulty;
+    questions: Array<{
+      _id: string;
+      question: string;
+      options: Array<{
+        _id: string;
+        id: string;
+        choice: string;
+      }>;
+      answer: string;
+    }>;
+  };
+  answers: Array<{
+    questionId: string;
+    answer: string;
+  }>;
+}

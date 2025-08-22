@@ -15,7 +15,7 @@ export interface IFilterItem<T extends string> {
   label: string;
   default: {
     value: T | "all";
-    placeholder: string;
+    placeholder?: string;
   };
   values: {
     value: T;
@@ -59,9 +59,11 @@ const Filter: FC<IFilterProps> = ({ filters, clearFilters }) => {
                 <SelectContent className="bg-[#1a1f2e] border border-gray-700 text-gray-200">
                   <SelectGroup>
                     <SelectLabel className="text-gray-400">{label}</SelectLabel>
-                    <SelectItem value={defaultValue.value}>
-                      {defaultValue.placeholder}
-                    </SelectItem>
+                    {defaultValue.placeholder && (
+                      <SelectItem value={defaultValue.value}>
+                        {defaultValue.placeholder}
+                      </SelectItem>
+                    )}
                     {values.map((v) => (
                       <SelectItem value={v.value} key={v.value}>
                         {v.placeholder}
