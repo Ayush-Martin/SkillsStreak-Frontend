@@ -22,6 +22,7 @@ import adminTopic from "./features/admin/slice/adminTopicSlice";
 import adminQuiz from "./features/admin/slice/adminQuizSlice";
 import quizzes from "./features/user/slice/quizzesSlice";
 import walletHistory from "./features/user/slice/walletHistorySlice";
+import adminQuizSubmissions from "./features/admin/slice/adminQuizSubmissionSlice";
 
 const store = configureStore({
   reducer: {
@@ -48,6 +49,7 @@ const store = configureStore({
     adminQuiz,
     quizzes,
     walletHistory,
+    adminQuizSubmissions
   },
 });
 

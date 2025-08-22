@@ -26,6 +26,11 @@ const sidebarItems = [
   },
   { name: "Courses", icon: <MdVideoLibrary />, link: "/admin/courses" },
   { name: "Quizzes", icon: <MdQuiz />, link: "/admin/quizzes" },
+  {
+    name: "Quiz Submissions",
+    icon: <MdQuiz />,
+    link: "/admin/quizSubmissions",
+  },
   { name: "Categories", icon: <TbCategoryFilled />, link: "/admin/categories" },
   { name: "Topics", icon: <HiMiniTag />, link: "/admin/topics" },
   {
