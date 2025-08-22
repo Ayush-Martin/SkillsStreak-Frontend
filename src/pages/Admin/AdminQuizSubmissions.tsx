@@ -1,6 +1,5 @@
 import {
   AdminQuizSubmissionModal,
-  Button,
   Pagination,
   SearchBox,
   Table,
