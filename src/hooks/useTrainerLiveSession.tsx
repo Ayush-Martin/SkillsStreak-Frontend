@@ -1,4 +1,6 @@
 import { axiosGetRequest } from "@/config/axios";
+import { getSocket } from "@/config/socket";
+import { SocketEvents } from "@/constants";
 import { createLocalTracks, Room, VideoPresets } from "livekit-client";
 import { useRef, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -15,7 +17,33 @@ const useTrainerLiveSession = () => {
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [roomId, setRoomId] = useState("");
   const [recordedSrc, setRecordedSrc] = useState("");
+  const [liveChats, setLiveChats] = useState<
+    {
+      userId: string;
+      message: string;
+      username: string;
+      profileImage: string;
+    }[]
+  >([]);
   const { liveSessionId, courseId } = useParams();
+  const socket = getSocket();
+
+  useEffect(() => {
+    if (socket && isStreaming) {
+      socket.on(
+        SocketEvents.LIVE_CHAT_MESSAGE_BROADCAST,
+        (chat: {
+          userId: string;
+          message: string;
+          username: string;
+          profileImage: string;
+        }) => {
+          console.log("Received live chat message:", chat);
+          setLiveChats((prev) => [...prev, chat]);
+        }
+      );
+    }
+  }, [socket, isStreaming]);
 
   useEffect(() => {
     const fetchLiveSession = async () => {
@@ -39,6 +67,16 @@ const useTrainerLiveSession = () => {
       }
     };
   }, [room]);
+
+  const sendMessage = (message: string) => {
+    console.log("Sending live chat message:", message);
+    if (socket) {
+      socket.emit(SocketEvents.LIVE_CHAT_MESSAGE_SEND, {
+        liveSessionId,
+        message,
+      });
+    }
+  };
 
   const startStream = async (token: string, roomId: string) => {
     try {
@@ -209,6 +247,8 @@ const useTrainerLiveSession = () => {
     toggleAudio,
     toggleScreenShare,
     recordedSrc,
+    sendMessage,
+    liveChats,
   };
 };
 

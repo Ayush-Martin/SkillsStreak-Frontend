@@ -4,7 +4,7 @@ import { FaRobot } from "react-icons/fa6";
 import { LuPanelLeftOpen, LuPanelRightOpen } from "react-icons/lu";
 import { IoClose } from "react-icons/io5";
 import { Input } from "../../ui/input";
-import { ScrollArea,Button } from "@/components";
+import { ScrollArea, Button } from "@/components";
 import { useScrollToBottom } from "@/hooks";
 import { Mosaic } from "react-loading-indicators";
 import ViewCourseContext from "@/context/ViewCourseContext";
@@ -42,11 +42,11 @@ const CourseUtility: FC<ICourseUtilityProps> = ({
       )}
       {currentOpen === "notebook" && <NotebookContainer />}
 
-      <div className="fixed bottom-5 right-5 z-50 py-2 px-4 rounded-full backdrop-blur-md bg-[#1a1d25]/80 border border-white/10 shadow-lg flex gap-3 items-center text-white">
+      <div className="fixed bottom-5 right-5 z-50 py-2 px-4 rounded-full backdrop-blur-md bg-[#1a1d25]/80 border border-white/20 shadow-lg flex gap-3 items-center text-white">
         {isCourseUtilsOpen && (
           <>
             <button
-              className="text-2xl"
+              className="p-2 rounded-full hover:bg-white/10 transition-colors text-xl"
               onClick={() =>
                 setCurrentOpen(currentOpen === "notebook" ? "none" : "notebook")
               }
@@ -54,7 +54,7 @@ const CourseUtility: FC<ICourseUtilityProps> = ({
               <Notebook />
             </button>
             <button
-              className="text-2xl"
+              className="p-2 rounded-full hover:bg-white/10 transition-colors text-xl"
               onClick={() =>
                 setCurrentOpen(currentOpen === "ai" ? "none" : "ai")
               }
@@ -63,7 +63,10 @@ const CourseUtility: FC<ICourseUtilityProps> = ({
             </button>
           </>
         )}
-        <button className="text-2xl" onClick={toggle}>
+        <button
+          className="p-2 rounded-full hover:bg-white/10 transition-colors text-xl"
+          onClick={toggle}
+        >
           {isCourseUtilsOpen ? <LuPanelLeftOpen /> : <LuPanelRightOpen />}
         </button>
       </div>
@@ -71,8 +74,7 @@ const CourseUtility: FC<ICourseUtilityProps> = ({
   );
 };
 
-// ---------------- AI Chat UI ----------------
-
+// ---------------- AI Chat ----------------
 interface IAiChatProps {
   onClose: () => void;
 }
@@ -81,10 +83,6 @@ const AiChat: FC<IAiChatProps> = ({ onClose }) => {
   const [message, setMessage] = useState("");
   const { aiChats, sendAiChatMessage } = useContext(ViewCourseContext)!;
   const chatEndRef = useScrollToBottom([aiChats]);
-
-  useEffect(() => {
-    // if (!aiChats.chats.length) fetchNotebooks();
-  }, []);
 
   const sendMessage = () => {
     if (!message.trim()) return;
@@ -102,27 +100,30 @@ const AiChat: FC<IAiChatProps> = ({ onClose }) => {
   return (
     <div className={sharedBoxStyles}>
       <div className={sharedHeaderStyles}>
-        <h2>AI Course Assistant</h2>
-        <button onClick={onClose} className="hover:text-red-400 transition">
+        <h2 className="text-lg font-bold">AI Course Assistant</h2>
+        <button
+          onClick={onClose}
+          className="hover:text-red-400 transition-all duration-300"
+        >
           <IoClose size={20} />
         </button>
       </div>
 
-      <ScrollArea className="flex-1 px-4 py-3 text-white space-y-3">
+      <ScrollArea className="flex-1 px-4 py-3 space-y-3">
         {aiChats.chats.slice(1).map((chat, i) => (
           <div
             key={i}
-            className={`px-4 py-2 text-sm rounded-xl max-w-[75%] whitespace-pre-wrap ${
+            className={`px-4 py-2 rounded-2xl max-w-[80%] whitespace-pre-wrap transition-all duration-300 ${
               chat.role === "model"
-                ? "bg-white/10 self-start"
-                : "bg-blue-600 self-end text-white ml-auto my-3"
+                ? "bg-white/10 self-start animate-fade-in"
+                : "bg-blue-600 self-end text-white ml-auto animate-fade-in"
             }`}
           >
             {chat.parts[0].text}
           </div>
         ))}
         {aiChats.loading && (
-          <div className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-xl w-fit my-3">
+          <div className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-2xl w-fit my-3 animate-pulse">
             <Mosaic
               color={["#32cd32", "#327fcd", "#cd32cd", "#cd8032"]}
               size="small"
@@ -133,29 +134,26 @@ const AiChat: FC<IAiChatProps> = ({ onClose }) => {
         <div ref={chatEndRef} />
       </ScrollArea>
 
-      <div className="border-t border-white/10 bg-white/5 px-4 py-3">
-        <div className="flex items-center gap-2">
-          <Input
-            placeholder="Ask something..."
-            className="flex-1 bg-white/10 border border-white/20 text-white placeholder-white/50 text-sm rounded-lg"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={handleKeyPress}
-          />
-          <button
-            onClick={sendMessage}
-            className="text-white hover:text-blue-400 transition"
-          >
-            <Send size={18} />
-          </button>
-        </div>
+      <div className="border-t border-white/10 bg-white/5 px-4 py-3 flex gap-2">
+        <Input
+          placeholder="Ask something..."
+          className="flex-1 bg-white/10 border border-white/20 text-white placeholder-white/50 text-sm rounded-xl focus:ring-1 focus:ring-blue-400"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleKeyPress}
+        />
+        <button
+          onClick={sendMessage}
+          className="text-white hover:text-blue-400 transition-all duration-300 p-2 rounded-lg bg-blue-700/30 hover:bg-blue-700/50"
+        >
+          <Send size={18} />
+        </button>
       </div>
     </div>
   );
 };
 
-// ---------------- Notebook UI ----------------
-
+// ---------------- Notebook ----------------
 const NotebookContainer: FC = () => {
   const [newTitle, setNewTitle] = useState("");
   const [showInput, setShowInput] = useState(false);
@@ -169,10 +167,8 @@ const NotebookContainer: FC = () => {
   } = useContext(ViewCourseContext)!;
 
   useEffect(() => {
-    if (!notebooks.length) {
-      fetchNotebooks();
-    }
-  });
+    if (!notebooks.length) fetchNotebooks();
+  }, []);
 
   const handleAdd = () => {
     if (!newTitle.trim()) return;
@@ -184,11 +180,12 @@ const NotebookContainer: FC = () => {
   return (
     <div className={sharedBoxStyles}>
       <div className={sharedHeaderStyles}>
-        <h2>Course Notebooks</h2>
+        <h2 className="text-lg font-bold">Course Notebooks</h2>
         <Button
           size="sm"
           variant="ghost"
           onClick={() => setShowInput(!showInput)}
+          className="hover:bg-white/10 rounded-lg p-1 transition-all"
         >
           <IoMdAdd className="text-xl" />
         </Button>
@@ -197,28 +194,26 @@ const NotebookContainer: FC = () => {
       {showInput && (
         <div className="px-4 py-2 flex gap-2">
           <Input
-            className="bg-transparent border-white/20 placeholder:text-white/40 text-white"
+            className="bg-white/10 border border-white/20 placeholder:text-white/40 text-white rounded-lg"
             placeholder="Notebook Title"
             value={newTitle}
             onChange={(e) => setNewTitle(e.target.value)}
           />
-          <Button size="sm" onClick={handleAdd}>
+          <Button size="sm" onClick={handleAdd} className="transition-all">
             Save
           </Button>
         </div>
       )}
 
-      <ScrollArea className="flex-1 px-4 py-3">
-        <div className="space-y-3">
-          {notebooks.map((notebook) => (
-            <NotebookItem
-              key={notebook._id}
-              {...notebook}
-              deleteNotebook={deleteNotebook}
-              updateNotebook={updateNotebook}
-            />
-          ))}
-        </div>
+      <ScrollArea className="flex-1 px-4 py-3 space-y-3">
+        {notebooks.map((notebook) => (
+          <NotebookItem
+            key={notebook._id}
+            {...notebook}
+            deleteNotebook={deleteNotebook}
+            updateNotebook={updateNotebook}
+          />
+        ))}
       </ScrollArea>
     </div>
   );
@@ -258,16 +253,16 @@ const NotebookItem: FC<NotebookItemProps> = ({
   };
 
   return (
-    <div className="bg-white/5 border border-white/10 p-3 rounded-xl space-y-2">
+    <div className="bg-white/5 border border-white/10 p-3 rounded-2xl space-y-2 hover:shadow-lg transition-all duration-300">
       <div className="flex justify-between items-center gap-2">
         {editingTitle ? (
           <>
             <Input
-              className="bg-transparent text-white border-white/20"
+              className="bg-white/10 text-white border border-white/20 rounded-lg"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
             />
-            <Button size="sm" onClick={saveTitle}>
+            <Button size="sm" onClick={saveTitle} className="transition-all">
               Save
             </Button>
           </>
@@ -278,13 +273,14 @@ const NotebookItem: FC<NotebookItemProps> = ({
               variant="ghost"
               size="icon"
               onClick={() => setEditingTitle(true)}
+              className="hover:text-purple-400 transition-all"
             >
               <IoMdCreate />
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="text-red-400"
+              className="text-red-400 hover:text-red-500 transition-all"
               onClick={() => deleteNotebook(_id)}
             >
               <IoMdTrash />
@@ -295,28 +291,28 @@ const NotebookItem: FC<NotebookItemProps> = ({
 
       <div className="flex gap-2">
         <Input
-          className="bg-transparent text-white border-white/20"
+          className="bg-white/10 text-white border border-white/20 rounded-lg"
           placeholder="Add note"
           value={newNote}
           onChange={(e) => setNewNote(e.target.value)}
         />
-        <Button size="sm" onClick={addNote}>
+        <Button size="sm" onClick={addNote} className="transition-all">
           <IoMdAdd />
         </Button>
       </div>
 
       {notes.length > 0 && (
-        <div className="space-y-1 text-sm text-white/80 max-h-32 overflow-y-auto">
+        <div className="space-y-2 text-sm text-white/80 max-h-36 overflow-y-auto">
           {notes.map((note, i) => (
             <div
               key={i}
-              className="flex justify-between items-center bg-white/5 border border-white/10 px-3 py-1 rounded-lg"
+              className="flex justify-between items-center bg-white/5 border border-white/10 px-3 py-1 rounded-lg hover:bg-white/10 transition-all duration-300"
             >
               <p className="truncate">{note}</p>
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-red-400"
+                className="text-red-400 hover:text-red-500 transition-all"
                 onClick={() => deleteNote(i)}
               >
                 <IoMdTrash />

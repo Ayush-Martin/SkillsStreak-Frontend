@@ -1,4 +1,4 @@
-import { Button, Input } from "@/components";
+import { Button, DivLoading, Input } from "@/components";
 import { ITrainerModule } from "@/types/courseType";
 import { FileText, Pencil, PlaySquare, Trash2 } from "lucide-react";
 import { FC, useEffect, useState } from "react";
@@ -27,9 +27,16 @@ const CourseNewModules: FC<ICourseNewModulesProps> = ({
   editModule,
 }) => {
   const [newModule, setNewModule] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchModules();
+    const fetch = async () => {
+      setLoading(true);
+      await fetchModules();
+      setLoading(false);
+    };
+
+    fetch();
   }, []);
 
   return (
@@ -49,18 +56,22 @@ const CourseNewModules: FC<ICourseNewModulesProps> = ({
         </Button>
       </div>
 
-      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
-        {modules.map((module) => (
-          <ModuleCard
-            key={module._id}
-            id={module._id}
-            title={module.title}
-            lessons={module.lessons}
-            onDelete={deleteModule}
-            editModule={editModule}
-          />
-        ))}
-      </div>
+      {loading ? (
+        <DivLoading message="Loading modules..." />
+      ) : (
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
+          {modules.map((module) => (
+            <ModuleCard
+              key={module._id}
+              id={module._id}
+              title={module.title}
+              lessons={module.lessons}
+              onDelete={deleteModule}
+              editModule={editModule}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

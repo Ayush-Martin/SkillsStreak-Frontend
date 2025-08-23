@@ -23,7 +23,7 @@ import {
   Loading,
   ProfileImage,
   Review,
-  EnrollCourseModal
+  EnrollCourseModal,
 } from "@/components";
 
 import { useSelector } from "react-redux";
@@ -361,8 +361,11 @@ const CourseDetail: FC = () => {
             What You'll Learn
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {course.skillsCovered.map((skill) => (
-              <div key={skill} className="flex items-center gap-3 text-white">
+            {course.skillsCovered.map((skill, i) => (
+              <div
+                key={skill + i}
+                className="flex items-center gap-3 text-white"
+              >
                 <div className="w-2 h-2 bg-app-secondary rounded-full flex-shrink-0"></div>
                 <p className=" font-josefinsans text-lg">{skill}</p>
               </div>
@@ -376,9 +379,9 @@ const CourseDetail: FC = () => {
             Requirements
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {course.requirements.map((requirement) => (
+            {course.requirements.map((requirement,i) => (
               <div
-                key={requirement}
+                key={requirement+i}
                 className="flex items-center gap-3 text-white"
               >
                 <div className="w-2 h-2 bg-app-secondary rounded-full flex-shrink-0"></div>

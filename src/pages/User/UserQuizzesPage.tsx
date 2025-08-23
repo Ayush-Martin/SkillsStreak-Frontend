@@ -7,6 +7,7 @@ import {
   TotalQuizzesTakenCard,
   AverageScoreCard,
   Pagination,
+  DivLoading,
 } from "@/components";
 import QuizCard from "@/components/user/quiz/QuizCard";
 import { getQuizzesApi } from "@/features/user/api/quizzesApi";
@@ -23,7 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 const PAGE_SIZE = 4;
 
 const UserQuizzesPage = () => {
-  const { currentPage, quizzes, totalPages } = useSelector(
+  const { currentPage, quizzes, totalPages, loading } = useSelector(
     (state: RootReducer) => state.quizzes
   );
   const dispatch: AppDispatch = useDispatch();
@@ -114,12 +115,15 @@ const UserQuizzesPage = () => {
               onDifficultyChange={setSelectedDifficulty}
             />
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 px-4">
-            {paginatedData.map((quiz) => (
-              <QuizCard key={quiz._id} topics={topics} quiz={quiz} />
-            ))}
-          </div>
+          {loading ? (
+            <DivLoading message="Loading quizzes..." />
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 px-4">
+              {paginatedData.map((quiz) => (
+                <QuizCard key={quiz._id} topics={topics} quiz={quiz} />
+              ))}
+            </div>
+          )}
 
           <Pagination
             currentPage={currentPage}

@@ -1,8 +1,4 @@
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbSeparator,
   CourseContentsAccordion,
   PdfViewer,
   Tabs,
@@ -11,12 +7,12 @@ import {
   TabsTrigger,
   VideoPlayer,
   Discussion,
+  BreadcrumbNav,
 } from "@/components";
 import { useDiscussion, useViewCourseRecorded } from "@/hooks";
 import { EnrolledCourseLayout } from "@/layouts";
 
 import { FC, useEffect } from "react";
-import { Link } from "react-router-dom";
 
 const UserCourseRecordedPage = () => {
   const {
@@ -50,7 +46,20 @@ const UserCourseRecordedPage = () => {
         {/* Left Content */}
         <div className="w-full lg:w-2/3">
           <div className=" bg-white/5 border border-white/10 rounded-xl py-3 px-5  sm:py-6 sm:px-10 shadow-md">
-            <Breadcrumb className="mb-5">
+            <BreadcrumbNav
+              breadcrumbItems={[
+                { text: "Enrolled Courses", link: "/user/enrolledCourses" },
+                {
+                  text: recordedSessions?.title,
+                  link: `/user/enrolledCourses/${courseId}`,
+                },
+                {
+                  text: "Recorded",
+                  link: `/user/enrolledCourses/${courseId}/recorded`,
+                },
+              ]}
+            />
+            {/* <Breadcrumb className="mb-5">
               <BreadcrumbList>
                 <BreadcrumbItem>
                   <Link
@@ -70,7 +79,7 @@ const UserCourseRecordedPage = () => {
                   </Link>
                 </BreadcrumbItem>
               </BreadcrumbList>
-            </Breadcrumb>
+            </Breadcrumb> */}
 
             {courseAccess && currentSelectedLesson ? (
               <Lesson

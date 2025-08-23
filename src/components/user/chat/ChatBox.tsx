@@ -382,7 +382,6 @@ const GroupMembers: FC<IGroupMembersProps> = ({ close }) => {
   useEffect(() => {
     const getMembers = async () => {
       const chatMembers = await getChatMembers();
-      console.log(chatMembers);
       setMembers(chatMembers);
     };
 

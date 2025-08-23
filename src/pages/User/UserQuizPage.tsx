@@ -1,4 +1,4 @@
-import { Footer } from "@/components";
+import { DivLoading, Footer } from "@/components";
 import { useQuiz } from "@/hooks";
 import { UserLayout } from "@/layouts";
 import { IViewQuiz } from "@/types/quizType";
@@ -16,7 +16,7 @@ import { useState, useEffect } from "react";
 
 const difficultyColors: Record<string, string> = {
   Easy: "bg-green-600 text-white",
-  Medium: "bg-yellow-500 text-white",
+  Medium: "bg-yellow-500 text-black",
   Hard: "bg-red-600 text-white",
 };
 
@@ -24,13 +24,8 @@ const UserQuizPage = () => {
   const { previousSubmissions, quiz, submitQuiz, resubmitQuiz } = useQuiz();
   const [showQuizModal, setShowQuizModal] = useState(false);
 
-  const handleStart = () => {
-    setShowQuizModal(true);
-  };
-
-  const handleReattempt = () => {
-    setShowQuizModal(true);
-  };
+  const handleStart = () => setShowQuizModal(true);
+  const handleReattempt = () => setShowQuizModal(true);
 
   const handleQuizSubmit = async (
     answers: { questionId: string; answer: string }[],
@@ -47,23 +42,24 @@ const UserQuizPage = () => {
   if (!quiz) {
     return (
       <UserLayout>
-        <div className="flex items-center justify-center h-full py-20 text-gray-400">
-          Loading quiz...
+        <div className="w-full h-[500px] flex items-center justify-center">
+          <DivLoading message="Loading quiz..." />
         </div>
+        <Footer />
       </UserLayout>
     );
   }
 
   return (
     <UserLayout>
-      <div className="max-w-5xl mx-auto px-6 py-10 space-y-10 text-white">
+      <div className="max-w-5xl mx-auto px-6 py-10 space-y-12 text-white">
         {/* Quiz Header */}
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-8 space-y-6">
+        <div className="bg-[#11131d] border border-gray-800 rounded-2xl p-8 space-y-6 shadow-md">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 flex items-center justify-center rounded-lg bg-blue-600">
-              <Layers size={28} />
+            <div className="w-16 h-16 flex items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-blue-400 shadow-md">
+              <Layers size={28} className="text-white" />
             </div>
-            <h1 className="text-3xl font-bold">{quiz.title}</h1>
+            <h1 className="text-3xl font-bold text-white">{quiz.title}</h1>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
@@ -97,24 +93,24 @@ const UserQuizPage = () => {
             (!previousSubmissions ? (
               <button
                 onClick={handleStart}
-                className="px-8 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 transition text-white font-medium flex items-center gap-2"
+                className="px-8 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 transition-all text-white font-medium flex items-center gap-2 shadow-lg"
               >
                 <Play size={18} /> Start Quiz
               </button>
             ) : (
               <button
                 onClick={handleReattempt}
-                className="px-8 py-3 rounded-lg bg-purple-600 hover:bg-purple-700 transition text-white font-medium flex items-center gap-2"
+                className="px-8 py-3 rounded-lg bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 transition-all text-white font-medium flex items-center gap-2 shadow-lg"
               >
                 <RotateCcw size={18} /> Reattempt Quiz
               </button>
             ))}
         </div>
 
-        {/* Results if submitted */}
+        {/* Results */}
         {previousSubmissions && (
           <div className="space-y-10">
-            <div className="bg-gray-900 border border-gray-800 rounded-xl p-8 flex flex-wrap gap-8 justify-between">
+            <div className="bg-[#11131d] border border-gray-800 rounded-2xl p-8 flex flex-wrap gap-8 justify-between shadow-md">
               <div className="flex items-center gap-3 text-green-400">
                 <Award size={22} />
                 <span className="font-semibold text-lg">
@@ -135,17 +131,15 @@ const UserQuizPage = () => {
                 const submittedAnswer = previousSubmissions.answers.find(
                   (a) => a.questionId === q._id
                 );
-
                 const correctAnswer = q.options.find(
                   (o) => o.id === q.answer
                 )?.choice;
-
                 const isCorrect = submittedAnswer?.answer === q.answer;
 
                 return (
                   <div
                     key={q._id}
-                    className="bg-gray-900 border border-gray-800 rounded-xl p-6 space-y-4"
+                    className={`bg-[#11131d] border border-gray-800 rounded-2xl p-6 space-y-4 shadow-md transition-all hover:shadow-lg`}
                   >
                     <div className="flex items-start gap-3">
                       {isCorrect ? (
@@ -186,6 +180,7 @@ const UserQuizPage = () => {
         )}
       </div>
 
+      {/* Quiz Modal */}
       {showQuizModal && (
         <QuizModal
           quiz={quiz}
@@ -199,6 +194,7 @@ const UserQuizPage = () => {
   );
 };
 
+// Quiz Modal
 interface QuizModalProps {
   quiz: IViewQuiz;
   onSubmit: (
@@ -219,49 +215,35 @@ const QuizModal = ({ quiz, onSubmit, onClose }: QuizModalProps) => {
   const allAnswered = Object.keys(answers).length === totalQuestions;
   const currentQuestion = quiz.questions[currentQuestionIndex];
 
-  // Start timer when modal opens
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeTaken((t) => t + 1);
-    }, 1000);
+    const timer = setInterval(() => setTimeTaken((t) => t + 1), 1000);
     return () => clearInterval(timer);
   }, []);
 
   const handleAnswerChange = (questionId: string, value: string) => {
-    setAnswers((prev) => ({
-      ...prev,
-      [questionId]: value,
-    }));
+    setAnswers((prev) => ({ ...prev, [questionId]: value }));
   };
 
   const handleQuizComplete = async () => {
     setIsSubmitting(true);
     try {
-      // Transform answers from Record<string, string> to array format
       const formattedAnswers = Object.entries(answers).map(
-        ([questionId, answer]) => ({
-          questionId,
-          answer,
-        })
+        ([questionId, answer]) => ({ questionId, answer })
       );
-
       await onSubmit(formattedAnswers, timeTaken);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const goToPrevious = () => {
+  const goToPrevious = () =>
     setCurrentQuestionIndex((prev) => Math.max(prev - 1, 0));
-  };
-
-  const goToNext = () => {
+  const goToNext = () =>
     setCurrentQuestionIndex((prev) => Math.min(prev + 1, totalQuestions - 1));
-  };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-      <div className="bg-[#1c1f26] border border-gray-700 rounded-xl shadow-xl max-w-2xl w-full p-6 space-y-6 relative animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fadeIn">
+      <div className="bg-[#1c1f26] border border-gray-700 rounded-2xl shadow-xl max-w-2xl w-full p-6 space-y-6 relative">
         {/* Close */}
         <button
           onClick={onClose}
@@ -296,7 +278,7 @@ const QuizModal = ({ quiz, onSubmit, onClose }: QuizModalProps) => {
         </div>
 
         {/* Question */}
-        <div className="bg-[#222630] border border-gray-700 rounded-lg p-4">
+        <div className="bg-[#222630] border border-gray-700 rounded-xl p-4">
           <p className="text-gray-200 text-base leading-relaxed">
             {currentQuestion.question}
           </p>
@@ -304,33 +286,31 @@ const QuizModal = ({ quiz, onSubmit, onClose }: QuizModalProps) => {
 
         {/* Options */}
         <div className="space-y-3">
-          {currentQuestion.options.map(
-            (opt: { id: string; choice: string }) => {
-              const isSelected = answers[currentQuestion._id] === opt.id;
-              return (
-                <label
-                  key={opt.id}
-                  className={`block rounded-lg border p-3 cursor-pointer text-sm transition-all duration-200 ${
-                    isSelected
-                      ? "bg-blue-700 border-blue-500 text-white shadow-sm"
-                      : "bg-[#1f232d] border-gray-700 text-gray-300 hover:bg-[#292e3a]"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name={currentQuestion._id}
-                    value={opt.id}
-                    checked={isSelected}
-                    onChange={() =>
-                      handleAnswerChange(currentQuestion._id, opt.id)
-                    }
-                    className="hidden"
-                  />
-                  {opt.choice}
-                </label>
-              );
-            }
-          )}
+          {currentQuestion.options.map((opt) => {
+            const isSelected = answers[currentQuestion._id] === opt.id;
+            return (
+              <label
+                key={opt.id}
+                className={`block rounded-lg border p-3 cursor-pointer text-sm transition-all duration-200 ${
+                  isSelected
+                    ? "bg-blue-700 border-blue-500 text-white shadow-inner animate-pulse"
+                    : "bg-[#1f232d] border-gray-700 text-gray-300 hover:bg-[#292e3a]"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name={currentQuestion._id}
+                  value={opt.id}
+                  checked={isSelected}
+                  onChange={() =>
+                    handleAnswerChange(currentQuestion._id, opt.id)
+                  }
+                  className="hidden"
+                />
+                {opt.choice}
+              </label>
+            );
+          })}
         </div>
 
         {/* Navigation */}
@@ -338,7 +318,7 @@ const QuizModal = ({ quiz, onSubmit, onClose }: QuizModalProps) => {
           <button
             onClick={goToPrevious}
             disabled={currentQuestionIndex === 0}
-            className="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-md disabled:opacity-50 text-sm font-medium text-gray-300"
+            className="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-md disabled:opacity-50 text-sm font-medium text-gray-300 transition"
           >
             ⬅ Previous
           </button>
@@ -358,7 +338,7 @@ const QuizModal = ({ quiz, onSubmit, onClose }: QuizModalProps) => {
           ) : (
             <button
               onClick={goToNext}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-sm font-medium text-white"
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-sm font-medium text-white transition"
             >
               Next ➡
             </button>

@@ -83,8 +83,6 @@ const UserSubscriptionPage = () => {
               plan.price > currentPlan.price &&
               !isCurrentPlan;
 
-            console.log(plan.price, currentPlan?.price, isUpgrade);
-
             return (
               <div
                 key={plan._id}

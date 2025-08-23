@@ -20,7 +20,6 @@ const VideoPlayer: FC<IVideoPlayerPrams> = ({
   title,
   onEnded,
 }) => {
-  console.log(url);
   return (
     <MediaPlayer
       title={title}

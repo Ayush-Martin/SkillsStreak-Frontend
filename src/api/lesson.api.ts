@@ -20,7 +20,6 @@ export const addTrainerLesson = async (
 
   if (type === "video") {
     duration = await getVideoDuration(file);
-    console.log(duration);
   } else {
     duration = 60;
   }

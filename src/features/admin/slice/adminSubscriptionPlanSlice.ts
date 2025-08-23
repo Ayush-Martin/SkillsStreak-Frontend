@@ -101,7 +101,6 @@ const adminSubscriptionPlanSlice = createSlice({
         }: { subscriptionPlanId: string; isListed: boolean } =
           action.payload.data;
 
-        console.log(action.payload);
 
         state.subscriptionPlans = state.subscriptionPlans.map((oldPlan) =>
           oldPlan._id == subscriptionPlanId ? { ...oldPlan, isListed } : oldPlan

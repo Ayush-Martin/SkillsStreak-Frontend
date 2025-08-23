@@ -49,7 +49,7 @@ const store = configureStore({
     adminQuiz,
     quizzes,
     walletHistory,
-    adminQuizSubmissions
+    adminQuizSubmissions,
   },
 });
 

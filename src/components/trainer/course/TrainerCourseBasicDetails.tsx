@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
   Textarea,
-  ErrorText
+  ErrorText,
 } from "@/components";
 import {
   ImageIcon,
@@ -34,7 +34,6 @@ import {
   UseFormTrigger,
   UseFormWatch,
 } from "react-hook-form";
-
 
 const labelClass = "text-sm font-medium text-zinc-300 flex items-center gap-2";
 

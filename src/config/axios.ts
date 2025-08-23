@@ -51,7 +51,7 @@ appApi.interceptors.response.use(
         return appApi(originalRequest);
       } catch (err) {
         store.dispatch(logout());
-        console.log(err);
+        console.error(err);
         return Promise.reject(err);
       }
     }

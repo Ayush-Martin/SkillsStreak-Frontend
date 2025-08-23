@@ -23,8 +23,6 @@ const App = () => {
   const { accessToken } = useSelector((state: RootReducer) => state.user);
   const [loading, setLoading] = useState(true);
 
-  console.log("dfdf");
-
   useEffect(() => {
     const fetchApi = async () => {
       try {
@@ -55,9 +53,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    console.log("before connecting socket");
     if (accessToken) {
-      console.log("while connecting socket");
       connectSocket();
       return () => disconnectSocket();
     }

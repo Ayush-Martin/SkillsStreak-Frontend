@@ -41,8 +41,6 @@ const AdminQuizSubmissionModal = ({
               (o) => o.id === q.answer
             )?.choice;
 
-            console.log(q.options.find((o) => o.id === q.answer),q.options,q.answer);
-
             const isCorrect = submittedAnswer?.answer === q.answer;
 
             return (

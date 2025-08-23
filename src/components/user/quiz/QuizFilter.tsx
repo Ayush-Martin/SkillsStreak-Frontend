@@ -58,7 +58,7 @@ const QuizFilter: FC<QuizFilterProps> = ({
 
   return (
     <div className="w-full bg-[#0a0d17] py-5 px-4">
-      <div className="w-full max-w-7xl mx-auto bg-gradient-to-br from-white/5 to-white/10 border border-white/10 rounded-xl p-6 space-y-6 shadow-lg">
+      <div className="w-full max-w-7xl mx-auto bg-gradient-to-br bg-[#0e111c] border border-gray-800 rounded-xl p-6 space-y-6 shadow-lg">
         {/* Topics */}
         <div>
           <div className="flex items-center gap-2 mb-4 text-sm font-semibold text-gray-300 uppercase tracking-wide">

@@ -17,7 +17,7 @@ const SideBar: FC<ISideBarProps> = ({ children }) => {
         <button
           className={`
     fixed top-[4.5rem] left-4 z-30 
-    lg:hidden 
+    md:hidden 
     text-white text-2xl p-2 rounded-md 
     bg-app-neutral bg-opacity-30 backdrop-blur-sm 
     shadow-md hover:bg-opacity-50 transition
@@ -38,11 +38,11 @@ const SideBar: FC<ISideBarProps> = ({ children }) => {
           border-r border-app-border text-white 
           transition-transform duration-300
           ${isOpen ? "translate-x-0" : "-translate-x-full"} 
-          lg:translate-x-0
+          md:translate-x-0
         `}
       >
         {/* Close button (mobile only) */}
-        <div className="lg:hidden flex justify-end p-4">
+        <div className="md:hidden flex justify-end p-4">
           <button
             className="text-2xl text-white"
             onClick={() => setIsOpen(false)}
@@ -60,7 +60,7 @@ const SideBar: FC<ISideBarProps> = ({ children }) => {
       {/* Overlay (mobile only) */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-10 bg-black bg-opacity-40 lg:hidden"
+          className="fixed inset-0 z-10 bg-black bg-opacity-40 md:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}

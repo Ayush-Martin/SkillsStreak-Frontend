@@ -86,23 +86,24 @@ const UserHeader: FC = () => {
 
             {dropdownOpen && (
               <div
-                className="absolute right-0 flex flex-col  gap-4 px-6 py-8 mt-2 text-sm text-white bg-opacity-90 rounded-md top-12 bg-app-border backdrop-blur-lg w-[200px] text-center  "
                 ref={dropdownRef}
+                className="absolute right-0 top-14 w-[220px] flex flex-col gap-2 px-5 py-4 bg-gradient-to-b from-[#0a0d17]/90 to-[#0a0d17]/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/10 text-white text-sm text-center z-50"
               >
                 {DROPDOWN_LINKS.map(({ to, label }) => (
                   <Link
                     key={label}
                     to={to}
-                    className="hover:text-app-accent"
+                    className="flex items-center justify-center gap-2 py-2 px-2 rounded-md transition-all duration-200 hover:text-app-accent hover:bg-white/10"
                     onClick={() => setDropdownOpen(false)}
                   >
                     {label}
                   </Link>
                 ))}
+
                 <Button
-                  variant={"v2"}
+                  variant="v2"
                   onClick={logoutHandler}
-                  className="hover:scale-105"
+                  className="mt-3 w-full py-2 text-sm font-medium rounded-lg transition-transform duration-200 hover:scale-105 hover:bg-red-600"
                 >
                   Logout
                 </Button>

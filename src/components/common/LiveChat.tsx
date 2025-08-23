@@ -1,179 +1,71 @@
-import { getSocket } from "@/config/socket";
-import { FC, useEffect, useState } from "react";
-import { Button, Input, ScrollArea } from "../ui";
-import ProfileImage from "./ProfileImage";
-import { useScrollToBottom } from "@/hooks";
-import { SocketEvents } from "@/constants";
+import { FC, useState } from "react";
+import { PiChatsCircleLight } from "react-icons/pi";
+import { ScrollArea } from "../ui";
+import { useSelector } from "react-redux";
+import { RootReducer } from "@/store";
 
 interface ILiveChatProps {
-  isChatVisible: boolean;
-  toggleChat: () => void;
-  roomId: string;
-}
-
-interface ILiveComment {
-  message: string;
-  user: {
-    _id: string;
-    profileImage: string;
+  liveChats: {
+    userId: string;
+    message: string;
     username: string;
-  };
+    profileImage: string;
+  }[];
+  sendMessage: (message: string) => void;
 }
 
-const LiveChat: FC<ILiveChatProps> = ({
-  roomId,
-  isChatVisible,
-  toggleChat,
-}) => {
-  const socket = getSocket();
-  const [message, setMessage] = useState("");
-  const [comments, setComments] = useState<ILiveComment[]>([]);
-  const chatEndRef = useScrollToBottom([comments]);
+const LiveChat: FC<ILiveChatProps> = ({ liveChats, sendMessage }) => {
+  const [chatInput, setChatInput] = useState("");
+  const { _id } = useSelector((state: RootReducer) => state.user);
 
-  useEffect(() => {
-    if (roomId) {
-      socket.on(SocketEvents.LIVE_CHAT_NEW_MESSAGE, (data: ILiveComment) => {
-        console.log("dfdf");
-        setComments((prev) => [...prev, data]);
-      });
-    }
-
-    return () => {
-      socket.off(SocketEvents.LIVE_CHAT_NEW_MESSAGE);
-    };
-  }, [roomId]);
-
-  const sendMessage = async () => {
-    socket.emit(SocketEvents.LIVE_CHAT_NEW_MESSAGE, { roomId, message });
-    setMessage("");
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
+  const sendLiveChatMessage = () => {
+    if (chatInput.trim()) {
+      sendMessage(chatInput);
+      setChatInput("");
     }
   };
-
   return (
-    // <div className="w-full rounded-md border bg-black border-app-border h-[400px] md:h-[450px] lg:h-[620px] text-white ">
-    //   <div className="w-full py-3 text-center border-b border-app-border">
-    //     <h1 className="text-white font-boldonse">Live Chat</h1>
-    //   </div>
-    //   <ScrollArea className="h-[300px] md-[350px] lg:h-[500px] w-full p-4 gap-2">
-    //     {comments.map((comment, i) => (
-    //       <div
-    //         className="flex items-center gap-2 my-2"
-    //         key={`${comment.user._id}-${comment.message}-${i}`}
-    //       >
-    //         <ProfileImage
-    //           profileImage={comment.user.profileImage}
-    //           size={8}
-    //           textSize="xs"
-    //         />
-    //         <p>
-    //           {_id === comment.user._id ? (
-    //             <span className="text-app-accent">you</span>
-    //           ) : (
-    //             <span className="text-app-tertiary">
-    //               {comment.user.username}
-    //             </span>
-    //           )}{" "}
-    //           {comment.message}
-    //         </p>
-    //       </div>
-    //     ))}
-    //     <div ref={chatEndRef} />
-    //   </ScrollArea>
-    //   <div className="w-full h-[50px] border-t border-app-border p-2">
-    //     <div className="flex items-center gap-2">
-    //       <Input
-    //         placeholder="Type a message..."
-    //         className="flex-1 text-white bg-transparent border-gray-600"
-    //         value={message}
-    //         onChange={(e) => setMessage(e.target.value)}
-    //         onKeyDown={handleKeyPress}
-    //       />
-    //       <button
-    //         type="submit"
-    //         onClick={sendMessage}
-    //         className="hover:scale-110"
-    //       >
-    //         <Send className="w-5 h-5" />
-    //       </button>
-    //     </div>
-    //   </div>
-    // </div>
-
-    <div
-      className={`${
-        isChatVisible
-          ? "fixed md:relative inset-y-0 right-0 w-full md:w-80 z-10 md:z-auto top-16 md:top-0"
-          : "hidden"
-      } backdrop-blur-md backdrop-saturate-150 border border-app-border rounded-md  flex flex-col transition-all duration-300 md:bg-[#0e131f]`}
-    >
-      {/* Chat Header */}
-      <div className="p-4 border-b  backdrop-blur-md backdrop-saturate-150 bg-black/10  border-app-border shadow-black/10">
-        <div className="flex items-center justify-between">
-          <h3 className="text-white font-semibold">Live Chat</h3>
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={toggleChat}
-            className="text-gray-400 hover:text-white md:hidden"
-          >
-            ×
-          </Button>
-        </div>
+    <aside className="flex-[1.25] h-full bg-slate-900 border border-slate-700 rounded-2xl flex flex-col overflow-hidden">
+      <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-700 bg-slate-800">
+        <PiChatsCircleLight className="text-xl text-blue-400" />
+        <span className="text-base font-semibold text-slate-100">
+          Live Chat
+        </span>
       </div>
-
-      {/* Chat Messages */}
-      <ScrollArea className="flex-1 p-4 bg-black/50 md:bg-transparent">
-        <div className="space-y-3">
-          {comments.map((comment) => (
-            <div className="flex gap-2">
-              <ProfileImage
-                profileImage={comment.user.profileImage}
-                size={8}
-                textSize="xs"
-              />
-              <div key={comment.message} className="text-sm">
-                <div className="flex items-center space-x-2 mb-1">
-                  <span className="font-semibold text-blue-400">
-                    {comment.user.username}
-                  </span>
-                </div>
-                <p className="text-gray-300 leading-relaxed">
-                  {comment.message}
-                </p>
-              </div>
+      <ScrollArea className="flex-1 px-4 py-4 space-y-3 h-[200px]">
+        {liveChats.map((chat, index) => (
+          <div key={index} className="flex items-start gap-2 mb-3">
+            <img
+              src={chat.profileImage}
+              alt={chat.username}
+              className="w-8 h-8 rounded-full"
+            />
+            <div className="flex flex-col">
+              <span className="text-sm font-semibold text-slate-100">
+                {chat.username} {chat.userId === _id && "(You)"}
+              </span>
+              <span className="text-sm text-slate-400">{chat.message}</span>
             </div>
-          ))}
-        </div>
-        <div ref={chatEndRef}></div>
+          </div>
+        ))}
       </ScrollArea>
-
-      {/* Chat Input */}
-      <div className="p-4 border-t backdrop-blur-md backdrop-saturate-150 bg-black/10  border-app-border shadow-black/10">
-        <div className="flex space-x-2">
-          <Input
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={handleKeyPress}
-            placeholder="Type a message..."
-            className="flex-1 bg-transparent border-gray-600 text-white placeholder-gray-400 focus:border-blue-500"
+      <div className="p-4 border-t border-slate-700 bg-slate-800">
+        <div className="flex gap-2">
+          <input
+            placeholder="Type your message..."
+            className="flex-1 px-4 py-3 rounded-xl bg-slate-700 border border-slate-600 text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            value={chatInput}
+            onChange={(e) => setChatInput(e.target.value)}
           />
-          <Button
-            type="submit"
-            size="sm"
-            className="bg-blue-600 hover:bg-blue-700"
-            onClick={sendMessage}
+          <button
+            className="px-5 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition"
+            onClick={sendLiveChatMessage}
           >
             Send
-          </Button>
+          </button>
         </div>
       </div>
-    </div>
+    </aside>
   );
 };
 

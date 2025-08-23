@@ -7,12 +7,15 @@ interface IModalProps {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  heightPx: number;
 }
 
-const Modal: FC<IModalProps> = ({ onClose, title, children }) => {
+const Modal: FC<IModalProps> = ({ onClose, title, children, heightPx }) => {
   return createPortal(
     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center px-4 text-white ]">
-      <div className="w-full h-[600px] max-w-lg bg-[#0c0f1a] border border-white/10 rounded-xl shadow-lg p-6 space-y-6  flex flex-col">
+      <div
+        className={`w-full h-[${heightPx}px] max-w-lg bg-[#0c0f1a] border border-white/10 rounded-xl shadow-lg p-6 space-y-6  flex flex-col`}
+      >
         {/* Header */}
         <div className="flex justify-between items-center">
           <h2 className="text-lg font-semibold flex items-center gap-2">
