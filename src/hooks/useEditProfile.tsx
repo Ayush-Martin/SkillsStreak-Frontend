@@ -99,7 +99,6 @@ const useEditProfile = () => {
   });
 
   const editProfile = async (data: IUserProfileSchema) => {
-    console.log(data);
     const res = await axiosPutRequest("/profile", data);
     if (!res) return;
     successPopup(res.message || "Profile updated successfully");
@@ -123,7 +122,6 @@ const useEditProfile = () => {
   return {
     register,
     editProfile: () => {
-      console.log(errors);
       return handleSubmit(editProfile);
     },
     watch,

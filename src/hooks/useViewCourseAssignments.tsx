@@ -12,15 +12,17 @@ import { useParams } from "react-router-dom";
 const useCourseAssignments = () => {
   const [assignments, setAssignments] = useState<IAssignmentSubmission[]>([]);
   const { courseId } = useParams();
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchAssignments = async () => {
+      setLoading(true);
       const res = await axiosGetRequest(
         `${COURSES_API}/${courseId}/assignments`
       );
       if (!res) return;
-      console.log("assignments", res.data);
       setAssignments(res.data);
+      setLoading(false);
     };
 
     fetchAssignments();
@@ -143,7 +145,7 @@ const useCourseAssignments = () => {
   //   );
   // };
 
-  return { assignments, completeAssignment, redoAssignment };
+  return { assignments, completeAssignment, redoAssignment, loading };
 };
 
 export default useCourseAssignments;

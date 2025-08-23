@@ -25,3 +25,4 @@ export { default as EntryListInput } from "./EntryListInput";
 export { default as EditStringField } from "./EditStringField";
 export { default as Modal } from "./Modal";
 export { default as TransactionModal } from "./TransactionModal";
+export { default as DivLoading } from "./DivLoading";

@@ -13,7 +13,6 @@ const useWishlist = () => {
   const fetchWishlist = async () => {
     const res = await axiosGetRequest("/wishlist");
     if (!res) return;
-    console.log(res.data);
     setWishlist(res.data);
   };
 

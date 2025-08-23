@@ -8,7 +8,6 @@ const UserWalletPage = () => {
     const fetchWalletHistory = async () => {
       const res = await axiosGetRequest("/wallet/history");
       if (!res) return;
-      console.log(res.data);
     };
 
     fetchWalletHistory();

@@ -75,7 +75,7 @@ const ResetPassword: FC = () => {
               <Input
                 placeholder="Password"
                 type="password"
-                className="bg-app-highlight"
+                className="bg-[#141926] border-white/10 text-white"
                 {...register("password")}
                 onBlur={() => trigger("password")}
               />
@@ -85,7 +85,7 @@ const ResetPassword: FC = () => {
               <Input
                 placeholder="Confirm Password"
                 type="password"
-                className="bg-app-highlight"
+                className="bg-[#141926] border-white/10 text-white"
                 {...register("confirmPassword")}
                 onBlur={() => trigger("confirmPassword")}
               />

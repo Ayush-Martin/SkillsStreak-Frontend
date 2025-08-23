@@ -9,11 +9,8 @@ let socket: typeof Socket;
 export const connectSocket = () => {
   try {
     const { accessToken } = store.getState().user;
-    console.log("inside connect socket");
     if (accessToken) {
-      console.log("connection checking access token");
       if (socket) {
-        console.log(" socket connected aldready");
         socket.disconnect();
       }
 
@@ -26,8 +23,6 @@ export const connectSocket = () => {
         reconnectionDelay: 1000,
         timeout: 10000,
       });
-
-      console.log(" socket on process to connect", socket);
 
       // socket.on(SocketEvents., (err: Error) => {
       //   console.warn("Socket connection error:", err.message);
@@ -51,9 +46,6 @@ export const connectSocket = () => {
 };
 
 export const getSocket = () => {
-  if (!socket) {
-    console.warn("Socket is not initialized. Call connectSocket() first.");
-  }
   return socket;
 };
 

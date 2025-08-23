@@ -32,7 +32,6 @@ const useChat = () => {
     const fetchChat = async () => {
       const res = await axiosGetRequest("/chats");
       if (!res) return;
-      console.log(res.data);
       setChats(res.data);
     };
 

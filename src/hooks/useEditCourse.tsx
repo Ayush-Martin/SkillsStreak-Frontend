@@ -106,7 +106,6 @@ const useNewEditCourse = () => {
 
       if (!res) return;
       setPreviewThumbnail(res.data);
-      console.log(res);
       successPopup(res.message || "Thumbnail changed");
     }
   };
@@ -138,7 +137,6 @@ const useNewEditCourse = () => {
 
     if (!res) return;
     setModules([...modules, { ...res.data, lessons: [] }]);
-    console.log(res);
     successPopup(res.message || "added");
   };
 
@@ -162,7 +160,6 @@ const useNewEditCourse = () => {
       `${TRAINER_COURSES_API}/${courseId}/assignments`
     );
     if (!res) return;
-    console.log(res.data);
     setAssignments(res.data);
   };
 
@@ -275,7 +272,6 @@ const useNewEditCourse = () => {
   };
 
   const viewLiveSession = (liveSessionId: string) => {
-    console.log(liveSessionId);
     navigate(`/trainer/courses/${courseId}/live/${liveSessionId}`);
   };
 

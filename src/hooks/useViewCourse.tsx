@@ -106,7 +106,6 @@ const useViewCourse = () => {
       }
     );
     if (!res) return;
-    console.log(res.data);
     setNotebooks(
       notebooks.map((notebook) =>
         notebook._id !== notebookId ? notebook : res.data

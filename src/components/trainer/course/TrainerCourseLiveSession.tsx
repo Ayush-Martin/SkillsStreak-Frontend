@@ -5,11 +5,10 @@ import {
   Pencil,
   Trash2,
   Video,
-  X,
   Eye,
   PlusCircle,
 } from "lucide-react";
-import { Input, ErrorText,Button } from "@/components";
+import { Input, ErrorText, Button, Modal, DivLoading } from "@/components";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -45,9 +44,16 @@ const CourseLiveSession: FC<ICourseLiveSessionProps> = ({
   const [editingSession, setEditingSession] = useState<ILiveSession | null>(
     null
   );
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchSessions();
+    const fetch = async () => {
+      setLoading(true);
+      await fetchSessions();
+      setLoading(false);
+    };
+
+    fetch();
   }, []);
 
   const handleCreate = () => {
@@ -81,74 +87,80 @@ const CourseLiveSession: FC<ICourseLiveSessionProps> = ({
         </Button>
       </div>
 
-      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {sessions.map((session) => (
-          <div
-            key={session._id}
-            className="bg-[#131722] border border-white/10 p-5 rounded-xl"
-          >
-            <div className="flex justify-between items-center mb-2">
-              <h2 className="text-lg font-semibold">{session.title}</h2>
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  variant="v1"
-                  onClick={() => handleEdit(session)}
-                >
-                  <Pencil className="w-4 h-4" />
-                </Button>
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  onClick={() => handleDelete(session._id)}
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
+      {loading ? (
+        <DivLoading message="Loading sessions..." />
+      ) : (
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {sessions.map((session) => (
+            <div
+              key={session._id}
+              className="bg-[#131722] border border-white/10 p-5 rounded-xl"
+            >
+              <div className="flex justify-between items-center mb-2">
+                <h2 className="text-lg font-semibold">{session.title}</h2>
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="v1"
+                    onClick={() => handleEdit(session)}
+                  >
+                    <Pencil className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => handleDelete(session._id)}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
+
+              <p className="text-sm text-zinc-300 mb-2">
+                {session.description}
+              </p>
+
+              <div className="text-sm text-zinc-400 mb-2 flex items-center gap-2">
+                <CalendarDays className="w-4 h-4 text-violet-500" />
+                {new Date(session.date).toISOString().split("T")[0]}
+                <Clock className="w-4 h-4 ml-4 text-violet-500" />
+                {session.time}
+              </div>
+
+              <p className="text-sm text-zinc-400 mb-3">
+                Status:{" "}
+                <span
+                  className={`capitalize font-medium ${
+                    session.status === "live"
+                      ? "text-green-400"
+                      : session.status === "upcoming"
+                      ? "text-yellow-400"
+                      : "text-gray-400"
+                  }`}
+                >
+                  {session.status}
+                </span>
+              </p>
+
+              {session.status === "upcoming" ? (
+                <Button
+                  className="w-full bg-green-600 hover:bg-green-700"
+                  onClick={() => viewSession(session._id)}
+                >
+                  <Video className="w-4 h-4 mr-2" /> Go Live
+                </Button>
+              ) : session.status === "completed" ? (
+                <Button
+                  className="w-full bg-blue-600 hover:bg-blue-700"
+                  onClick={() => viewSession(session._id)}
+                >
+                  <Eye className="w-4 h-4 mr-2" /> View Session
+                </Button>
+              ) : null}
             </div>
-
-            <p className="text-sm text-zinc-300 mb-2">{session.description}</p>
-
-            <div className="text-sm text-zinc-400 mb-2 flex items-center gap-2">
-              <CalendarDays className="w-4 h-4 text-violet-500" />
-              {new Date(session.date).toISOString().split("T")[0]}
-              <Clock className="w-4 h-4 ml-4 text-violet-500" />
-              {session.time}
-            </div>
-
-            <p className="text-sm text-zinc-400 mb-3">
-              Status:{" "}
-              <span
-                className={`capitalize font-medium ${
-                  session.status === "live"
-                    ? "text-green-400"
-                    : session.status === "upcoming"
-                    ? "text-yellow-400"
-                    : "text-gray-400"
-                }`}
-              >
-                {session.status}
-              </span>
-            </p>
-
-            {session.status === "upcoming" ? (
-              <Button
-                className="w-full bg-green-600 hover:bg-green-700"
-                onClick={() => viewSession(session._id)}
-              >
-                <Video className="w-4 h-4 mr-2" /> Go Live
-              </Button>
-            ) : session.status === "completed" ? (
-              <Button
-                className="w-full bg-blue-600 hover:bg-blue-700"
-                onClick={() => viewSession(session._id)}
-              >
-                <Eye className="w-4 h-4 mr-2" /> View Session
-              </Button>
-            ) : null}
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {modalOpen && (
         <LiveSessionModal
@@ -201,78 +213,138 @@ const LiveSessionModal: FC<ILiveSessionModalProps> = ({
     );
   }, [defaultValues, reset]);
 
+  // return (
+  //   <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center px-4">
+  //     <div className="w-full max-w-lg bg-[#0c0f1a] border border-white/10 rounded-xl shadow-lg p-6 space-y-6">
+  //       <div className="flex justify-between items-center mb-2">
+  //         <h2 className="text-lg font-semibold flex items-center gap-2">
+  //           <Video className="w-5 h-5 text-violet-500" />
+  //           {defaultValues ? "Edit Session" : "Schedule Session"}
+  //         </h2>
+  //         <Button size="icon" variant="ghost" onClick={onClose}>
+  //           <X className="w-5 h-5 text-white" />
+  //         </Button>
+  //       </div>
+
+  //       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+  //         <div>
+  //           <label className="text-sm text-zinc-400 mb-1 block">Title</label>
+  //           <Input
+  //             {...register("title")}
+  //             className="bg-[#141926] border-white/10 text-white"
+  //           />
+  //           {errors.title?.message && (
+  //             <ErrorText error={errors.title.message} />
+  //           )}
+  //         </div>
+
+  //         <div>
+  //           <label className="text-sm text-zinc-400 mb-1 block">
+  //             Description
+  //           </label>
+  //           <Input
+  //             {...register("description")}
+  //             className="bg-[#141926] border-white/10 text-white"
+  //           />
+  //           {errors.description?.message && (
+  //             <ErrorText error={errors.description.message} />
+  //           )}
+  //         </div>
+
+  //         <div className="grid grid-cols-2 gap-4">
+  //           <div>
+  //             <label className="text-sm text-zinc-400 mb-1 block">Date</label>
+  //             <Input
+  //               type="date"
+  //               {...register("date")}
+  //               className="bg-[#141926] border-white/10 text-white"
+  //             />
+  //             {errors.date?.message && (
+  //               <ErrorText error={errors.date.message} />
+  //             )}
+  //           </div>
+  //           <div>
+  //             <label className="text-sm text-zinc-400 mb-1 block">Time</label>
+  //             <Input
+  //               type="time"
+  //               {...register("time")}
+  //               className="bg-[#141926] border-white/10 text-white"
+  //             />
+  //             {errors.time?.message && (
+  //               <ErrorText error={errors.time.message} />
+  //             )}
+  //           </div>
+  //         </div>
+
+  //         <Button
+  //           type="submit"
+  //           className="w-full mt-4 bg-violet-600 hover:bg-violet-700 text-white"
+  //         >
+  //           {defaultValues ? "Save Changes" : "Schedule Session"}
+  //         </Button>
+  //       </form>
+  //     </div>
+  //   </div>
+  // );
+
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center px-4">
-      <div className="w-full max-w-lg bg-[#0c0f1a] border border-white/10 rounded-xl shadow-lg p-6 space-y-6">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="text-lg font-semibold flex items-center gap-2">
-            <Video className="w-5 h-5 text-violet-500" />
-            {defaultValues ? "Edit Session" : "Schedule Session"}
-          </h2>
-          <Button size="icon" variant="ghost" onClick={onClose}>
-            <X className="w-5 h-5 text-white" />
-          </Button>
+    <Modal
+      onClose={onClose}
+      title={defaultValues ? "Edit Session" : "Schedule Session"}
+      heightPx={400}
+    >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div>
+          <label className="text-sm text-zinc-400 mb-1 block">Title</label>
+          <Input
+            {...register("title")}
+            className="bg-[#141926] border-white/10 text-white"
+          />
+          {errors.title?.message && <ErrorText error={errors.title.message} />}
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div>
+          <label className="text-sm text-zinc-400 mb-1 block">
+            Description
+          </label>
+          <Input
+            {...register("description")}
+            className="bg-[#141926] border-white/10 text-white"
+          />
+          {errors.description?.message && (
+            <ErrorText error={errors.description.message} />
+          )}
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="text-sm text-zinc-400 mb-1 block">Title</label>
+            <label className="text-sm text-zinc-400 mb-1 block">Date</label>
             <Input
-              {...register("title")}
+              type="date"
+              {...register("date")}
               className="bg-[#141926] border-white/10 text-white"
             />
-            {errors.title?.message && (
-              <ErrorText error={errors.title.message} />
-            )}
+            {errors.date?.message && <ErrorText error={errors.date.message} />}
           </div>
-
           <div>
-            <label className="text-sm text-zinc-400 mb-1 block">
-              Description
-            </label>
+            <label className="text-sm text-zinc-400 mb-1 block">Time</label>
             <Input
-              {...register("description")}
+              type="time"
+              {...register("time")}
               className="bg-[#141926] border-white/10 text-white"
             />
-            {errors.description?.message && (
-              <ErrorText error={errors.description.message} />
-            )}
+            {errors.time?.message && <ErrorText error={errors.time.message} />}
           </div>
+        </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="text-sm text-zinc-400 mb-1 block">Date</label>
-              <Input
-                type="date"
-                {...register("date")}
-                className="bg-[#141926] border-white/10 text-white"
-              />
-              {errors.date?.message && (
-                <ErrorText error={errors.date.message} />
-              )}
-            </div>
-            <div>
-              <label className="text-sm text-zinc-400 mb-1 block">Time</label>
-              <Input
-                type="time"
-                {...register("time")}
-                className="bg-[#141926] border-white/10 text-white"
-              />
-              {errors.time?.message && (
-                <ErrorText error={errors.time.message} />
-              )}
-            </div>
-          </div>
-
-          <Button
-            type="submit"
-            className="w-full mt-4 bg-violet-600 hover:bg-violet-700 text-white"
-          >
-            {defaultValues ? "Save Changes" : "Schedule Session"}
-          </Button>
-        </form>
-      </div>
-    </div>
+        <Button
+          type="submit"
+          className="w-full mt-4 bg-violet-600 hover:bg-violet-700 text-white"
+        >
+          {defaultValues ? "Save Changes" : "Schedule Session"}
+        </Button>
+      </form>
+    </Modal>
   );
 };
 

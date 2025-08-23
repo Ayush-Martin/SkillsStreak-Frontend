@@ -1,6 +1,5 @@
-import { Button } from "@/components";
+import { Button, ScrollArea } from "@/components";
 import { ILiveSession } from "@/types/courseType";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { CalendarDays, Clock3, Video } from "lucide-react";
 import { FC } from "react";
 

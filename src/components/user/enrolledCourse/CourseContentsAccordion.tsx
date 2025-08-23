@@ -28,8 +28,6 @@ const CourseContentsAccordion: FC<ICourseContentsAccordionProps> = ({
     0
   );
 
-  console.log(completedLessons, "completedLessons");
-
   const completionPercentage = (completedLessons.length / totalLessons) * 100;
 
   return (

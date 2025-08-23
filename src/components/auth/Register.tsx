@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { z } from "zod";
 
-import { ErrorText, GoogleAuth,Input, Button } from "@/components";
+import { ErrorText, GoogleAuth, Input, Button } from "@/components";
 import {
   EmailValidationRule,
   PasswordValidationRule,
@@ -47,7 +47,7 @@ const Register: FC = () => {
       <div>
         <Input
           placeholder="username"
-          className="bg-app-highlight"
+          className="bg-[#141926] border-white/10 text-white"
           {...register("username")}
           onBlur={() => trigger("username")}
         />
@@ -56,7 +56,7 @@ const Register: FC = () => {
       <div>
         <Input
           placeholder="email"
-          className="bg-app-highlight"
+          className="bg-[#141926] border-white/10 text-white"
           {...register("email")}
           onBlur={() => trigger("email")}
         />
@@ -65,7 +65,7 @@ const Register: FC = () => {
       <div>
         <Input
           placeholder="password"
-          className="bg-app-highlight"
+          className="bg-[#141926] border-white/10 text-white"
           {...register("password")}
           onBlur={() => trigger("password")}
         />

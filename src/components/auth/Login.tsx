@@ -40,7 +40,7 @@ const Login: FC = () => {
       <div>
         <Input
           placeholder="Email"
-          className="bg-app-highlight"
+          className="bg-[#141926] border-white/10 text-white"
           {...register("email")}
           onBlur={() => trigger("email")}
         />
@@ -52,7 +52,7 @@ const Login: FC = () => {
         <Input
           placeholder="Password"
           type="password"
-          className="bg-app-highlight"
+          className="bg-[#141926] border-white/10 text-white"
           {...register("password")}
           onBlur={() => trigger("password")}
         />

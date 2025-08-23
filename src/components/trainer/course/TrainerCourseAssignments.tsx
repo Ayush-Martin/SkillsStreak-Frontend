@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { ClipboardList, Pencil, Trash2, FileText } from "lucide-react";
-import { Button, ErrorText, Input, Textarea } from "@/components";
+import { Button, DivLoading, ErrorText, Input, Textarea } from "@/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -47,9 +47,16 @@ const CourseAssignments: FC<ICourseAssignmentsProps> = ({
   const [modalOpen, setModalOpen] = useState(false);
   const [editingAssignment, setEditingAssignment] =
     useState<ITrainerAssignment | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchAssignments();
+    const fetch = async () => {
+      setLoading(true);
+      await fetchAssignments();
+      setLoading(false);
+    };
+
+    fetch();
   }, []);
 
   const handleCreate = () => {
@@ -87,42 +94,45 @@ const CourseAssignments: FC<ICourseAssignmentsProps> = ({
           <ClipboardList className="mr-2 w-5 h-5" /> Add Assignment
         </Button>
       </div>
-
-      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {assignments.map((assignment) => (
-          <div
-            key={assignment._id}
-            className="bg-[#131722] border border-white/10 p-5 rounded-xl"
-          >
-            <div className="flex justify-between items-center mb-3">
-              <h2 className="text-lg font-semibold flex items-center gap-2">
-                <FileText className="w-5 h-5 text-violet-500" />
-                {assignment.title}
-              </h2>
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  variant="v1"
-                  onClick={() => handleEdit(assignment)}
-                >
-                  <Pencil className="w-4 h-4" />
-                </Button>
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  onClick={() => deleteAssignment(assignment._id)}
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
+      {loading ? (
+        <DivLoading message="Loading assignments..." />
+      ) : (
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {assignments.map((assignment) => (
+            <div
+              key={assignment._id}
+              className="bg-[#131722] border border-white/10 p-5 rounded-xl"
+            >
+              <div className="flex justify-between items-center mb-3">
+                <h2 className="text-lg font-semibold flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-violet-500" />
+                  {assignment.title}
+                </h2>
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="v1"
+                    onClick={() => handleEdit(assignment)}
+                  >
+                    <Pencil className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => deleteAssignment(assignment._id)}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
+              <p className="text-sm text-zinc-300 mb-2">
+                {assignment.description}
+              </p>
+              <p className="text-sm text-zinc-400 italic">{assignment.task}</p>
             </div>
-            <p className="text-sm text-zinc-300 mb-2">
-              {assignment.description}
-            </p>
-            <p className="text-sm text-zinc-400 italic">{assignment.task}</p>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {modalOpen && (
         <AssignmentModal
@@ -217,6 +227,7 @@ const AssignmentModal: FC<IAssignmentModalProps> = ({
   return (
     <Modal
       onClose={onClose}
+      heightPx={500}
       title={defaultValues ? "Edit Assignment" : "Create Assignment"}
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

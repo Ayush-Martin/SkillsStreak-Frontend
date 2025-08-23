@@ -36,14 +36,9 @@ const TransactionModal: FC<ITransactionModalProps> = ({
 }) => {
   const { _id, role } = useSelector((state: RootReducer) => state.user);
   if (!open) return null;
-  console.log(
-    transaction.status === "on_process" &&
-      transaction.type === "course_purchase" &&
-      _id === transaction.payer?._id
-  );
 
   return (
-    <Modal onClose={onClose} title="Transaction Details">
+    <Modal onClose={onClose} title="Transaction Details" heightPx={600}>
       <div className="space-y-6 font-sans">
         {/* Amount + Status */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-[#111425] p-3 sm:p-4 md:p-5 rounded-2xl border border-white/10">

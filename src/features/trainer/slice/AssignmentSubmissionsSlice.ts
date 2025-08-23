@@ -56,7 +56,6 @@ const AssignmentSubmissionSlice = createSlice({
       (state, action) => {
         const { status, _id } = action.payload.data;
 
-        console.log(action.payload.data);
 
         state.assignmentSubmissions = state.assignmentSubmissions.map(
           (assignment) =>

@@ -18,7 +18,6 @@ const useDiscussion = (refId: string, refType: "lesson" | "liveSession") => {
         `discussions?refId=${refId}&refType=${refType}`
       );
       if (!res) return;
-      console.log("discussions", res.data);
       setDiscussions(res.data);
     };
 

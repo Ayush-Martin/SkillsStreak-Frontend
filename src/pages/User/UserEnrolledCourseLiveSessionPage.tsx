@@ -1,8 +1,4 @@
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbSeparator,
   Tabs,
   TabsContent,
   TabsList,
@@ -11,16 +7,25 @@ import {
   Discussion,
   LiveSessionsAccordion,
   Button,
+  BreadcrumbNav,
+  LiveChat,
 } from "@/components";
 import { useSubscription } from "@/hooks";
 import useDiscussion from "@/hooks/useDiscussion";
 import useViewLiveSession from "@/hooks/useViewLiveSession";
 import { EnrolledCourseLayout } from "@/layouts";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const UserCourseLiveSessionPage = () => {
-  const { courseAccess, liveSessions, viewSession, currentSelectedSession } =
-    useViewLiveSession();
+  const {
+    courseAccess,
+    liveSessions,
+    viewSession,
+    currentSelectedSession,
+    courseId,
+    liveChats,
+    sendMessage,
+  } = useViewLiveSession();
   const navigate = useNavigate();
 
   const { subscriptionDetail } = useSubscription();
@@ -44,19 +49,19 @@ const UserCourseLiveSessionPage = () => {
         {/* Left Content */}
         <div className="w-full lg:w-2/3">
           <div className="bg-white/5 border border-white/10 rounded-xl py-3 px-5 sm:py-6 sm:px-10 shadow-md">
-            <Breadcrumb className="mb-5">
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <Link to="/courses" className="md:text-lg text-app-neutral">
-                    Courses
-                  </Link>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="md:text-lg text-app-neutral" />
-                <BreadcrumbItem>
-                  <span className="md:text-lg text-white">Live Sessions</span>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
+            <BreadcrumbNav
+              breadcrumbItems={[
+                { text: "Enrolled Courses", link: "/user/enrolledCourses" },
+                {
+                  text: "Course",
+                  link: `/user/enrolledCourses/${courseId}`,
+                },
+                {
+                  text: "Live",
+                  link: `/user/enrolledCourses/${courseId}/live`,
+                },
+              ]}
+            />
 
             {!hasLiveAccess ? (
               <div className="w-full aspect-video rounded-xl border border-white/10 bg-black/40 text-white flex flex-col items-center justify-center mb-10 p-5">
@@ -109,7 +114,11 @@ const UserCourseLiveSessionPage = () => {
                   Description
                 </TabsTrigger>
                 <TabsTrigger value="discussions" className="w-full">
-                  Discussions
+                  {currentSelectedSession
+                    ? currentSelectedSession.status === "live"
+                      ? "Live Chat"
+                      : "Discussions"
+                    : "Discussions"}
                 </TabsTrigger>
               </TabsList>
               {courseAccess && currentSelectedSession && (
@@ -126,15 +135,22 @@ const UserCourseLiveSessionPage = () => {
                   </TabsContent>
 
                   <TabsContent value="discussions" className="mt-10">
-                    <Discussion
-                      discussions={discussions}
-                      addDiscussion={addDiscussion}
-                      deleteDiscussion={deleteDiscussion}
-                      editDiscussion={editDiscussion}
-                      addReply={addReply}
-                      fetchReplies={fetchReplies}
-                      trainerId={""} // TODO
-                    />
+                    {currentSelectedSession.status === "live" ? (
+                      <LiveChat
+                        liveChats={liveChats}
+                        sendMessage={sendMessage}
+                      />
+                    ) : (
+                      <Discussion
+                        discussions={discussions}
+                        addDiscussion={addDiscussion}
+                        deleteDiscussion={deleteDiscussion}
+                        editDiscussion={editDiscussion}
+                        addReply={addReply}
+                        fetchReplies={fetchReplies}
+                        trainerId={""} // TODO
+                      />
+                    )}
                   </TabsContent>
                 </>
               )}

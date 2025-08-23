@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  Button,
-  Input,
-  Textarea
-} from "@/components";
+import { Button, Input, Textarea, Modal } from "@/components";
 import { FileText, Image as ImageIcon, Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { IAssignmentSubmission } from "@/types/courseType";
@@ -32,27 +24,11 @@ interface AssignmentSubmitModalProps {
 
 const submissionTypes: Record<
   "text" | "pdf" | "image",
-  {
-    label: string;
-    accept: string;
-    icon: React.ElementType;
-  }
+  { label: string; accept: string; icon: React.ElementType }
 > = {
-  text: {
-    label: "Text",
-    accept: "",
-    icon: FileText,
-  },
-  pdf: {
-    label: "PDF",
-    accept: "application/pdf",
-    icon: Upload,
-  },
-  image: {
-    label: "Image",
-    accept: "image/*",
-    icon: ImageIcon,
-  },
+  text: { label: "Text", accept: "", icon: FileText },
+  pdf: { label: "PDF", accept: "application/pdf", icon: Upload },
+  image: { label: "Image", accept: "image/*", icon: ImageIcon },
 };
 
 const AssignmentSubmitModal: React.FC<AssignmentSubmitModalProps> = ({
@@ -93,8 +69,8 @@ const AssignmentSubmitModal: React.FC<AssignmentSubmitModalProps> = ({
         return (
           <iframe
             src={assignment.path}
-            className="w-full h-80 rounded border border-[#3a3a3a] bg-[#1e1e1e]"
             title="Submitted PDF"
+            className="w-full h-80 rounded-lg border border-gray-700 bg-gray-900 shadow-inner"
           />
         );
       case "image":
@@ -102,12 +78,12 @@ const AssignmentSubmitModal: React.FC<AssignmentSubmitModalProps> = ({
           <img
             src={assignment.path}
             alt="Submitted"
-            className="w-full max-h-80 object-contain rounded border border-[#3a3a3a] bg-[#1e1e1e]"
+            className="w-full max-h-80 object-contain rounded-lg border border-gray-700 bg-gray-900 shadow-inner"
           />
         );
       case "text":
         return (
-          <div className="w-full p-4 bg-[#2a2a2a] rounded border border-[#3a3a3a] text-sm text-white/90 whitespace-pre-wrap">
+          <div className="w-full p-4 bg-gray-800 rounded-lg border border-gray-700 text-sm text-white/90 whitespace-pre-wrap shadow-inner">
             {assignment.content || assignment.path}
           </div>
         );
@@ -118,21 +94,22 @@ const AssignmentSubmitModal: React.FC<AssignmentSubmitModalProps> = ({
 
   const renderPreview = () => {
     if (!file || type === "text") return null;
-
     return (
-      <div className="mt-4 p-3 rounded-lg border border-[#3a3a3a] bg-[#1e1e1e]">
-        <p className="text-sm font-semibold text-white/80 mb-2">Preview</p>
+      <div className="mt-4 p-3 rounded-lg border border-gray-700 bg-gray-900 shadow-md">
+        <p className="text-sm font-medium text-white/70 mb-2 tracking-wide uppercase">
+          Preview
+        </p>
         {type === "pdf" ? (
           <iframe
             src={previewUrl as string}
             title="PDF Preview"
-            className="w-full h-64 border border-[#2a2a2a] rounded"
+            className="w-full h-64 border border-gray-700 rounded-lg shadow-inner"
           />
         ) : (
           <img
             src={previewUrl as string}
             alt="Image Preview"
-            className="w-full max-h-64 object-contain border border-[#2a2a2a] rounded"
+            className="w-full max-h-64 object-contain border border-gray-700 rounded-lg shadow-inner"
           />
         )}
       </div>
@@ -140,99 +117,100 @@ const AssignmentSubmitModal: React.FC<AssignmentSubmitModalProps> = ({
   };
 
   return (
-    <Dialog open onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-[#1e1e1e] border border-[#2a2a2a] text-white p-6 rounded-xl shadow-md">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-bold mb-2 text-white">
-            {assignment.title}
-          </DialogTitle>
-        </DialogHeader>
-
-        <div className="space-y-6">
-          <div>
-            <p className="text-sm text-white/70">{assignment.description}</p>
-            <p className="text-sm text-white/90 mt-2">
-              <span className="font-semibold">Task:</span> {assignment.task}
-            </p>
-          </div>
-
-          {(assignment.status === "completed" ||
-            assignment.status === "verified") && (
-            <div className="bg-[#2a2a2a] p-4 rounded-lg border border-[#3a3a3a]">
-              <h4 className="text-sm font-semibold mb-3 text-white/80">
-                Submitted ({assignment.type})
-              </h4>
-              {renderSubmitted()}
-            </div>
-          )}
-
-          {(assignment.status === "pending" ||
-            assignment.status === "redo") && (
-            <>
-              <div className="grid grid-cols-3 gap-2">
-                {Object.entries(submissionTypes).map(([key, config]) => {
-                  const isActive = type === key;
-                  return (
-                    <Button
-                      key={key}
-                      onClick={() => setType(key as "text" | "pdf" | "image")}
-                      className={cn(
-                        "w-full flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium border transition-all",
-                        isActive
-                          ? "bg-gray-100 text-black border-gray-300"
-                          : "bg-[#2a2a2a] border-[#3a3a3a] text-white hover:bg-[#333]"
-                      )}
-                    >
-                      <config.icon className="w-4 h-4" />
-                      {config.label}
-                    </Button>
-                  );
-                })}
-              </div>
-
-              {type === "text" ? (
-                <Textarea
-                  placeholder="Write your answer..."
-                  className="min-h-[120px] resize-none bg-[#2a2a2a] text-white border border-[#3a3a3a] focus-visible:ring-0 focus-visible:ring-offset-0"
-                  value={textContent}
-                  onChange={(e) => setTextContent(e.target.value)}
-                />
-              ) : (
-                <>
-                  <label className="flex items-center justify-center w-full h-36 border-2 border-dashed border-[#3a3a3a] rounded-lg bg-[#2a2a2a] hover:bg-[#333] cursor-pointer transition">
-                    <div className="text-center">
-                      <Upload className="w-6 h-6 mx-auto mb-1 text-white/80" />
-                      <p className="text-sm text-white/70">
-                        Click or drag to upload {type.toUpperCase()}
-                      </p>
-                    </div>
-                    <Input
-                      type="file"
-                      accept={submissionTypes[type].accept}
-                      className="hidden"
-                      onChange={(e) => setFile(e.target.files?.[0] || null)}
-                    />
-                  </label>
-                  {renderPreview()}
-                </>
-              )}
-
-              <div className="flex justify-end">
-                <Button
-                  onClick={
-                    assignment.status === "redo" ? handleResubmit : handleSubmit
-                  }
-                  disabled={type !== "text" && !file}
-                  className="bg-gray-100 text-black px-6 py-2 rounded-md hover:bg-gray-300"
-                >
-                  {assignment.status === "redo" ? "Edit Submission" : "Submit"}
-                </Button>
-              </div>
-            </>
-          )}
+    <Modal onClose={onClose} title={assignment.title} heightPx={600}>
+      <div className="space-y-6">
+        {/* Assignment Description */}
+        <div className="p-4 bg-gray-900 rounded-lg border border-gray-700 shadow-inner">
+          <p className="text-sm md:text-base text-gray-300 leading-relaxed">
+            {assignment.description}
+          </p>
+          <p className="text-sm md:text-base text-white mt-2">
+            <span className="font-semibold tracking-wide">Task:</span>{" "}
+            {assignment.task}
+          </p>
         </div>
-      </DialogContent>
-    </Dialog>
+
+        {/* Submitted Content */}
+        {(assignment.status === "completed" ||
+          assignment.status === "verified") && (
+          <div className="p-4 bg-gray-900 rounded-lg border border-gray-700 shadow-md">
+            <h4 className="text-sm md:text-base font-semibold text-gray-400 mb-3 tracking-wide uppercase">
+              Submitted ({assignment.type})
+            </h4>
+            {renderSubmitted()}
+          </div>
+        )}
+
+        {/* Submission Form */}
+        {(assignment.status === "pending" || assignment.status === "redo") && (
+          <>
+            {/* Type Selector */}
+            <div className="grid grid-cols-3 gap-3">
+              {Object.entries(submissionTypes).map(([key, config]) => {
+                const isActive = type === key;
+                return (
+                  <Button
+                    key={key}
+                    onClick={() => setType(key as "text" | "pdf" | "image")}
+                    className={cn(
+                      "w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-300 hover:scale-105",
+                      isActive
+                        ? "bg-blue-600 text-white border-blue-500 shadow-lg"
+                        : "bg-gray-800 text-white border-gray-700 hover:bg-gray-700"
+                    )}
+                  >
+                    <config.icon className="w-4 h-4" />
+                    {config.label}
+                  </Button>
+                );
+              })}
+            </div>
+
+            {/* Input Area */}
+            {type === "text" ? (
+              <Textarea
+                placeholder="Write your answer..."
+                className="min-h-[120px] resize-none bg-gray-800 text-white border border-gray-700 rounded-lg p-3 text-sm md:text-base leading-relaxed focus:ring-2 focus:ring-blue-500"
+                value={textContent}
+                onChange={(e) => setTextContent(e.target.value)}
+              />
+            ) : (
+              <>
+                <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-gray-700 rounded-lg bg-gray-800 hover:bg-gray-700 cursor-pointer transition-all duration-300 hover:scale-[1.02]">
+                  <Upload className="w-6 h-6 mb-2 text-white/80" />
+                  <p className="text-sm md:text-base text-gray-300 text-center">
+                    upload {type.toUpperCase()}
+                  </p>
+                  <Input
+                    type="file"
+                    accept={submissionTypes[type].accept}
+                    className="hidden"
+                    onChange={(e) => setFile(e.target.files?.[0] || null)}
+                  />
+                </label>
+                {renderPreview()}
+              </>
+            )}
+
+            {/* Submit Button */}
+            <div className="flex justify-end mt-4">
+              <Button
+                onClick={
+                  assignment.status === "redo" ? handleResubmit : handleSubmit
+                }
+                disabled={type !== "text" && !file}
+                className={cn(
+                  "px-6 py-2 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 hover:scale-105",
+                  "bg-blue-600 text-white hover:bg-blue-500 disabled:bg-gray-700 disabled:text-gray-400"
+                )}
+              >
+                {assignment.status === "redo" ? "Edit Submission" : "Submit"}
+              </Button>
+            </div>
+          </>
+        )}
+      </div>
+    </Modal>
   );
 };
 

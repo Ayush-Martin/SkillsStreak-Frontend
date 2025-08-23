@@ -15,7 +15,6 @@ const useRedeem = () => {
   const getWalletDetails = async () => {
     const res = await axiosGetRequest("/wallet");
     if (!res) return;
-    console.log(res.data);
     setWallet(res.data);
   };
 

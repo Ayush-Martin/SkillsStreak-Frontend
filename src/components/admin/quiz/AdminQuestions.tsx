@@ -42,7 +42,6 @@ const AdminQuestions: FC<IAdminQuestionsProps> = ({
   };
 
   const handleSubmit = (data: IQuestionSchema) => {
-    console.log(data);
     if (editingQuestion) {
       // Editing existing question
       editQuestion(editingQuestion._id, data);
