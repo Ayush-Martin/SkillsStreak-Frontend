@@ -11,7 +11,7 @@ export const TrainerRevenueCard: FC<IRevenueCard> = ({ amount }) => {
     <StatCard
       icon={<FaMoneyBillWave className="text-yellow-400" />}
       title="Total Revenue"
-      value={`₹ ${amount}`}
+      value={`₹ ${amount.toFixed(2)}`}
       color="text-yellow-400"
       hoverShadowColor="hover:shadow-yellow-500/30"
     />
@@ -23,7 +23,7 @@ export const TrainerCommissionCard: FC<IRevenueCard> = ({ amount }) => {
     <StatCard
       icon={<FaMoneyBillWave className="text-blue-400" />}
       title="Total Commission"
-      value={`₹ ${amount}`}
+      value={`₹ ${amount.toFixed(2)}`}
       color="text-blue-400"
       hoverShadowColor="hover:shadow-blue-500/30"
     />
@@ -35,7 +35,7 @@ export const TrainerOnProcessAmountCard: FC<IRevenueCard> = ({ amount }) => {
     <StatCard
       icon={<FaMoneyBillWave className="text-green-400" />}
       title="On Process Amount"
-      value={`₹ ${amount}`}
+      value={`₹ ${amount.toFixed(2)}`}
       color="text-green-400"
       hoverShadowColor="hover:shadow-green-500/30"
     />

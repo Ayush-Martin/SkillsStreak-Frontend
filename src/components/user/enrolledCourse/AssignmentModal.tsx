@@ -117,7 +117,7 @@ const AssignmentSubmitModal: React.FC<AssignmentSubmitModalProps> = ({
   };
 
   return (
-    <Modal onClose={onClose} title={assignment.title} heightPx={300}>
+    <Modal onClose={onClose} title={assignment.title} heightPx={600}>
       <div className="space-y-6">
         {/* Assignment Description */}
         <div className="p-4 bg-gray-900 rounded-lg border border-gray-700 shadow-inner">

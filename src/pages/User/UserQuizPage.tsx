@@ -163,8 +163,8 @@ const UserQuizPage = () => {
                       }`}
                     >
                       Your Answer:{" "}
-                      {q.options.find((o) => o.id === q.answer)?.choice ||
-                        "No answer"}
+                      {q.options.find((o) => o.id === submittedAnswer?.answer)
+                        ?.choice || "No answer"}
                     </div>
 
                     {!isCorrect && (

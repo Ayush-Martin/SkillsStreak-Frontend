@@ -58,7 +58,7 @@ const ChangePassword: FC = () => {
               <Input
                 placeholder="Current Password"
                 type="currentPassword"
-                className="bg-app-highlight"
+                className="bg-[#141926] border-white/10 text-white"
                 {...register("currentPassword")}
                 onBlur={() => trigger("currentPassword")}
               />
@@ -68,7 +68,7 @@ const ChangePassword: FC = () => {
               <Input
                 placeholder="New Password"
                 type="newPassword"
-                className="bg-app-highlight"
+                className="bg-[#141926] border-white/10 text-white"
                 {...register("newPassword")}
                 onBlur={() => trigger("newPassword")}
               />
@@ -78,7 +78,7 @@ const ChangePassword: FC = () => {
               <Input
                 placeholder="Confirm New Password"
                 type="newPassword"
-                className="bg-app-highlight"
+                className="bg-[#141926] border-white/10 text-white"
                 {...register("confirmNewPassword")}
                 onBlur={() => trigger("confirmNewPassword")}
               />

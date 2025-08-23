@@ -54,7 +54,7 @@ const ForgetPassword: FC = () => {
           <div>
             <Input
               placeholder="Email"
-              className="bg-app-highlight"
+              className="bg-[#141926] border-white/10 text-white"
               {...register("email")}
               onBlur={() => trigger("email")}
             />

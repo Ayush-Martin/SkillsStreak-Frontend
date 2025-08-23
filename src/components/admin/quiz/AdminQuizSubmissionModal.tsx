@@ -12,7 +12,7 @@ const AdminQuizSubmissionModal = ({
   onClose,
 }: IAdminQuizSubmissionModalProps) => {
   return (
-    <Modal title="Quiz Submission Details" onClose={onClose}>
+    <Modal title="Quiz Submission Details" onClose={onClose} heightPx={600}>
       <div className="space-y-10">
         <div className="bg-gray-900 border border-gray-800 rounded-xl p-8 flex flex-wrap gap-8 justify-between">
           <div className="flex items-center gap-3 text-green-400">
@@ -66,9 +66,9 @@ const AdminQuizSubmissionModal = ({
                       : "bg-red-900/40 border border-red-700 text-red-300"
                   }`}
                 >
-                  Your Answer:{" "}
-                  {q.options.find((o) => o.id === q.answer)?.choice ||
-                    "No answer"}
+                  Submitted Answer:{" "}
+                  {q.options.find((o) => o.id === submittedAnswer?.answer)
+                    ?.choice || "No answer"}
                 </div>
 
                 {!isCorrect && (

@@ -12,7 +12,7 @@ const RevenueCard: FC<IRevenueCard> = ({ amount }) => {
     <StatCard
       icon={<FaMoneyBillWave className="text-yellow-400" />}
       title="Total Revenue"
-      value={`₹ ${amount}`}
+      value={`₹ ${amount.toFixed(2)}`}
       color="text-yellow-400"
       hoverShadowColor="hover:shadow-yellow-500/30"
     />
@@ -28,7 +28,7 @@ const CommissionRevenueCard: FC<ICommissionRevenueCard> = ({ amount }) => {
     <StatCard
       icon={<HiOutlineCurrencyRupee className="text-emerald-400" />}
       title="Commission Revenue"
-      value={`₹ ${amount}`}
+      value={`₹ ${amount.toFixed(2)}`}
       color="text-emerald-400"
       hoverShadowColor="hover:shadow-emerald-500/30"
     />
@@ -44,7 +44,7 @@ const SubscriptionRevenueCard: FC<ISubscriptionRevenueCard> = ({ amount }) => {
     <StatCard
       icon={<FaCrown className="text-purple-400" />}
       title="Subscription Revenue"
-      value={`₹ ${amount}`}
+      value={`₹ ${amount.toFixed(2)}`}
       color="text-purple-400"
       hoverShadowColor="hover:shadow-purple-500/30"
     />
