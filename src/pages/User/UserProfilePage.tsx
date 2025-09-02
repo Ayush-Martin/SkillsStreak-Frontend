@@ -464,9 +464,9 @@ const EditExperience = () => {
                         <Button
                           type="button"
                           size="sm"
-                          variant="outline"
+                          variant="v2"
                           onClick={() => setEditingId(null)}
-                          className="border-white/20 text-white hover:bg-white/10 transition-all duration-300"
+                          className=" transition-all duration-300"
                         >
                           Cancel
                         </Button>

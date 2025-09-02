@@ -1,4 +1,8 @@
-import { axiosGetRequest, axiosPostRequest } from "@/config/axios";
+import {
+  axiosGetRequest,
+  axiosPatchRequest,
+  axiosPostRequest,
+} from "@/config/axios";
 import { COURSES_API } from "@/constants";
 import { RootReducer } from "@/store";
 import { errorPopup, successPopup } from "@/utils/popup";
@@ -52,7 +56,16 @@ const useEnrollCourse = () => {
     await stripe.redirectToCheckout({ sessionId: res.data });
   };
 
-  return { courseAccess, handleEnroll, fetchAccess };
+  const handleRetryPurchase = async (transactionId: string) => {
+    const res = await axiosPatchRequest(`transactions/${transactionId}/retry`);
+    if (!res) return;
+    const stripePromise = loadStripe(STRIPE_PUBLISHABLE_kEY);
+    const stripe = await stripePromise;
+    if (!stripe) return;
+    await stripe.redirectToCheckout({ sessionId: res.data });
+  };
+
+  return { courseAccess, handleEnroll, fetchAccess, handleRetryPurchase };
 };
 
 export default useEnrollCourse;

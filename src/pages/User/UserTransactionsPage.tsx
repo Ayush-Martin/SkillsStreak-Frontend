@@ -22,7 +22,7 @@ import { AppDispatch, RootReducer } from "@/store";
 import { MdOutlineRefresh } from "@/assets/icons";
 import { axiosPatchRequest } from "@/config/axios";
 import { successPopup } from "@/utils/popup";
-import { useConfirm } from "@/hooks";
+import { useConfirm, useEnrollCourse } from "@/hooks";
 import {
   ITransaction,
   ITransactionStatus,
@@ -58,6 +58,7 @@ const Transactions: FC = () => {
   >("all");
   const [selectedTransaction, setSelectedTransaction] =
     useState<ITransaction | null>(null);
+  const { handleRetryPurchase } = useEnrollCourse();
   const {
     nextPage,
     previousPage,
@@ -210,6 +211,9 @@ const Transactions: FC = () => {
           onClose={() => setSelectedTransaction(null)}
           transaction={selectedTransaction}
           onCancel={() => cancelPurchase(selectedTransaction._id)}
+          handleRetryPurchase={() =>
+            handleRetryPurchase(selectedTransaction._id)
+          }
         />
       )}
     </UserLayout>

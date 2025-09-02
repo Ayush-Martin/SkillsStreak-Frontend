@@ -26,6 +26,7 @@ interface ITransactionModalProps {
   onClose: () => void;
   transaction: ITransaction;
   onCancel?: () => void;
+  handleRetryPurchase?: () => void;
 }
 
 const TransactionModal: FC<ITransactionModalProps> = ({
@@ -33,6 +34,7 @@ const TransactionModal: FC<ITransactionModalProps> = ({
   onClose,
   transaction,
   onCancel,
+  handleRetryPurchase,
 }) => {
   const { _id, role } = useSelector((state: RootReducer) => state.user);
   if (!open) return null;
@@ -195,6 +197,20 @@ const TransactionModal: FC<ITransactionModalProps> = ({
               className="text-sm sm:text-base px-4 sm:px-6 py-2 rounded-lg"
             >
               Cancel Transaction
+            </Button>
+          </div>
+        )}
+
+      {transaction.status === "failed" &&
+        transaction.type === "course_purchase" &&
+        _id === transaction.payer?._id && (
+          <div className="flex justify-end mt-6">
+            <Button
+              onClick={handleRetryPurchase}
+              variant="destructive"
+              className="text-sm sm:text-base px-4 sm:px-6 py-2 rounded-lg"
+            >
+              Retry
             </Button>
           </div>
         )}
