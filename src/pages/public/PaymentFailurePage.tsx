@@ -1,9 +1,23 @@
 import { Button } from "@/components";
+import { axiosPatchRequest } from "@/config/axios";
 import { Home } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const PaymentFailure = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const session_id = searchParams.get("session_id");
+
+  useEffect(() => {
+    const updateFailedTransaction = async () => {
+      await axiosPatchRequest(`transactions/failed/${session_id}`);
+    };
+
+    if (session_id) {
+      updateFailedTransaction();
+    }
+  }, [session_id]);
 
   return (
     <div className="min-h-screen bg-dark-bg flex items-center justify-center p-6">

@@ -63,7 +63,7 @@ export const TopicNameValidationRule = z
 export const CourseTitleValidationRule = z
   .string()
   .min(3, "course title must have minimum 3 characters")
-  .max(20, "course title must be below 20 characters");
+  .max(100, "course title must be below 100 characters");
 
 export const CoursePriceValidationRule = z.preprocess(
   (val) => Number(val),

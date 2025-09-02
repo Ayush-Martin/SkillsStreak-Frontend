@@ -95,6 +95,7 @@ const AdminRevenue = () => {
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead>Date</TableHead>
             <TableHead>Payer</TableHead>
             <TableHead>Role</TableHead>
             <TableHead>Amount</TableHead>
@@ -108,6 +109,9 @@ const AdminRevenue = () => {
           <TableBody>
             {paginatedData.map((transaction) => (
               <TableRow key={transaction._id}>
+                <TableCell>
+                  {new Date(transaction.date).toLocaleDateString()}
+                </TableCell>
                 <TableCell>{transaction.payer}</TableCell>
                 <TableCell>
                   {transaction.type === "subscription" ? "User" : "Trainer"}
