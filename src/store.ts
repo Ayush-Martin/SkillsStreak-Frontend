@@ -51,6 +51,7 @@ const store = configureStore({
     walletHistory,
     adminQuizSubmissions,
   },
+  devTools: process.env.NODE_ENV !== "production",
 });
 
 export default store;

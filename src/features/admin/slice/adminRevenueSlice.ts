@@ -6,6 +6,7 @@ interface ITransaction {
   payer: string;
   type: "subscription" | "commission";
   amount: number;
+  date: string;
 }
 
 interface IRevenue {
@@ -57,10 +58,8 @@ const adminRevenueSlice = createSlice({
           ...data.revenue.transactions,
         ];
       }
-      state.revenue.commissionRevenue =
-        data.revenue.commissionRevenue;
-      state.revenue.subscriptionRevenue =
-        data.revenue.subscriptionRevenue;
+      state.revenue.commissionRevenue = data.revenue.commissionRevenue;
+      state.revenue.subscriptionRevenue = data.revenue.subscriptionRevenue;
       state.revenue.totalRevenue = data.revenue.totalRevenue;
       state.currentPage = data.currentPage;
       state.totalPages = data.totalPages;

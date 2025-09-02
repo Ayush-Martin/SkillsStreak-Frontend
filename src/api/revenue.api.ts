@@ -23,9 +23,7 @@ export const exportAdminRevenue = async (
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `admin-revenue-report.${
-      exportType === "pdf" ? ".pdf" : "xlsx"
-    }`;
+    link.download = `revenue-report.${exportType === "pdf" ? ".pdf" : "xlsx"}`;
     document.body.appendChild(link);
     link.click();
 
@@ -71,9 +69,7 @@ export const exportTrainerRevenue = async (
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `admin-revenue-report.${
-      exportType === "pdf" ? ".pdf" : "xlsx"
-    }`;
+    link.download = `revenue-report.${exportType === "pdf" ? ".pdf" : "xlsx"}`;
     document.body.appendChild(link);
     link.click();
 

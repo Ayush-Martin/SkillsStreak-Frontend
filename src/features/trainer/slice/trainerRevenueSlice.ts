@@ -8,6 +8,7 @@ interface ITransaction {
   amount: number;
   status: "completed" | "on_process";
   adminCommission: number;
+  date: string;
 }
 
 interface IRevenue {

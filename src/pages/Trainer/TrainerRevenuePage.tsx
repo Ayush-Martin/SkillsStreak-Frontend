@@ -93,6 +93,7 @@ const TrainerRevenue = () => {
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead>Date</TableHead>
             <TableHead>Payer</TableHead>
             <TableHead>Amount</TableHead>
             <TableHead>Course</TableHead>
@@ -107,6 +108,9 @@ const TrainerRevenue = () => {
           <TableBody>
             {paginatedData.map((transaction) => (
               <TableRow key={transaction._id}>
+                <TableCell>
+                  {new Date(transaction.date).toLocaleDateString()}
+                </TableCell>
                 <TableCell>{transaction.payer}</TableCell>
                 <TableCell>{transaction.amount}</TableCell>
                 <TableCell>{transaction.course}</TableCell>
