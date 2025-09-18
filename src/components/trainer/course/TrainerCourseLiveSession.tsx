@@ -322,6 +322,7 @@ const LiveSessionModal: FC<ILiveSessionModalProps> = ({
             <Input
               type="date"
               {...register("date")}
+              min={new Date().toISOString().split("T")[0]}
               className="bg-[#141926] border-white/10 text-white"
             />
             {errors.date?.message && <ErrorText error={errors.date.message} />}

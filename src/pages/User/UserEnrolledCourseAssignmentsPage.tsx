@@ -7,10 +7,8 @@ import {
   ShieldCheck,
   Eye,
 } from "lucide-react";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useCourseAssignments } from "@/hooks";
-import { IAssignmentSubmission } from "@/types/courseType";
 import { AssignmentModal, DivLoading } from "@/components";
 
 const statusConfig = {
@@ -53,21 +51,16 @@ const statusConfig = {
 };
 
 const UserCourseAssignmentsPage = () => {
-  const { assignments, completeAssignment, redoAssignment, loading } =
-    useCourseAssignments();
-  const [selectedAssignment, setSelectedAssignment] =
-    useState<IAssignmentSubmission | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = (assignment: IAssignmentSubmission) => {
-    setSelectedAssignment(assignment);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setSelectedAssignment(null);
-    setIsModalOpen(false);
-  };
+  const {
+    assignments,
+    completeAssignment,
+    redoAssignment,
+    loading,
+    closeModal,
+    isModalOpen,
+    openModal,
+    selectedAssignment,
+  } = useCourseAssignments();
 
   const groupedAssignments = {
     pending: assignments.filter((a) => a.status === "pending"),

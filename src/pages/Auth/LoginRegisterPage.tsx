@@ -52,7 +52,7 @@ const LoginRegisterPage: FC = () => {
 
   return (
     <AuthLayout>
-      <div className="sm:bg-app-border w-full sm:w-[500px] lg:w-[1100px] h-[600px] flex ">
+      <div className="sm:bg-app-border w-full sm:w-[500px] lg:w-[1100px] h-[560px] flex ">
         <div className="hidden w-1/2 h-full lg:block">
           <img src={LoginImage} alt="" className="object-cover h-full" />
         </div>
