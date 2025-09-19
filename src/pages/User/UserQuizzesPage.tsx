@@ -126,6 +126,7 @@ const UserQuizzesPage = () => {
           )}
 
           <Pagination
+            loading={loading}
             currentPage={currentPage}
             totalPages={totalPages}
             previousPage={previousPage}

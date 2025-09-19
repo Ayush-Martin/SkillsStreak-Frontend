@@ -179,6 +179,7 @@ const Courses: FC = () => {
         totalPages={totalPages}
         previousPage={previousPage}
         nextPage={nextPage}
+        loading={loading}
       />
     </AdminLayout>
   );

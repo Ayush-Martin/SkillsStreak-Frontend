@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import {AdminLayout} from "@/layouts";
+import { AdminLayout } from "@/layouts";
 import {
   AiOutlineCheckCircle,
   AiFillCloseCircle,
@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableRow,
   Pagination,
-  TableSkeleton
+  TableSkeleton,
 } from "@/components";
 import { AppDispatch, RootReducer } from "@/store";
 import { changePage } from "@/features/admin/slice/adminTrainerRequestSlice";
@@ -140,6 +140,7 @@ const TrainerRequest: FC = () => {
         totalPages={totalPages}
         previousPage={previousPage}
         nextPage={nextPage}
+        loading={loading}
       />
     </AdminLayout>
   );

@@ -11,7 +11,7 @@ import { RootReducer } from "@/store";
 const PAGE_SIZE = 6;
 
 const EnrolledCourse: FC = () => {
-  const { enrolledCourses, currentPage, totalPages } = useSelector(
+  const { enrolledCourses, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.enrolledCourses
   );
 
@@ -48,6 +48,7 @@ const EnrolledCourse: FC = () => {
 
           {paginatedData.length != 0 ? (
             <Pagination
+              loading={loading}
               currentPage={currentPage}
               totalPages={totalPages}
               previousPage={previousPage}
