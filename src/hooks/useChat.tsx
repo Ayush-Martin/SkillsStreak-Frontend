@@ -28,13 +28,13 @@ const useChat = () => {
   const reactionHandlerRef =
     useRef<(msgId: string, reactions: IChatMessageReaction[]) => void>(null);
 
-  useEffect(() => {
-    const fetchChat = async () => {
-      const res = await axiosGetRequest("/chats");
-      if (!res) return;
-      setChats(res.data);
-    };
+  const fetchChat = async () => {
+    const res = await axiosGetRequest("/chats");
+    if (!res) return;
+    setChats(res.data);
+  };
 
+  useEffect(() => {
     const fetchTrainers = async () => {
       const res = await axiosGetRequest(`/trainers`);
       if (!res) return;
@@ -62,8 +62,13 @@ const useChat = () => {
         chatId: string;
         lastMessageTime: string;
       }) => {
+        const chat = chats.find((chat) => chat._id === chatId);
+
+        if (!chat) {
+          fetchChat();
+        }
+
         setChats((prevChats) => {
-          const chat = prevChats.find((chat) => chat._id === chatId);
           if (!chat) return prevChats;
 
           const updatedChat = {

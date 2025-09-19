@@ -16,12 +16,14 @@ interface IInitialState {
   enrolledCourses: Array<IEnrolledCourse>;
   currentPage: number;
   totalPages: number;
+  loading: boolean;
 }
 
 const initialState: IInitialState = {
   enrolledCourses: [],
   currentPage: 0,
   totalPages: 0,
+  loading: false,
 };
 
 const enrolledCoursesSlice = createSlice({
@@ -33,6 +35,14 @@ const enrolledCoursesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(getEnrolledCoursesApi.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(getEnrolledCoursesApi.rejected, (state) => {
+      state.loading = false;
+    });
+
     builder.addCase(getEnrolledCoursesApi.fulfilled, (state, action) => {
       const data: IInitialState = action.payload.data;
       if (data.currentPage == 1) {
@@ -45,6 +55,7 @@ const enrolledCoursesSlice = createSlice({
       }
       state.currentPage = data.currentPage;
       state.totalPages = data.totalPages;
+      state.loading = false;
     });
   },
 });

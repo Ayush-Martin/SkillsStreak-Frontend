@@ -39,9 +39,8 @@ const getStatusBadgeClass = (status: string) => {
 
 const TrainerAssignmentSubmissions = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { assignmentSubmissions, currentPage, totalPages } = useSelector(
-    (state: RootReducer) => state.trainerAssignmentSubmissions
-  );
+  const { assignmentSubmissions, currentPage, totalPages, loading } =
+    useSelector((state: RootReducer) => state.trainerAssignmentSubmissions);
 
   const { nextPage, paginatedData, previousPage, refreshHandler } =
     usePaginatedData({
@@ -141,6 +140,7 @@ const TrainerAssignmentSubmissions = () => {
         />
       )}
       <Pagination
+        loading={loading}
         currentPage={currentPage}
         totalPages={totalPages}
         previousPage={previousPage}

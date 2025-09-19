@@ -7,6 +7,7 @@ interface IPaginationProps {
   totalPages: number;
   previousPage: () => void;
   nextPage: () => void;
+  loading: boolean;
 }
 
 const Pagination: FC<IPaginationProps> = ({
@@ -14,7 +15,12 @@ const Pagination: FC<IPaginationProps> = ({
   totalPages,
   previousPage,
   nextPage,
+  loading,
 }) => {
+  if (loading) {
+    return null;
+  }
+
   if (totalPages <= 0) {
     return (
       <h1 className="text-3xl md:text-4xl font-bold text-center text-gray-400 mt-20">

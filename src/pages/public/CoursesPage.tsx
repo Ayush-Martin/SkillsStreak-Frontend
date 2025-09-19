@@ -164,6 +164,7 @@ const Courses: FC = () => {
 
       {!!paginatedData.length && (
         <Pagination
+          loading={loading}
           currentPage={currentPage}
           totalPages={totalPages}
           previousPage={previousPage}

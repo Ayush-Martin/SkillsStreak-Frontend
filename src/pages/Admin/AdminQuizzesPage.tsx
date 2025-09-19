@@ -136,6 +136,7 @@ const AdminQuizzesPage = () => {
       </Table>
 
       <Pagination
+        loading={loading}
         currentPage={currentPage}
         totalPages={totalPages}
         previousPage={previousPage}

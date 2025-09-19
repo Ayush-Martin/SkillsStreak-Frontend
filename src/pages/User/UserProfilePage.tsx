@@ -570,8 +570,7 @@ const EditExperience = () => {
               type="button"
               onClick={() => setShowAddForm(false)}
               size="sm"
-              variant="outline"
-              className="text-white border-white/20 hover:bg-white/10 transition-all duration-300"
+              className="text-white bg-red-600 hover:bg-red-700 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             >
               Cancel
             </Button>

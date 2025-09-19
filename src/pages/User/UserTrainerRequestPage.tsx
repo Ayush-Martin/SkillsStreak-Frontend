@@ -43,12 +43,14 @@ const TrainerRequest: FC = () => {
     const res = await axiosPostRequest(TRAINER_REQUEST_API, {});
     if (!res) return;
     successPopup(res.message || "Trainer request sent");
+    setRequestStatus({ status: "pending" });
   };
 
   const resendTrainerRequest = async () => {
     const res = await axiosPutRequest(TRAINER_REQUEST_API, {});
     if (!res) return;
     successPopup(res.message || "Trainer request sent");
+    setRequestStatus({ status: "pending" });
   };
 
   useEffect(() => {
@@ -124,7 +126,7 @@ const TrainerRequest: FC = () => {
           </>
         );
       }
-    } 
+    }
 
     return (
       <>

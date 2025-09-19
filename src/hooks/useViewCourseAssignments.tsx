@@ -13,6 +13,19 @@ const useCourseAssignments = () => {
   const [assignments, setAssignments] = useState<IAssignmentSubmission[]>([]);
   const { courseId } = useParams();
   const [loading, setLoading] = useState<boolean>(false);
+  const [selectedAssignment, setSelectedAssignment] =
+    useState<IAssignmentSubmission | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = (assignment: IAssignmentSubmission) => {
+    setSelectedAssignment(assignment);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedAssignment(null);
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     const fetchAssignments = async () => {
@@ -65,13 +78,32 @@ const useCourseAssignments = () => {
 
     if (!res) return;
     successPopup(res.message || "updated");
-
-    // Update state with new assignment
-    setAssignments((assignments) =>
+    console.log(
+      res.data,
+      assignments,
       assignments.map((assignment) =>
         assignment._id === res.data._id ? res.data : assignment
       )
     );
+    // Update state with new assignment
+    setAssignments((assignments) => {
+      const { status, type, path, content, assignmentId, _id } = res.data;
+      return assignments.map((assignment) => {
+        console.log(assignment);
+        return assignment._id === assignmentId
+          ? {
+              ...assignment,
+              status,
+              type,
+              path,
+              content,
+              assignmentSubmissionId: _id,
+            }
+          : assignment;
+      });
+    });
+
+    closeModal();
   };
 
   const redoAssignment = async (
@@ -114,11 +146,22 @@ const useCourseAssignments = () => {
     successPopup(res.message || "updated");
 
     // Update state with new assignment
-    setAssignments((assignments) =>
-      assignments.map((assignment) =>
-        assignment._id === res.data._id ? res.data : assignment
-      )
-    );
+    setAssignments((assignments) => {
+      const { status, type, path, content, assignmentId, _id } = res.data;
+      return assignments.map((assignment) => {
+        console.log(assignment);
+        return assignment._id === assignmentId
+          ? {
+              ...assignment,
+              status,
+              type,
+              path,
+              content,
+              assignmentSubmissionId: _id,
+            }
+          : assignment;
+      });
+    });
   };
 
   // const redoAssignment = async (
@@ -145,7 +188,17 @@ const useCourseAssignments = () => {
   //   );
   // };
 
-  return { assignments, completeAssignment, redoAssignment, loading };
+  return {
+    assignments,
+    completeAssignment,
+    redoAssignment,
+    loading,
+    selectedAssignment,
+    setSelectedAssignment,
+    openModal,
+    closeModal,
+    isModalOpen,
+  };
 };
 
 export default useCourseAssignments;

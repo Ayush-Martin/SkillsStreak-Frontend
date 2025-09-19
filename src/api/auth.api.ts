@@ -18,7 +18,7 @@ export const getRefresh = async () => {
 
 export const forgetPassword = async (email: string) => {
   const res = await axiosPostRequest("/auth/forgetPassword", { email });
-  if (!res) return;
+  if (!res) return  ;
   successPopup(res.message || "OTP sent to your email");
 };
 

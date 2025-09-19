@@ -174,6 +174,7 @@ const Transactions: FC = () => {
         )}
       </Table>
       <Pagination
+        loading={loading}
         currentPage={currentPage}
         totalPages={totalPages}
         previousPage={previousPage}

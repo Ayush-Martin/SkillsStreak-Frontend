@@ -50,7 +50,7 @@ const Users: FC = () => {
 
   const blockUnblockUser = (userId: string, blocked: boolean) => {
     confirm(
-      `Are you sure you want to ${blocked ? "block" : "unblock"} this user?`,
+      `Are you sure you want to ${blocked ? "unblock" : "block"} this user?`,
       () => {
         dispatch(adminBlockUnblockUserApi(userId));
       }
@@ -123,6 +123,7 @@ const Users: FC = () => {
       </Table>
 
       <Pagination
+        loading={loading}
         currentPage={currentPage}
         totalPages={totalPages}
         previousPage={previousPage}
