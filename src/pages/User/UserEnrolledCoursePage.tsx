@@ -84,7 +84,7 @@ const UserEnrolledCoursePage = () => {
       </div>
       <div className="flex gap-2">
         <div className="w-2/3">
-          <QuickLinksCard />
+          <QuickLinksCard courseId={courseId!} />
         </div>
       </div>
     </EnrolledCourseLayout>

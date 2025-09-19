@@ -271,14 +271,18 @@ export const CertificateCard: FC<ICertificateCardProps> = ({
   );
 };
 
-export const QuickLinksCard = () => {
+interface IQuickLinksCardProps {
+  courseId: string;
+}
+
+export const QuickLinksCard: FC<IQuickLinksCardProps> = ({ courseId }) => {
   const navigate = useNavigate();
 
   const links = [
     {
       label: "View Course",
       icon: <Video className="w-5 h-5 text-indigo-400" />,
-      onClick: () => navigate("/user/view-course"),
+      onClick: () => navigate(`/courses/${courseId}`),
     },
   ];
 
