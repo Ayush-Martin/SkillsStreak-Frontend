@@ -20,9 +20,18 @@ interface ICourseAssignmentsProps {
   deleteAssignment: (assignmentId: string) => void;
 }
 const assignmentSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
-  task: z.string().min(1, "Task is required"),
+  title: z
+    .string()
+    .min(2, "Title must be at least 2 character long")
+    .max(100, "Title must be at max 100 characters or less"),
+  description: z
+    .string()
+    .min(1, "Description must be at least 2 character long")
+    .max(1000, "Description must be at max 100 characters or less"),
+  task: z
+    .string()
+    .min(10, "Task must be at least 2 character long")
+    .max(1000, "Task must be at max 100 characters or less"),
 });
 
 type AssignmentFormData = z.infer<typeof assignmentSchema>;
