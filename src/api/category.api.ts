@@ -5,4 +5,3 @@ export const getCategories = async (): Promise<Array<ICategory> | null> => {
   const res = await axiosGetRequest("/categories");
   return res?.data;
 };
-

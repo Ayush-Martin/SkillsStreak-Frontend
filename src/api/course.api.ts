@@ -80,3 +80,11 @@ export const getOverallCourseProgress = async (): Promise<{
   const res = await axiosGetRequest("/enrolledCourses/progress");
   return res?.data;
 };
+
+export const getTrainerCoursesList = async (): Promise<Array<{
+  _id: string;
+  title: string;
+}> | null> => {
+  const res = await axiosGetRequest("/trainer/courses/list");
+  return res?.data;
+};

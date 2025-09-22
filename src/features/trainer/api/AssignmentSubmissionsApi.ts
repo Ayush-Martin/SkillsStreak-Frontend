@@ -7,13 +7,16 @@ export const getTrainerAssignmentSubmissionsApi = createAsyncThunk<
   {
     page: number;
     size: number;
+    search: string;
+    courseId: string | "all";
+    status: "redo" | "completed" | "verified" | "all";
   }
 >(
   "trainerAssignmentSubmissions/getAssignmentSubmissions",
-  async ({ page, size }, { rejectWithValue }) => {
+  async ({ page, size, search, courseId, status }, { rejectWithValue }) => {
     try {
       const response = await appApi.get(
-        `${"/trainer/assignments"}?page=${page}&size=${size}`
+        `${"/trainer/assignments"}?page=${page}&size=${size}&search=${search}&courseId=${courseId}&status=${status}`
       );
       return response.data;
     } catch (err) {
