@@ -7,9 +7,11 @@ type StudentsType = Array<{
     _id: string;
     title: string;
     thumbnail: string;
+    completedPercentage: number;
   }[];
   username: string;
   email: string;
+  overallCompletion: number;
 }>;
 
 type initialStateType = {
