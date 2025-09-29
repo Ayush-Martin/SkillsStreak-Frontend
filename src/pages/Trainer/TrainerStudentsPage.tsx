@@ -55,6 +55,7 @@ const Students: FC = () => {
             <TableHead>Email</TableHead>
             <TableHead>No of Enrolled</TableHead>
             <TableHead>Enrolled Courses</TableHead>
+            <TableHead>Overall Completion</TableHead>
           </TableRow>
         </TableHeader>
         {loading ? (
@@ -70,6 +71,19 @@ const Students: FC = () => {
                   <TrainerStudentsEnrolledCourses
                     enrolledCourses={student.enrolledCourses}
                   />
+                </TableCell>
+                <TableCell className="w-40">
+                  <div className="flex flex-col">
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-blue-500 h-2 rounded-full"
+                        style={{ width: `${student.overallCompletion}%` }}
+                      />
+                    </div>
+                    <span className="text-xs text-gray-500 mt-1">
+                      {Math.round(student.overallCompletion)}%
+                    </span>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
