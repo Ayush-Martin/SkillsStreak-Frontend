@@ -40,6 +40,7 @@ const AssignmentSubmitModal: React.FC<AssignmentSubmitModalProps> = ({
   const [type, setType] = useState<"text" | "pdf" | "image">("text");
   const [file, setFile] = useState<File | null>(null);
   const [textContent, setTextContent] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
   const previewUrl = file ? URL.createObjectURL(file) : null;
 
@@ -49,8 +50,10 @@ const AssignmentSubmitModal: React.FC<AssignmentSubmitModalProps> = ({
     setTextContent("");
   }, []);
 
-  const handleSubmit = () => {
-    onSubmit(assignment._id, type, file || undefined, textContent);
+  const handleSubmit = async () => {
+    setLoading(true);
+    await onSubmit(assignment._id, type, file || undefined, textContent);
+    setLoading(false);
   };
 
   const handleResubmit = () => {
@@ -198,7 +201,7 @@ const AssignmentSubmitModal: React.FC<AssignmentSubmitModalProps> = ({
                 onClick={
                   assignment.status === "redo" ? handleResubmit : handleSubmit
                 }
-                disabled={type !== "text" && !file}
+                disabled={(type !== "text" && !file) || loading}
                 className={cn(
                   "px-6 py-2 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 hover:scale-105",
                   "bg-blue-600 text-white hover:bg-blue-500 disabled:bg-gray-700 disabled:text-gray-400"

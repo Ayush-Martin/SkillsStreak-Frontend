@@ -1,3 +1,4 @@
+import { getTrainerCoursesList } from "@/api";
 import {
   Pagination,
   RefreshData,
@@ -11,12 +12,14 @@ import {
   TableRow,
   TrainerStudentsTableSkeleton,
 } from "@/components";
+import Filter from "@/components/common/Filter";
 import { getTrainerStudentsApi } from "@/features/trainer/api/StudentsApi";
 import { changePage } from "@/features/trainer/slice/StudentsSlice";
 import { usePaginatedData } from "@/hooks";
 import { TrainerLayout } from "@/layouts";
-import { RootReducer } from "@/store";
-import { FC } from "react";
+import { AppDispatch, RootReducer } from "@/store";
+import { FC, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
 const pageSize = 10;
@@ -25,6 +28,12 @@ const Students: FC = () => {
   const { students, currentPage, totalPages, loading } = useSelector(
     (state: RootReducer) => state.trainerStudents
   );
+  const [courses, setCourses] = useState<Array<{ _id: string; title: string }>>(
+    []
+  );
+  const [courseId, setCourseId] = useState<string | "all">("all");
+  const dispatch: AppDispatch = useDispatch();
+
   const {
     nextPage,
     paginatedData,
@@ -38,7 +47,31 @@ const Students: FC = () => {
     changePageApi: changePage,
     getDataApi: getTrainerStudentsApi,
     size: pageSize,
+    extraData: {
+      courseId,
+    },
   });
+
+  useEffect(() => {
+    dispatch(
+      getTrainerStudentsApi({
+        page: 1,
+        courseId,
+        search,
+        size: pageSize,
+      })
+    );
+  }, [courseId]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      const data = await getTrainerCoursesList();
+      if (!data) return;
+      setCourses(data);
+    };
+
+    fetchCourses();
+  }, []);
 
   return (
     <TrainerLayout>
@@ -47,6 +80,22 @@ const Students: FC = () => {
         search={search}
         searchHandler={searchHandler}
       />
+      <div className="mt-5">
+        <Filter
+          filters={[
+            {
+              label: "Courses",
+              default: { value: "all", placeholder: "All" },
+              values: courses.map((c) => ({
+                value: c._id,
+                placeholder: c.title,
+              })),
+              selectedValue: courseId,
+              changeSelectedValue: setCourseId,
+            },
+          ]}
+        />
+      </div>
       <RefreshData refreshHandler={refreshHandler} />
       <Table>
         <TableHeader>
