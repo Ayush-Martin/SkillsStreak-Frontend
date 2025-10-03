@@ -9,6 +9,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  optimizeDeps: {
+    exclude: ["@ffmpeg/ffmpeg"],
+  },
   server: {
     port: 4000,
     // host: true,

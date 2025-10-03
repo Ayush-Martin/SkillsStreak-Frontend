@@ -19,3 +19,4 @@ export { default as useViewCourseRecorded } from "./useViewCourseRecorded";
 export { default as useAddQuiz } from "./useAddQuiz";
 export { default as useEditQuiz } from "./useEditQuiz";
 export { default as useQuiz } from "./useQuiz";
+export { default as useEditModule } from "./useEditModule";

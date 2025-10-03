@@ -5,6 +5,7 @@ import {
   axiosPutRequest,
 } from "@/config/axios";
 import { ITrainerLesson } from "@/types/courseType";
+import { compressVideo } from "@/utils/compression";
 import { successPopup } from "@/utils/popup";
 import { getVideoDuration } from "@/utils/video";
 import { ILessonSchema } from "@/validation/lesson.validation";
@@ -14,11 +15,13 @@ export const addTrainerLesson = async (
   moduleId: string,
   data: ILessonSchema & { file: File }
 ): Promise<ITrainerLesson | undefined> => {
-  const { description, file, title } = data;
+  const { description, title } = data;
+  let { file } = data;
   const type = file.type.startsWith("video") ? "video" : "pdf";
   let duration: number;
 
   if (type === "video") {
+    file = await compressVideo(file);
     duration = await getVideoDuration(file);
   } else {
     duration = 60;
@@ -79,6 +82,9 @@ export const editTrainerLessonFile = async (
   file: File
 ): Promise<ITrainerLesson | undefined> => {
   const formData = new FormData();
+  const type = file.type.startsWith("video") ? "video" : "pdf";
+  if (type === "video") file = await compressVideo(file);
+
   formData.append("file", file);
   const res = await axiosPatchRequest(
     `/trainer/courses/${courseId}/modules/${moduleId}/${lessonId}`,
