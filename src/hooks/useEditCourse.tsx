@@ -13,9 +13,9 @@ import {
 } from "@/types/courseType";
 import { errorPopup, successPopup } from "@/utils/popup";
 import {
-  ICourseBasicDetailsSchema,
+  CourseBasicDetailsSchemaType,
   CourseBasicDetailsSchema,
-  ICourseLiveSessionSchema,
+  CourseLiveSessionSchemaType,
 } from "@/validation/course.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
@@ -41,7 +41,7 @@ const useNewEditCourse = () => {
     trigger,
     handleSubmit,
     reset,
-  } = useForm<ICourseBasicDetailsSchema>({
+  } = useForm<CourseBasicDetailsSchemaType>({
     resolver: zodResolver(CourseBasicDetailsSchema),
     defaultValues: {
       title: "",
@@ -229,7 +229,7 @@ const useNewEditCourse = () => {
     setLiveSessions(res.data);
   };
 
-  const scheduleLiveSession = async (data: ICourseLiveSessionSchema) => {
+  const scheduleLiveSession = async (data: CourseLiveSessionSchemaType) => {
     const res = await axiosPostRequest(
       `${TRAINER_COURSES_API}/${courseId}/liveSessions`,
       data
@@ -242,7 +242,7 @@ const useNewEditCourse = () => {
 
   const editLiveSession = async (
     liveSessionId: string,
-    data: ICourseLiveSessionSchema
+    data: CourseLiveSessionSchemaType
   ) => {
     const res = await axiosPutRequest(
       `${TRAINER_COURSES_API}/${courseId}/liveSessions/${liveSessionId}`,
@@ -252,7 +252,7 @@ const useNewEditCourse = () => {
     successPopup(res.message || "updated");
     const updatedLiveSessions = liveSessions.map((liveSession) => {
       if (liveSession._id === liveSessionId) {
-        return { ...liveSession, ...data };
+        return { ...liveSession, ...data } as unknown as ILiveSession;
       }
       return liveSession;
     });

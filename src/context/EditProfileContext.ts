@@ -1,4 +1,4 @@
-import { IUserProfileSchema } from "@/hooks/useEditProfile";
+import { UserProfileSchemaType } from "@/validation/user.validation";
 import { ChangeEvent, createContext } from "react";
 import {
   Control,
@@ -12,15 +12,15 @@ import {
 } from "react-hook-form";
 
 interface IEditProfileContext {
-  register: UseFormRegister<IUserProfileSchema>;
-  errors: FieldErrors<IUserProfileSchema>;
-  setValues: UseFormSetValue<IUserProfileSchema>;
-  trigger: UseFormTrigger<IUserProfileSchema>;
-  watch: UseFormWatch<IUserProfileSchema>;
-  control: Control<IUserProfileSchema>;
-  setValue: UseFormSetValue<IUserProfileSchema>;
-  setError: UseFormSetError<IUserProfileSchema>;
-  clearErrors: UseFormClearErrors<IUserProfileSchema>;
+  register: UseFormRegister<UserProfileSchemaType>;
+  errors: FieldErrors<UserProfileSchemaType>;
+  setValues: UseFormSetValue<UserProfileSchemaType>;
+  trigger: UseFormTrigger<UserProfileSchemaType>;
+  watch: UseFormWatch<UserProfileSchemaType>;
+  control: Control<UserProfileSchemaType>;
+  setValue: UseFormSetValue<UserProfileSchemaType>;
+  setError: UseFormSetError<UserProfileSchemaType>;
+  clearErrors: UseFormClearErrors<UserProfileSchemaType>;
   profileImageChangeHandler: (
     event: ChangeEvent<HTMLInputElement>
   ) => Promise<void>;

@@ -26,7 +26,7 @@ import { changePage } from "@/features/admin/slice/adminCategorySlice";
 import { AdminLayout } from "@/layouts";
 import { AppDispatch, RootReducer } from "@/store";
 import { usePaginatedData, useConfirm } from "@/hooks";
-import { CategoryNameValidationRule } from "@/utils/validationRules";
+import { CategoryValidationRule } from "@/utils/validationRule";
 
 const PAGE_SIZE = 5;
 
@@ -84,7 +84,7 @@ const Categories: FC = () => {
       {/* <AdminAddCategory addCategory={addCategory} /> */}
       <EntryListInput
         addEntry={addCategory}
-        entryValidationRule={CategoryNameValidationRule}
+        entryValidationRule={CategoryValidationRule.categoryName}
       />
       <Table>
         <TableHeader>
@@ -107,7 +107,7 @@ const Categories: FC = () => {
                     <EditStringField
                       defaultValue={categoryName}
                       placeholder="Enter Category Name"
-                      entryValidationRule={CategoryNameValidationRule}
+                      entryValidationRule={CategoryValidationRule.categoryName}
                       save={(categoryName) => editCategory(_id, categoryName)}
                       close={() => setSelected(null)}
                     />

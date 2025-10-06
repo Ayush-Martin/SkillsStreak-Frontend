@@ -13,21 +13,21 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CourseLiveSessionSchema,
-  ICourseLiveSessionSchema,
+  CourseLiveSessionSchemaType,
 } from "@/validation/course.validation";
 import { ILiveSession } from "@/types/courseType";
 
 interface ILiveSessionModalProps {
-  defaultValues?: ICourseLiveSessionSchema;
-  onSubmit: (data: ICourseLiveSessionSchema) => void;
+  defaultValues?: CourseLiveSessionSchemaType;
+  onSubmit: (data: CourseLiveSessionSchemaType) => void;
   onClose: () => void;
 }
 
 interface ICourseLiveSessionProps {
   sessions: ILiveSession[];
   fetchSessions: () => void;
-  scheduleSession: (data: ICourseLiveSessionSchema) => void;
-  editSession: (id: string, data: ICourseLiveSessionSchema) => void;
+  scheduleSession: (data: CourseLiveSessionSchemaType) => void;
+  editSession: (id: string, data: CourseLiveSessionSchemaType) => void;
   deleteSession: (id: string) => void;
   viewSession: (id: string) => void;
 }
@@ -66,7 +66,7 @@ const CourseLiveSession: FC<ICourseLiveSessionProps> = ({
     setModalOpen(true);
   };
 
-  const handleSubmit = (data: ICourseLiveSessionSchema) => {
+  const handleSubmit = (data: CourseLiveSessionSchemaType) => {
     if (editingSession) {
       editSession(editingSession._id, data);
     } else {
@@ -192,7 +192,7 @@ const LiveSessionModal: FC<ILiveSessionModalProps> = ({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ICourseLiveSessionSchema>({
+  } = useForm<CourseLiveSessionSchemaType>({
     resolver: zodResolver(CourseLiveSessionSchema),
     defaultValues: defaultValues || {
       title: "",

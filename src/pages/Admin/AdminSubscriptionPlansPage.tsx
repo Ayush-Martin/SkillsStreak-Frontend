@@ -27,7 +27,7 @@ import {
 } from "@/features/admin/api/adminSubscriptionPlanApi";
 import { changePage } from "@/features/admin/slice/adminSubscriptionPlanSlice";
 import { IoMdAddCircleOutline } from "react-icons/io";
-import { ISubscriptionPlanSchema } from "@/validation/subscription.validation";
+import { SubscriptionPlanSchemaType } from "@/validation/subscription.validation";
 import { ISubscriptionFeature } from "@/types/subscriptionType";
 import { getSubscriptionFeatures } from "@/api/subscriptionFeature.api";
 
@@ -44,7 +44,7 @@ const AdminSubscriptionPlansPage: FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editData, setEditData] = useState<{
     _id: string;
-    plan: ISubscriptionPlanSchema;
+    plan: SubscriptionPlanSchemaType;
   } | null>(null);
   const [subscriptionFeatures, setSubscriptionFeatures] = useState<
     Array<ISubscriptionFeature>
@@ -79,12 +79,12 @@ const AdminSubscriptionPlansPage: FC = () => {
     setModalOpen(true);
   };
 
-  const handleEdit = (_id: string, plan: ISubscriptionPlanSchema) => {
+  const handleEdit = (_id: string, plan: SubscriptionPlanSchemaType) => {
     setEditData({ _id, plan });
     setModalOpen(true);
   };
 
-  const handleSubmitPlan = (data: ISubscriptionPlanSchema, _id?: string) => {
+  const handleSubmitPlan = (data: SubscriptionPlanSchemaType, _id?: string) => {
     if (_id) {
       dispatch(
         adminSubscriptionPlanEditApi({ subscriptionPlanId: _id, ...data })

@@ -116,3 +116,5 @@ export const QuizDifficultyValidationRule = z.enum(
 export const QuizTopicsValidationRule = z
   .array(z.string())
   .min(1, "quiz must have at least one topic");
+
+  

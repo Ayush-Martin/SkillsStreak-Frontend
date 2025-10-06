@@ -2,24 +2,13 @@ import { FC, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { z } from "zod";
-
 import { ErrorText, GoogleAuth, Input, Button } from "@/components";
-import {
-  EmailValidationRule,
-  PasswordValidationRule,
-  UsernameValidationRule,
-} from "@/utils/validationRules";
 
 import { LoginRegisterContext } from "@/context";
-
-const RegisterSchema = z.object({
-  email: EmailValidationRule,
-  password: PasswordValidationRule,
-  username: UsernameValidationRule,
-});
-
-type RegisterSchemaType = z.infer<typeof RegisterSchema>;
+import {
+  RegisterSchemaType,
+  RegisterSchema,
+} from "@/validation/user.validation";
 
 const Register: FC = () => {
   const { handleRegister } = useContext(LoginRegisterContext)!;

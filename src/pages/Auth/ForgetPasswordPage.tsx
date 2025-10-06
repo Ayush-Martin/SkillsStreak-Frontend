@@ -1,19 +1,15 @@
 import { FC } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 
 import { AuthLayout } from "@/layouts";
 import { ErrorText, Button, Input } from "@/components";
-import { EmailValidationRule } from "@/utils/validationRules";
 import { forgetPassword } from "@/api/auth.api";
-
-const ForgetPasswordSchema = z.object({
-  email: EmailValidationRule,
-});
-
-type ForgetPasswordSchemaType = z.infer<typeof ForgetPasswordSchema>;
+import {
+  ForgetPasswordSchemaType,
+  ForgetPasswordSchema,
+} from "@/validation/user.validation";
 
 const ForgetPassword: FC = () => {
   const {

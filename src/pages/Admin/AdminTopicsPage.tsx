@@ -20,6 +20,7 @@ import { changePage } from "@/features/admin/slice/adminTopicSlice";
 import { usePaginatedData } from "@/hooks";
 import { AdminLayout } from "@/layouts";
 import { AppDispatch, RootReducer } from "@/store";
+import { TopicValidationRule } from "@/utils/validationRule";
 import { TopicNameValidationRule } from "@/utils/validationRules";
 import { useState } from "react";
 import { MdEdit, MdOutlineRefresh } from "react-icons/md";
@@ -91,7 +92,7 @@ const AdminTopicsPage = () => {
                     <EditStringField
                       defaultValue={topicName}
                       placeholder="Enter Topic Name"
-                      entryValidationRule={TopicNameValidationRule}
+                      entryValidationRule={TopicValidationRule.topicName}
                       save={(categoryName) => editTopic(_id, categoryName)}
                       close={() => setSelected(null)}
                     />

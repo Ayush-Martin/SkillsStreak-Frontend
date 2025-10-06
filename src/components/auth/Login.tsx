@@ -4,19 +4,8 @@ import { useForm } from "react-hook-form";
 
 import { ErrorText, GoogleAuth, Button, Input } from "@/components";
 
-import {
-  EmailValidationRule,
-  PasswordValidationRule,
-} from "@/utils/validationRules";
-import { z } from "zod";
 import { LoginRegisterContext } from "@/context";
-
-const LoginSchema = z.object({
-  email: EmailValidationRule,
-  password: PasswordValidationRule,
-});
-
-type LoginSchemaType = z.infer<typeof LoginSchema>;
+import { LoginSchemaType, LoginSchema } from "@/validation/user.validation";
 
 const Login: FC = () => {
   const { handleLogin } = useContext(LoginRegisterContext)!;

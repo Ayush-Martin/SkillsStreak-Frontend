@@ -1,33 +1,49 @@
 import {
-  CourseTitleValidationRule,
-  CoursePriceValidationRule,
-  CourseDifficultyValidationRule,
-  CourseDescriptionValidationRule,
-  CourseCategoryIdValidationRule,
-  CourseRequirementsValidationRule,
-  CourseSkillsCoveredValidationRule,
-} from "@/utils/validationRules";
+  AssignmentSubmissionValidationRule,
+  AssignmentValidationRule,
+  CourseValidationRule,
+  LiveSessionValidationRule,
+} from "@/utils/validationRule";
 import z from "zod";
 
 export const CourseBasicDetailsSchema = z.object({
-  title: CourseTitleValidationRule,
-  price: CoursePriceValidationRule,
-  difficulty: CourseDifficultyValidationRule,
-  description: CourseDescriptionValidationRule,
-  categoryId: CourseCategoryIdValidationRule,
-  requirements: CourseRequirementsValidationRule,
-  skillsCovered: CourseSkillsCoveredValidationRule,
+  title: CourseValidationRule.title,
+  price: CourseValidationRule.price,
+  difficulty: CourseValidationRule.difficulty,
+  description: CourseValidationRule.description,
+  categoryId: CourseValidationRule.categoryId,
+  requirements: CourseValidationRule.requirements,
+  skillsCovered: CourseValidationRule.skillsCovered,
 });
 
-export type ICourseBasicDetailsSchema = z.infer<
+export type CourseBasicDetailsSchemaType = z.infer<
   typeof CourseBasicDetailsSchema
 >;
 
 export const CourseLiveSessionSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
-  date: z.string().min(1, "Date is required"),
-  time: z.string().min(1, "Time is required"),
+  title: LiveSessionValidationRule.title,
+  description: LiveSessionValidationRule.description,
+  date: LiveSessionValidationRule.date,
+  time: LiveSessionValidationRule.time,
 });
 
-export type ICourseLiveSessionSchema = z.infer<typeof CourseLiveSessionSchema>;
+export type CourseLiveSessionSchemaType = z.infer<
+  typeof CourseLiveSessionSchema
+>;
+
+export const AssignmentSchema = z.object({
+  title: AssignmentValidationRule.Title,
+  description: AssignmentValidationRule.Description,
+  task: AssignmentValidationRule.Task,
+});
+
+export type AssignmentSchemaType = z.infer<typeof AssignmentSchema>;
+
+export const AssignmentSubmissionSchema = z.object({
+  type: AssignmentSubmissionValidationRule.type,
+  content: AssignmentSubmissionValidationRule.content.optional(),
+});
+
+export type AssignmentSubmissionSchemaType = z.infer<
+  typeof AssignmentSubmissionSchema
+>;

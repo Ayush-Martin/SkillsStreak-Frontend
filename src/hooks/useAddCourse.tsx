@@ -3,7 +3,7 @@ import { TRAINER_COURSES_API } from "@/constants";
 import { errorPopup, successPopup } from "@/utils/popup";
 import {
   CourseBasicDetailsSchema,
-  ICourseBasicDetailsSchema,
+  CourseBasicDetailsSchemaType,
 } from "@/validation/course.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
@@ -27,7 +27,7 @@ const useNewAddCourse = () => {
     watch,
     trigger,
     handleSubmit,
-  } = useForm<ICourseBasicDetailsSchema>({
+  } = useForm<CourseBasicDetailsSchemaType>({
     resolver: zodResolver(CourseBasicDetailsSchema),
     mode: "onChange",
   });
