@@ -1,3 +1,4 @@
+import { ChangePasswordSchemaType } from "@/validation/user.validation";
 import {
   axiosGetRequest,
   axiosPatchRequest,
@@ -5,7 +6,6 @@ import {
 } from "@/config/axios";
 import { BACKEND_BASE_URL } from "@/constants";
 import { successPopup } from "@/utils/popup";
-import { IChangePasswordSchema } from "@/validation/auth.validation";
 import axios from "axios";
 
 export const getRefresh = async () => {
@@ -18,7 +18,7 @@ export const getRefresh = async () => {
 
 export const forgetPassword = async (email: string) => {
   const res = await axiosPostRequest("/auth/forgetPassword", { email });
-  if (!res) return  ;
+  if (!res) return;
   successPopup(res.message || "OTP sent to your email");
 };
 
@@ -77,7 +77,7 @@ export const completeRegister = async (email: string) => {
   successPopup(res.message || "user registered");
 };
 
-export const changePassword = async (data: IChangePasswordSchema) => {
+export const changePassword = async (data: ChangePasswordSchemaType) => {
   const res = await axiosPatchRequest("/auth/changePassword", {
     currentPassword: data.currentPassword,
     newPassword: data.newPassword,

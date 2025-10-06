@@ -20,7 +20,7 @@ import { changePage } from "@/features/admin/slice/adminTopicSlice";
 import { usePaginatedData } from "@/hooks";
 import { AdminLayout } from "@/layouts";
 import { AppDispatch, RootReducer } from "@/store";
-import { TopicNameValidationRule } from "@/utils/validationRules";
+import { TopicValidationRule } from "@/utils/validationRule";
 import { useState } from "react";
 import { MdEdit, MdOutlineRefresh } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
@@ -70,7 +70,7 @@ const AdminTopicsPage = () => {
       </button>
       <EntryListInput
         addEntry={addTopic}
-        entryValidationRule={TopicNameValidationRule}
+        entryValidationRule={TopicValidationRule.topicName}
       />
       <Table>
         <TableHeader>
@@ -91,7 +91,7 @@ const AdminTopicsPage = () => {
                     <EditStringField
                       defaultValue={topicName}
                       placeholder="Enter Topic Name"
-                      entryValidationRule={TopicNameValidationRule}
+                      entryValidationRule={TopicValidationRule.topicName}
                       save={(categoryName) => editTopic(_id, categoryName)}
                       close={() => setSelected(null)}
                     />

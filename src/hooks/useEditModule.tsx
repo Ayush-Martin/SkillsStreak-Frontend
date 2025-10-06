@@ -7,7 +7,7 @@ import {
   editTrainerLessonFile,
 } from "@/api";
 import { ITrainerModule } from "@/types/courseType";
-import { ILessonSchema } from "@/validation/lesson.validation";
+import { LessonSchemaType } from "@/validation/lesson.validation";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -38,7 +38,7 @@ const useEditModule = () => {
     setModule({ ...module, title });
   };
 
-  const submit = async (data: ILessonSchema & { file: File }) => {
+  const submit = async (data: LessonSchemaType & { file: File }) => {
     setLoading(true);
     const lesson = await addTrainerLesson(courseId!, moduleId!, data);
     setLoading(false);
@@ -55,7 +55,10 @@ const useEditModule = () => {
     });
   };
 
-  const updateLessonDetails = async (lessonId: string, data: ILessonSchema) => {
+  const updateLessonDetails = async (
+    lessonId: string,
+    data: LessonSchemaType
+  ) => {
     const updatedLesson = await editTrainerLesson(
       courseId!,
       moduleId!,

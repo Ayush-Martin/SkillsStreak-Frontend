@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { VideoPlayer, PdfViewer, Input, Textarea } from "@/components";
 import { BiSave, MdDelete, MdEdit } from "@/assets/icons";
-import { ILessonSchema, LessonSchema } from "@/validation/lesson.validation";
+import { LessonSchemaType, LessonSchema } from "@/validation/lesson.validation";
 
 interface ILessonCardParams {
   id: string;
@@ -13,7 +13,7 @@ interface ILessonCardParams {
   description: string;
   type: "video" | "pdf";
   deleteLesson: (id: string) => void;
-  updateLessonDetails: (lessonId: string, data: ILessonSchema) => void;
+  updateLessonDetails: (lessonId: string, data: LessonSchemaType) => void;
   updateLessonFile: (lessonId: string, file: File) => void;
 }
 
@@ -27,12 +27,12 @@ const LessonCard: FC<ILessonCardParams> = ({
   updateLessonDetails,
   updateLessonFile,
 }) => {
-  const { register, handleSubmit } = useForm<ILessonSchema>({
+  const { register, handleSubmit } = useForm<LessonSchemaType>({
     resolver: zodResolver(LessonSchema),
     defaultValues: { title, description },
   });
 
-  const changeLessonDetails = (data: ILessonSchema) => {
+  const changeLessonDetails = (data: LessonSchemaType) => {
     updateLessonDetails(id, data);
   };
 

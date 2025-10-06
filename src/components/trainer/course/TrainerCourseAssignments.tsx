@@ -3,9 +3,12 @@ import { ClipboardList, Pencil, Trash2, FileText } from "lucide-react";
 import { Button, DivLoading, ErrorText, Input, Textarea } from "@/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { ITrainerAssignment } from "@/types/courseType";
 import Modal from "@/components/common/Modal";
+import {
+  AssignmentSchemaType,
+  AssignmentSchema,
+} from "@/validation/course.validation";
 
 interface ICourseAssignmentsProps {
   assignments: ITrainerAssignment[];
@@ -19,22 +22,6 @@ interface ICourseAssignmentsProps {
   ) => void;
   deleteAssignment: (assignmentId: string) => void;
 }
-const assignmentSchema = z.object({
-  title: z
-    .string()
-    .min(2, "Title must be at least 2 character long")
-    .max(100, "Title must be at max 100 characters or less"),
-  description: z
-    .string()
-    .min(1, "Description must be at least 2 character long")
-    .max(1000, "Description must be at max 100 characters or less"),
-  task: z
-    .string()
-    .min(10, "Task must be at least 2 character long")
-    .max(1000, "Task must be at max 100 characters or less"),
-});
-
-type AssignmentFormData = z.infer<typeof assignmentSchema>;
 
 interface IAssignmentModalProps {
   defaultValues?: {
@@ -42,7 +29,7 @@ interface IAssignmentModalProps {
     description: string;
     task: string;
   };
-  onSubmit: (data: AssignmentFormData) => void;
+  onSubmit: (data: AssignmentSchemaType) => void;
   onClose: () => void;
 }
 
@@ -164,13 +151,14 @@ const AssignmentModal: FC<IAssignmentModalProps> = ({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<AssignmentFormData>({
-    resolver: zodResolver(assignmentSchema),
+  } = useForm<AssignmentSchemaType>({
+    resolver: zodResolver(AssignmentSchema),
     defaultValues: defaultValues || {
       title: "",
       description: "",
       task: "",
     },
+    mode: "onChange",
   });
 
   useEffect(() => {

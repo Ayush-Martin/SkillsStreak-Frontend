@@ -1,26 +1,16 @@
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FC, useEffect } from "react";
-import { z } from "zod";
 
 import AuthLayout from "@/layouts/AuthLayout";
 import resetPasswordImage from "@/assets/images/resetPassword.jpg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorText, Input, Button } from "@/components";
-import { PasswordValidationRule } from "@/utils/validationRules";
 import { resetPassword } from "@/api/auth.api";
-
-const ResetPasswordSchema = z
-  .object({
-    password: PasswordValidationRule,
-    confirmPassword: z.string(),
-  })
-  .refine(({ password, confirmPassword }) => password == confirmPassword, {
-    message: "Password does not match",
-    path: ["confirmPassword"],
-  });
-
-type ResetPasswordSchemaType = z.infer<typeof ResetPasswordSchema>;
+import {
+  ResetPasswordSchemaType,
+  ResetPasswordSchema,
+} from "@/validation/user.validation";
 
 const ResetPassword: FC = () => {
   const navigate = useNavigate();

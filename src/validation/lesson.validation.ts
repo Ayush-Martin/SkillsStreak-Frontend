@@ -1,12 +1,9 @@
-import {
-  LessonTitleValidationRule,
-  LessonDescriptionValidationRule,
-} from "@/utils/validationRules";
+import { LessonValidationRule } from "@/utils/validationRule";
 import { z } from "zod";
 
 export const LessonSchema = z.object({
-  title: LessonTitleValidationRule,
-  description: LessonDescriptionValidationRule,
+  title: LessonValidationRule.title,
+  description: LessonValidationRule.description,
 });
 
-export type ILessonSchema = z.infer<typeof LessonSchema>;
+export type LessonSchemaType = z.infer<typeof LessonSchema>;

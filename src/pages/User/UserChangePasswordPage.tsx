@@ -6,11 +6,12 @@ import resetPasswordImage from "@/assets/images/resetPassword.jpg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorText, Input, Button } from "@/components";
 import { useNavigate } from "react-router-dom";
+
+import { changePassword } from "@/api";
 import {
   ChangePasswordSchema,
-  IChangePasswordSchema,
-} from "@/validation/auth.validation";
-import { changePassword } from "@/api";
+  ChangePasswordSchemaType,
+} from "@/validation/user.validation";
 
 const ChangePassword: FC = () => {
   const {
@@ -18,7 +19,7 @@ const ChangePassword: FC = () => {
     formState: { isSubmitting, isValid, errors },
     trigger,
     handleSubmit,
-  } = useForm<IChangePasswordSchema>({
+  } = useForm<ChangePasswordSchemaType>({
     defaultValues: {
       currentPassword: "",
       newPassword: "",
@@ -29,7 +30,7 @@ const ChangePassword: FC = () => {
 
   const navigate = useNavigate();
 
-  const submit = async (data: IChangePasswordSchema) => {
+  const submit = async (data: ChangePasswordSchemaType) => {
     const res = await changePassword(data);
     if (!res) return;
     navigate(-1);

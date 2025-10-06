@@ -9,17 +9,17 @@ import {
   MdAttachFile,
 } from "@/assets/icons";
 import { Button, Input, Textarea } from "@/components";
-import { ILessonSchema, LessonSchema } from "@/validation/lesson.validation";
+import { LessonSchemaType, LessonSchema } from "@/validation/lesson.validation";
 
 interface IAddLessonParams {
   close: () => void;
-  submit: (data: ILessonSchema & { file: File }) => void;
+  submit: (data: LessonSchemaType & { file: File }) => void;
   loading: boolean;
 }
 
 const AddLesson: FC<IAddLessonParams> = ({ close, submit, loading }) => {
   const [file, setFile] = useState<File | null>(null);
-  const { register, handleSubmit } = useForm<ILessonSchema>({
+  const { register, handleSubmit } = useForm<LessonSchemaType>({
     resolver: zodResolver(LessonSchema),
   });
 
@@ -30,7 +30,7 @@ const AddLesson: FC<IAddLessonParams> = ({ close, submit, loading }) => {
     }
   };
 
-  const addLesson = (lesson: ILessonSchema) => {
+  const addLesson = (lesson: LessonSchemaType) => {
     if (!file) return;
     submit({ ...lesson, file });
   };

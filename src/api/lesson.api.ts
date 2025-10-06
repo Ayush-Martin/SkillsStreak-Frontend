@@ -8,12 +8,12 @@ import { ITrainerLesson } from "@/types/courseType";
 import { compressVideo } from "@/utils/compression";
 import { successPopup } from "@/utils/popup";
 import { getVideoDuration } from "@/utils/video";
-import { ILessonSchema } from "@/validation/lesson.validation";
+import { LessonSchemaType } from "@/validation/lesson.validation";
 
 export const addTrainerLesson = async (
   courseId: string,
   moduleId: string,
-  data: ILessonSchema & { file: File }
+  data: LessonSchemaType & { file: File }
 ): Promise<ITrainerLesson | undefined> => {
   const { description, title } = data;
   let { file } = data;
@@ -63,7 +63,7 @@ export const editTrainerLesson = async (
   courseId: string,
   moduleId: string,
   lessonId: string,
-  data: ILessonSchema
+  data: LessonSchemaType
 ): Promise<ITrainerLesson | undefined> => {
   const res = await axiosPutRequest(
     `/trainer/courses/${courseId}/modules/${moduleId}/${lessonId}`,

@@ -1,7 +1,7 @@
 import { addQuiz } from "@/api/quiz.api";
 import { getTopics } from "@/api/topic.api";
 import { ITopic } from "@/types/topicType";
-import { IQuizSchema, QuizSchema } from "@/validation/quiz.validation";
+import { QuizSchemaType, QuizSchema } from "@/validation/quiz.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -19,7 +19,7 @@ const useAddQuiz = () => {
     watch,
     trigger,
     handleSubmit,
-  } = useForm<IQuizSchema>({
+  } = useForm<QuizSchemaType>({
     resolver: zodResolver(QuizSchema),
     mode: "onChange",
   });

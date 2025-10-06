@@ -1,31 +1,22 @@
 import {
-  QuizTitleValidationRule,
-  QuizTopicDescriptionValidationRule,
-  QuizDifficultyValidationRule,
-  QuizTopicsValidationRule,
-} from "@/utils/validationRules";
+  QuestionValidationRule,
+  QuizValidationRule,
+} from "@/utils/validationRule";
 import z from "zod";
 
 export const QuizSchema = z.object({
-  title: QuizTitleValidationRule,
-  description: QuizTopicDescriptionValidationRule,
-  difficulty: QuizDifficultyValidationRule,
-  topics: QuizTopicsValidationRule,
+  title: QuizValidationRule.title,
+  description: QuizValidationRule.description,
+  difficulty: QuizValidationRule.difficulty,
+  topics: QuizValidationRule.topics,
 });
+
+export type QuizSchemaType = z.infer<typeof QuizSchema>;
 
 export const QuestionSchema = z.object({
-  question: z.string().min(1, "Question is required"),
-  options: z
-    .array(
-      z.object({
-        id: z.string(),
-        choice: z.string().min(1, "Option cannot be empty"),
-      })
-    )
-    .min(2, "At least two options are required"),
-  answer: z.string().min(1, "Please select a correct answer"),
+  question: QuestionValidationRule.question,
+  options: QuestionValidationRule.options,
+  answer: QuestionValidationRule.answer,
 });
 
-export type IQuizSchema = z.infer<typeof QuizSchema>;
-
-export type IQuestionSchema = z.infer<typeof QuestionSchema>;
+export type QuestionSchemaType = z.infer<typeof QuestionSchema>;

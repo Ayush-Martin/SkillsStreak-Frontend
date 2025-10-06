@@ -9,8 +9,8 @@ import { getTopics } from "@/api/topic.api";
 import { IQuestion } from "@/types/quizType";
 import { ITopic } from "@/types/topicType";
 import {
-  IQuestionSchema,
-  IQuizSchema,
+  QuestionSchemaType,
+  QuizSchemaType,
   QuizSchema,
 } from "@/validation/quiz.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,7 +32,7 @@ const useEditQuiz = () => {
     trigger,
     handleSubmit,
     reset,
-  } = useForm<IQuizSchema>({
+  } = useForm<QuizSchemaType>({
     resolver: zodResolver(QuizSchema),
     mode: "onChange",
   });
@@ -60,7 +60,7 @@ const useEditQuiz = () => {
     setQuestions(questions);
   };
 
-  const addQuestion = async (question: IQuestionSchema) => {
+  const addQuestion = async (question: QuestionSchemaType) => {
     const addedQuestion = await addAdminQuestionApi(quizId!, question);
     if (!addedQuestion) return;
     setQuestions([...questions, addedQuestion]);
@@ -68,7 +68,7 @@ const useEditQuiz = () => {
 
   const editQuestion = async (
     questionId: string,
-    question: IQuestionSchema
+    question: QuestionSchemaType
   ) => {
     const editedQuestion = await editAdminQuestionApi(
       quizId!,

@@ -26,7 +26,7 @@ import {
 import { COURSE_DIFFICULTY } from "@/constants";
 import { ICourseDifficulty } from "@/types/courseType";
 import { FC, useState } from "react";
-import { ICourseBasicDetailsSchema } from "@/validation/course.validation";
+import { CourseBasicDetailsSchemaType } from "@/validation/course.validation";
 import {
   FieldErrors,
   UseFormRegister,
@@ -38,13 +38,13 @@ import {
 const labelClass = "text-sm font-medium text-zinc-300 flex items-center gap-2";
 
 interface ICourseBasicDetailsProps {
-  errors: FieldErrors<ICourseBasicDetailsSchema>;
-  register: UseFormRegister<ICourseBasicDetailsSchema>;
-  setValue: UseFormSetValue<ICourseBasicDetailsSchema>;
-  trigger: UseFormTrigger<ICourseBasicDetailsSchema>;
+  errors: FieldErrors<CourseBasicDetailsSchemaType>;
+  register: UseFormRegister<CourseBasicDetailsSchemaType>;
+  setValue: UseFormSetValue<CourseBasicDetailsSchemaType>;
+  trigger: UseFormTrigger<CourseBasicDetailsSchemaType>;
   previewThumbnail: string | null;
   handleThumbnailChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  watch: UseFormWatch<ICourseBasicDetailsSchema>;
+  watch: UseFormWatch<CourseBasicDetailsSchemaType>;
   submit: () => void;
   categories: Array<{ _id: string; categoryName: string }>;
 }

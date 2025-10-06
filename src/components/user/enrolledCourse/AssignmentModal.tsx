@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input, Textarea, Modal } from "@/components";
+import { Button, Input, Textarea, Modal, ErrorText } from "@/components";
 import { FileText, Image as ImageIcon, Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { IAssignmentSubmission } from "@/types/courseType";
+import { AssignmentSubmissionValidationRule } from "@/utils/validationRule";
 
 interface AssignmentSubmitModalProps {
   onClose: () => void;
@@ -41,6 +42,7 @@ const AssignmentSubmitModal: React.FC<AssignmentSubmitModalProps> = ({
   const [file, setFile] = useState<File | null>(null);
   const [textContent, setTextContent] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [textContentError, setTextContentError] = useState("");
 
   const previewUrl = file ? URL.createObjectURL(file) : null;
 
@@ -52,6 +54,15 @@ const AssignmentSubmitModal: React.FC<AssignmentSubmitModalProps> = ({
 
   const handleSubmit = async () => {
     setLoading(true);
+    if (type === "text") {
+      const parsed =
+        AssignmentSubmissionValidationRule.content.safeParse(textContent);
+      if (!parsed.success) {
+        setTextContentError(parsed.error.issues[0].message);
+        setLoading(false);
+        return;
+      }
+    }
     await onSubmit(assignment._id, type, file || undefined, textContent);
     setLoading(false);
   };
@@ -171,12 +182,15 @@ const AssignmentSubmitModal: React.FC<AssignmentSubmitModalProps> = ({
 
             {/* Input Area */}
             {type === "text" ? (
-              <Textarea
-                placeholder="Write your answer..."
-                className="min-h-[120px] resize-none bg-gray-800 text-white border border-gray-700 rounded-lg p-3 text-sm md:text-base leading-relaxed focus:ring-2 focus:ring-blue-500"
-                value={textContent}
-                onChange={(e) => setTextContent(e.target.value)}
-              />
+              <>
+                <Textarea
+                  placeholder="Write your answer..."
+                  className="min-h-[120px] resize-none bg-gray-800 text-white border border-gray-700 rounded-lg p-3 text-sm md:text-base leading-relaxed focus:ring-2 focus:ring-blue-500"
+                  value={textContent}
+                  onChange={(e) => setTextContent(e.target.value)}
+                />
+                {textContentError && <ErrorText error={textContentError} />}
+              </>
             ) : (
               <>
                 <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-gray-700 rounded-lg bg-gray-800 hover:bg-gray-700 cursor-pointer transition-all duration-300 hover:scale-[1.02]">

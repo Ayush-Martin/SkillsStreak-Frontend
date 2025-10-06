@@ -5,13 +5,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
 import { v4 as uuid } from "uuid";
 import { IQuestion } from "@/types/quizType";
-import { IQuestionSchema, QuestionSchema } from "@/validation/quiz.validation";
+import {
+  QuestionSchemaType,
+  QuestionSchema,
+} from "@/validation/quiz.validation";
 
 interface IAdminQuestionsProps {
   questions: IQuestion[];
   fetchQuestions: () => void;
-  addQuestion: (question: IQuestionSchema) => void;
-  editQuestion: (questionId: string, question: IQuestionSchema) => void;
+  addQuestion: (question: QuestionSchemaType) => void;
+  editQuestion: (questionId: string, question: QuestionSchemaType) => void;
   deleteQuestion: (questionId: string) => void;
 }
 
@@ -41,7 +44,7 @@ const AdminQuestions: FC<IAdminQuestionsProps> = ({
     setModalOpen(true);
   };
 
-  const handleSubmit = (data: IQuestionSchema) => {
+  const handleSubmit = (data: QuestionSchemaType) => {
     if (editingQuestion) {
       // Editing existing question
       editQuestion(editingQuestion._id, data);
@@ -118,7 +121,7 @@ const AdminQuestions: FC<IAdminQuestionsProps> = ({
 
 interface IQuestionModalProps {
   defaultValues?: IQuestion;
-  onSubmit: (data: IQuestionSchema) => void;
+  onSubmit: (data: QuestionSchemaType) => void;
   onClose: () => void;
 }
 
@@ -144,7 +147,7 @@ const QuestionModal: FC<IQuestionModalProps> = ({
         question: defaultValues.question ?? "",
         options,
         answer,
-      } as IQuestionSchema;
+      } as QuestionSchemaType;
     }
     return {
       question: "",
@@ -153,7 +156,7 @@ const QuestionModal: FC<IQuestionModalProps> = ({
         { id: uuid(), choice: "" },
       ],
       answer: "",
-    } as IQuestionSchema;
+    } as QuestionSchemaType;
   }, [defaultValues]);
 
   const {
@@ -165,7 +168,7 @@ const QuestionModal: FC<IQuestionModalProps> = ({
     reset,
     clearErrors,
     formState: { errors },
-  } = useForm<IQuestionSchema>({
+  } = useForm<QuestionSchemaType>({
     resolver: zodResolver(QuestionSchema),
     mode: "onBlur",
     defaultValues: initialValues,
@@ -191,7 +194,7 @@ const QuestionModal: FC<IQuestionModalProps> = ({
     clearErrors("answer");
   };
 
-  const handleSubmitForm = (data: IQuestionSchema) => {
+  const handleSubmitForm = (data: QuestionSchemaType) => {
     // data.options will have { id, choice } entries and answer will be one of those ids
     onSubmit(data);
     reset(); // clear form state

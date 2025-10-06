@@ -1,11 +1,12 @@
+import { SubscriptionPlanValidationRule } from "@/utils/validationRule";
 import { z } from "zod";
 
 export const SubscriptionPlanSchema = z.object({
-  title: z.string().min(1),
-  description: z.string().min(1),
-  price: z.number().min(0),
-  duration: z.number().min(1),
-  features: z.array(z.string()).min(1),
+  title: SubscriptionPlanValidationRule.title,
+  description: SubscriptionPlanValidationRule.description,
+  price: SubscriptionPlanValidationRule.price,
+  duration: SubscriptionPlanValidationRule.duration,
+  features: SubscriptionPlanValidationRule.features,
 });
 
-export type ISubscriptionPlanSchema = z.infer<typeof SubscriptionPlanSchema>;
+export type SubscriptionPlanSchemaType = z.infer<typeof SubscriptionPlanSchema>;
