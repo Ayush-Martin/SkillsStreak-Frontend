@@ -1,6 +1,6 @@
 import { Button, ErrorText, Input } from "@/components";
 import {
-  ISubscriptionPlanSchema,
+  SubscriptionPlanSchemaType,
   SubscriptionPlanSchema,
 } from "@/validation/subscription.validation";
 import { ISubscriptionFeature } from "@/types/subscriptionType";
@@ -12,9 +12,9 @@ import { X } from "lucide-react";
 interface IAdminSubscriptionPlanModalProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (data: ISubscriptionPlanSchema, _id?: string) => void;
+  onSubmit: (data: SubscriptionPlanSchemaType, _id?: string) => void;
   _id?: string;
-  initialData?: Partial<ISubscriptionPlanSchema>;
+  initialData?: Partial<SubscriptionPlanSchemaType>;
   isEdit?: boolean;
   allFeatures?: ISubscriptionFeature[];
 }
@@ -38,7 +38,7 @@ const AdminSubscriptionPlanModal: FC<IAdminSubscriptionPlanModalProps> = ({
     formState: { errors },
     reset,
     setValue,
-  } = useForm<ISubscriptionPlanSchema>({
+  } = useForm<SubscriptionPlanSchemaType>({
     resolver: zodResolver(SubscriptionPlanSchema),
     defaultValues: {
       title: "",
@@ -72,7 +72,7 @@ const AdminSubscriptionPlanModal: FC<IAdminSubscriptionPlanModalProps> = ({
     setValue("features", updated, { shouldValidate: true });
   };
 
-  const handleFormSubmit = (data: ISubscriptionPlanSchema) => {
+  const handleFormSubmit = (data: SubscriptionPlanSchemaType) => {
     data.features = selectedFeatures;
     onSubmit(data, _id);
     onClose();

@@ -6,7 +6,7 @@ import {
 import { IViewQuiz } from "@/types/quizType";
 
 import { successPopup } from "@/utils/popup";
-import { IQuizSchema } from "@/validation/quiz.validation";
+import { QuizSchemaType } from "@/validation/quiz.validation";
 
 export const addQuiz = async (
   title: string,
@@ -43,7 +43,7 @@ export const editQuiz = async (
 
 export const getQuizBasicDetails = async (
   quizId: string
-): Promise<IQuizSchema | null> => {
+): Promise<QuizSchemaType | null> => {
   const res = await axiosGetRequest(`/admin/quizzes/${quizId}`);
   return res?.data;
 };

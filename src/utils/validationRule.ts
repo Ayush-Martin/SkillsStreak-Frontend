@@ -20,9 +20,9 @@ const getMinValueMessage = (field: string, val: number) => {
   return `${field} must be at least ${val}`;
 };
 
-const getMaxValueMessage = (field: string, val: number) => {
-  return `${field} must be ${val} or less`;
-};
+// const getMaxValueMessage = (field: string, val: number) => {
+//   return `${field} must be ${val} or less`;
+// };
 
 export const UserValidationRule = {
   Email: z.string().email("Invalid email"),

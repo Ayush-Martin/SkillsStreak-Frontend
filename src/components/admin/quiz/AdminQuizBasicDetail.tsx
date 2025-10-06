@@ -22,17 +22,17 @@ import {
   UseFormTrigger,
   UseFormWatch,
 } from "react-hook-form";
-import { IQuizSchema } from "@/validation/quiz.validation";
+import { QuizSchemaType } from "@/validation/quiz.validation";
 
 const labelClass = "text-sm font-medium text-zinc-300 flex items-center gap-2";
 
 interface IQuizBasicDetailProps {
   topics: ITopic[];
-  errors: FieldErrors<IQuizSchema>;
-  register: UseFormRegister<IQuizSchema>;
-  setValue: UseFormSetValue<IQuizSchema>;
-  trigger: UseFormTrigger<IQuizSchema>;
-  watch: UseFormWatch<IQuizSchema>;
+  errors: FieldErrors<QuizSchemaType>;
+  register: UseFormRegister<QuizSchemaType>;
+  setValue: UseFormSetValue<QuizSchemaType>;
+  trigger: UseFormTrigger<QuizSchemaType>;
+  watch: UseFormWatch<QuizSchemaType>;
   submit: () => void;
 }
 

@@ -21,7 +21,6 @@ import { usePaginatedData } from "@/hooks";
 import { AdminLayout } from "@/layouts";
 import { AppDispatch, RootReducer } from "@/store";
 import { TopicValidationRule } from "@/utils/validationRule";
-import { TopicNameValidationRule } from "@/utils/validationRules";
 import { useState } from "react";
 import { MdEdit, MdOutlineRefresh } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
@@ -71,7 +70,7 @@ const AdminTopicsPage = () => {
       </button>
       <EntryListInput
         addEntry={addTopic}
-        entryValidationRule={TopicNameValidationRule}
+        entryValidationRule={TopicValidationRule.topicName}
       />
       <Table>
         <TableHeader>

@@ -6,7 +6,7 @@ import {
 } from "@/config/axios";
 import { IQuestion } from "@/types/quizType";
 import { successPopup } from "@/utils/popup";
-import { IQuestionSchema } from "@/validation/quiz.validation";
+import { QuestionSchemaType } from "@/validation/quiz.validation";
 
 export const getAdminQuestions = async (
   quizId: string
@@ -17,7 +17,7 @@ export const getAdminQuestions = async (
 
 export const addAdminQuestionApi = async (
   quizId: string,
-  question: IQuestionSchema
+  question: QuestionSchemaType
 ): Promise<IQuestion | null> => {
   const res = await axiosPostRequest(
     `/admin/quizzes/${quizId}/questions`,
@@ -31,7 +31,7 @@ export const addAdminQuestionApi = async (
 export const editAdminQuestionApi = async (
   quizId: string,
   questionId: string,
-  question: IQuestionSchema
+  question: QuestionSchemaType
 ): Promise<IQuestion | null> => {
   const res = await axiosPutRequest(
     `/admin/quizzes/${quizId}/questions/${questionId}`,
